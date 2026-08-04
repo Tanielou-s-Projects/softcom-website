@@ -5,6 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+    /* Brand accents. Theme-independent — identical in light and dark. */
+    --brand-blue: #004bff;
+    --brand-cyan: #00ffff;
+
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
@@ -76,6 +80,9 @@
 @theme inline {
     --font-sans: var(--font-sans);
     --font-heading: var(--font-heading);
+    --font-body: var(--font-body);
+    --color-brand-blue: var(--brand-blue);
+    --color-brand-cyan: var(--brand-cyan);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -114,6 +121,53 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Hero entrance, from the Figma motion tracks on node 210:44.
+ * The two brand circles start overlapped at the capsule's midpoint and separate
+ * to its endpoints while the gradient bar draws itself between them.
+ *
+ * Base styles below are the *resting* state, so `prefers-reduced-motion` simply
+ * skips the animation and lands on the finished composition.
+ */
+@keyframes softcom-capsule-draw {
+  from {
+    stroke-dasharray: 0 1;
+    stroke-dashoffset: -0.5;
+    }
+  to {
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 0;
+    }
+}
+
+@keyframes softcom-blob-separate {
+  from {
+    transform: translate(var(--blob-from-x), var(--blob-from-y));
+    }
+  to {
+    transform: translate(0, 0);
+    }
+}
+
+@layer components {
+  /* Figma: 2s cohort, easeInOut over the first 75% then a hold before looping. */
+  .softcom-hero-capsule {
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 0;
+    animation: softcom-capsule-draw 1.5s cubic-bezier(0.42, 0, 0.58, 1) both;
+    }
+  .softcom-hero-blob {
+    animation: softcom-blob-separate 1.5s cubic-bezier(0.42, 0, 0.58, 1) both;
+    }
+
+  @media (prefers-reduced-motion: reduce) {
+    .softcom-hero-capsule,
+    .softcom-hero-blob {
+      animation: none;
+      }
+    }
 }
 
 @layer base {
