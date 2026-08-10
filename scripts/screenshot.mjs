@@ -95,7 +95,10 @@ try {
     }, value)
   }
 
-  await page.goto(url, { waitUntil: "networkidle2", timeout: 60_000 })
+  // `domcontentloaded` rather than `networkidle2`: a page with a running
+  // animation or an HMR socket may never look idle, and the explicit settle
+  // wait below is the thing we actually rely on.
+  await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60_000 })
 
   const hover = flag("hover", null)
   if (hover) await page.hover(hover)

@@ -2,6 +2,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { HeroDither } from "@/components/landing/hero-dither"
 import { displayText } from "@/components/landing/section"
 
 /**
@@ -93,6 +94,13 @@ function Hero() {
         "lg:block lg:h-[1024px] lg:p-0"
       )}
     >
+      {/*
+       * First child, so everything after paints over it without needing a
+       * stacking context — the headlines and the mark are positioned, and
+       * later-in-DOM wins.
+       */}
+      <HeroDither />
+
       <h1
         className={cn(
           displayText,
