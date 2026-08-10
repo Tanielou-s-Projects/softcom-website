@@ -269,7 +269,29 @@
   }
 }
 
+/*
+ * Exactly one cell, so the screen loops seamlessly. The rotation is restated
+ * because a CSS transform replaces `patternTransform` outright rather than
+ * composing with it.
+ */
+@keyframes softcom-screen-drift {
+  from {
+    transform: rotate(-30.694deg) translateX(0);
+  }
+  to {
+    transform: rotate(-30.694deg) translateX(5px);
+  }
+}
+
 @layer components {
+  /*
+   * Slower than the draw, and deliberately off its 2s beat — the conduit is
+   * being built, the texture is what is already flowing through it.
+   */
+  .softcom-hero-screen {
+    animation: softcom-screen-drift 3s linear infinite;
+  }
+
   /*
    * One 2s cycle, looping, matching Figma's cohort on node 210:40. The circles
    * and the bar share a duration so they stay in step — they are one gesture,
@@ -288,7 +310,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     .softcom-hero-capsule,
-    .softcom-hero-blob {
+    .softcom-hero-blob,
+    .softcom-hero-screen {
       animation: none;
     }
   }
