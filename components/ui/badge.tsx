@@ -14,6 +14,14 @@ const badgeVariants = cva(
          * would have no contrast against its container.
          */
         contrast: "bg-background text-muted-foreground",
+        /**
+         * On brand cyan. The label is pinned dark rather than tokenised because
+         * the cyan is a fixed light colour in either theme, so `--background`
+         * would turn the text white and unreadable in light mode.
+         */
+        brand: "bg-brand-cyan text-neutral-950",
+        /** The flipped plate the design uses on brand-blue panels. */
+        inverse: "bg-foreground text-background",
       },
     },
     defaultVariants: {

@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element -- local SVG, intentionally not run through next/image */
-import Image from "next/image"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
@@ -8,33 +6,13 @@ import {
   headingText,
   primaryPill,
 } from "@/components/landing/section"
+import { CtaPanel } from "@/components/site/cta-panel"
 import { cn } from "@/lib/utils"
 
-/**
- * The closing call to action. Figma pins this panel with `position: sticky` so
- * the footer rides up over it as you reach the bottom of the page — which is
- * why it and the footer must stay siblings inside the same wrapper.
- */
+/** The landing page's closing call to action. */
 function ClosingCta() {
   return (
-    <div className="dark relative flex h-[560px] flex-col items-center gap-10 overflow-clip rounded-4xl pt-16 lg:sticky lg:top-0 lg:h-[831px] lg:gap-16 lg:pt-[71px]">
-      <Image
-        src="/landing/story.png"
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover object-bottom"
-      />
-      <div aria-hidden className="absolute inset-0 bg-black/75" />
-
-      <img
-        src="/brand/accent-dot-2.svg"
-        alt=""
-        width={26}
-        height={26}
-        className="relative size-[26px] shrink-0"
-      />
-
+    <CtaPanel>
       <div className="relative flex flex-col items-center gap-6 px-6">
         <h2
           className={cn(
@@ -55,7 +33,7 @@ function ClosingCta() {
           </Button>
         </div>
       </div>
-    </div>
+    </CtaPanel>
   )
 }
 
