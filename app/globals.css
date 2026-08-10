@@ -229,35 +229,61 @@
  * Base styles below are the *resting* state, so `prefers-reduced-motion` simply
  * skips the animation and lands on the finished composition.
  */
+/*
+ * The 75% stop is the design's, not a rounding: Figma's tracks run
+ * `times: [0, 0.75, 1]` over a 2s cohort, so the mark draws for 1.5s and then
+ * rests, fully formed, for 0.5s before the cycle repeats. Holding that beat is
+ * what keeps a looping hero from reading as a GIF.
+ *
+ * Easing lives on the keyframes rather than the shorthand because the two
+ * segments differ — easeInOut across the draw, linear through the hold.
+ */
 @keyframes softcom-capsule-draw {
-  from {
+  0% {
     stroke-dasharray: 0 1;
     stroke-dashoffset: -0.5;
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
   }
-  to {
+  75% {
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 0;
+    animation-timing-function: linear;
+  }
+  100% {
     stroke-dasharray: 1 1;
     stroke-dashoffset: 0;
   }
 }
 
 @keyframes softcom-blob-separate {
-  from {
+  0% {
     transform: translate(var(--blob-from-x), var(--blob-from-y));
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
   }
-  to {
+  75% {
+    transform: translate(0, 0);
+    animation-timing-function: linear;
+  }
+  100% {
     transform: translate(0, 0);
   }
 }
 
 @layer components {
-  /* Figma: 2s cohort, easeInOut over the first 75% then a hold before looping. */
+  /*
+   * One 2s cycle, looping, matching Figma's cohort on node 210:40. The circles
+   * and the bar share a duration so they stay in step — they are one gesture,
+   * not three animations that happen to overlap.
+   */
   .softcom-hero-capsule {
     stroke-dasharray: 1 1;
     stroke-dashoffset: 0;
-    animation: softcom-capsule-draw 1.5s cubic-bezier(0.42, 0, 0.58, 1) both;
+    animation: softcom-capsule-draw 2s linear infinite;
   }
   .softcom-hero-blob {
-    animation: softcom-blob-separate 1.5s cubic-bezier(0.42, 0, 0.58, 1) both;
+    animation: softcom-blob-separate 2s linear infinite;
+    /* Composited, so the circles cost nothing to move. */
+    will-change: transform;
   }
 
   @media (prefers-reduced-motion: reduce) {
