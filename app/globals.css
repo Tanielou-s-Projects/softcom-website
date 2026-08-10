@@ -269,30 +269,7 @@
   }
 }
 
-/*
- * Exactly one tile, so the screen loops seamlessly. The tile is measured rather
- * than fixed, so its size arrives as a custom property.
- */
-@keyframes softcom-screen-drift {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(var(--screen-tile), var(--screen-tile));
-  }
-}
-
 @layer components {
-  /*
-   * Stepped a cell at a time, so the matrix stays on the pixel grid — sliding
-   * it continuously would reintroduce the blur `crispEdges` is there to
-   * prevent. Deliberately off the draw's 2s beat: the conduit is being built,
-   * the texture is what is already flowing through it.
-   */
-  .softcom-hero-screen {
-    animation: softcom-screen-drift 1.2s steps(4) infinite;
-  }
-
   /*
    * One 2s cycle, looping, matching Figma's cohort on node 210:40. The circles
    * and the bar share a duration so they stay in step — they are one gesture,
@@ -311,8 +288,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .softcom-hero-capsule,
-    .softcom-hero-blob,
-    .softcom-hero-screen {
+    .softcom-hero-blob {
       animation: none;
     }
   }

@@ -144,10 +144,8 @@ export function DitherSection() {
 
       <SpecimenGroup label="Procedural">
         <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-          Generates its own pattern, so it animates without a source image. Not
-          what the hero uses — a canvas contributes nothing to an SVG mask, so
-          the conduit screens itself with an SVG pattern instead. This is for
-          the sector marks, where the dither sits over real imagery.
+          Generates its own pattern, so it animates without a source image. The
+          candidate for the hero.
         </p>
         <div className="grid gap-4 lg:grid-cols-[1fr_240px]">
           <div className="h-[300px] overflow-clip rounded-(--card-radius)">
