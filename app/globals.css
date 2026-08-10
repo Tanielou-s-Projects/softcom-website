@@ -270,26 +270,27 @@
 }
 
 /*
- * Exactly one cell, so the screen loops seamlessly. The rotation is restated
- * because a CSS transform replaces `patternTransform` outright rather than
- * composing with it.
+ * Exactly one tile, so the screen loops seamlessly. The tile is measured rather
+ * than fixed, so its size arrives as a custom property.
  */
 @keyframes softcom-screen-drift {
   from {
-    transform: rotate(-30.694deg) translateX(0);
+    transform: translate(0, 0);
   }
   to {
-    transform: rotate(-30.694deg) translateX(5px);
+    transform: translate(var(--screen-tile), var(--screen-tile));
   }
 }
 
 @layer components {
   /*
-   * Slower than the draw, and deliberately off its 2s beat — the conduit is
-   * being built, the texture is what is already flowing through it.
+   * Stepped a cell at a time, so the matrix stays on the pixel grid — sliding
+   * it continuously would reintroduce the blur `crispEdges` is there to
+   * prevent. Deliberately off the draw's 2s beat: the conduit is being built,
+   * the texture is what is already flowing through it.
    */
   .softcom-hero-screen {
-    animation: softcom-screen-drift 3s linear infinite;
+    animation: softcom-screen-drift 1.2s steps(4) infinite;
   }
 
   /*
