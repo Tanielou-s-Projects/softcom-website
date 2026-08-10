@@ -13,6 +13,7 @@
     "typegen": "sanity schema extract --path=sanity/extract.json && sanity typegen generate"
   },
   "dependencies": {
+    "@paper-design/shaders-react": "^0.0.79",
     "@phosphor-icons/react": "^2.1.10",
     "@sanity/icons": "^3.7.4",
     "@sanity/image-url": "^2.1.1",
@@ -40,6 +41,7 @@
     "eslint-config-next": "16.2.6",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
+    "puppeteer-core": "^25.5.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
