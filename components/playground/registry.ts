@@ -79,6 +79,12 @@ export const PLAYGROUND_CATEGORIES: PlaygroundCategory[] = [
         status: "ready",
       },
       {
+        id: "dither",
+        label: "Dither",
+        blurb: "Ordered-dither shaders, against the design's static export.",
+        status: "ready",
+      },
+      {
         id: "landing",
         label: "Landing patterns",
         blurb: "Sector card, capability chip, stat plate, insight card.",
