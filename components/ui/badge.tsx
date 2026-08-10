@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full px-3 py-[5px] font-body text-xs font-medium whitespace-nowrap",
+  "inline-flex shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-(--badge-radius) px-3 py-[5px] text-xs font-medium whitespace-nowrap",
   {
     variants: {
       variant: {
@@ -13,7 +13,7 @@ const badgeVariants = cva(
          * For badges sitting on a `bg-secondary` surface, where the default
          * would have no contrast against its container.
          */
-        contrast: "bg-neutral-950 text-muted-foreground",
+        contrast: "bg-background text-muted-foreground",
       },
     },
     defaultVariants: {
