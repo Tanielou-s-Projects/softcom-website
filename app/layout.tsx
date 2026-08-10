@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Geist_Mono, Inter, Montserrat, Space_Grotesk } from "next/font/google"
+import { Geist_Mono, Montserrat, Space_Grotesk } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -11,12 +11,13 @@ const spaceGroteskHeading = Space_Grotesk({
   variable: "--font-heading",
 })
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
-
-const montserratBody = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-body",
-})
+/*
+ * Montserrat carries body copy *and* UI — there is no separate UI face.
+ * The Figma file specifies Inter on button labels, but that is the shadcn
+ * library's own default showing through rather than a deliberate third family,
+ * so it is not reproduced here.
+ */
+const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" })
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -42,9 +43,8 @@ export default function RootLayout({
         "antialiased",
         fontMono.variable,
         "font-sans",
-        inter.variable,
         spaceGroteskHeading.variable,
-        montserratBody.variable
+        montserrat.variable
       )}
     >
       <body>
