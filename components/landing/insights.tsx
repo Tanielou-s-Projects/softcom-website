@@ -24,20 +24,20 @@ function Insights() {
           <Link
             key={insight.slug}
             href={`/insights/${insight.slug}`}
-            className="group flex flex-col items-start gap-4 rounded-[16px] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            className="group flex flex-col items-start gap-4 rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
           >
             {/*
              * Figma leaves the cover art as an empty plate; it becomes the
              * insight's `coverImage` once this is wired to Sanity.
              */}
-            <div className="aspect-[690/324] w-full rounded-[16px] bg-neutral-900 transition-opacity group-hover:opacity-80" />
+            <div className="aspect-[690/324] w-full rounded-2xl bg-muted transition-opacity group-hover:opacity-80" />
 
             <div className="flex w-full items-start justify-between gap-6 font-heading leading-[1.2]">
               <div className="flex shrink-0 flex-col gap-2 text-xs whitespace-nowrap">
-                <p className="text-neutral-200">{insight.category}</p>
-                <p className="text-neutral-500">{insight.date}</p>
+                <p className="text-foreground">{insight.category}</p>
+                <p className="text-muted-foreground">{insight.date}</p>
               </div>
-              <p className="text-lg text-neutral-200 lg:w-[501px] lg:text-2xl">
+              <p className="text-lg text-foreground lg:w-[501px] lg:text-2xl">
                 {insight.title}
               </p>
             </div>

@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils"
 /** A stat plate, framed by hairlines rather than a filled card. */
 function StatCell({ value, label }: Extract<TeamCell, { kind: "stat" }>) {
   return (
-    <div className="flex h-[471px] flex-col justify-end gap-3 overflow-clip border-x border-secondary p-6 whitespace-nowrap">
+    <div className="flex h-[471px] flex-col justify-end gap-3 overflow-clip border-x border-border p-6 whitespace-nowrap">
       <p className="font-heading text-5xl leading-[0.804] text-foreground lg:text-[4.27rem]">
         {value}
       </p>
@@ -30,7 +30,7 @@ function PortraitCell({
   role,
 }: Extract<TeamCell, { kind: "portrait" }>) {
   return (
-    <div className="relative flex h-[471px] flex-col justify-end overflow-clip rounded-[16px] bg-neutral-900">
+    <div className="relative flex h-[471px] flex-col justify-end overflow-clip rounded-2xl bg-neutral-900">
       <Image
         src={image}
         alt={name ? `${name}, ${role}` : ""}
@@ -39,7 +39,7 @@ function PortraitCell({
         className="object-cover object-bottom"
       />
       {name ? (
-        <div className="relative flex w-full flex-col gap-1 rounded-[8px] bg-brand-blue p-3">
+        <div className="dark relative flex w-full flex-col gap-1 rounded-md bg-brand-blue p-3">
           <p className="font-heading text-xl leading-none font-bold text-foreground">
             {name}
           </p>

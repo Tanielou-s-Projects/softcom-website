@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils"
  * `hover:bg-muted`), which is wrong inside a 48px pill — `cn` merges them away.
  */
 const pillItem =
-  "h-auto w-auto rounded-none p-0 font-body text-xs leading-none font-medium text-foreground transition-colors hover:bg-transparent focus:bg-transparent hover:text-brand-cyan data-[state=open]:bg-transparent data-[state=open]:hover:bg-transparent data-[state=open]:text-brand-cyan"
+  "h-auto w-auto rounded-none p-0 text-xs leading-none font-medium text-foreground transition-colors hover:bg-transparent focus:bg-transparent hover:text-brand-accent data-[state=open]:bg-transparent data-[state=open]:hover:bg-transparent data-[state=open]:text-brand-accent"
 
 /**
  * Overlays the hero. Figma places it at y=27, and its 1384px row inside a
@@ -128,7 +128,7 @@ function SiteHeader() {
                             <li key={sub.href}>
                               <NavigationMenuLink
                                 asChild
-                                className="rounded-xl p-2.5 font-body text-xs leading-none font-medium hover:text-brand-cyan"
+                                className="rounded-xl p-2.5 text-xs leading-none font-medium hover:text-brand-accent"
                               >
                                 <Link href={sub.href} onClick={close}>
                                   {sub.label}

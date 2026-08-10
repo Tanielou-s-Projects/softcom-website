@@ -33,11 +33,10 @@ export const cardHeadingText =
   "font-heading text-3xl leading-[1.1] tracking-tight sm:text-4xl lg:text-[3.25rem]"
 
 /** 20px lead paragraphs. */
-export const leadText =
-  "font-body text-base leading-[1.2] sm:text-lg lg:text-xl"
+export const leadText = "text-base leading-[1.2] sm:text-lg lg:text-xl"
 
 /** 18px body copy. */
-export const bodyText = "font-body text-base leading-[1.6] lg:text-lg"
+export const bodyText = "text-base leading-[1.6] lg:text-lg"
 
 /**
  * The design's pills sit on `--foreground`/`--background` rather than

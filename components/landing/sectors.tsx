@@ -48,12 +48,16 @@ function SectorCard({ sector, index }: { sector: Sector; index: number }) {
   return (
     <div
       className={cn(
-        "flex min-w-0 flex-1 flex-col justify-between gap-12 overflow-clip rounded-[24px] p-8",
+        "flex min-w-0 flex-1 flex-col justify-between gap-12 overflow-clip rounded-4xl p-8",
         "lg:h-[772px] lg:gap-0",
         /* The middle card is a step lighter and overlaps its neighbours. */
         index === 1 ? "bg-secondary" : "bg-popover",
-        /* Figma pulls each card 64px over the previous one. */
-        index < sectors.length - 1 && "lg:-mr-16"
+        /*
+         * Figma pulls each card 64px over the previous one. The overlapped
+         * strip is covered by the next card, so these need matching right
+         * padding (32px base + 64px overlap) or their last badge is clipped.
+         */
+        index < sectors.length - 1 && "lg:-mr-16 lg:pr-24"
       )}
     >
       <SectorIllustration illustration={sector.illustration} />

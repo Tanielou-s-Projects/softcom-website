@@ -22,7 +22,7 @@ function Capabilities() {
         <h2 className={cn(headingText, "max-w-[533px] text-foreground")}>
           From infrastructure → intelligence.
         </h2>
-        <p className={cn(leadText, "max-w-[576px] text-neutral-200")}>
+        <p className={cn(leadText, "max-w-[576px] text-muted-foreground")}>
           We design and deliver across the full stack of enterprise technology,
           from core operational platforms to data systems that turn complexity
           into clarity.
@@ -39,7 +39,7 @@ function Capabilities() {
         {capabilities.map((capability) => (
           <article
             key={capability.number}
-            className="relative flex h-[560px] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-[24px] p-4 sm:h-[720px] lg:h-[1024px] lg:p-6"
+            className="dark relative flex h-[560px] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 sm:h-[720px] lg:h-[1024px] lg:p-6"
           >
             <Image
               src={capability.image}
@@ -51,7 +51,7 @@ function Capabilities() {
 
             <div
               className={cn(
-                "relative flex flex-col items-start overflow-clip rounded-[24px] p-4 lg:p-6",
+                "relative flex flex-col items-start overflow-clip rounded-4xl p-4 lg:p-6",
                 capability.chipClassName
               )}
             >
@@ -60,7 +60,7 @@ function Capabilities() {
               </p>
             </div>
 
-            <div className="relative flex flex-col items-start gap-6 overflow-clip rounded-[24px] bg-background p-6 text-foreground lg:gap-8 lg:p-[47px]">
+            <div className="relative flex flex-col items-start gap-6 overflow-clip rounded-4xl bg-background p-6 text-foreground lg:gap-8 lg:p-[47px]">
               <h3 className={cn(cardHeadingText, "lg:w-[359px]")}>
                 {capability.title}
               </h3>

@@ -20,7 +20,7 @@ function Mission() {
   return (
     <Container className="flex flex-col gap-3 pt-6">
       {/* Panel one — mission statement on brand blue. */}
-      <div className="relative flex flex-col items-center gap-12 overflow-clip rounded-[24px] bg-brand-blue px-6 pt-20 pb-6 lg:h-[1024px] lg:gap-32 lg:pt-32">
+      <div className="dark relative flex flex-col items-center gap-12 overflow-clip rounded-4xl bg-brand-blue px-6 pt-20 pb-6 lg:h-[1024px] lg:gap-32 lg:pt-32">
         <h2
           className={cn(
             headingText,
@@ -29,6 +29,7 @@ function Mission() {
         >
           We exist to create lasting impact.
         </h2>
+        {/* Pinned, not semantic: this sits on brand blue in both themes. */}
         <p
           className={cn(leadText, "max-w-[684px] text-center text-neutral-200")}
         >
@@ -38,7 +39,7 @@ function Mission() {
           prosperous society.
         </p>
 
-        <div className="relative aspect-[701/506.668] w-full overflow-clip rounded-[16px] lg:absolute lg:top-[58.01%] lg:left-[25.43%] lg:h-[49.48%] lg:w-[50.36%]">
+        <div className="relative aspect-[701/506.668] w-full overflow-clip rounded-2xl lg:absolute lg:top-[58.01%] lg:left-[25.43%] lg:h-[49.48%] lg:w-[50.36%]">
           <Image
             src="/landing/story.png"
             alt="A Softcom team member reviewing printed reports"
@@ -50,7 +51,7 @@ function Mission() {
       </div>
 
       {/* Panel two — the same photograph, darkened, carrying the story CTA. */}
-      <div className="relative flex flex-col items-center justify-center gap-10 overflow-clip rounded-[24px] px-6 py-20 lg:h-[1024px] lg:gap-16 lg:p-6">
+      <div className="dark relative flex flex-col items-center justify-center gap-10 overflow-clip rounded-4xl px-6 py-20 lg:h-[1024px] lg:gap-16 lg:p-6">
         <Image
           src="/landing/story.png"
           alt=""

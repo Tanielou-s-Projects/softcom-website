@@ -123,4 +123,4 @@ function Hero() {
   )
 }
 
-export { Hero }
+export { Hero, HeroMark }

@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils"
  */
 function ClosingCta() {
   return (
-    <div className="relative flex h-[560px] flex-col items-center gap-10 overflow-clip rounded-[24px] pt-16 lg:sticky lg:top-0 lg:h-[831px] lg:gap-16 lg:pt-[71px]">
+    <div className="dark relative flex h-[560px] flex-col items-center gap-10 overflow-clip rounded-4xl pt-16 lg:sticky lg:top-0 lg:h-[831px] lg:gap-16 lg:pt-[71px]">
       <Image
         src="/landing/story.png"
         alt=""
