@@ -182,9 +182,14 @@ export const headerNav: HeaderNavItem[] = [
   {
     label: "About",
     href: "/about",
+    /*
+     * Leadership is a section of About rather than a route of its own, so it
+     * links to the anchor. Alumni and Careers stay full pages under the same
+     * category.
+     */
     submenu: [
       { label: "About", href: "/about" },
-      { label: "Leadership", href: "/leadership" },
+      { label: "Leadership", href: "/about#leadership" },
       { label: "Alumni", href: "/alumni" },
       { label: "Careers", href: "/careers" },
     ],
@@ -207,7 +212,7 @@ export const footerNav = [
     heading: "Company",
     links: [
       { label: "About", href: "/about" },
-      { label: "Leadership", href: "/leadership" },
+      { label: "Leadership", href: "/about#leadership" },
       { label: "Alumni", href: "/alumni" },
       { label: "Careers", href: "/careers" },
     ],

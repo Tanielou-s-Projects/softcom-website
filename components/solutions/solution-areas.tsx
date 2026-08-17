@@ -14,6 +14,7 @@ import {
   type Solution,
   type SolutionFeature,
 } from "@/components/solutions/content"
+import { StepPanel } from "@/components/site/step-panel"
 
 /**
  * A labelled point beneath a solution's body copy.
@@ -126,34 +127,17 @@ function SolutionBlock({
 /**
  * The delivery phases, on a brand-blue plate.
  *
- * Scoped `dark` because the plate is brand blue in either theme: the roles
- * inside it have to keep resolving to their dark values or the labels turn
- * near-black on blue in light mode.
+ * The plate itself now lives in `StepPanel`, shared with the About principles
+ * and the Careers hiring process.
  */
 function DeliveryPhases() {
   return (
-    <section className="dark flex flex-col gap-8 overflow-clip rounded-3xl bg-brand-blue p-8 lg:gap-12 lg:p-12">
-      <header className="flex flex-col items-start justify-center gap-3">
-        <Badge variant="inverse">Phases</Badge>
-        <h2 className={cn(cardHeadingText, "text-foreground lg:w-[208px]")}>
-          How We Deliver
-        </h2>
-      </header>
-
-      <ol className="grid gap-8 sm:grid-cols-2 sm:gap-x-11">
-        {deliveryPhases.map((phase) => (
-          <li key={phase.step} className="flex items-start gap-6">
-            <span className="font-heading text-5xl leading-none font-medium text-foreground">
-              {phase.step}
-            </span>
-            <div className="flex min-w-0 flex-1 flex-col justify-center gap-2.5 text-lg leading-none text-foreground">
-              <h3 className="font-bold">{phase.title}</h3>
-              <p>{phase.description}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </section>
+    <StepPanel
+      eyebrow="Phases"
+      title="How We Deliver"
+      titleClassName="lg:w-[208px]"
+      steps={deliveryPhases}
+    />
   )
 }
 

@@ -69,7 +69,7 @@ function Team() {
             shipped technology at national scale.
           </p>
           <Button asChild size="lg" className={primaryPill}>
-            <Link href="/leadership">The Team</Link>
+            <Link href="/about#leadership">The Team</Link>
           </Button>
         </div>
       </header>
