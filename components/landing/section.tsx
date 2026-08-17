@@ -32,6 +32,10 @@ export const headingText =
 export const cardHeadingText =
   "font-heading text-3xl leading-[1.1] tracking-tight sm:text-4xl lg:text-[3.25rem]"
 
+/** 32px panel headings — the Contact cards, which sit below the card scale. */
+export const panelHeadingText =
+  "font-heading text-2xl leading-[1.026] lg:text-[2rem]"
+
 /** 20px lead paragraphs. */
 export const leadText = "text-base leading-[1.2] sm:text-lg lg:text-xl"
 

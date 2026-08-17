@@ -13,6 +13,7 @@
  *     --click <selector>  click before capturing
  *     --theme <l|d>       force the light or dark theme via localStorage
  *     --motion            allow animations (default is reduced motion)
+ *     --scroll            scroll to the bottom first, so lazy images load
  *
  * Replaces the earlier shell version, which fired on the `load` event. That was
  * too early for anything client-rendered: React had not hydrated, so WebGL
@@ -99,6 +100,23 @@ try {
   // animation or an HMR socket may never look idle, and the explicit settle
   // wait below is the thing we actually rely on.
   await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60_000 })
+
+  /*
+   * A `fullPage` capture does not trigger lazy loading — the viewport never
+   * moves, so anything below the fold stays a blank box. Walk down the page
+   * first, then return to the top.
+   */
+  if (has("scroll")) {
+    await page.evaluate(async () => {
+      const step = window.innerHeight
+      for (let y = 0; y < document.body.scrollHeight; y += step) {
+        window.scrollTo(0, y)
+        await new Promise((r) => setTimeout(r, 120))
+      }
+      window.scrollTo(0, 0)
+    })
+    await new Promise((r) => setTimeout(r, 600))
+  }
 
   const hover = flag("hover", null)
   if (hover) await page.hover(hover)
