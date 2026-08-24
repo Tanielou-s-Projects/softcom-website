@@ -17,7 +17,14 @@ function Separator({
       decorative={decorative}
       orientation={orientation}
       className={cn(
-        "shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch",
+        /*
+         * `data-[orientation=…]`, not `data-horizontal` / `data-vertical`:
+         * shadcn ships these written for Base UI, but the primitive here is
+         * Radix, which emits `data-orientation="horizontal" | "vertical"`. With
+         * neither spelling matching, the separator had no height *and* no width
+         * — it rendered as nothing at all.
+         */
+        "shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px data-[orientation=vertical]:self-stretch",
         className
       )}
       {...props}
