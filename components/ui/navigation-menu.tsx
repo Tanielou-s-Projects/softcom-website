@@ -110,15 +110,13 @@ function NavigationMenuViewport({
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Viewport>) {
   return (
-    <div
-      className={cn(
-        "absolute top-full left-0 isolate z-50 flex justify-center"
-      )}
-    >
+    <div className={cn("absolute top-full left-0 isolate z-50 w-full")}>
       <NavigationMenuPrimitive.Viewport
         data-slot="navigation-menu-viewport"
         className={cn(
-          "origin-top-center relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-2xl bg-popover text-popover-foreground shadow-2xl ring-1 ring-foreground/5 duration-100 data-[state=closed]:animate-out data-[state=closed]:zoom-out-90 data-[state=open]:animate-in data-[state=open]:zoom-in-90 md:w-(--radix-navigation-menu-viewport-width)",
+          // Full width of the menu root (the capsule), black, dark-scoped so its
+          // contents resolve to light roles in either page theme.
+          "dark origin-top relative mt-2 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-3xl bg-black text-foreground shadow-2xl ring-1 ring-white/10 duration-100 data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:zoom-in-95",
           className
         )}
         {...props}

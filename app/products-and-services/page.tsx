@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 import { ClosingCta } from "@/components/landing/closing-cta"
-import { Container } from "@/components/landing/section"
+import { Bleed } from "@/components/landing/section"
 import { ProductGrid } from "@/components/products/product-grid"
 import { ProductsHero } from "@/components/products/products-hero"
 import { WhatWeDeliver } from "@/components/products/what-we-deliver"
@@ -27,10 +27,10 @@ export default function Page() {
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
        * against it — the footer then scrolls up over the pinned panel.
        */}
-      <Container className="flex flex-col gap-2.5 py-6">
-        <ClosingCta />
+      <Bleed className="flex flex-col gap-2.5 py-6">
+        <ClosingCta variant="build" />
         <SiteFooter />
-      </Container>
+      </Bleed>
     </div>
   )
 }

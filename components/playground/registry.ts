@@ -1,4 +1,12 @@
-import { Palette, SquaresFour, Layout, type Icon } from "@phosphor-icons/react"
+import {
+  Palette,
+  SquaresFour,
+  Layout,
+  Images,
+  type Icon,
+} from "@phosphor-icons/react"
+
+import { MOBBIN_REFERENCE_GROUPS } from "@/components/playground/references/mobbin-references"
 
 export type SectionStatus = "ready" | "pending"
 
@@ -140,6 +148,19 @@ export const PLAYGROUND_CATEGORIES: PlaygroundCategory[] = [
         status: "ready",
       },
     ],
+  },
+  {
+    id: "references",
+    label: "References",
+    icon: Images,
+    // Derived from the Mobbin reference data so the nav and the boards can't
+    // drift: one section per About/Team/Company section type.
+    sections: MOBBIN_REFERENCE_GROUPS.map((group) => ({
+      id: group.id,
+      label: group.label,
+      blurb: group.blurb,
+      status: "ready" as const,
+    })),
   },
 ]
 

@@ -39,7 +39,7 @@ function ParagraphRail({ count }: { count: number }) {
 /** A single insight, in full. */
 function InsightArticle({ article }: { article: Article }) {
   return (
-    <Container className="flex flex-col gap-16 pt-32">
+    <Container className="flex flex-col gap-16 pt-8">
       <header className="flex flex-col gap-16 lg:flex-row lg:items-start">
         <div className="flex min-w-0 flex-1 flex-col gap-16">
           <span

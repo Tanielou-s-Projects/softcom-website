@@ -4,7 +4,7 @@ import { notFound } from "next/navigation"
 import { articles, getArticle } from "@/components/insights/content"
 import { InsightArticle } from "@/components/insights/insight-article"
 import { ClosingCta } from "@/components/landing/closing-cta"
-import { Container } from "@/components/landing/section"
+import { Bleed } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
 
@@ -39,10 +39,10 @@ export default async function Page({ params }: Props) {
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
        * against it — the footer then scrolls up over the pinned panel.
        */}
-      <Container className="flex flex-col gap-2.5 py-6">
-        <ClosingCta />
+      <Bleed className="flex flex-col gap-2.5 py-6">
+        <ClosingCta variant="build" />
         <SiteFooter />
-      </Container>
+      </Bleed>
     </div>
   )
 }

@@ -11,7 +11,7 @@ import { Container, displayText } from "@/components/landing/section"
  */
 function InsightsHero() {
   return (
-    <Container className="flex flex-col items-center gap-16 pt-32">
+    <Container className="flex flex-col items-center gap-16 pt-8">
       <Badge variant="brand">News &amp; Insights</Badge>
 
       {/*

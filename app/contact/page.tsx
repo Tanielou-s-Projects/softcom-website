@@ -30,7 +30,7 @@ export default function Page() {
     <div className="dark relative flex min-h-svh w-full flex-col bg-brand-blue text-foreground">
       <SiteHeader />
 
-      <Container className="flex flex-1 flex-col gap-16 pt-32 pb-6 lg:flex-row lg:items-start lg:gap-16">
+      <Container className="flex flex-1 flex-col gap-16 pt-8 pb-6 lg:flex-row lg:items-start lg:gap-16">
         <div className="flex min-w-0 flex-1 flex-col gap-16 lg:sticky lg:top-6">
           {/*
            * 68px, a shade above the 64px display size the rest of the site uses

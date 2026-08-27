@@ -118,26 +118,31 @@ export const capabilities: Capability[] = [
   },
 ]
 
-/**
- * The team block interleaves stat plates and portraits in a four-column grid.
- * Figma order: 20M+ · portrait · portrait · 100+ · 30+ · portrait.
- */
-export type TeamCell =
-  | { kind: "stat"; value: string; label: string }
-  | { kind: "portrait"; image: string; name?: string; role?: string }
+/** Impact numbers — shared by the homepage Stats block and the team section. */
+export type Stat = { value: string; label: string }
 
-export const teamCells: TeamCell[] = [
-  { kind: "stat", value: "20M+", label: "People Reached" },
+export const stats: Stat[] = [
+  { value: "20M+", label: "People reached" },
+  { value: "100+", label: "Projects delivered" },
+  { value: "30+", label: "Enterprise clients" },
+  { value: "18", label: "Years of delivery" },
+]
+
+/** Team portraits for the About team section. Only confirmed names carry a plate. */
+export type Portrait = { image: string; name?: string; role?: string }
+
+export const portraits: Portrait[] = [
+  { image: "/landing/team-01.png", name: "Abayomi Adedeji", role: "Founder" },
   {
-    kind: "portrait",
-    image: "/landing/team-01.png",
-    name: "Abayomi Adedeji",
-    role: "Founder",
+    image: "/landing/team-02.png",
+    name: "Omoseindemi Olobayo",
+    role: "Chief Executive Officer",
   },
-  { kind: "portrait", image: "/landing/team-02.png" },
-  { kind: "stat", value: "100+", label: "Projects Delivered" },
-  { kind: "stat", value: "30+", label: "Enterprise Clients" },
-  { kind: "portrait", image: "/landing/team-03.png" },
+  {
+    image: "/landing/team-03.png",
+    name: "Adetoyosi Elegbede",
+    role: "Chief Operating Officer",
+  },
 ]
 
 export type Insight = {
@@ -184,7 +189,7 @@ export const headerNav: HeaderNavItem[] = [
     href: "/about",
     submenu: [
       { label: "About", href: "/about" },
-      { label: "Leadership", href: "/leadership" },
+      { label: "Leadership", href: "/about#team" },
       { label: "Alumni", href: "/alumni" },
       { label: "Careers", href: "/careers" },
     ],
@@ -207,7 +212,7 @@ export const footerNav = [
     heading: "Company",
     links: [
       { label: "About", href: "/about" },
-      { label: "Leadership", href: "/leadership" },
+      { label: "Leadership", href: "/about#team" },
       { label: "Alumni", href: "/alumni" },
       { label: "Careers", href: "/careers" },
     ],

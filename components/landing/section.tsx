@@ -3,15 +3,28 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * Every section in Figma is full-bleed with a flat 24px gutter — the 1392px
- * inner panels are just what "fill the 1440px frame" resolves to, not a cap.
+ * The page's content column — v7-style: a centred `max-w` column with a flat
+ * 24px gutter, so content holds a comfortable measure and gains generous side
+ * margins on wide screens rather than stretching edge to edge.
  *
- * So this deliberately has no `max-w`: adding one would both over-inset the
- * content and desync it from the hero and the capability rail, which are
- * full-bleed by construction. Line lengths are held by the per-block `max-w-*`
- * values the design specifies instead.
+ * The signature full-bleed moments (the hero, the Mission plates, the capability
+ * rail, the closing CTA + footer) opt out with `Bleed` instead. Per-block
+ * `max-w-*` values still hold line lengths inside the column.
  */
 function Container({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn("mx-auto w-full max-w-[1336px] px-6", className)}
+      {...props}
+    />
+  )
+}
+
+/**
+ * Full-bleed sibling of `Container`: the same 24px gutter, no `max-w` cap. For
+ * the statement panels that are meant to run the full width of the viewport.
+ */
+function Bleed({ className, ...props }: React.ComponentProps<"div">) {
   return <div className={cn("w-full px-6", className)} {...props} />
 }
 
@@ -54,4 +67,4 @@ export const primaryPill =
 /** The quieter sibling: transparent until hovered. */
 export const ghostPill = "text-foreground"
 
-export { Container }
+export { Bleed, Container }

@@ -14,7 +14,7 @@ function ProductsHero() {
   return (
     <section
       className={cn(
-        "flex w-full flex-col justify-center gap-6 px-6 pt-36 pb-16",
+        "flex w-full flex-col justify-center gap-6 px-6 pt-10 pb-16",
         "lg:h-[1024px] lg:px-32 lg:py-0"
       )}
     >

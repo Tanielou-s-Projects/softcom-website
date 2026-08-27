@@ -4,9 +4,9 @@ import { Hero } from "@/components/landing/hero"
 import { Insights } from "@/components/landing/insights"
 import { Mission } from "@/components/landing/mission"
 import { Sectors } from "@/components/landing/sectors"
+import { Stats } from "@/components/landing/stats"
 import { SubHero } from "@/components/landing/sub-hero"
-import { Team } from "@/components/landing/team"
-import { Container } from "@/components/landing/section"
+import { Bleed } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
 
@@ -20,17 +20,17 @@ export default function Page() {
       <Mission />
       <Sectors />
       <Capabilities />
-      <Team />
+      <Stats heading="Two decades of measurable impact." />
       <Insights />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
        * against it — the footer then scrolls up over the pinned panel.
        */}
-      <Container className="flex flex-col gap-2.5 py-6">
+      <Bleed className="flex flex-col gap-2.5 py-6">
         <ClosingCta />
         <SiteFooter />
-      </Container>
+      </Bleed>
     </div>
   )
 }

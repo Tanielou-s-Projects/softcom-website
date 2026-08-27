@@ -16,6 +16,7 @@ import { RadiusSection } from "@/components/playground/sections/radius"
 import { ShadowsSection } from "@/components/playground/sections/shadows"
 import { SpacingSection } from "@/components/playground/sections/spacing"
 import { TypographySection } from "@/components/playground/sections/typography"
+import { REFERENCE_SECTION_CONTENT } from "@/components/playground/references/reference-board"
 
 /**
  * Maps a registry section id to its gallery content. An id absent from this map
@@ -39,4 +40,5 @@ export const SECTION_CONTENT: Record<string, ComponentType> = {
   overlays: OverlaysSection,
   feedback: FeedbackSection,
   data: DataSection,
+  ...REFERENCE_SECTION_CONTENT,
 }

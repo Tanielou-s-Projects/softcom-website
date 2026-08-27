@@ -89,8 +89,8 @@ function Hero() {
   return (
     <section
       className={cn(
-        "relative flex w-full flex-col gap-10 overflow-clip px-6 pt-36 pb-16",
-        "lg:block lg:h-[1024px] lg:p-0"
+        "relative -mt-6 flex w-full flex-col gap-10 overflow-clip px-6 pt-10 pb-16",
+        "lg:-mt-[200px] lg:block lg:h-[1024px] lg:p-0"
       )}
     >
       <h1

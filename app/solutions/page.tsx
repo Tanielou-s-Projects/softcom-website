@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-import { Container } from "@/components/landing/section"
+import { Bleed } from "@/components/landing/section"
 import { SolutionAreas } from "@/components/solutions/solution-areas"
 import { SolutionsCta } from "@/components/solutions/solutions-cta"
 import { SolutionsHero } from "@/components/solutions/solutions-hero"
@@ -25,10 +25,10 @@ export default function Page() {
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
        * against it — the footer then scrolls up over the pinned panel.
        */}
-      <Container className="flex flex-col gap-2.5 py-6">
+      <Bleed className="flex flex-col gap-2.5 py-6">
         <SolutionsCta />
         <SiteFooter />
-      </Container>
+      </Bleed>
     </div>
   )
 }
