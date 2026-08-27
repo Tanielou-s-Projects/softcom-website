@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import { Geist_Mono, Montserrat, Space_Grotesk } from "next/font/google"
+import { MotionConfig } from "motion/react"
 
 import "./globals.css"
+import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SanityLive } from "@/sanity/lib/live"
 import { cn } from "@/lib/utils"
@@ -50,7 +52,15 @@ export default function RootLayout({
       <body>
         {/* The Softcom design is dark-only; `d` still toggles for comparison. */}
         <ThemeProvider defaultTheme="dark" enableSystem={false}>
-          {children}
+          {/*
+           * `reducedMotion="user"` handles prefers-reduced-motion for every
+           * motion component in one place — transforms are stripped, opacity
+           * still animates — without SSR/client branches that break hydration.
+           */}
+          <MotionConfig reducedMotion="user">
+            {children}
+            <PixelPageTransition />
+          </MotionConfig>
         </ThemeProvider>
         <SanityLive />
       </body>

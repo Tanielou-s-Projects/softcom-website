@@ -15,6 +15,7 @@ import {
   type CaseStudy,
   type Sector,
 } from "@/components/case-studies/content"
+import { Reveal } from "@/components/motion/reveal"
 
 type Filter = Sector | "All"
 
@@ -139,12 +140,13 @@ function CaseStudyList() {
 
       <div className="flex min-w-0 flex-1 flex-col gap-6">
         {filtered.map((study, index) => (
-          <CaseStudyPanel
-            key={study.id}
-            study={study}
-            position={index + 1}
-            total={filtered.length}
-          />
+          <Reveal key={study.id} amount={0.1}>
+            <CaseStudyPanel
+              study={study}
+              position={index + 1}
+              total={filtered.length}
+            />
+          </Reveal>
         ))}
       </div>
     </Container>

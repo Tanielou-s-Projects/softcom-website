@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { Container, displayText } from "@/components/landing/section"
+import { Reveal } from "@/components/motion/reveal"
 
 /**
  * The pair of discs the statement sits under.
@@ -58,19 +59,23 @@ function SolutionsHero() {
       <div
         className={cn(
           "flex flex-col items-center justify-center gap-16 overflow-clip rounded-2xl bg-card px-6 py-24",
-          "lg:h-[1024px] lg:gap-32 lg:py-32"
+          "w-full lg:h-[1024px] lg:gap-32 lg:py-32"
         )}
       >
-        <SolutionsMark />
+        <Reveal>
+          <SolutionsMark />
+        </Reveal>
 
-        <h1
-          className={cn(
-            displayText,
-            "max-w-[810px] text-center text-card-foreground"
-          )}
-        >
-          The infrastructure behind organisations that move Africa forward.
-        </h1>
+        <Reveal asChild delay={0.1}>
+          <h1
+            className={cn(
+              displayText,
+              "max-w-[810px] text-center text-card-foreground"
+            )}
+          >
+            The infrastructure behind organisations that move Africa forward.
+          </h1>
+        </Reveal>
       </div>
     </Container>
   )

@@ -7,6 +7,7 @@ import {
   Container,
   leadText,
 } from "@/components/landing/section"
+import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { products, type Product } from "@/components/products/content"
 import { ProductOverlay } from "@/components/products/product-overlay"
 import { SectionMark } from "@/components/products/section-mark"
@@ -64,13 +65,19 @@ function ProductCard({ product }: { product: Product }) {
 function ProductGrid() {
   return (
     <section className="flex flex-col gap-16 lg:gap-[68px]">
-      <SectionMark accent="cyan">Proprietary Products</SectionMark>
+      <Reveal>
+        <SectionMark accent="cyan">Proprietary Products</SectionMark>
+      </Reveal>
 
-      <Container className="grid gap-6 lg:grid-cols-2">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </Container>
+      <RevealStagger amount={0.1}>
+        <Container className="grid gap-6 lg:grid-cols-2">
+          {products.map((product) => (
+            <RevealItem key={product.id}>
+              <ProductCard product={product} />
+            </RevealItem>
+          ))}
+        </Container>
+      </RevealStagger>
     </section>
   )
 }

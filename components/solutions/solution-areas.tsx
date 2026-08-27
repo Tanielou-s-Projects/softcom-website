@@ -8,6 +8,7 @@ import {
   Container,
   leadText,
 } from "@/components/landing/section"
+import { Reveal } from "@/components/motion/reveal"
 import {
   deliveryPhases,
   solutions,
@@ -168,23 +169,24 @@ function SolutionAreas() {
   return (
     <section className="flex flex-col gap-16">
       <Container className="flex flex-col items-start justify-center gap-6 pt-6">
-        <Badge variant="brand">Our Solutions</Badge>
-        <p className={cn(leadText, "max-w-[671px] text-foreground")}>
-          Three integrated solution areas that together cover the full arc of
-          delivery, from the infrastructure outcomes run on, to the intelligence
-          that guides decisions, to programmes that own the entire journey.
-        </p>
+        <Reveal className="flex flex-col items-start gap-6">
+          <Badge variant="brand">Our Solutions</Badge>
+          <p className={cn(leadText, "max-w-[671px] text-foreground")}>
+            Three integrated solution areas that together cover the full arc of
+            delivery, from the infrastructure outcomes run on, to the
+            intelligence that guides decisions, to programmes that own the
+            entire journey.
+          </p>
+        </Reveal>
       </Container>
 
       <div className="flex flex-col gap-16 lg:gap-32">
         {solutions.map((solution, index) => (
-          <SolutionBlock
-            key={solution.id}
-            solution={solution}
-            reversed={index === 1}
-          >
-            {solution.id === "programs" && <DeliveryPhases />}
-          </SolutionBlock>
+          <Reveal key={solution.id} amount={0.1}>
+            <SolutionBlock solution={solution} reversed={index === 1}>
+              {solution.id === "programs" && <DeliveryPhases />}
+            </SolutionBlock>
+          </Reveal>
         ))}
       </div>
     </section>

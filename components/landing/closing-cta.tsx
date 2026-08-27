@@ -6,6 +6,7 @@ import {
   headingText,
   primaryPill,
 } from "@/components/landing/section"
+import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
 import { cn } from "@/lib/utils"
 
@@ -60,21 +61,27 @@ function ClosingCta({ variant = "default" }: { variant?: keyof typeof CTAS }) {
 
   return (
     <CtaPanel accent={accent}>
-      <div className="relative flex flex-col items-center gap-6 px-6">
-        <h2
-          className={cn(headingText, "max-w-[598px] text-center text-foreground")}
-        >
-          {heading}
-        </h2>
-        <div className="flex items-start gap-2">
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href={primary.href}>{primary.label}</Link>
-          </Button>
-          <Button asChild size="lg" variant="ghost" className={ghostPill}>
-            <Link href={secondary.href}>{secondary.label}</Link>
-          </Button>
+      {/* Reveal stays on the inner content — the panel itself is sticky and must never gain a transform. */}
+      <Reveal asChild>
+        <div className="relative flex flex-col items-center gap-6 px-6">
+          <h2
+            className={cn(
+              headingText,
+              "max-w-[598px] text-center text-foreground"
+            )}
+          >
+            {heading}
+          </h2>
+          <div className="flex items-start gap-2">
+            <Button asChild size="lg" className={primaryPill}>
+              <Link href={primary.href}>{primary.label}</Link>
+            </Button>
+            <Button asChild size="lg" variant="ghost" className={ghostPill}>
+              <Link href={secondary.href}>{secondary.label}</Link>
+            </Button>
+          </div>
         </div>
-      </div>
+      </Reveal>
     </CtaPanel>
   )
 }

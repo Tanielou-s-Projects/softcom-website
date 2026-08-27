@@ -14,6 +14,7 @@
  *     --theme <l|d>       force the light or dark theme via localStorage
  *     --motion            allow animations (default is reduced motion)
  *     --scroll            scroll to the bottom first, so lazy images load
+ *     --scrollTo <px>     park at an absolute scroll offset before capturing
  *
  * Replaces the earlier shell version, which fired on the `load` event. That was
  * too early for anything client-rendered: React had not hydrated, so WebGL
@@ -116,6 +117,13 @@ try {
       window.scrollTo(0, 0)
     })
     await new Promise((r) => setTimeout(r, 600))
+  }
+
+  // Park at an absolute scroll offset (px) — for scroll-scrubbed sections.
+  const scrollTo = flag("scrollTo", null)
+  if (scrollTo != null) {
+    await page.evaluate((y) => window.scrollTo(0, Number(y)), scrollTo)
+    await new Promise((r) => setTimeout(r, 400))
   }
 
   const hover = flag("hover", null)

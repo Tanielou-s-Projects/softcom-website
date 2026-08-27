@@ -6,6 +6,7 @@ import { ProductGrid } from "@/components/products/product-grid"
 import { ProductsHero } from "@/components/products/products-hero"
 import { WhatWeDeliver } from "@/components/products/what-we-deliver"
 import { SiteFooter } from "@/components/site/site-footer"
+import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { SiteHeader } from "@/components/site/site-header"
 
 export const metadata: Metadata = {
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-32 bg-background">
+    <div className="relative flex min-h-svh w-full flex-col gap-32">
+      <BlueprintGrid />
       <SiteHeader />
 
       <ProductsHero />

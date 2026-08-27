@@ -2,6 +2,7 @@ import Link from "next/link"
 
 import { insights } from "@/components/landing/content"
 import { Container, headingText } from "@/components/landing/section"
+import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 
 /**
@@ -18,16 +19,20 @@ function News() {
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-10 lg:gap-12">
-        <div className="flex flex-col gap-3">
+        <Reveal className="flex flex-col gap-3">
           <h2 className={cn(headingText, "text-foreground")}>
             Want to know more?
           </h2>
           <p className="text-lg text-muted-foreground">Read the latest news.</p>
-        </div>
+        </Reveal>
 
-        <ul className="flex flex-col border-t border-border">
+        <RevealStagger as="ul" className="flex flex-col border-t border-border">
           {insights.map((insight) => (
-            <li key={insight.slug} className="border-b border-border">
+            <RevealItem
+              as="li"
+              key={insight.slug}
+              className="border-b border-border"
+            >
               <Link
                 href={`/insights/${insight.slug}`}
                 className="group grid items-center gap-4 py-6 sm:grid-cols-[1fr_8rem_auto] sm:gap-10"
@@ -48,9 +53,9 @@ function News() {
                   </span>
                 </div>
               </Link>
-            </li>
+            </RevealItem>
           ))}
-        </ul>
+        </RevealStagger>
       </div>
     </Container>
   )

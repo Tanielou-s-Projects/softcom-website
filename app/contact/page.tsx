@@ -5,6 +5,7 @@ import { ContactDetails } from "@/components/contact/contact-details"
 import { ContactForm } from "@/components/contact/contact-form"
 import { contactIntro } from "@/components/contact/content"
 import { Container, displayText, leadText } from "@/components/landing/section"
+import { Reveal } from "@/components/motion/reveal"
 import { SiteHeader } from "@/components/site/site-header"
 
 export const metadata: Metadata = {
@@ -36,23 +37,32 @@ export default function Page() {
            * 68px, a shade above the 64px display size the rest of the site uses
            * — the design sets this one line larger, on its own tight leading.
            */}
-          <h1
-            className={cn(
-              displayText,
-              "leading-[0.804] text-foreground lg:text-[4.25rem]"
-            )}
-          >
-            Let&apos;s talk.
-          </h1>
+          {/* The column is sticky, so the reveals sit on its children, never the column itself. */}
+          <Reveal asChild>
+            <h1
+              className={cn(
+                displayText,
+                "leading-[0.804] text-foreground lg:text-[4.25rem]"
+              )}
+            >
+              Let&apos;s talk.
+            </h1>
+          </Reveal>
 
-          <p className={cn(leadText, "leading-[1.6] text-foreground")}>
-            {contactIntro}
-          </p>
+          <Reveal asChild delay={0.1}>
+            <p className={cn(leadText, "leading-[1.6] text-foreground")}>
+              {contactIntro}
+            </p>
+          </Reveal>
         </div>
 
         <div className="flex flex-col gap-6 lg:w-[899px] lg:shrink-0">
-          <ContactForm />
-          <ContactDetails />
+          <Reveal delay={0.1}>
+            <ContactForm />
+          </Reveal>
+          <Reveal delay={0.15}>
+            <ContactDetails />
+          </Reveal>
         </div>
       </Container>
     </div>
