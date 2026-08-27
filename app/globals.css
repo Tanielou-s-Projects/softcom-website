@@ -4,129 +4,308 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * The mirror of `dark`. Needed because several regions are always dark by
+ * design — brand-blue panels, darkened photo bands, the footer plate — and are
+ * scoped with a local `dark` class so semantic roles inside them resolve to
+ * their dark values in either theme. Inside such a region `dark:` is always
+ * true, so anything that must still track the *document* theme (the footer's
+ * theme switcher) keys off `light:` instead, which only ever matches the class
+ * next-themes puts on <html>.
+ */
+@custom-variant light (&:is(.light *));
+
+/* ─── Tier 1 · Primitives ─────────────────────────────────────────────────
+   Raw values. Nothing here refers to a role.
+
+   Tailwind v4 already ships the neutral / red / amber / emerald ramps as
+   `--color-*`, so they are NOT redeclared — Tier 2 just references them. That
+   works because Tailwind treats a `var(--color-*)` mention inside CSS as usage
+   and emits exactly the stops we touch, so there is no bloat and no risk of
+   drifting from Tailwind's own palette.
+
+   Caveat for the playground: a step referenced only from JS (an inline
+   `style={{ background: "var(--color-neutral-300)" }}`) is invisible to that
+   scan and would resolve to nothing. Any step the tweak panel offers must also
+   appear as a literal utility class in source — which is why the Colors section
+   renders each ramp with real `bg-*` classes.
+
+   Only the brand ramps are ours to define. They live in `@theme` (not
+   `@theme inline`) because the values are literal and theme-independent, and
+   because that is what generates `bg-brand-blue-700` and friends.
+
+   Each ramp is derived from its Figma anchor in OKLCH: hue held constant,
+   lightness following Tailwind's own perceptual spacing, chroma falling off
+   toward both ends. The anchor keeps its exact hex and sits at the step whose
+   lightness it actually matches — 700 for the blue, 200 for the cyan, since
+   pure cyan really is that light. `--color-brand-blue` / `--color-brand-cyan`
+   without a suffix stay the canonical brand values. */
+@theme {
+  --color-brand-blue: #004bff;
+  --color-brand-blue-50: oklch(0.971 0.027 263.3);
+  --color-brand-blue-100: oklch(0.936 0.038 263.3);
+  --color-brand-blue-200: oklch(0.885 0.052 263.3);
+  --color-brand-blue-300: oklch(0.808 0.073 263.3);
+  --color-brand-blue-400: oklch(0.704 0.101 263.3);
+  --color-brand-blue-500: oklch(0.637 0.14 263.3);
+  --color-brand-blue-600: oklch(0.577 0.194 263.3);
+  --color-brand-blue-700: #004bff; /* brand anchor */
+  --color-brand-blue-800: oklch(0.444 0.238 263.3);
+  --color-brand-blue-900: oklch(0.396 0.209 263.3);
+  --color-brand-blue-950: oklch(0.258 0.184 263.3);
+
+  --color-brand-cyan: #00ffff;
+  --color-brand-cyan-50: oklch(0.971 0.08 194.8);
+  --color-brand-cyan-100: oklch(0.936 0.111 194.8);
+  --color-brand-cyan-200: #00ffff; /* brand anchor */
+  --color-brand-cyan-300: oklch(0.808 0.136 194.8);
+  --color-brand-cyan-400: oklch(0.704 0.12 194.8);
+  --color-brand-cyan-500: oklch(0.637 0.105 194.8);
+  --color-brand-cyan-600: oklch(0.577 0.093 194.8);
+  --color-brand-cyan-700: oklch(0.505 0.082 194.8);
+  --color-brand-cyan-800: oklch(0.444 0.072 194.8);
+  --color-brand-cyan-900: oklch(0.396 0.063 194.8);
+  --color-brand-cyan-950: oklch(0.258 0.056 194.8);
+}
+
+/* ─── Tier 2 · Semantic roles ─────────────────────────────────────────────
+   Every role points at a Tier 1 primitive. No raw colour values below here.
+
+   The dark mapping is the one the Figma file specifies: its `#0a0a0a`,
+   `#fafafa`, `#171717`, `#262626` and `#a3a3a3` are exactly neutral 950 / 50 /
+   900 / 800 / 400. The light mapping has no design behind it yet and is a
+   best-guess mirror using the same ramp. */
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+  --background: var(--color-white);
+  --foreground: var(--color-neutral-950);
+  /*
+   * A step off the page rather than equal to it. The design's cards carry no
+   * border, so they need their own value to read as surfaces at all — this
+   * mirrors dark, where background/card/secondary climb 950 → 900 → 800.
+   */
+  --card: var(--color-neutral-50);
+  --card-foreground: var(--color-neutral-950);
+  --popover: var(--color-neutral-50);
+  --popover-foreground: var(--color-neutral-950);
+  --primary: var(--color-neutral-900);
+  --primary-foreground: var(--color-neutral-50);
+  --secondary: var(--color-neutral-100);
+  --secondary-foreground: var(--color-neutral-900);
+  --muted: var(--color-neutral-100);
+  --muted-foreground: var(--color-neutral-500);
+  --accent: var(--color-neutral-100);
+  --accent-foreground: var(--color-neutral-900);
+  --destructive: var(--color-red-600);
+  --success: var(--color-emerald-600);
+  --warning: var(--color-amber-600);
+  --border: var(--color-neutral-200);
+  --input: var(--color-neutral-200);
+  --ring: var(--color-brand-blue);
+  /*
+   * The brand accent for interactive text — link hover, an open menu trigger,
+   * inline emphasis. It has to be a role rather than a fixed colour because the
+   * cyan that carries the brand on near-black manages only 1.25:1 on white,
+   * where the blue anchor gets 6.09:1. Regions scoped `dark` pick the cyan up
+   * automatically, so the footer needs no special casing.
+   */
+  --brand-accent: var(--color-brand-blue);
+  --chart-1: var(--color-brand-blue-400);
+  --chart-2: var(--color-brand-blue-600);
+  --chart-3: var(--color-brand-blue-700);
+  --chart-4: var(--color-brand-cyan-500);
+  --chart-5: var(--color-brand-cyan-700);
+  --sidebar: var(--color-neutral-50);
+  --sidebar-foreground: var(--color-neutral-950);
+  --sidebar-primary: var(--color-neutral-900);
+  --sidebar-primary-foreground: var(--color-neutral-50);
+  --sidebar-accent: var(--color-neutral-100);
+  --sidebar-accent-foreground: var(--color-neutral-900);
+  --sidebar-border: var(--color-neutral-200);
+  --sidebar-ring: var(--color-brand-blue);
+
+  --radius: 0.625rem;
+
+  /* Tier 3 · component knobs. Live-editable from the playground's Component
+       tab. Button, badge and input keep the radius they shipped with; card is
+       deliberately moved off shadcn's 18px onto the 26px step, because every
+       panel in the Figma file is a 24px card and 4xl is the nearest step. */
+  --button-radius: calc(var(--radius) * 2.6);
+  --badge-radius: 9999px;
+  --card-radius: calc(var(--radius) * 2.6);
+  --input-radius: calc(var(--radius) * 2.6);
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+  --background: var(--color-neutral-950);
+  --foreground: var(--color-neutral-50);
+  --card: var(--color-neutral-900);
+  --card-foreground: var(--color-neutral-50);
+  --popover: var(--color-neutral-900);
+  --popover-foreground: var(--color-neutral-50);
+  --primary: var(--color-neutral-200);
+  --primary-foreground: var(--color-neutral-900);
+  --secondary: var(--color-neutral-800);
+  --secondary-foreground: var(--color-neutral-50);
+  --muted: var(--color-neutral-800);
+  --muted-foreground: var(--color-neutral-400);
+  --accent: var(--color-neutral-800);
+  --accent-foreground: var(--color-neutral-50);
+  --destructive: var(--color-red-400);
+  --success: var(--color-emerald-400);
+  --warning: var(--color-amber-400);
+  --border: color-mix(in oklch, var(--color-white) 10%, transparent);
+  --input: color-mix(in oklch, var(--color-white) 15%, transparent);
+  --ring: var(--color-brand-cyan);
+  --brand-accent: var(--color-brand-cyan);
+  --chart-1: var(--color-brand-cyan-200);
+  --chart-2: var(--color-brand-cyan-400);
+  --chart-3: var(--color-brand-blue-500);
+  --chart-4: var(--color-brand-blue-700);
+  --chart-5: var(--color-brand-blue-800);
+  --sidebar: var(--color-neutral-900);
+  --sidebar-foreground: var(--color-neutral-50);
+  --sidebar-primary: var(--color-neutral-200);
+  --sidebar-primary-foreground: var(--color-neutral-900);
+  --sidebar-accent: var(--color-neutral-800);
+  --sidebar-accent-foreground: var(--color-neutral-50);
+  --sidebar-border: color-mix(in oklch, var(--color-white) 10%, transparent);
+  --sidebar-ring: var(--color-brand-cyan);
 }
 
+/* ─── Tailwind bindings ───────────────────────────────────────────────────
+   `inline` so each utility resolves the role at use time, which is what lets
+   the same class react to `.dark` and to the playground's live overrides. */
 @theme inline {
-    --font-sans: var(--font-sans);
-    --font-heading: var(--font-heading);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-brand-accent: var(--brand-accent);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Hero entrance, from the Figma motion tracks on node 210:44.
+ * The two brand circles start overlapped at the capsule's midpoint and separate
+ * to its endpoints while the gradient bar draws itself between them.
+ *
+ * Base styles below are the *resting* state, so `prefers-reduced-motion` simply
+ * skips the animation and lands on the finished composition.
+ */
+/*
+ * The 75% stop is the design's, not a rounding: Figma's tracks run
+ * `times: [0, 0.75, 1]` over a 2s cohort, so the mark draws for 1.5s and then
+ * rests, fully formed, for 0.5s before the cycle repeats. Holding that beat is
+ * what keeps a looping hero from reading as a GIF.
+ *
+ * Easing lives on the keyframes rather than the shorthand because the two
+ * segments differ — easeInOut across the draw, linear through the hold.
+ */
+@keyframes softcom-capsule-draw {
+  0% {
+    stroke-dasharray: 0 1;
+    stroke-dashoffset: -0.5;
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+  75% {
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 0;
+    animation-timing-function: linear;
+  }
+  100% {
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes softcom-blob-separate {
+  0% {
+    transform: translate(var(--blob-from-x), var(--blob-from-y));
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+  75% {
+    transform: translate(0, 0);
+    animation-timing-function: linear;
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@layer components {
+  /*
+   * One 2s cycle, looping, matching Figma's cohort on node 210:40. The circles
+   * and the bar share a duration so they stay in step — they are one gesture,
+   * not three animations that happen to overlap.
+   */
+  .softcom-hero-capsule {
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 0;
+    animation: softcom-capsule-draw 2s linear infinite;
+  }
+  .softcom-hero-blob {
+    animation: softcom-blob-separate 2s linear infinite;
+    /* Composited, so the circles cost nothing to move. */
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .softcom-hero-capsule,
+    .softcom-hero-blob {
+      animation: none;
+    }
+  }
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
+  }
   body {
     @apply bg-background text-foreground;
-    }
-  button:not(:disabled), [role="button"]:not(:disabled) {
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
     cursor: pointer;
-    }
+  }
   html {
     @apply font-sans;
-    }
+  }
 }
