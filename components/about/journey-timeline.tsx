@@ -23,7 +23,8 @@ const items = milestones.items
 const YEAR_MIN = 2007
 const YEAR_MAX = 2025
 /** 0–1 position of a year across the span. */
-const posOf = (year: string) => (Number(year) - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)
+const posOf = (year: string) =>
+  (Number(year) - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)
 
 /** Decorative background rhythm — a dense, low-contrast ruler behind the marks. */
 const MINOR_TICKS = 56
@@ -52,10 +53,7 @@ export function JourneyTimeline({
   // Auto-advance while visible and untouched.
   React.useEffect(() => {
     if (!inView || paused) return
-    const id = setInterval(
-      () => setActive((a) => (a + 1) % items.length),
-      3800
-    )
+    const id = setInterval(() => setActive((a) => (a + 1) % items.length), 3800)
     return () => clearInterval(id)
   }, [inView, paused])
 
@@ -158,7 +156,7 @@ export function JourneyTimeline({
         onPointerCancel={endDrag}
         onWheel={onWheel}
         className={cn(
-          "relative h-24 cursor-ew-resize touch-pan-y select-none outline-none",
+          "relative h-24 cursor-ew-resize touch-pan-y outline-none select-none",
           "focus-visible:ring-2 focus-visible:ring-brand-accent/50 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
         )}
       >
@@ -234,7 +232,7 @@ export function JourneyTimeline({
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.96 }}
                     transition={{ duration: 0.18 }}
-                    className="absolute -top-11 whitespace-nowrap rounded-full bg-black px-4 py-2 text-sm font-medium text-white shadow-xl"
+                    className="absolute -top-11 rounded-full bg-black px-4 py-2 text-sm font-medium whitespace-nowrap text-white shadow-xl"
                   >
                     {m.headline}
                   </motion.span>
@@ -265,7 +263,9 @@ function Arrow({
       onClick={onClick}
       whileHover={{ scale: 1.06 }}
       whileTap={{ scale: 0.94 }}
-      aria-label={direction === "left" ? "Previous milestone" : "Next milestone"}
+      aria-label={
+        direction === "left" ? "Previous milestone" : "Next milestone"
+      }
       className="flex size-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-brand-accent/50 hover:text-brand-accent"
     >
       <Icon size={18} weight="bold" />

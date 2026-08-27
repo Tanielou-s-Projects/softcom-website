@@ -116,7 +116,7 @@ function NavigationMenuViewport({
         className={cn(
           // Full width of the menu root (the capsule), black, dark-scoped so its
           // contents resolve to light roles in either page theme.
-          "dark origin-top relative mt-2 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-3xl bg-black text-foreground shadow-2xl ring-1 ring-white/10 duration-100 data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:zoom-in-95",
+          "dark relative mt-2 h-(--radix-navigation-menu-viewport-height) w-full origin-top overflow-hidden rounded-3xl bg-black text-foreground shadow-2xl ring-1 ring-white/10 duration-100 data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:zoom-in-95",
           className
         )}
         {...props}

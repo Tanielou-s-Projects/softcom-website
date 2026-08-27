@@ -26,7 +26,8 @@ export type MobbinReferenceGroup = {
 }
 
 /** Build the local screenshot path for a reference. */
-export const refSrc = (group: string, id: string) => `/mobbin/${group}/${id}.webp`
+export const refSrc = (group: string, id: string) =>
+  `/mobbin/${group}/${id}.webp`
 
 /** Build the canonical Mobbin page for a reference. */
 export const refMobbinUrl = (id: string) =>
@@ -101,7 +102,8 @@ export const MOBBIN_REFERENCE_GROUPS: MobbinReferenceGroup[] = [
   {
     id: "leadership",
     label: "Leadership",
-    blurb: "Leadership and executive sections — portraits with titles and bios.",
+    blurb:
+      "Leadership and executive sections — portraits with titles and bios.",
     refs: [
       { site: "Intercom", id: "fc292fd5-ab37-469b-b09b-dc378471521c" },
       { site: "Jasper", id: "fb7eb756-3f53-4f37-bb98-e0407fd31658" },

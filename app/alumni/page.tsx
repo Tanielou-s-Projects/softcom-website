@@ -3,7 +3,8 @@ import type { Metadata } from "next"
 import { cn } from "@/lib/utils"
 import { alumniFamily, alumniHero } from "@/components/about/content"
 import { ClosingCta } from "@/components/landing/closing-cta"
-import { Bleed,
+import {
+  Bleed,
   bodyText,
   Container,
   displayText,

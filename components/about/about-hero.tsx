@@ -71,7 +71,10 @@ function AboutHero() {
       >
         <Container className="flex justify-center">
           <h1
-            className={cn(displayText, "max-w-[16ch] text-center text-foreground")}
+            className={cn(
+              displayText,
+              "max-w-[16ch] text-center text-foreground"
+            )}
           >
             {aboutHero.title}
           </h1>

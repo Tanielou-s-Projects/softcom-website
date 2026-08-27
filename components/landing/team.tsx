@@ -34,7 +34,12 @@ function PortraitCell({ image, name, role }: Portrait) {
       {name ? (
         <motion.div
           variants={{ rest: { y: "110%" }, hover: { y: 0 } }}
-          transition={{ type: "spring", stiffness: 400, damping: 40, mass: 0.8 }}
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 40,
+            mass: 0.8,
+          }}
           className="dark relative flex w-full flex-col gap-1 rounded-md bg-brand-blue p-3"
         >
           <p className="font-heading text-xl leading-none font-bold text-foreground">

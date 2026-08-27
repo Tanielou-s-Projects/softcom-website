@@ -28,7 +28,7 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem("caseStudy")
                 .title("Case Studies")
                 .icon(CaseIcon),
-            ]),
+            ])
         ),
       S.listItem()
         .title("People")
@@ -40,10 +40,8 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem("leader")
                 .title("Leadership")
                 .icon(UserIcon),
-              S.documentTypeListItem("alumnus")
-                .title("Alumni")
-                .icon(UsersIcon),
-            ]),
+              S.documentTypeListItem("alumnus").title("Alumni").icon(UsersIcon),
+            ])
         ),
       S.divider(),
       S.documentTypeListItem("role").title("Careers").icon(CaseIcon),
