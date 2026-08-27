@@ -4,7 +4,11 @@ import * as React from "react"
 import Image from "next/image"
 
 import { cn } from "@/lib/utils"
-import { Container, displayText, headingText } from "@/components/landing/section"
+import {
+  Container,
+  displayText,
+  headingText,
+} from "@/components/landing/section"
 import { SoftcomWordmark } from "@/components/site/softcom-wordmark"
 
 export type HeaderVariant = "pills" | "capsule" | "bar" | "glass"
@@ -158,10 +162,18 @@ function SampleBody() {
 /* ------------------------------------------------------------------- shell */
 
 const VARIANTS: { key: HeaderVariant; label: string; note: string }[] = [
-  { key: "pills", label: "Pills", note: "Two dark pills floating on a transparent bar." },
+  {
+    key: "pills",
+    label: "Pills",
+    note: "Two dark pills floating on a transparent bar.",
+  },
   { key: "capsule", label: "Capsule", note: "Logo and dots in one pill." },
   { key: "bar", label: "Bar (black)", note: "Full-width solid black bar." },
-  { key: "glass", label: "Bar (glass)", note: "Full-width blurred, translucent bar." },
+  {
+    key: "glass",
+    label: "Bar (glass)",
+    note: "Full-width blurred, translucent bar.",
+  },
 ]
 
 export function HeaderLab({

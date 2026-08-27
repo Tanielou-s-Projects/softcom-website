@@ -292,6 +292,115 @@
       animation: none;
     }
   }
+
+  /* The page-transition pixels — stepped, no fade (see pixel-page-transition.tsx). */
+  @keyframes softcom-pixel-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes softcom-pixel-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  /*
+   * Blueprint rails — the drafting-grid texture in the side margins, only
+   * where the 1336px content column leaves real room (>=1440px viewports).
+   * Fixed to the viewport at z -10: the page's full-bleed plates paint over
+   * it, the open margins beside `Container` sections let it show. That is
+   * also why the marketing pages' wrappers must NOT repaint `bg-background`
+   * (the body already does) — an opaque positioned wrapper would sit above
+   * the negative z-index and swallow the rails.
+   */
+  .softcom-blueprint {
+    --blueprint-line: color-mix(in oklch, var(--foreground) 7%, transparent);
+    --blueprint-tick: color-mix(in oklch, var(--foreground) 16%, transparent);
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    display: none;
+    pointer-events: none;
+  }
+  @media (min-width: 1440px) {
+    .softcom-blueprint {
+      display: block;
+    }
+  }
+
+  .softcom-blueprint-rail {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: calc((100% - 1336px) / 2);
+    /* ruled lines / ruler ticks / dashed plumb line / the column edge */
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        var(--blueprint-line) 0 1px,
+        transparent 1px 160px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        var(--blueprint-tick) 0 1px,
+        transparent 1px 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        var(--blueprint-line) 0 5px,
+        transparent 5px 12px
+      ),
+      linear-gradient(var(--blueprint-line), var(--blueprint-line));
+    background-size:
+      100% 100%,
+      12px 100%,
+      1px 100%,
+      1px 100%;
+    background-repeat: no-repeat;
+  }
+  .softcom-blueprint-rail[data-side="left"] {
+    left: 0;
+    background-position:
+      0 0,
+      left top,
+      31px top,
+      right top;
+  }
+  .softcom-blueprint-rail[data-side="right"] {
+    right: 0;
+    background-position:
+      0 0,
+      right top,
+      calc(100% - 31px) top,
+      left top;
+  }
+
+  /* The '+' registration marks, straddling the column edge every 160px. */
+  .softcom-blueprint-rail::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 17px;
+    background-color: var(--blueprint-tick);
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='17' height='160'><path d='M8.5 76v8M4.5 80h8' stroke='black' stroke-width='1'/></svg>");
+    mask-repeat: repeat-y;
+    mask-size: 17px 160px;
+    mask-position: 0 -80px;
+  }
+  .softcom-blueprint-rail[data-side="left"]::after {
+    right: -8.5px;
+  }
+  .softcom-blueprint-rail[data-side="right"]::after {
+    left: -8.5px;
+  }
 }
 
 @layer base {

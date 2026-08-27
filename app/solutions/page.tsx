@@ -5,6 +5,7 @@ import { SolutionAreas } from "@/components/solutions/solution-areas"
 import { SolutionsCta } from "@/components/solutions/solutions-cta"
 import { SolutionsHero } from "@/components/solutions/solutions-hero"
 import { SiteFooter } from "@/components/site/site-footer"
+import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { SiteHeader } from "@/components/site/site-header"
 
 export const metadata: Metadata = {
@@ -15,7 +16,8 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-background">
+    <div className="relative flex min-h-svh w-full flex-col gap-2.5">
+      <BlueprintGrid />
       <SiteHeader />
 
       <SolutionsHero />

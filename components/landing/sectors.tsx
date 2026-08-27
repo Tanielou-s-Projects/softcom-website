@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- local SVGs, intentionally not run through next/image */
+import * as React from "react"
+
 import { Badge } from "@/components/ui/badge"
 import {
   bodyText,
@@ -7,6 +9,7 @@ import {
   headingText,
 } from "@/components/landing/section"
 import { sectors, type Sector } from "@/components/landing/content"
+import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 
 /**
@@ -44,10 +47,17 @@ function SectorIllustration({ illustration }: Pick<Sector, "illustration">) {
   )
 }
 
-function SectorCard({ sector, index }: { sector: Sector; index: number }) {
+function SectorCard({
+  sector,
+  index,
+  className,
+  ...props
+}: { sector: Sector; index: number } & React.ComponentProps<"div">) {
   return (
     <div
+      {...props}
       className={cn(
+        className,
         "flex min-w-0 flex-1 flex-col justify-between gap-12 overflow-clip rounded-4xl p-8",
         "lg:h-[772px] lg:gap-0",
         /* The middle card is a step lighter and overlaps its neighbours. */
@@ -85,21 +95,29 @@ function SectorCard({ sector, index }: { sector: Sector; index: number }) {
 function Sectors() {
   return (
     <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">
-      <header className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-16">
-        <h2 className={cn(headingText, "text-foreground lg:w-[814px]")}>
-          The institutions that move Africa forward.
-        </h2>
-        <p className={cn(bodyText, "min-w-0 flex-1 text-foreground")}>
-          We partner with the organization responsible for the systems,
-          services, and infrastructure that millions depend on
-        </p>
-      </header>
+      <Reveal asChild>
+        <header className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-16">
+          <h2 className={cn(headingText, "text-foreground lg:w-[814px]")}>
+            The institutions that move Africa forward.
+          </h2>
+          <p className={cn(bodyText, "min-w-0 flex-1 text-foreground")}>
+            We partner with the organization responsible for the systems,
+            services, and infrastructure that millions depend on
+          </p>
+        </header>
+      </Reveal>
 
-      <div className="flex flex-col items-stretch gap-6 lg:flex-row lg:items-start lg:gap-0">
+      {/* asChild keeps the reveal on the card divs themselves — their flex-1 / -mr-16 overlap classes are load-bearing. */}
+      <RevealStagger
+        amount={0.15}
+        className="flex flex-col items-stretch gap-6 lg:flex-row lg:items-start lg:gap-0"
+      >
         {sectors.map((sector, index) => (
-          <SectorCard key={sector.id} sector={sector} index={index} />
+          <RevealItem key={sector.id} asChild>
+            <SectorCard sector={sector} index={index} />
+          </RevealItem>
         ))}
-      </div>
+      </RevealStagger>
     </Container>
   )
 }

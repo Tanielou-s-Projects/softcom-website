@@ -61,8 +61,7 @@ export const role = defineType({
       title: "Apply link",
       description: "External application URL. Use this or the apply email.",
       type: "url",
-      validation: (rule) =>
-        rule.uri({ scheme: ["http", "https"] }),
+      validation: (rule) => rule.uri({ scheme: ["http", "https"] }),
     }),
     defineField({
       name: "applyEmail",

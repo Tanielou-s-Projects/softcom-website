@@ -5,6 +5,7 @@ import {
   cardHeadingText,
   Container,
 } from "@/components/landing/section"
+import { Reveal } from "@/components/motion/reveal"
 import { deliverables, type Deliverable } from "@/components/products/content"
 import { SectionMark } from "@/components/products/section-mark"
 
@@ -42,11 +43,15 @@ function DeliverableRow({ deliverable }: { deliverable: Deliverable }) {
 function WhatWeDeliver() {
   return (
     <section className="flex flex-col gap-16 lg:gap-[68px]">
-      <SectionMark accent="blue">What We Deliver</SectionMark>
+      <Reveal>
+        <SectionMark accent="blue">What We Deliver</SectionMark>
+      </Reveal>
 
       <Container className="flex flex-col gap-16">
         {deliverables.map((deliverable) => (
-          <DeliverableRow key={deliverable.id} deliverable={deliverable} />
+          <Reveal key={deliverable.id} amount={0.15}>
+            <DeliverableRow deliverable={deliverable} />
+          </Reveal>
         ))}
       </Container>
     </section>

@@ -230,7 +230,9 @@ function DitherLab() {
         {/* Controls */}
         <aside className="flex flex-col gap-5 rounded-2xl bg-neutral-900/50 p-5 ring-1 ring-white/10">
           <div className="flex flex-col gap-2">
-            <span className="text-xs font-medium text-neutral-400">Presets</span>
+            <span className="text-xs font-medium text-neutral-400">
+              Presets
+            </span>
             <div className="flex flex-wrap gap-2">
               {PRESETS.map((p) => (
                 <button

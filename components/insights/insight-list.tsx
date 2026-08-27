@@ -10,6 +10,7 @@ import {
   leadText,
 } from "@/components/landing/section"
 import { InsightCard } from "@/components/insights/insight-card"
+import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import {
   insights,
   insightsIntro,
@@ -94,15 +95,15 @@ function InsightList() {
     <Container className="relative flex flex-col gap-16 pt-16">
       <TopicFilter filter={filter} onFilterChange={setFilter} />
 
-      <div className="flex flex-col gap-6">
+      <Reveal className="flex flex-col gap-6">
         <p className={cn(leadText, "max-w-[629px] leading-[1.6]")}>
           {insightsIntro}
         </p>
         <div aria-hidden className="h-px w-full bg-border" />
-      </div>
+      </Reveal>
 
       {featured && (
-        <section className="flex max-w-[921px] flex-col gap-12">
+        <Reveal as="section" className="flex max-w-[921px] flex-col gap-12">
           <h2 className={cn(cardHeadingText, "max-w-[359px] text-foreground")}>
             Featured Insight
           </h2>
@@ -111,20 +112,24 @@ function InsightList() {
             layout="featured"
             sizes="(min-width: 1024px) 921px, 100vw"
           />
-        </section>
+        </Reveal>
       )}
 
       {latest.length > 0 && (
         <section className="flex max-w-[917px] flex-col gap-12">
-          <h2 className={cn(cardHeadingText, "max-w-[359px] text-foreground")}>
-            Latest
-            <br />
-            Insights
-          </h2>
+          <Reveal asChild>
+            <h2
+              className={cn(cardHeadingText, "max-w-[359px] text-foreground")}
+            >
+              Latest
+              <br />
+              Insights
+            </h2>
+          </Reveal>
 
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-x-24">
+          <RevealStagger className="grid gap-12 lg:grid-cols-2 lg:gap-x-24">
             {latest.map((insight, index) => (
-              <div key={insight.id} className="relative">
+              <RevealItem key={insight.id} className="relative">
                 {/*
                  * The rule Figma draws between the columns, centred in the 96px
                  * gutter — so it hangs off the second card of each row.
@@ -139,9 +144,9 @@ function InsightList() {
                   insight={insight}
                   sizes="(min-width: 1024px) 411px, 100vw"
                 />
-              </div>
+              </RevealItem>
             ))}
-          </div>
+          </RevealStagger>
         </section>
       )}
     </Container>

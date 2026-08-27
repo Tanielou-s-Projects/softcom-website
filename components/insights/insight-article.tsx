@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Container, displayText, leadText } from "@/components/landing/section"
 import { formatInsightDate, type Article } from "@/components/insights/content"
+import { Reveal } from "@/components/motion/reveal"
 
 /**
  * The rail beside the body: one rule per paragraph, the first one longer and
@@ -40,36 +41,39 @@ function ParagraphRail({ count }: { count: number }) {
 function InsightArticle({ article }: { article: Article }) {
   return (
     <Container className="flex flex-col gap-16 pt-8">
-      <header className="flex flex-col gap-16 lg:flex-row lg:items-start">
-        <div className="flex min-w-0 flex-1 flex-col gap-16">
-          <span
-            aria-hidden
-            className="size-[26px] shrink-0 rounded-full bg-brand-blue"
-          />
-          <h1 className={cn(displayText, "text-foreground")}>
-            {article.title}
-          </h1>
-        </div>
-
-        <div className="flex flex-col gap-16 lg:w-[629px] lg:shrink-0">
-          <div className="flex items-center gap-6">
-            <Badge>{article.topic}</Badge>
-            <time
-              dateTime={article.date}
-              className="font-heading text-xs leading-[1.2] text-muted-foreground"
-            >
-              {formatInsightDate(article.date)}
-            </time>
+      {/* Header/meta only — per-paragraph reveals on long-form reading are hostile. */}
+      <Reveal asChild>
+        <header className="flex flex-col gap-16 lg:flex-row lg:items-start">
+          <div className="flex min-w-0 flex-1 flex-col gap-16">
+            <span
+              aria-hidden
+              className="size-[26px] shrink-0 rounded-full bg-brand-blue"
+            />
+            <h1 className={cn(displayText, "text-foreground")}>
+              {article.title}
+            </h1>
           </div>
 
-          {/*
-           * The article's own standfirst. Figma prints the site-wide Insights
-           * blurb in this slot — a copy-paste from the index — which would put
-           * identical text at the top of every article.
-           */}
-          <p className={cn(leadText, "leading-[1.6]")}>{article.dek}</p>
-        </div>
-      </header>
+          <div className="flex flex-col gap-16 lg:w-[629px] lg:shrink-0">
+            <div className="flex items-center gap-6">
+              <Badge>{article.topic}</Badge>
+              <time
+                dateTime={article.date}
+                className="font-heading text-xs leading-[1.2] text-muted-foreground"
+              >
+                {formatInsightDate(article.date)}
+              </time>
+            </div>
+
+            {/*
+             * The article's own standfirst. Figma prints the site-wide Insights
+             * blurb in this slot — a copy-paste from the index — which would put
+             * identical text at the top of every article.
+             */}
+            <p className={cn(leadText, "leading-[1.6]")}>{article.dek}</p>
+          </div>
+        </header>
+      </Reveal>
 
       <div className="relative h-[280px] w-full overflow-clip rounded-2xl bg-neutral-900 sm:h-[400px] lg:h-[577px]">
         <Image
