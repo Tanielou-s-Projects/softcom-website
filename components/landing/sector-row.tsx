@@ -148,7 +148,7 @@ function SectorCard({
           },
         }}
         className={cn(
-          "flex flex-1 flex-col justify-between gap-12 rounded-4xl p-8",
+          "relative flex flex-1 flex-col justify-between gap-12 overflow-hidden rounded-4xl p-8",
           "lg:min-h-[min(772px,80svh)] lg:gap-0",
           // The middle card is a step lighter, as in Figma.
           contrast ? "bg-secondary" : "bg-popover"
@@ -158,7 +158,7 @@ function SectorCard({
           <DotMatrix src={sector.silhouette} resolved={resolved} />
         </div>
 
-        <div className="flex flex-col">
+        <div className="relative flex flex-col">
           <div className="flex flex-col gap-6 text-foreground">
             {/* The heading runs free — "Development" alone is wider than the copy measure. */}
             <h3 className={cn(cardHeadingText, "whitespace-pre-line")}>
