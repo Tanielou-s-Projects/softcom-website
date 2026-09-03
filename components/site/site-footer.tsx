@@ -54,7 +54,8 @@ function SiteFooter() {
         className="mt-14 block h-auto w-full lg:absolute lg:top-[44.16%] lg:right-[4.45%] lg:left-[4.45%] lg:mt-0"
       />
 
-      <p className="mt-10 text-sm leading-6 font-medium text-neutral-700 lg:absolute lg:bottom-[33px] lg:left-1/2 lg:mt-0 lg:-translate-x-1/2 lg:whitespace-nowrap">
+      {/* neutral-400 on neutral-900 clears AA; the design's neutral-700 was ~2:1 and read as unreadable. */}
+      <p className="mt-10 text-sm leading-6 font-medium text-neutral-400 lg:absolute lg:bottom-[33px] lg:left-1/2 lg:mt-0 lg:-translate-x-1/2 lg:whitespace-nowrap">
         © 2026 Softcom Limited. All rights reserved.
       </p>
 

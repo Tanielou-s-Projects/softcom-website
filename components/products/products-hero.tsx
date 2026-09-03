@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { bodyText, displayText } from "@/components/landing/section"
+import { TENURE } from "@/components/landing/content"
 import { Reveal } from "@/components/motion/reveal"
 
 /**
@@ -30,8 +31,8 @@ function ProductsHero() {
           </h1>
           <p className={cn(bodyText, "text-foreground lg:w-[491px] lg:pt-6")}>
             Proprietary platforms and focused service lines, crafted to the
-            highest standard through nearly two decades of experience in
-            Africa&apos;s most complex and demanding environments.
+            highest standard through {TENURE} of experience in Africa&apos;s
+            most complex and demanding environments.
           </p>
         </div>
       </Reveal>

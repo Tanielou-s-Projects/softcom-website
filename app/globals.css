@@ -430,6 +430,46 @@
   .softcom-blueprint-rail[data-side="right"]::after {
     left: -8.5px;
   }
+
+  /*
+   * `labelled`: the same rails, twice the weight, plus a running mono label
+   * set vertically along the plumb line — deliberate, not leftover.
+   */
+  .softcom-blueprint[data-style="labelled"] {
+    --blueprint-line: color-mix(in oklch, var(--foreground) 14%, transparent);
+    --blueprint-tick: color-mix(in oklch, var(--foreground) 30%, transparent);
+  }
+  .softcom-blueprint[data-style="labelled"] .softcom-blueprint-rail::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 96px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--blueprint-tick);
+    writing-mode: vertical-rl;
+  }
+  .softcom-blueprint[data-style="labelled"]
+    .softcom-blueprint-rail[data-side="left"]::before {
+    left: 40px;
+  }
+  .softcom-blueprint[data-style="labelled"]
+    .softcom-blueprint-rail[data-side="right"]::before {
+    right: 40px;
+    transform: rotate(180deg);
+  }
+
+  /* `dither`: no lines — the rail hosts a shader canvas, kept very quiet. */
+  .softcom-blueprint[data-style="dither"] .softcom-blueprint-rail {
+    background: none;
+    opacity: 0.28;
+    mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  }
+  .softcom-blueprint[data-style="dither"] .softcom-blueprint-rail::after {
+    content: none;
+  }
 }
 
 @layer base {

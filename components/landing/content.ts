@@ -92,13 +92,25 @@ export const capabilities: Capability[] = [
 ]
 
 /** Impact numbers — shared by the homepage Stats block and the team section. */
+/*
+ * Company tenure, in one place. The site had "over two decades", "nearly two
+ * decades", "Two decades of…" and a stat tile reading "18" all at once; the
+ * client asked for one phrasing. Founded 2007 — the number is computed so it
+ * never goes stale, and the prose stays honest until the 20th year.
+ * Wording is the client's call; change it here and it changes everywhere.
+ */
+export const FOUNDED = 2007
+export const YEARS_ACTIVE = new Date().getFullYear() - FOUNDED
+export const TENURE = "nearly two decades"
+export const TENURE_TITLE = "Nearly two decades"
+
 export type Stat = { value: string; label: string }
 
 export const stats: Stat[] = [
   { value: "20M+", label: "People reached" },
   { value: "100+", label: "Projects delivered" },
   { value: "30+", label: "Enterprise clients" },
-  { value: "18", label: "Years of delivery" },
+  { value: String(YEARS_ACTIVE), label: "Years of delivery" },
 ]
 
 /** Team portraits for the About team section. Only confirmed names carry a plate. */

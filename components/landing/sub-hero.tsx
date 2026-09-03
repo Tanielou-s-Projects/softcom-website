@@ -7,6 +7,7 @@ import {
   leadText,
   primaryPill,
 } from "@/components/landing/section"
+import { TENURE } from "@/components/landing/content"
 import { Reveal } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 
@@ -17,9 +18,9 @@ function SubHero() {
     <Container className="flex flex-col items-start justify-between gap-8 py-6 lg:-mt-16 lg:flex-row lg:items-center">
       <Reveal asChild>
         <p className={cn(leadText, "max-w-[684px] text-muted-foreground")}>
-          For over <span className="text-brand-accent">two decades</span>, we
-          have pioneered the technology that organisations rely on to expand
-          access to digital services, reach underserved communities, bridge
+          For <span className="text-brand-accent">{TENURE}</span>, we have
+          pioneered the technology that organisations rely on to expand access
+          to digital services, reach underserved communities, bridge
           infrastructure gaps, and unlock opportunities across Nigeria and
           Africa.
         </p>
