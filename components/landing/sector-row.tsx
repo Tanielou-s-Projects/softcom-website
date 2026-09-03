@@ -100,11 +100,15 @@ function SectorCard({
   const contrast = index === 1
 
   /*
-   * Accordion: the hovered card takes more of the row and its siblings give
-   * it up; flex-grow is animatable so widths glide. Ratios keep the collapsed
-   * inner width ≥ the copy's max-w, so paragraphs never reflow mid-transition.
+   * Accordion, after the WorldQuant Foundry ethos row: explicit column widths
+   * (rest 33.3%, active 45%, yielding 27.5%), a 100ms delay so a cursor
+   * sweeping past doesn't churn the row, and an ease that gathers before it
+   * arrives rather than leaping. The overlap is part of the motion: each plate
+   * is oversized (`w-[124%]`) and the next card paints over the excess; the
+   * active plate contracts to its column so it sits clean while its
+   * neighbours tuck under.
    */
-  const grow = hovered === null ? 3 : active ? 4 : 2.5
+  const width = hovered === null ? "33.333%" : active ? "45%" : "27.5%"
 
   /*
    * Two layers on purpose. Chrome folds an element's own `clip-path` into its
@@ -128,12 +132,10 @@ function SectorCard({
           transition: { duration: 0.7, delay: index * 0.08, ease: EASE },
         },
       }}
-      style={{ flexGrow: grow }}
+      style={{ "--card-w": width } as React.CSSProperties}
       className={cn(
-        "group/card relative flex min-w-0 basis-0 flex-col",
-        "transition-[flex-grow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
-        // Figma pulls each card 64px over the previous one; the hovered card rides on top.
-        index > 0 && "lg:-ml-16",
+        "group/card relative flex min-w-0 flex-col lg:w-(--card-w) lg:shrink-0",
+        "transition-[width] delay-100 duration-500 ease-[cubic-bezier(.62,.16,.13,1.01)] motion-reduce:transition-none",
         active ? "z-10" : "z-0",
         TONE[sector.tone]
       )}
@@ -151,6 +153,9 @@ function SectorCard({
         className={cn(
           "flex flex-1 flex-col justify-between gap-12 rounded-4xl p-8",
           "lg:min-h-[min(772px,80svh)] lg:gap-0",
+          // Oversized at rest (the neighbour covers the excess); exact when active.
+          "transition-[width] delay-100 duration-500 ease-[cubic-bezier(.62,.16,.13,1.01)] motion-reduce:transition-none",
+          active || index === count - 1 ? "lg:w-full" : "lg:w-[124%]",
           // The middle card is a step lighter, as in Figma.
           contrast ? "bg-secondary" : "bg-popover"
         )}
