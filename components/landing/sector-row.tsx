@@ -158,7 +158,7 @@ function SectorCard({
           <DotMatrix src={sector.silhouette} resolved={resolved} />
         </div>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col">
           <div className="flex flex-col gap-6 text-foreground">
             {/* The heading runs free — "Development" alone is wider than the copy measure. */}
             <h3 className={cn(cardHeadingText, "whitespace-pre-line")}>
@@ -170,14 +170,29 @@ function SectorCard({
             </p>
           </div>
 
-          {/* Labels arrive with the silhouette: hover on pointer devices, in view on touch. */}
+          {/*
+           * Labels arrive with the silhouette: hover on pointer devices, in view
+           * on touch. They grow from zero height (grid rows 0fr → 1fr, which
+           * animates) so the heading and copy are lifted as they come in,
+           * rather than fading into space that was already held for them.
+           */}
           <div
             className={cn(
-              "transition-opacity duration-400 ease-out motion-reduce:transition-none lg:max-w-[300px]",
-              resolved ? "opacity-100" : "opacity-0"
+              "grid transition-[grid-template-rows,opacity] delay-100 duration-500 ease-[cubic-bezier(.62,.16,.13,1.01)] motion-reduce:transition-none lg:max-w-[300px]",
+              resolved
+                ? "[grid-template-rows:1fr] opacity-100"
+                : "[grid-template-rows:0fr] opacity-0"
             )}
           >
-            <SectorTags tags={sector.tags} variant={tags} contrast={contrast} />
+            <div className="min-h-0 overflow-hidden">
+              <div className="pt-8">
+                <SectorTags
+                  tags={sector.tags}
+                  variant={tags}
+                  contrast={contrast}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </motion.div>
