@@ -15,7 +15,7 @@ function CaseStudiesHero() {
       <div
         className={cn(
           "flex flex-col items-center justify-center gap-8 overflow-clip rounded-3xl bg-popover px-6 py-24",
-          "lg:h-[976px] lg:gap-16"
+          "lg:min-h-[min(976px,85svh)] lg:gap-16"
         )}
       >
         <Reveal className="flex flex-col items-center gap-8 lg:gap-16">

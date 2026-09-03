@@ -26,10 +26,10 @@ function ProductsHero() {
         </Badge>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-32">
-          <h1 className={cn(displayText, "text-foreground lg:w-[565px]")}>
+          <h1 className={cn(displayText, "text-foreground lg:w-[48%]")}>
             Proven platforms. Focused services.
           </h1>
-          <p className={cn(bodyText, "text-foreground lg:w-[491px] lg:pt-6")}>
+          <p className={cn(bodyText, "text-foreground lg:w-[41%] lg:pt-6")}>
             Proprietary platforms and focused service lines, crafted to the
             highest standard through {TENURE} of experience in Africa&apos;s
             most complex and demanding environments.

@@ -44,7 +44,8 @@ function Capabilities() {
           {capabilities.map((capability) => (
             <article
               key={capability.number}
-              className="dark relative flex h-[560px] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 sm:h-[720px] lg:h-[1024px] lg:p-6"
+              /* Figma's 1176×1024 is a ceiling, not a size: the slide never exceeds the viewport. */
+              className="dark relative flex h-[min(560px,75svh)] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 sm:h-[min(720px,80svh)] lg:h-[min(1024px,85svh)] lg:p-6"
             >
               <Image
                 src={capability.image}
@@ -66,10 +67,10 @@ function Capabilities() {
               </div>
 
               <div className="relative flex flex-col items-start gap-6 overflow-clip rounded-4xl bg-background p-6 text-foreground lg:gap-8 lg:p-[47px]">
-                <h3 className={cn(cardHeadingText, "lg:w-[359px]")}>
+                <h3 className={cn(cardHeadingText, "lg:max-w-[359px]")}>
                   {capability.title}
                 </h3>
-                <p className={cn(bodyText, "lg:w-[600px]")}>
+                <p className={cn(bodyText, "lg:max-w-[600px]")}>
                   {capability.description}
                 </p>
               </div>

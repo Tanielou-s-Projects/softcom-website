@@ -58,7 +58,7 @@ function ProductOverlay({ product }: { product: Product }) {
         className={cn(
           "max-h-[calc(100svh-3rem)] gap-2.5 overflow-y-auto bg-transparent p-0 ring-0",
           "sm:max-w-[calc(100vw-3rem)] lg:max-w-[1392px]",
-          "lg:grid-cols-[779px_minmax(0,1fr)]"
+          "lg:grid-cols-[56%_minmax(0,1fr)]"
         )}
       >
         <article className="flex flex-col justify-between gap-16 rounded-3xl bg-muted p-8 lg:p-[47px]">

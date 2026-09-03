@@ -59,7 +59,7 @@ function SolutionsHero() {
       <div
         className={cn(
           "flex flex-col items-center justify-center gap-16 overflow-clip rounded-2xl bg-card px-6 py-24",
-          "w-full lg:h-[1024px] lg:gap-32 lg:py-32"
+          "w-full lg:min-h-[min(1024px,88svh)] lg:gap-32 lg:py-32"
         )}
       >
         <Reveal>

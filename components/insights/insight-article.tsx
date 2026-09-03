@@ -54,7 +54,7 @@ function InsightArticle({ article }: { article: Article }) {
             </h1>
           </div>
 
-          <div className="flex flex-col gap-16 lg:w-[629px] lg:shrink-0">
+          <div className="flex flex-col gap-16 lg:w-[49%] lg:shrink-0">
             <div className="flex items-center gap-6">
               <Badge>{article.topic}</Badge>
               <time
@@ -75,7 +75,7 @@ function InsightArticle({ article }: { article: Article }) {
         </header>
       </Reveal>
 
-      <div className="relative h-[280px] w-full overflow-clip rounded-2xl bg-neutral-900 sm:h-[400px] lg:h-[577px]">
+      <div className="relative h-[min(280px,40svh)] w-full overflow-clip rounded-2xl bg-neutral-900 sm:h-[min(400px,50svh)] lg:h-[min(577px,65svh)]">
         <Image
           src={article.cover}
           alt=""
