@@ -104,7 +104,7 @@ function SectorCard({
    * it up; flex-grow is animatable so widths glide. Ratios keep the collapsed
    * inner width ≥ the copy's max-w, so paragraphs never reflow mid-transition.
    */
-  const grow = hovered === null ? 3 : active ? 3.5 : 2.75
+  const grow = hovered === null ? 3 : active ? 4 : 2.5
 
   /*
    * Two layers on purpose. Chrome folds an element's own `clip-path` into its
@@ -130,8 +130,11 @@ function SectorCard({
       }}
       style={{ flexGrow: grow }}
       className={cn(
-        "group/card flex min-w-0 basis-0 flex-col",
+        "group/card relative flex min-w-0 basis-0 flex-col",
         "transition-[flex-grow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
+        // Figma pulls each card 64px over the previous one; the hovered card rides on top.
+        index > 0 && "lg:-ml-16",
+        active ? "z-10" : "z-0",
         TONE[sector.tone]
       )}
       data-sector={sector.id}
@@ -148,6 +151,9 @@ function SectorCard({
         className={cn(
           "flex flex-1 flex-col justify-between gap-12 rounded-4xl p-8",
           "lg:min-h-[min(772px,80svh)] lg:gap-0",
+          // The overlapped strips get matching padding so copy never sits under a neighbour.
+          index > 0 && "lg:pl-24",
+          index < count - 1 && "lg:pr-24",
           // The middle card is a step lighter, as in Figma.
           contrast ? "bg-secondary" : "bg-popover"
         )}
@@ -161,7 +167,7 @@ function SectorCard({
             <h3 className={cn(cardHeadingText, "whitespace-pre-line")}>
               {sector.title}
             </h3>
-            <p className={cn(bodyText, "max-w-[300px]")}>
+            <p className={cn(bodyText, "max-w-[340px]")}>
               {sector.description}
             </p>
           </div>
@@ -192,7 +198,7 @@ function SectorRow({ sectors }: { sectors: Sector[] }) {
   const tags = useVariant("tags")
 
   return (
-    <div className="flex flex-col items-stretch gap-6 lg:flex-row">
+    <div className="flex flex-col items-stretch gap-6 lg:flex-row lg:gap-0">
       {sectors.map((sector, index) => (
         <SectorCard
           key={sector.id}
