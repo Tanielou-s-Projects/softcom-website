@@ -12,8 +12,9 @@ import { cn } from "@/lib/utils"
 
 /** The positioning statement directly beneath the hero, paired with the CTAs. */
 function SubHero() {
+  // Pulled up against the hero: the pair shares the first viewport, so it takes half the page gap.
   return (
-    <Container className="flex flex-col items-start justify-between gap-8 py-6 lg:h-64 lg:flex-row lg:items-center">
+    <Container className="flex flex-col items-start justify-between gap-8 py-6 lg:-mt-16 lg:flex-row lg:items-center">
       <Reveal asChild>
         <p className={cn(leadText, "max-w-[684px] text-muted-foreground")}>
           For over <span className="text-brand-accent">two decades</span>, we

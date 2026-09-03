@@ -269,21 +269,50 @@
   }
 }
 
+/*
+ * After the entrance the mark settles into a slow idle: the circles breathe
+ * and the bar's intensity drifts. Long period, tiny amplitude — enough that the
+ * hero is alive on a second look, never enough to read as a loop. `scale` is a
+ * separate property from the entrance's `transform`, so the two never fight.
+ */
+@keyframes softcom-blob-breathe {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 1.035;
+  }
+}
+
+@keyframes softcom-capsule-drift {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.86;
+  }
+}
+
 @layer components {
   /*
-   * One 2s cycle, looping, matching Figma's cohort on node 210:40. The circles
-   * and the bar share a duration so they stay in step — they are one gesture,
-   * not three animations that happen to overlap.
+   * One 2s entrance, played once (Figma's cohort on node 210:40 looped, which
+   * the client found played-out on a second viewing). The circles and the bar
+   * share a duration so they stay in step — one gesture, not three animations.
+   * The idle starts as the entrance lands and alternates from then on.
    */
   .softcom-hero-capsule {
     stroke-dasharray: 1 1;
     stroke-dashoffset: 0;
-    animation: softcom-capsule-draw 2s linear infinite;
+    animation:
+      softcom-capsule-draw 2s linear 1 forwards,
+      softcom-capsule-drift 9s ease-in-out 2s infinite alternate;
   }
   .softcom-hero-blob {
-    animation: softcom-blob-separate 2s linear infinite;
+    animation:
+      softcom-blob-separate 2s linear 1 forwards,
+      softcom-blob-breathe 7s ease-in-out 2s infinite alternate;
     /* Composited, so the circles cost nothing to move. */
-    will-change: transform;
+    will-change: transform, scale;
   }
 
   @media (prefers-reduced-motion: reduce) {
