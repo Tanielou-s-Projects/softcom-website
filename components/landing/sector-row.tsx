@@ -103,10 +103,8 @@ function SectorCard({
    * Accordion, after the WorldQuant Foundry ethos row: explicit column widths
    * (rest 33.3%, active 45%, yielding 27.5%), a 100ms delay so a cursor
    * sweeping past doesn't churn the row, and an ease that gathers before it
-   * arrives rather than leaping. The overlap is part of the motion: each plate
-   * is oversized (`w-[124%]`) and the next card paints over the excess; the
-   * active plate contracts to its column so it sits clean while its
-   * neighbours tuck under.
+   * arrives rather than leaping. Nothing stacks — the hovered card squeezes
+   * its neighbours, and every plate fills exactly its own column.
    */
   const width = hovered === null ? "33.333%" : active ? "45%" : "27.5%"
 
@@ -136,7 +134,6 @@ function SectorCard({
       className={cn(
         "group/card relative flex min-w-0 flex-col lg:w-(--card-w) lg:shrink-0",
         "transition-[width] delay-100 duration-500 ease-[cubic-bezier(.62,.16,.13,1.01)] motion-reduce:transition-none",
-        active ? "z-10" : "z-0",
         TONE[sector.tone]
       )}
       data-sector={sector.id}
@@ -153,9 +150,6 @@ function SectorCard({
         className={cn(
           "flex flex-1 flex-col justify-between gap-12 rounded-4xl p-8",
           "lg:min-h-[min(772px,80svh)] lg:gap-0",
-          // Oversized at rest (the neighbour covers the excess); exact when active.
-          "transition-[width] delay-100 duration-500 ease-[cubic-bezier(.62,.16,.13,1.01)] motion-reduce:transition-none",
-          active || index === count - 1 ? "lg:w-full" : "lg:w-[124%]",
           // The middle card is a step lighter, as in Figma.
           contrast ? "bg-secondary" : "bg-popover"
         )}
@@ -164,23 +158,22 @@ function SectorCard({
           <DotMatrix src={sector.silhouette} resolved={resolved} />
         </div>
 
-        {/*
-         * One fixed measure for every card, so line lengths match across the
-         * row and copy never runs under the neighbour that overlaps this card's
-         * right edge (padding + measure stays inside the uncovered width).
-         */}
-        <div className="flex flex-col gap-8 lg:max-w-[300px]">
+        <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-6 text-foreground">
+            {/* The heading runs free — "Development" alone is wider than the copy measure. */}
             <h3 className={cn(cardHeadingText, "whitespace-pre-line")}>
               {sector.title}
             </h3>
-            <p className={bodyText}>{sector.description}</p>
+            {/* One fixed measure for every card, so line lengths match across the row. */}
+            <p className={cn(bodyText, "lg:max-w-[300px]")}>
+              {sector.description}
+            </p>
           </div>
 
           {/* Labels arrive with the silhouette: hover on pointer devices, in view on touch. */}
           <div
             className={cn(
-              "transition-opacity duration-400 ease-out motion-reduce:transition-none",
+              "transition-opacity duration-400 ease-out motion-reduce:transition-none lg:max-w-[300px]",
               resolved ? "opacity-100" : "opacity-0"
             )}
           >
