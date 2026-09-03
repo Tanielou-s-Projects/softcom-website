@@ -151,9 +151,6 @@ function SectorCard({
         className={cn(
           "flex flex-1 flex-col justify-between gap-12 rounded-4xl p-8",
           "lg:min-h-[min(772px,80svh)] lg:gap-0",
-          // The overlapped strips get matching padding so copy never sits under a neighbour.
-          index > 0 && "lg:pl-24",
-          index < count - 1 && "lg:pr-24",
           // The middle card is a step lighter, as in Figma.
           contrast ? "bg-secondary" : "bg-popover"
         )}
@@ -162,14 +159,17 @@ function SectorCard({
           <DotMatrix src={sector.silhouette} resolved={resolved} />
         </div>
 
-        <div className="flex flex-col gap-8">
+        {/*
+         * One fixed measure for every card, so line lengths match across the
+         * row and copy never runs under the neighbour that overlaps this card's
+         * right edge (padding + measure stays inside the uncovered width).
+         */}
+        <div className="flex flex-col gap-8 lg:max-w-[300px]">
           <div className="flex flex-col gap-6 text-foreground">
             <h3 className={cn(cardHeadingText, "whitespace-pre-line")}>
               {sector.title}
             </h3>
-            <p className={cn(bodyText, "max-w-[340px]")}>
-              {sector.description}
-            </p>
+            <p className={bodyText}>{sector.description}</p>
           </div>
 
           {/* Labels arrive with the silhouette: hover on pointer devices, in view on touch. */}
