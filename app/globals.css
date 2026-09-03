@@ -76,7 +76,13 @@
    900 / 800 / 400. The light mapping has no design behind it yet and is a
    best-guess mirror using the same ramp. */
 :root {
-  --background: var(--color-white);
+  /*
+   * Not white: a warm light grey (≈ #ECECEB), so the light theme reads as
+   * paper rather than a blank screen and the neutral-50 plates sit on it as
+   * lighter panels — the same relationship the dark theme has between its
+   * neutral-900 plates and near-black ground.
+   */
+  --background: oklch(0.935 0.002 95);
   --foreground: var(--color-neutral-950);
   /*
    * A step off the page rather than equal to it. The design's cards carry no
@@ -465,7 +471,13 @@
   .softcom-blueprint[data-style="dither"] .softcom-blueprint-rail {
     background: none;
     opacity: 0.28;
-    mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
   }
   .softcom-blueprint[data-style="dither"] .softcom-blueprint-rail::after {
     content: none;
