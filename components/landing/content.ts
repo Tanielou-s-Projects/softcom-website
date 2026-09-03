@@ -10,14 +10,15 @@ export type Sector = {
   id: string
   title: string
   description: string
+  /** Labels shown once the card resolves. Copy rewrite pending from the client. */
   tags: string[]
-  /** Layered dot-matrix illustration exported from Figma, painted back-to-front. */
-  illustration: {
-    /** Intrinsic size of the artboard, in px. */
-    width: number
-    height: number
-    layers: { src: string; inset: string }[]
-  }
+  /**
+   * Opaque silhouette on a transparent artboard, sampled into the dot matrix
+   * at runtime (see dot-matrix.tsx). Placeholders until brand supplies icons.
+   */
+  silhouette: string
+  /** Resolved-state colour — existing brand tokens only. */
+  tone: "cyan" | "blue" | "neutral"
 }
 
 export const sectors: Sector[] = [
@@ -27,18 +28,8 @@ export const sectors: Sector[] = [
     description:
       "The institutions responsible for delivering services to millions. We help them do it at scale.",
     tags: ["Government MDAs", "Regulators", "Law Enforcement Agencies"],
-    illustration: {
-      width: 151.667,
-      height: 179.665,
-      layers: [
-        { src: "/landing/sector-public-dots.svg", inset: "0.65% 0.77%" },
-        { src: "/landing/sector-public-grid.svg", inset: "0" },
-        {
-          src: "/landing/sector-public-highlight.svg",
-          inset: "62.99% 56.15% 16.23% 37.69%",
-        },
-      ],
-    },
+    silhouette: "/landing/sector-public-silhouette.svg",
+    tone: "cyan",
   },
   {
     id: "private",
@@ -46,17 +37,8 @@ export const sectors: Sector[] = [
     description:
       "Enterprises that need technology to move faster, reach further, and operate with more precision.",
     tags: ["Financial Services", "FMCG", "Oil & Gas", "Education"],
-    illustration: {
-      width: 151.665,
-      height: 180.833,
-      layers: [
-        {
-          src: "/landing/sector-private-dots.svg",
-          inset: "0.64% 0 1.29% 1.54%",
-        },
-        { src: "/landing/sector-private-grid.svg", inset: "0" },
-      ],
-    },
+    silhouette: "/landing/sector-private-silhouette.svg",
+    tone: "blue",
   },
   {
     id: "enablers",
@@ -68,17 +50,8 @@ export const sectors: Sector[] = [
       "Cooperatives",
       "Non-Profit Foundations",
     ],
-    illustration: {
-      width: 151.665,
-      height: 179.241,
-      layers: [
-        {
-          src: "/landing/sector-enablers-dots.svg",
-          inset: "1.28% 1.51% 1.28% 1.52%",
-        },
-        { src: "/landing/sector-enablers-grid.svg", inset: "0" },
-      ],
-    },
+    silhouette: "/landing/sector-enablers-silhouette.svg",
+    tone: "neutral",
   },
 ]
 
