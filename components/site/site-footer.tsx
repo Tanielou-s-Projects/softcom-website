@@ -17,9 +17,9 @@ import { ThemeSwitcher } from "@/components/site/theme-switcher"
  */
 function SiteFooter() {
   return (
-    <footer className="dark relative overflow-clip rounded-4xl bg-neutral-900 px-6 pt-14 pb-6 lg:h-[700px] lg:px-[46px] lg:pt-[60px] lg:pb-0">
+    <footer className="dark relative overflow-clip rounded-4xl bg-neutral-900 px-6 pt-14 pb-6 lg:h-[min(700px,85svh)] lg:px-[3.2%] lg:pt-[60px] lg:pb-0">
       <div className="flex flex-col items-start justify-between gap-10 lg:flex-row lg:items-end">
-        <p className="font-heading text-3xl leading-[1.026] text-foreground lg:w-[610px] lg:text-[3.375rem]">
+        <p className="font-heading text-3xl leading-[1.026] text-foreground lg:w-[46%] lg:text-[3.375rem]">
           Technology for Organisations. Progress for Society.
         </p>
 
@@ -54,7 +54,8 @@ function SiteFooter() {
         className="mt-14 block h-auto w-full lg:absolute lg:top-[44.16%] lg:right-[4.45%] lg:left-[4.45%] lg:mt-0"
       />
 
-      <p className="mt-10 text-sm leading-6 font-medium text-neutral-700 lg:absolute lg:bottom-[33px] lg:left-1/2 lg:mt-0 lg:-translate-x-1/2 lg:whitespace-nowrap">
+      {/* neutral-400 on neutral-900 clears AA; the design's neutral-700 was ~2:1 and read as unreadable. */}
+      <p className="mt-10 text-sm leading-6 font-medium text-neutral-400 lg:absolute lg:bottom-[33px] lg:left-1/2 lg:mt-0 lg:-translate-x-1/2 lg:whitespace-nowrap">
         © 2026 Softcom Limited. All rights reserved.
       </p>
 

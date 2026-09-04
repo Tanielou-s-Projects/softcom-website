@@ -75,12 +75,12 @@ function SolutionBlock({
         reversed && "lg:flex-row-reverse"
       )}
     >
-      <div className="relative h-[320px] shrink-0 overflow-clip rounded-3xl bg-background lg:h-auto lg:w-[392px]">
+      <div className="relative h-[min(320px,45svh)] shrink-0 overflow-clip rounded-3xl bg-background lg:h-auto lg:w-[30%]">
         <Image
           src={solution.image.src}
           alt=""
           fill
-          sizes="(min-width: 1024px) 392px, 100vw"
+          sizes="(min-width: 1024px) 30vw, 100vw"
           className="object-cover"
         />
       </div>
@@ -89,11 +89,16 @@ function SolutionBlock({
         <article
           className={cn(
             "flex flex-col justify-center gap-16 overflow-clip rounded-3xl bg-muted p-8",
-            "lg:min-h-[744px] lg:p-[47px]"
+            "lg:min-h-[min(744px,80svh)] lg:p-[47px]"
           )}
         >
           <div className="flex flex-col gap-8">
-            <h2 className={cn(cardHeadingText, "text-foreground lg:w-[359px]")}>
+            <h2
+              className={cn(
+                cardHeadingText,
+                "text-foreground lg:max-w-[359px]"
+              )}
+            >
               {solution.title}
             </h2>
             <div className="flex flex-col gap-8">
@@ -136,7 +141,7 @@ function DeliveryPhases() {
     <section className="dark flex flex-col gap-8 overflow-clip rounded-3xl bg-brand-blue p-8 lg:gap-12 lg:p-12">
       <header className="flex flex-col items-start justify-center gap-3">
         <Badge variant="inverse">Phases</Badge>
-        <h2 className={cn(cardHeadingText, "text-foreground lg:w-[208px]")}>
+        <h2 className={cn(cardHeadingText, "text-foreground lg:max-w-[208px]")}>
           How We Deliver
         </h2>
       </header>

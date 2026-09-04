@@ -31,7 +31,7 @@ function InsightCard({
        * `bg-neutral-900` is the design's own #1b1b1b backing plate, which shows
        * through while the cover loads and behind its transparent edges.
        */}
-      <div className="relative h-[324px] w-full shrink-0 overflow-clip rounded-2xl bg-neutral-900">
+      <div className="relative h-[min(324px,40svh)] w-full shrink-0 overflow-clip rounded-2xl bg-neutral-900">
         <Image
           src={insight.cover}
           alt=""

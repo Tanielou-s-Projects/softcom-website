@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element -- local SVGs, intentionally not run through next/image */
 "use client"
 
 import * as React from "react"
@@ -17,6 +16,7 @@ import { Switch } from "@/components/ui/switch"
 import { SpecimenGroup, TokenLabel } from "@/components/playground/section"
 import { useComputedTokens } from "@/components/playground/use-tokens"
 import { sectors } from "@/components/landing/content"
+import { DotMatrix } from "@/components/landing/dot-matrix"
 
 /** Ordered-dither matrices the shader supports, plus plain random. */
 const TYPES = ["random", "2x2", "4x4", "8x8"] as const
@@ -92,37 +92,18 @@ export function DitherSection() {
         <p className="mb-4 max-w-prose text-sm text-muted-foreground">
           The sector marks are a uniform grid of same-size circles where only
           brightness varies — an ordered dither, not a size-modulated halftone.
-          Figma ships them as flat SVG layers, which is why they cannot yet
-          carry sector-specific imagery or react to hover. The shader is the
-          mechanism that would let them.
+          The landing now samples a silhouette into a 12 × 14 field at runtime
+          (dot-matrix.tsx); the shader is the alternative mechanism.
         </p>
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="flex flex-col gap-2">
             <div className="flex h-[220px] items-center justify-center rounded-(--card-radius) bg-popover">
-              {/* Mirrors the landing implementation: layered exports, no shader. */}
-              <div
-                className="relative overflow-clip"
-                style={{
-                  width: publicSector.illustration.width,
-                  height: publicSector.illustration.height,
-                }}
-              >
-                {publicSector.illustration.layers.map((layer) => (
-                  <div
-                    key={layer.src}
-                    className="absolute"
-                    style={{ inset: layer.inset }}
-                  >
-                    <img
-                      src={layer.src}
-                      alt=""
-                      className="absolute inset-0 block size-full max-w-none"
-                    />
-                  </div>
-                ))}
+              {/* Mirrors the landing implementation, shown resolved. */}
+              <div className="w-[152px] text-brand-cyan">
+                <DotMatrix src={publicSector.silhouette} resolved />
               </div>
             </div>
-            <TokenLabel>Figma export · static SVG</TokenLabel>
+            <TokenLabel>Sampled matrix · 168 dots</TokenLabel>
           </div>
 
           <div className="flex flex-col gap-2">

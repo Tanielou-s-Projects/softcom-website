@@ -28,7 +28,7 @@ function DeliverableRow({ deliverable }: { deliverable: Deliverable }) {
       />
 
       <div className="flex min-w-0 flex-1 flex-col gap-8 lg:pb-0">
-        <h3 className={cn(cardHeadingText, "text-foreground lg:w-[557px]")}>
+        <h3 className={cn(cardHeadingText, "text-foreground lg:max-w-[557px]")}>
           {deliverable.title}
         </h3>
         <p className={cn(bodyText, "text-foreground")}>

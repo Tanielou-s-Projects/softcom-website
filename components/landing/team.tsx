@@ -63,8 +63,8 @@ function Team() {
   return (
     <section id="team" className="flex scroll-mt-24 flex-col gap-16">
       <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">
-        <header className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-[206px]">
-          <h2 className={cn(headingText, "text-foreground lg:w-[664px]")}>
+        <header className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-[15%]">
+          <h2 className={cn(headingText, "text-foreground lg:w-[50%]")}>
             Built by people who&apos;ve done this before.
           </h2>
           <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-4">

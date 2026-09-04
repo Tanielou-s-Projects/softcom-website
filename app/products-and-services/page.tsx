@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 
 import { ClosingCta } from "@/components/landing/closing-cta"
+import { TENURE } from "@/components/landing/content"
 import { Bleed } from "@/components/landing/section"
 import { ProductGrid } from "@/components/products/product-grid"
 import { ProductsHero } from "@/components/products/products-hero"
@@ -11,8 +12,7 @@ import { SiteHeader } from "@/components/site/site-header"
 
 export const metadata: Metadata = {
   title: "Products & Services",
-  description:
-    "Proprietary platforms and focused service lines, crafted to the highest standard through nearly two decades of experience in Africa's most complex and demanding environments.",
+  description: `Proprietary platforms and focused service lines, crafted to the highest standard through ${TENURE} of experience in Africa's most complex and demanding environments.`,
 }
 
 export default function Page() {

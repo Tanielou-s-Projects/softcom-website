@@ -5,7 +5,10 @@ import { MotionConfig } from "motion/react"
 import "./globals.css"
 import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
 import { ThemeProvider } from "@/components/theme-provider"
+import { VariantProvider } from "@/components/variants/variant-context"
+import { VariantSwitcher } from "@/components/variants/variant-switcher"
 import { SanityLive } from "@/sanity/lib/live"
+import { PLAYGROUND_ENABLED } from "@/lib/playground-access"
 import { cn } from "@/lib/utils"
 
 const spaceGroteskHeading = Space_Grotesk({
@@ -58,7 +61,19 @@ export default function RootLayout({
            * still animates — without SSR/client branches that break hydration.
            */}
           <MotionConfig reducedMotion="user">
-            {children}
+            {/*
+             * In-page design explorations. Behind the playground gate the
+             * provider is absent, so every `useVariant` resolves to its
+             * production default and nothing extra is rendered.
+             */}
+            {PLAYGROUND_ENABLED ? (
+              <VariantProvider>
+                {children}
+                <VariantSwitcher />
+              </VariantProvider>
+            ) : (
+              children
+            )}
             <PixelPageTransition />
           </MotionConfig>
         </ThemeProvider>

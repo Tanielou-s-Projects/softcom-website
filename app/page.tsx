@@ -1,4 +1,5 @@
 import { Capabilities } from "@/components/landing/capabilities"
+import { TENURE_TITLE } from "@/components/landing/content"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { Hero } from "@/components/landing/hero"
 import { Insights } from "@/components/landing/insights"
@@ -22,7 +23,7 @@ export default function Page() {
       <Mission />
       <Sectors />
       <Capabilities />
-      <Stats heading="Two decades of measurable impact." />
+      <Stats heading={`${TENURE_TITLE} of measurable impact.`} />
       <Insights />
 
       {/*

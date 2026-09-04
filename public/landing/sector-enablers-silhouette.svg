@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" fill="#000" fill-rule="evenodd">
+  <!-- Placeholder: globe. Replace with brand silhouette; any opaque shape on transparent samples correctly. -->
+  <path d="M60 14a56 56 0 1 1 0 112a56 56 0 1 1 0-112zm0 10a46 46 0 1 0 0 92a46 46 0 1 0 0-92z"/>
+  <rect x="14" y="66" width="92" height="8"/>
+  <rect x="56" y="18" width="8" height="104"/>
+  <path d="M60 18c-20 0-30 24-30 52s10 52 30 52c-12 0-20-24-20-52s8-52 20-52z"/>
+  <path d="M60 18c20 0 30 24 30 52s-10 52-30 52c12 0 20-24 20-52s-8-52-20-52z"/>
+</svg>
