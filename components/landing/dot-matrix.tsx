@@ -4,17 +4,15 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-const COLS = 12
-const ROWS = 14
-
-/*
- * Deterministic "scatter": which dots are lit at rest. A pure hash so server
- * and client agree and the idle matrix looks the same on every load — roughly
- * the density of the old Figma export (27 of 42 dots).
- */
-function scatter(i: number) {
-  return (Math.sin(i * 12.9898 + 78.233) * 43758.5453) % 1
-}
+/* Fine enough for the globe's ring and meridians to survive sampling. */
+const COLS = 20
+const ROWS = 24
+/* Every cell, same dot, same tone at rest — a grid, not a texture. */
+const REST_OPACITY = 0.14
+/* The silhouette's cells at rest: legible, still neutral. */
+const SHAPE_REST_OPACITY = 0.55
+/* The field around the shape once it is in colour. */
+const DIM_OPACITY = 0.07
 
 /*
  * Sample a silhouette into per-cell coverage (0–1) by drawing it onto a canvas
@@ -78,41 +76,47 @@ type DotMatrixProps = {
 }
 
 /**
- * The sector mark: a 12 × 14 field of dots (168, up from the export's 6 × 7)
- * that rests as a sparse scatter and, when `resolved`, re-lights as the sector's
- * silhouette in the sector's colour. The transition staggers along the grid so
- * the image "arrives" rather than switching on.
+ * The sector mark: a uniform 20 × 24 field of identical dots. At rest every
+ * dot is the same quiet neutral, so the mark is a clean grid. When `resolved`
+ * the cells under the silhouette light up in the sector's colour and the rest
+ * of the field dims, so the building / skyline / globe reads inside an
+ * unchanged grid. The transition staggers along the grid so the image
+ * "arrives" rather than switching on.
  */
 function DotMatrix({ src, resolved, className }: DotMatrixProps) {
   const coverage = useCoverage(src)
-  const show = resolved && coverage !== null
 
   return (
     <svg
       aria-hidden
       viewBox={`0 0 ${COLS} ${ROWS}`}
-      className={cn("block aspect-[12/14] w-full", className)}
+      className={cn("block aspect-[20/24] w-full", className)}
     >
       {Array.from({ length: COLS * ROWS }, (_, i) => {
         const col = i % COLS
         const row = Math.floor(i / COLS)
-        const rest = scatter(i) > 0.36 ? 0.18 : 0.05
-        const lit = show ? coverage[i] : 0
-        // Resolved: the silhouette in colour; the rest of the field dims so it reads.
-        const opacity = show ? Math.max(lit, 0.05) : rest
+        // The shape is always drawn — in neutral at rest, in the sector colour when resolved.
+        const shape = coverage !== null && coverage[i] > 0.4
         return (
           <circle
             key={i}
             cx={col + 0.5}
             cy={row + 0.5}
-            r={0.27}
+            r={0.28}
             className={cn(
               "transition-[opacity,fill] duration-500 ease-out motion-reduce:transition-none",
-              show && lit > 0.35 ? "fill-current" : "fill-neutral-300"
+              // Foreground, not a fixed grey, so the grid shows on both themes.
+              shape && resolved ? "fill-current" : "fill-foreground"
             )}
             style={{
-              opacity,
-              transitionDelay: `${(col + row) * 14}ms`,
+              opacity: shape
+                ? resolved
+                  ? 1
+                  : SHAPE_REST_OPACITY
+                : resolved
+                  ? DIM_OPACITY
+                  : REST_OPACITY,
+              transitionDelay: `${(col + row) * 8}ms`,
             }}
           />
         )
