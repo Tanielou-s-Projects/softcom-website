@@ -341,6 +341,36 @@
   }
 }
 
+/* Hero variant `atlas`: the map resolves outward, routes draw, nodes land. */
+@keyframes softcom-atlas-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes softcom-atlas-draw {
+  from {
+    stroke-dasharray: 0 1;
+  }
+  to {
+    stroke-dasharray: 1 1;
+  }
+}
+
+@keyframes softcom-atlas-pulse {
+  from {
+    opacity: 0.55;
+    scale: 0.82;
+  }
+  to {
+    opacity: 0;
+    scale: 1.5;
+  }
+}
+
 /* Hero variant `matrix`: the capsule resolves end to end, then shimmers. */
 @keyframes softcom-band-resolve {
   from {
@@ -402,6 +432,26 @@
     animation: softcom-core-pulse 5s ease-in-out 1.4s infinite alternate;
   }
 
+  /*
+   * `atlas`. Base styles are the resting state, so reduced motion lands on the
+   * finished map with its routes drawn.
+   */
+  .softcom-atlas-band {
+    animation: softcom-atlas-in 0.55s ease-out 1 both;
+  }
+  .softcom-atlas-route {
+    stroke-dasharray: 1 1;
+    animation: softcom-atlas-draw 1s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
+  }
+  .softcom-atlas-node {
+    animation: softcom-atlas-in 0.5s ease-out 1 both;
+  }
+  .softcom-atlas-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: softcom-atlas-pulse 3.2s ease-out 2s infinite;
+  }
+
   /* `matrix`: each band resolves in turn, then breathes on a long period. */
   .softcom-hero-band {
     animation:
@@ -416,8 +466,16 @@
     .softcom-hero-node,
     .softcom-hero-field,
     .softcom-hero-core,
-    .softcom-hero-band {
+    .softcom-hero-band,
+    .softcom-atlas-band,
+    .softcom-atlas-route,
+    .softcom-atlas-node,
+    .softcom-atlas-pulse {
       animation: none;
+    }
+    /* The pulse's resting frame is invisible, so hide it outright. */
+    .softcom-atlas-pulse {
+      display: none;
     }
   }
 
