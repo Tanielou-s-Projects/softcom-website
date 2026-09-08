@@ -299,6 +299,67 @@
   }
 }
 
+/*
+ * Hero variant `convergence`: rays draw outward from the centre, nodes land
+ * after them, then the whole field drifts round on a very long period.
+ */
+@keyframes softcom-ray-draw {
+  from {
+    stroke-dasharray: 0 1;
+  }
+  to {
+    stroke-dasharray: 1 1;
+  }
+}
+
+@keyframes softcom-node-in {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes softcom-field-drift {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes softcom-core-pulse {
+  from {
+    opacity: 0.75;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hero variant `matrix`: the capsule resolves end to end, then shimmers. */
+@keyframes softcom-band-resolve {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes softcom-band-shimmer {
+  from {
+    opacity: 0.72;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @layer components {
   /*
    * One 2s entrance, played once (Figma's cohort on node 210:40 looped, which
@@ -321,11 +382,67 @@
     will-change: transform, scale;
   }
 
+  /*
+   * `convergence`. Base styles are the resting state, so reduced motion just
+   * lands on the finished field. The drift is 10 minutes a turn — present on a
+   * second look, never a spinning wheel.
+   */
+  .softcom-hero-ray {
+    stroke-dasharray: 1 1;
+    animation: softcom-ray-draw 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
+  }
+  .softcom-hero-node {
+    animation: softcom-node-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
+  }
+  .softcom-hero-field {
+    animation: softcom-field-drift 600s linear infinite;
+    will-change: rotate;
+  }
+  .softcom-hero-core {
+    animation: softcom-core-pulse 5s ease-in-out 1.4s infinite alternate;
+  }
+
+  /* `matrix`: each band resolves in turn, then breathes on a long period. */
+  .softcom-hero-band {
+    animation:
+      softcom-band-resolve 0.7s ease-out 1 both,
+      softcom-band-shimmer 7s ease-in-out 1.2s infinite alternate;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .softcom-hero-capsule,
-    .softcom-hero-blob {
+    .softcom-hero-blob,
+    .softcom-hero-ray,
+    .softcom-hero-node,
+    .softcom-hero-field,
+    .softcom-hero-core,
+    .softcom-hero-band {
       animation: none;
     }
+  }
+
+  /*
+   * `ledger`: a faint drafting ground behind the statement, faded out at the
+   * edges so it reads as a surface rather than a boxed-in grid.
+   */
+  .softcom-hero-ledger::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        color-mix(in oklch, var(--foreground) 6%, transparent) 0 1px,
+        transparent 1px 88px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        color-mix(in oklch, var(--foreground) 6%, transparent) 0 1px,
+        transparent 1px 88px
+      );
+    mask-image: radial-gradient(120% 90% at 30% 35%, black, transparent 72%);
   }
 
   /* The page-transition pixels — stepped, no fade (see pixel-page-transition.tsx). */

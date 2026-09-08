@@ -10,8 +10,9 @@ export const VARIANTS = {
     label: "Hero",
     options: [
       { id: "conduit", label: "Conduit (current)" },
-      { id: "portals", label: "Portals" },
-      { id: "reveal", label: "Reveal" },
+      { id: "convergence", label: "Convergence" },
+      { id: "matrix", label: "Dot matrix" },
+      { id: "ledger", label: "Ledger" },
     ],
   },
   tags: {
