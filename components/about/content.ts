@@ -10,9 +10,11 @@
  * reference and still need to be pulled; only 01 is captured so far.
  */
 
+import { TENURE_TITLE } from "@/components/landing/content"
+
 export const aboutHero = {
   eyebrow: "About Softcom",
-  title: "Two decades of technology that matters.",
+  title: `${TENURE_TITLE} of technology that matters.`,
   lead: "Softcom Limited is one of Africa's most established technology companies, delivering systems, platforms, and transformation programs that power the continent's most important institutions.",
 }
 

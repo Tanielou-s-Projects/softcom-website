@@ -27,7 +27,7 @@ function SectionMark({
       <h2
         className={cn(
           cardHeadingText,
-          "text-center text-foreground lg:w-[359px]"
+          "text-center text-foreground lg:max-w-[359px]"
         )}
       >
         {children}

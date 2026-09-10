@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { bodyText, displayText } from "@/components/landing/section"
+import { TENURE } from "@/components/landing/content"
 import { Reveal } from "@/components/motion/reveal"
 
 /**
@@ -25,13 +26,13 @@ function ProductsHero() {
         </Badge>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-32">
-          <h1 className={cn(displayText, "text-foreground lg:w-[565px]")}>
+          <h1 className={cn(displayText, "text-foreground lg:w-[48%]")}>
             Proven platforms. Focused services.
           </h1>
-          <p className={cn(bodyText, "text-foreground lg:w-[491px] lg:pt-6")}>
+          <p className={cn(bodyText, "text-foreground lg:w-[41%] lg:pt-6")}>
             Proprietary platforms and focused service lines, crafted to the
-            highest standard through nearly two decades of experience in
-            Africa&apos;s most complex and demanding environments.
+            highest standard through {TENURE} of experience in Africa&apos;s
+            most complex and demanding environments.
           </p>
         </div>
       </Reveal>

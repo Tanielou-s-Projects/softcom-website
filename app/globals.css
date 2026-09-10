@@ -76,7 +76,13 @@
    900 / 800 / 400. The light mapping has no design behind it yet and is a
    best-guess mirror using the same ramp. */
 :root {
-  --background: var(--color-white);
+  /*
+   * Not white: a warm light grey (≈ #ECECEB), so the light theme reads as
+   * paper rather than a blank screen and the neutral-50 plates sit on it as
+   * lighter panels — the same relationship the dark theme has between its
+   * neutral-900 plates and near-black ground.
+   */
+  --background: oklch(0.935 0.002 95);
   --foreground: var(--color-neutral-950);
   /*
    * A step off the page rather than equal to it. The design's cards carry no
@@ -269,28 +275,232 @@
   }
 }
 
+/*
+ * After the entrance the mark settles into a slow idle: the circles breathe
+ * and the bar's intensity drifts. Long period, tiny amplitude — enough that the
+ * hero is alive on a second look, never enough to read as a loop. `scale` is a
+ * separate property from the entrance's `transform`, so the two never fight.
+ */
+@keyframes softcom-blob-breathe {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 1.035;
+  }
+}
+
+@keyframes softcom-capsule-drift {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.86;
+  }
+}
+
+/*
+ * Hero variant `convergence`: rays draw outward from the centre, nodes land
+ * after them, then the whole field drifts round on a very long period.
+ */
+@keyframes softcom-ray-draw {
+  from {
+    stroke-dasharray: 0 1;
+  }
+  to {
+    stroke-dasharray: 1 1;
+  }
+}
+
+@keyframes softcom-node-in {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes softcom-field-drift {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes softcom-core-pulse {
+  from {
+    opacity: 0.75;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hero variant `atlas`: the map resolves outward, routes draw, nodes land. */
+@keyframes softcom-atlas-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes softcom-atlas-draw {
+  from {
+    stroke-dasharray: 0 1;
+  }
+  to {
+    stroke-dasharray: 1 1;
+  }
+}
+
+@keyframes softcom-atlas-pulse {
+  from {
+    opacity: 0.55;
+    scale: 0.82;
+  }
+  to {
+    opacity: 0;
+    scale: 1.5;
+  }
+}
+
+/* Hero variant `matrix`: the capsule resolves end to end, then shimmers. */
+@keyframes softcom-band-resolve {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes softcom-band-shimmer {
+  from {
+    opacity: 0.72;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @layer components {
   /*
-   * One 2s cycle, looping, matching Figma's cohort on node 210:40. The circles
-   * and the bar share a duration so they stay in step — they are one gesture,
-   * not three animations that happen to overlap.
+   * One 2s entrance, played once (Figma's cohort on node 210:40 looped, which
+   * the client found played-out on a second viewing). The circles and the bar
+   * share a duration so they stay in step — one gesture, not three animations.
+   * The idle starts as the entrance lands and alternates from then on.
    */
   .softcom-hero-capsule {
     stroke-dasharray: 1 1;
     stroke-dashoffset: 0;
-    animation: softcom-capsule-draw 2s linear infinite;
+    animation:
+      softcom-capsule-draw 2s linear 1 forwards,
+      softcom-capsule-drift 9s ease-in-out 2s infinite alternate;
   }
   .softcom-hero-blob {
-    animation: softcom-blob-separate 2s linear infinite;
+    animation:
+      softcom-blob-separate 2s linear 1 forwards,
+      softcom-blob-breathe 7s ease-in-out 2s infinite alternate;
     /* Composited, so the circles cost nothing to move. */
-    will-change: transform;
+    will-change: transform, scale;
+  }
+
+  /*
+   * `convergence`. Base styles are the resting state, so reduced motion just
+   * lands on the finished field. The drift is 10 minutes a turn — present on a
+   * second look, never a spinning wheel.
+   */
+  .softcom-hero-ray {
+    stroke-dasharray: 1 1;
+    animation: softcom-ray-draw 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
+  }
+  .softcom-hero-node {
+    animation: softcom-node-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
+  }
+  .softcom-hero-field {
+    animation: softcom-field-drift 600s linear infinite;
+    will-change: rotate;
+  }
+  .softcom-hero-core {
+    animation: softcom-core-pulse 5s ease-in-out 1.4s infinite alternate;
+  }
+
+  /*
+   * `atlas`. Base styles are the resting state, so reduced motion lands on the
+   * finished map with its routes drawn.
+   */
+  .softcom-atlas-band {
+    animation: softcom-atlas-in 0.55s ease-out 1 both;
+  }
+  .softcom-atlas-route {
+    stroke-dasharray: 1 1;
+    animation: softcom-atlas-draw 1s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
+  }
+  .softcom-atlas-node {
+    animation: softcom-atlas-in 0.5s ease-out 1 both;
+  }
+  .softcom-atlas-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: softcom-atlas-pulse 3.2s ease-out 2s infinite;
+  }
+
+  /* `matrix`: each band resolves in turn, then breathes on a long period. */
+  .softcom-hero-band {
+    animation:
+      softcom-band-resolve 0.7s ease-out 1 both,
+      softcom-band-shimmer 7s ease-in-out 1.2s infinite alternate;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .softcom-hero-capsule,
-    .softcom-hero-blob {
+    .softcom-hero-blob,
+    .softcom-hero-ray,
+    .softcom-hero-node,
+    .softcom-hero-field,
+    .softcom-hero-core,
+    .softcom-hero-band,
+    .softcom-atlas-band,
+    .softcom-atlas-route,
+    .softcom-atlas-node,
+    .softcom-atlas-pulse {
       animation: none;
     }
+    /* The pulse's resting frame is invisible, so hide it outright. */
+    .softcom-atlas-pulse {
+      display: none;
+    }
+  }
+
+  /*
+   * `ledger`: a faint drafting ground behind the statement, faded out at the
+   * edges so it reads as a surface rather than a boxed-in grid.
+   */
+  .softcom-hero-ledger::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        color-mix(in oklch, var(--foreground) 6%, transparent) 0 1px,
+        transparent 1px 88px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        color-mix(in oklch, var(--foreground) 6%, transparent) 0 1px,
+        transparent 1px 88px
+      );
+    mask-image: radial-gradient(120% 90% at 30% 35%, black, transparent 72%);
   }
 
   /* The page-transition pixels — stepped, no fade (see pixel-page-transition.tsx). */
@@ -400,6 +610,52 @@
   }
   .softcom-blueprint-rail[data-side="right"]::after {
     left: -8.5px;
+  }
+
+  /*
+   * `labelled`: the same rails, twice the weight, plus a running mono label
+   * set vertically along the plumb line — deliberate, not leftover.
+   */
+  .softcom-blueprint[data-style="labelled"] {
+    --blueprint-line: color-mix(in oklch, var(--foreground) 14%, transparent);
+    --blueprint-tick: color-mix(in oklch, var(--foreground) 30%, transparent);
+  }
+  .softcom-blueprint[data-style="labelled"] .softcom-blueprint-rail::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 96px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--blueprint-tick);
+    writing-mode: vertical-rl;
+  }
+  .softcom-blueprint[data-style="labelled"]
+    .softcom-blueprint-rail[data-side="left"]::before {
+    left: 40px;
+  }
+  .softcom-blueprint[data-style="labelled"]
+    .softcom-blueprint-rail[data-side="right"]::before {
+    right: 40px;
+    transform: rotate(180deg);
+  }
+
+  /* `dither`: no lines — the rail hosts a shader canvas, kept very quiet. */
+  .softcom-blueprint[data-style="dither"] .softcom-blueprint-rail {
+    background: none;
+    opacity: 0.28;
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 12%,
+      black 88%,
+      transparent
+    );
+  }
+  .softcom-blueprint[data-style="dither"] .softcom-blueprint-rail::after {
+    content: none;
   }
 }
 

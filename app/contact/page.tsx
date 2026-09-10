@@ -56,7 +56,7 @@ export default function Page() {
           </Reveal>
         </div>
 
-        <div className="flex flex-col gap-6 lg:w-[899px] lg:shrink-0">
+        <div className="flex flex-col gap-6 lg:w-[68%] lg:shrink-0">
           <Reveal delay={0.1}>
             <ContactForm />
           </Reveal>

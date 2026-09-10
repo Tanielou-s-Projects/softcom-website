@@ -60,4 +60,29 @@ function ThemeSwitcher({ className }: { className?: string }) {
   )
 }
 
-export { ThemeSwitcher }
+/**
+ * The header's version: one 24px dot in the capsule's own language, sitting at
+ * the end of the open menu. Shows the theme you would switch *to* — a sun in
+ * dark mode, a moon in light — decided by CSS (`light:`), so nothing hydrates.
+ * The capsule is scoped `dark`, hence `light:` rather than `dark:` here too.
+ */
+function ThemeToggleDot({ className }: { className?: string }) {
+  const { resolvedTheme, setTheme } = useTheme()
+
+  return (
+    <button
+      type="button"
+      aria-label="Switch theme"
+      onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
+      className={cn(
+        "grid size-6 shrink-0 place-items-center rounded-full bg-white/10 text-white/70 transition-colors outline-none hover:bg-white/20 hover:text-white focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3.5",
+        className
+      )}
+    >
+      <Sun className="light:hidden" />
+      <Moon className="hidden light:block" />
+    </button>
+  )
+}
+
+export { ThemeSwitcher, ThemeToggleDot }

@@ -39,7 +39,7 @@ function TopicFilter({
   const options: Filter[] = ["All", ...topics]
 
   return (
-    <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-[388px]">
+    <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-[29%]">
       <div
         role="group"
         aria-label="Filter insights by topic"

@@ -24,7 +24,7 @@ function ProductCard({ product }: { product: Product }) {
   return (
     <article className="flex flex-col gap-6 overflow-clip rounded-3xl bg-muted">
       <div className="flex flex-col items-start gap-2.5 p-6 sm:flex-row sm:items-center">
-        <h3 className={cn(cardHeadingText, "text-foreground sm:w-[359px]")}>
+        <h3 className={cn(cardHeadingText, "text-foreground sm:w-[56%]")}>
           {product.name}
         </h3>
         <p className={cn(leadText, "min-w-0 flex-1 text-foreground")}>
@@ -36,7 +36,7 @@ function ProductCard({ product }: { product: Product }) {
        * Only the top corners are rounded: the panel runs to the bottom of the
        * card, where the card's own clip takes over.
        */}
-      <div className="relative min-h-[420px] flex-1 overflow-clip rounded-t-[32px] bg-popover lg:min-h-[612px]">
+      <div className="relative min-h-[min(420px,55svh)] flex-1 overflow-clip rounded-t-[32px] bg-popover lg:min-h-[min(612px,65svh)]">
         <Image
           src={product.panel}
           alt=""

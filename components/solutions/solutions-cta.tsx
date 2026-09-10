@@ -22,7 +22,7 @@ function SolutionsCta() {
             <h2
               className={cn(
                 headingText,
-                "text-center text-foreground lg:w-[394px] lg:text-left"
+                "text-center text-foreground lg:max-w-[394px] lg:text-left"
               )}
             >
               Not sure where to start?

@@ -19,6 +19,7 @@ import {
   leadText,
   primaryPill,
 } from "@/components/landing/section"
+import { TENURE } from "@/components/landing/content"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 
@@ -201,10 +202,10 @@ function Mission() {
                 "max-w-[576px] text-center text-neutral-200"
               )}
             >
-              For over two decades, we have partnered with governments,
-              financial institutions, global development agencies, and
-              growth-stage enterprises to build the platforms, data systems, and
-              digital capabilities that drive their most important outcomes.
+              For {TENURE}, we have partnered with governments, financial
+              institutions, global development agencies, and growth-stage
+              enterprises to build the platforms, data systems, and digital
+              capabilities that drive their most important outcomes.
             </motion.p>
             <motion.div
               style={scrub ? { opacity: buttonOpacity, y: buttonY } : undefined}

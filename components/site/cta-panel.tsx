@@ -24,8 +24,9 @@ function CtaPanel({
   return (
     <div
       className={cn(
-        "dark relative flex h-[560px] flex-col items-center gap-10 overflow-clip rounded-4xl pt-16",
-        "lg:sticky lg:top-0 lg:h-[831px] lg:gap-16 lg:pt-[71px]",
+        "dark relative flex h-[min(560px,80svh)] flex-col items-center gap-10 overflow-clip rounded-4xl pt-16",
+        // Capped to the viewport so the pinned plate is always fully on screen.
+        "lg:sticky lg:top-0 lg:h-[min(831px,88svh)] lg:gap-16 lg:pt-[8%]",
         className
       )}
     >

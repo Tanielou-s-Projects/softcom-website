@@ -42,7 +42,7 @@ function Insights() {
                   <p className="text-foreground">{insight.category}</p>
                   <p className="text-muted-foreground">{insight.date}</p>
                 </div>
-                <p className="text-lg text-foreground lg:w-[501px] lg:text-2xl">
+                <p className="text-lg text-foreground lg:w-[73%] lg:text-2xl">
                   {insight.title}
                 </p>
               </div>

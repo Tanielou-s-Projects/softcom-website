@@ -40,7 +40,7 @@ function CaseStudyPanel({
     <article
       className={cn(
         "flex flex-col items-start justify-end gap-2.5 overflow-clip rounded-3xl bg-popover p-6",
-        "lg:h-[1024px]"
+        "lg:min-h-[min(1024px,88svh)]"
       )}
     >
       {/*
@@ -62,7 +62,7 @@ function CaseStudyPanel({
           <p className={cn(bodyText, "text-foreground")}>{study.challenge}</p>
         </div>
 
-        <div className="flex flex-col items-start justify-center gap-2.5 lg:w-[313px] lg:shrink-0">
+        <div className="flex flex-col items-start justify-center gap-2.5 lg:w-[34%] lg:shrink-0">
           {/* Larger than the badge's default 12px — the design sets 20px here. */}
           <Badge variant="brand" className="text-xl">
             {study.sector}
@@ -107,7 +107,7 @@ function CaseStudyList() {
 
   return (
     <Container className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-0">
-      <aside className="lg:w-[367px] lg:shrink-0 lg:pt-32">
+      <aside className="lg:w-[28%] lg:shrink-0 lg:pt-32">
         <div
           role="group"
           aria-label="Filter case studies by sector"
