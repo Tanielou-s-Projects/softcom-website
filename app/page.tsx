@@ -17,9 +17,9 @@ export default function Page() {
     /*
      * One spacing rhythm: the gap is the only space between sections — the
      * sections carry no vertical padding of their own — so every visible gap
-     * is the same 80px / 112px.
+     * is the same 112px / 192px.
      */
-    <div className="relative flex min-h-svh w-full flex-col gap-20 lg:gap-28">
+    <div className="relative flex min-h-svh w-full flex-col gap-28 lg:gap-48">
       <BlueprintGrid />
 
       <Hero />
