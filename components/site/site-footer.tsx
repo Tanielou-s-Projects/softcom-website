@@ -13,8 +13,8 @@ import { ThemeSwitcher } from "@/components/site/theme-switcher"
  * The footer plate — and, with no persistent top navigation, the site's full
  * menu. Contact details lead (the closing CTA above it has already made the
  * invitation; this gives the means), the menu lists every page and product,
- * and the oversized wordmark resolves in the greyscale dither as the page's
- * closing beat. On desktop the wordmark and the bottom bar are placed inside a
+ * and the oversized wordmark, cut by the plate's bottom edge, is a greyscale
+ * dither gradient that dissolves into the crop. On desktop the wordmark and the bottom bar are placed inside a
  * fixed panel, per Figma; below `lg` they fall back into normal flow.
  *
  * The plate stays `bg-neutral-900` in both themes rather than following `--card`
@@ -29,7 +29,7 @@ function SiteFooter() {
   )
 
   return (
-    <footer className="dark relative overflow-clip rounded-4xl bg-neutral-900 px-6 pt-14 pb-6 lg:h-[min(760px,90svh)] lg:px-[3.2%] lg:pt-[60px] lg:pb-0">
+    <footer className="dark relative overflow-clip rounded-4xl bg-neutral-900 px-6 pt-14 pb-6 lg:h-[min(700px,85svh)] lg:px-[3.2%] lg:pt-[60px] lg:pb-0">
       <div className="flex flex-col items-start justify-between gap-12 lg:flex-row">
         <address className="flex flex-col gap-6 not-italic lg:w-[30%]">
           <p className="text-sm leading-6 font-medium text-muted-foreground">
@@ -80,15 +80,19 @@ function SiteFooter() {
         </nav>
       </div>
 
-      {/* Oversized wordmark, held at its natural 1268x284 proportions. */}
+      {/*
+       * Oversized wordmark, held at its natural 1268x284 proportions. On
+       * desktop it sits on the plate's bottom edge, pushed down so the plate
+       * crops its lower ~40% — where its dither gradient has thinned to dots.
+       */}
       <DitherWordmark
         src="/brand/softcom-wordmark.svg"
         alt="Softcom"
-        className="mt-14 lg:absolute lg:right-[4.45%] lg:bottom-[88px] lg:left-[4.45%] lg:mt-0 lg:w-[91.1%]"
+        className="mt-14 lg:absolute lg:bottom-0 lg:left-[4.45%] lg:mt-0 lg:w-[91.1%] lg:translate-y-[40%]"
       />
 
       {/* One bottom bar: copyright, legal and social, theme. */}
-      <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-border pt-6 text-sm leading-6 font-medium text-neutral-400 lg:absolute lg:inset-x-[3.2%] lg:bottom-[24px] lg:mt-0 lg:pt-5">
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-border pt-6 text-sm leading-6 font-medium text-neutral-400 lg:absolute lg:inset-x-[3.2%] lg:bottom-[24px] lg:mt-0 lg:border-t-0 lg:pt-0">
         {/* neutral-400 on neutral-900 clears AA; the design's neutral-700 was ~2:1. */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <p>© {year} Softcom Limited. All rights reserved.</p>
