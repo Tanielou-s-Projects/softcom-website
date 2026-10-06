@@ -9,7 +9,7 @@ import { YEARS_ACTIVE } from "@/components/landing/content"
 import { ghostPill, primaryPill } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
 import { createDitherField } from "@/components/motion/dither-field"
-import { RevealHeader } from "./hero-header"
+import { HeroHeader } from "./hero-header"
 
 /* Mirrors Tailwind's `md` breakpoint, which the markup below switches on. */
 const MOBILE_QUERY = "(max-width: 767.98px)"
@@ -111,6 +111,7 @@ export function PortalHero({
   const fallbackRef = useRef<HTMLDivElement>(null)
   const statementRef = useRef<HTMLParagraphElement>(null)
   const actionsRef = useRef<HTMLDivElement>(null)
+  const headlineRef = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
     const element = track.current
     if (!element) return
@@ -189,7 +190,19 @@ export function PortalHero({
         const separation =
           growingRadius + lowerRadius * scale + (mobile ? 12 : 24)
         const x = width * (0.77 - p * 0.27) + (dx / length) * separation
-        const y = height * (0.27 + p * 0.23) + (dy / length) * separation
+        let y = height * (0.27 + p * 0.23) + (dy / length) * separation
+        // The lower circle is sized by width, the headline partly by height,
+        // so on wide or short screens the circle rises into the headline.
+        // Push it clear at rest, easing back to its path as the scene plays.
+        // offset* metrics ignore the headline's own scroll transform.
+        const headline = headlineRef.current
+        const band = headline?.offsetParent as HTMLElement | null
+        if (headline && band) {
+          const headlineBottom =
+            band.offsetTop + headline.offsetTop + headline.offsetHeight
+          const circleTop = y - lowerRadius * scale
+          y += Math.max(0, headlineBottom + 24 - circleTop) * (1 - p)
+        }
         element.style.setProperty("--lower-x", `${x}px`)
         element.style.setProperty("--lower-y", `${y}px`)
         element.style.setProperty("--lower-visible", "visible")
@@ -221,7 +234,7 @@ export function PortalHero({
   const dissolve = variant === "dissolve"
   return (
     <div className="bg-background text-foreground">
-      <RevealHeader heroRef={track} />
+      <HeroHeader />
       <div
         ref={track}
         className={cn(
@@ -243,12 +256,13 @@ export function PortalHero({
               "softcom-portal-exit-up absolute top-0 left-0 flex",
               "motion-reduce:relative motion-reduce:m-0 motion-reduce:h-auto motion-reduce:min-h-[40vh] motion-reduce:w-full motion-reduce:transform-none motion-reduce:px-[5vw] motion-reduce:pt-20 motion-reduce:pb-10 motion-reduce:opacity-100 motion-reduce:md:mt-0 motion-reduce:md:px-[5vw] motion-reduce:md:pt-20 motion-reduce:md:pb-10",
               circles
-                ? "h-[45%] w-[62%] items-start px-3.5 pt-[7vh] pb-5 md:-mt-[min(94px,9.02vh)] md:items-center md:px-[3.2vw] md:py-8"
+                ? "h-[45%] w-[62%] items-start px-3.5 pt-24 pb-5 md:px-[3.2vw] md:pb-8"
                 : "h-(--row) w-(--split) items-end border-r border-b border-border px-3.5 py-5 md:px-[3.2vw] md:py-8"
             )}
           >
             <h1
               id="story-title"
+              ref={headlineRef}
               className={cn(
                 "font-heading font-normal tracking-[-0.055em]",
                 // Size before leading: tailwind-merge drops a leading-* that a later text-* follows.
