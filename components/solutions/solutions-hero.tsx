@@ -73,7 +73,7 @@ function SolutionsHero() {
               "max-w-[810px] text-center text-card-foreground"
             )}
           >
-            The infrastructure behind organisations that move Africa forward.
+            Technology and expertise for your most important work.
           </h1>
         </Reveal>
       </div>

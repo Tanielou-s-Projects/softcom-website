@@ -27,15 +27,15 @@ function SolutionsCta() {
             >
               Not sure where to start?
             </h2>
-            <p className="max-w-[339px] text-center text-lg leading-none text-foreground lg:text-left">
+            <p className="max-w-[339px] text-center text-lg leading-[1.4] text-foreground lg:text-left">
               Most of our engagements begin with a conversation. Tell us what
-              you&apos;re trying to solve — we&apos;ll tell you honestly whether
-              we can
+              you&rsquo;re trying to solve; we will tell you honestly whether we
+              can help.
             </p>
           </div>
 
           <Button asChild size="lg" className={primaryPill}>
-            <Link href="/contact">Get In Touch</Link>
+            <Link href="/contact">Start a conversation</Link>
           </Button>
         </div>
       </Reveal>

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { usePathname } from "next/navigation"
 
 import {
   defaultVariant,
@@ -84,6 +85,19 @@ function subscribe(onChange: () => void) {
 }
 
 function write(next: VariantState) {
+  const previousHero = snapshot?.hero ?? defaultVariant("hero")
+  const url = new URL(window.location.href)
+  for (const key of Object.keys(VARIANTS) as VariantKey[]) {
+    url.searchParams.delete(`${QUERY_PREFIX}${key}`)
+    if (next[key]) url.searchParams.set(`${QUERY_PREFIX}${key}`, next[key])
+  }
+  window.history.replaceState(window.history.state, "", url)
+  if (
+    url.pathname === "/" &&
+    previousHero !== (next.hero ?? defaultVariant("hero"))
+  ) {
+    window.scrollTo({ top: 0, behavior: "instant" })
+  }
   snapshot = next
   persist(next)
   for (const l of listeners) l()
@@ -103,6 +117,16 @@ const VariantContext = React.createContext<VariantContextValue | null>(null)
  * ungated visitors never see an exploration.
  */
 export function VariantProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  React.useEffect(() => {
+    const refresh = () => {
+      snapshot = read()
+      for (const listener of listeners) listener()
+    }
+    refresh()
+    window.addEventListener("popstate", refresh)
+    return () => window.removeEventListener("popstate", refresh)
+  }, [pathname])
   const state = React.useSyncExternalStore(
     subscribe,
     getSnapshot,

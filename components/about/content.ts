@@ -1,36 +1,30 @@
 /**
- * About / Leadership / Alumni copy.
- *
- * Taken from the Softcom vision prototype (softcom-vision.replit.app) — the
- * real, specific history (ReloadNG, Eyowo, NPower, TraderMoni, the two
- * divisions) and the named leadership team. This is a bare-bones scaffold: the
- * structure and copy are here, the visual design comes later.
- *
- * TODO: principle descriptions 02–05 are behind a scroll-pinned panel on the
- * reference and still need to be pulled; only 01 is captured so far.
+ * About / Leadership / Alumni copy, from the client's website copy deck
+ * (October 2026). Earlier copy came from the Softcom vision prototype; where
+ * the two disagree on dates or figures, the deck is the client's latest word.
  */
 
-import { TENURE_TITLE } from "@/components/landing/content"
+import { TENURE_TITLE, YEARS_ACTIVE } from "@/components/landing/content"
 
 export const aboutHero = {
   eyebrow: "About Softcom",
   title: `${TENURE_TITLE} of technology that matters.`,
-  lead: "Softcom Limited is one of Africa's most established technology companies, delivering systems, platforms, and transformation programs that power the continent's most important institutions.",
+  lead: `Softcom is a technology and innovation company with ${YEARS_ACTIVE} years of experience building digital products, enterprise systems and large-scale initiatives for public institutions, private organisations and development enablers.`,
 }
 
 export const story = {
   eyebrow: "Our Story",
-  heading: "Built from a conviction about Africa's potential.",
+  heading: "Built from a conviction about Africa’s potential.",
   cta: { label: "Meet the team", href: "/about#team" },
   paragraphs: [
-    "Softcom was founded in Lagos in 2007. The founding conviction was clear: technology is a means, not an end — a tool to expand access and unlock opportunity for people and institutions. It began with ReloadNG, one of Nigeria's first online airtime recharge platforms, at a time when digital payments were unfamiliar to most Nigerians.",
-    "Over the years that followed, we built products and infrastructure for inclusion: a mobile-first payment platform that turned phone numbers into bank accounts, field data systems for agricultural value chains, and consumer engagement infrastructure deployed by global FMCG brands at national scale. We powered the Federal Government's NPower programme — building a digital platform that reached 500,000 young Nigerians across all 36 states.",
-    "Today Softcom operates as two focused divisions — Softcom Enterprise and Softcom Labs — serving clients across government, financial services, and international development in five countries.",
+    "Softcom was founded in 2007 with a mission to give many people a path to growth, achievement and fulfilment.",
+    "When technology was largely associated with global giants, solving an everyday problem with software showed us what was possible. We took that same approach into enterprises: understand what they wanted to achieve and build the answers they needed.",
+    "Today, our mission remains the same: to help organisations, our people and the communities we reach achieve more. Their progress gives purpose to ours.",
   ],
 }
 
 export type Milestone = {
-  /** The ruler positions ticks by this year across the 2007–2025 span. */
+  /** The ruler positions ticks by this year (a range sits at its start year). */
   year: string
   /** Short label shown on the ruler / hover preview. */
   headline: string
@@ -40,67 +34,96 @@ export type Milestone = {
 
 export const milestones = {
   eyebrow: "Milestones",
-  heading: "Our Journey",
+  heading: "Our journey",
   items: [
     {
       year: "2007",
-      headline: "Founded in Lagos, launched ReloadNG",
+      headline: "Pioneering electronic airtime purchases",
       description:
-        "Founded in Lagos. Launched ReloadNG — one of Nigeria's first online airtime recharge platforms, proving that digital payments had a place in Nigeria's mass market.",
+        "Founded in 2007, Softcom was among the pioneers of electronic airtime purchasing in Nigeria. ReloadNG enabled people to purchase airtime online, through a text message or with a missed call, introducing new ways to access an everyday service.",
     },
     {
-      year: "2013",
-      headline: "Pivoted to enterprise technology",
+      year: "2010–2015",
+      headline: "Enterprise systems and industry value chains",
       description:
-        "Pivoted to enterprise technology — building field data capture systems, digital operations platforms, and learning management systems for government and private sector clients.",
+        "Softcom developed enterprise systems across FMCG (fast-moving consumer goods) and FSI (financial services industry). The work deepened the company’s understanding of industry value chains and how technology could support operations, distribution and service delivery.",
+    },
+    {
+      year: "2015",
+      headline: "Deepening our footprint in education",
+      description:
+        "The Future Ready University conference brought Softcom together with university leaders, opening relationships that led to technology engagements across the education sector.",
+    },
+    {
+      year: "2016",
+      headline: "A landmark in national development",
+      description:
+        "Working with the Bank of Industry (BOI), Softcom delivered technology supporting the recruitment, training, deployment, management and payment of more than 500,000 graduates. The work brought multiple stages of a national development initiative together, enabling delivery and coordination at scale.",
     },
     {
       year: "2017",
-      headline: "Launched Eyowo",
+      headline: "Pioneering banking with a phone number",
       description:
-        "Launched Eyowo — transforming any Nigerian mobile number into a functional bank account. The platform became the payment backbone for national government disbursement programmes.",
+        "Softcom developed Eyowo, pioneering a way for consumers to bank using their existing phone numbers. Removing the leading zero turned the remaining ten digits into an account number, making a familiar identifier the gateway to banking. The platform went on to reach more than 4.5 million users banking through their phone numbers.",
     },
     {
-      year: "2019",
-      headline: "Powered TraderMoni",
+      year: "2018",
+      headline: "A landmark in development finance",
       description:
-        "Powered the Bank of Industry's TraderMoni programme — disbursing digital micro-loans to 1.2 million traders across hundreds of open markets in Nigeria.",
-    },
-    {
-      year: "2020",
-      headline: "Built Nigeria's NPower platform",
-      description:
-        "Built and operated Nigeria's NPower digital platform for the Federal Government — recruiting, training, and paying 500,000 young Nigerians across all 36 states.",
+        "Softcom’s technology enabled delivery of microloans to more than 1.2 million traders across Nigeria, most of whom were previously unbanked. It demonstrated how digital infrastructure could extend financial access to people operating beyond the reach of traditional banking.",
     },
     {
       year: "2021",
-      headline: "Split into Enterprise & Labs",
+      headline: "Platforms enabling new services",
       description:
-        "Restructured into two focused divisions: Softcom Enterprise (corporate and government digital transformation) and Softcom Labs (human-centred products in education, health, and financial inclusion).",
+        "Softcom launched platforms enabling services across data, stateless payments, retail and banking, giving organisations digital foundations through which to serve their customers and users.",
     },
     {
       year: "2025",
-      headline: "AI-powered intelligence & delivery",
+      headline: "Web3, AI and machine learning",
       description:
-        "Serving clients across multiple industries, while operating at the forefront of AI-powered intelligence, digital infrastructure, and programme delivery.",
+        "Our work expanded into systems using Web3 technologies and intelligence solutions powered by artificial intelligence and machine learning, extending the company’s enterprise capabilities.",
+    },
+    {
+      year: "2026",
+      headline: "Nineteen years of technology and innovation",
+      description:
+        "Softcom’s work spans Digital Infrastructure, Applied Intelligence and Powering Initiatives, bringing proprietary technology, partner platforms and delivery expertise to the ambitions of public institutions, private organisations and development enablers.",
     },
   ] satisfies Milestone[],
 }
 
 export const principles = {
   eyebrow: "Principles",
-  heading: "What we believe",
+  heading: "What guides our work",
+}
+
+export const leadershipSection = {
+  heading: "Our leadership",
+}
+
+/**
+ * "Latest news". The deck leaves the items as placeholders, so these are the
+ * existing insight links until real news is supplied.
+ */
+export const news = {
+  heading: "Latest news",
+  lead: "Updates from across Softcom.",
+  viewAll: { label: "View all news", href: "/insights" },
   items: [
     {
-      num: "01",
-      title: "Depth over speed",
-      description:
-        "We take time to understand problems fully before we engineer solutions. Lasting systems are not rushed.",
+      slug: "why-digital-transformation-fails-in-african-enterprises",
+      category: "Digital Strategy",
+      date: "April 26, 2026",
+      title:
+        "Why Digital Transformation Fails in African Enterprises — And What to Do About It",
     },
-    { num: "02", title: "African context, global standards", description: "" },
-    { num: "03", title: "Radical ownership", description: "" },
-    { num: "04", title: "Knowledge transfer", description: "" },
-    { num: "05", title: "Long-termism", description: "" },
+    {
+      slug: "building-a-data-culture-nigerian-financial-sector",
+      category: "Data",
+      date: "April 26, 2026",
+      title: "Building a Data Culture: Lessons from Nigeria’s Financial Sector",
+    },
   ],
 }
 
@@ -134,17 +157,36 @@ export const leaders: Leader[] = [
 
 export const alumniHero = {
   eyebrow: "Alumni",
-  title: "People who shaped Africa.",
-  lead: "For 18+ years, Softcom has been a home for exceptional people. Many of them have gone on to lead some of Africa's most consequential technology companies, financial institutions, government agencies, and development organisations — carrying with them the discipline, ambition, and values they built here.",
+  title: "You are part of the Softcom story.",
+  paragraphs: [
+    "Across teams, roles and generations, people have brought their knowledge, effort and ideas to Softcom. They helped build the company, and their contributions remain part of it.",
+    "The Softcom Alumni Network invites you to reconnect with former colleagues and help shape a community that supports what comes next, for one another and for Softcom.",
+    "Whether you joined at the beginning or more recently, whatever your role and wherever you are today, you are welcome.",
+  ],
+  cta: { label: "Explore our alumni community", href: "#join" },
 }
 
-export const alumniFamily = {
-  eyebrow: "The Softcom Family",
-  heading:
-    "A team that has grown together, delivered together, and gone on to shape organisations and industries across Africa and beyond.",
-  stats: [
-    { value: "18+", label: "Years" },
-    { value: "5", label: "Countries" },
-    { value: "85%", label: "Nigeria Reach" },
+/** Careers, from the copy deck. The deck lists no roles yet. */
+export const careers = {
+  eyebrow: "Careers",
+  title: "Original thinkers. Exceptional peers.",
+  paragraphs: [
+    "Softcom is for people who question assumptions, see possibilities and take responsibility for turning ideas into working solutions.",
+    "Original thinking matters here. So does ownership: working through difficult problems, raising issues early and following through. We look for people who care enough about the outcome to act, learn and improve.",
+    "In return, expect exceptional peers—people with depth in their disciplines whose capabilities complement yours. Colleagues who challenge your thinking, contribute answers you would not reach alone and bring the same sense of ownership to the work.",
   ],
+  work: {
+    heading: "The work you could help build.",
+    paragraphs: [
+      "Digital infrastructure through which people access services, connect and transact. Intelligence systems that help organisations investigate complex information and make decisions. Initiatives that bring technology, people and processes together to reach intended beneficiaries.",
+      "Across these areas, the work calls for understanding the problem, developing an answer and taking responsibility for how it performs in practice.",
+    ],
+  },
+  roles: {
+    heading: "Open roles",
+    // TODO(client): the deck has the heading but no roles; replace when listed.
+    empty:
+      "There are no open roles listed right now. If you would like to introduce yourself, we would be glad to hear from you.",
+    cta: { label: "Start a conversation", href: "/contact" },
+  },
 }

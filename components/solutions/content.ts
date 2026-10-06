@@ -1,5 +1,6 @@
 /**
- * Solutions page copy, transcribed from Figma `Solutions` (node 215:19).
+ * Solutions page copy, from the client's website copy deck (October 2026),
+ * laid out on the structure of Figma `Solutions` (node 215:19).
  *
  * Held here for the same reason as the landing copy: the three solution areas
  * and the delivery phases are the obvious first Sanity document types, and
@@ -11,14 +12,24 @@ export type SolutionFeature = {
   description: string
 }
 
+/** A short inline list under its own subheading, with a line either side. */
+export type SolutionList = {
+  heading: string
+  intro: string
+  items: SolutionFeature[]
+  outro: string
+}
+
 export type Solution = {
   id: string
   title: string
   /** The accented one-liner that sits above the body copy. */
   lead: string
-  description: string
-  /** Always two in the design, the first dotted cyan and the second blue. */
-  features: [SolutionFeature, SolutionFeature]
+  description: string[]
+  list?: SolutionList
+  /** Dotted rows; the dot alternates cyan then blue by position. */
+  features: SolutionFeature[]
+  cta?: { label: string; href: string }
   image: {
     src: string
     /** Intrinsic size of the export, for `next/image`. */
@@ -27,25 +38,57 @@ export type Solution = {
   }
 }
 
+export const solutionsIntro = [
+  "Softcom builds the systems people use to access services and transact, the intelligence organisations need to understand complex information, and the capabilities required to deliver large-scale initiatives.",
+  "Whether you have a defined requirement, a challenge to work through or an opportunity to explore, we bring together the technology, people and processes needed to develop and deliver the answer.",
+]
+
 export const solutions: Solution[] = [
   {
     id: "digital-infrastructure",
     title: "Digital Infrastructure",
-    lead: "Africa's most important outcomes need infrastructure that doesn't exist yet. We build it.",
-    description:
-      "Digital infrastructure is the technology foundation that outcomes run on. Sometimes that means assembling something entirely new, combining platforms, systems, and data flows to carry a programme at scale. And where world-class infrastructure already exists globally, we are the partner that makes it land and work in local markets.",
+    lead: "We build the digital rails and connected systems that enable institutions to operate, people to access services and participants to transact at scale.",
+    description: [],
+    list: {
+      heading: "Connecting the essential parts of an operation",
+      intro:
+        "An institution needs to know who it serves, what each participant can access, how activities move from one stage to the next, and when value should change hands. Our infrastructure connects those functions.",
+      items: [
+        {
+          label: "Identity and access",
+          description:
+            "Register and verify people, organisations or assets, and establish their access to services.",
+        },
+        {
+          label: "Records and operations",
+          description:
+            "Maintain a shared record of participants, cases and activities, so work moves between teams, systems and partner organisations without duplicate data entry or loss of information.",
+        },
+        {
+          label: "Services and transactions",
+          description:
+            "Turn eligibility rules, approvals and completed activities into access, service delivery or payments.",
+        },
+      ],
+      outro:
+        "These capabilities can form the operating foundation of an entire institution or shared rails through which many organisations serve their users.",
+    },
     features: [
       {
         label: "Built Here, For Here",
         description:
-          "We assemble the infrastructure when nothing sufficient exists — combining identity, payments, learning management, and data into integrated foundations that carry large-scale programmes from end to end.",
+          "Where existing systems cannot support what an organisation needs to do, we design and build the infrastructure that can. We bring together our own technology, partner platforms and custom-built systems, shaped around the organisation’s requirements, the people who will use them and the conditions in which they must operate.",
       },
       {
-        label: "Global Rail, Local Context",
+        label: "Global Rails, Local Expertise",
         description:
-          "We bring world-class infrastructure into markets that need it — platforms representing the most advanced financial and operational systems in the world, implemented for local institutions, regulators, and workflows.",
+          "Where world-class infrastructure already exists, we bring the expertise to put it to work locally. Working with our technology partners, we integrate platforms into institutions’ existing systems and adapt their implementation to local requirements, workflows and operating conditions.",
       },
     ],
+    cta: {
+      label: "Explore our enterprise products",
+      href: "/enterprise-products",
+    },
     image: {
       src: "/landing/solution-infrastructure.png",
       width: 780,
@@ -53,23 +96,48 @@ export const solutions: Solution[] = [
     },
   },
   {
-    id: "intelligence",
-    title: "Intelligence",
-    lead: "Decisions are only as good as the understanding behind them.",
-    description:
-      "Intelligence is about equipping organisations to see what is actually happening — not just collecting data, but turning it into something that changes how a brand competes, how an agency fulfils its mandate, or how a partner understands the landscape they are about to enter.",
+    id: "applied-intelligence",
+    title: "Applied Intelligence",
+    lead: "We build intelligence systems around the questions organisations need to answer and the work they need to carry out.",
+    description: [
+      "Across documents, records and datasets, our technology makes it possible to examine information at a depth and scale that manual review cannot sustain. It helps people connect evidence, investigate activity, understand relationships and determine what requires action.",
+    ],
     features: [
+      {
+        label: "Audit Intelligence",
+        description:
+          "Equip audit teams to examine evidence, test records, reconcile discrepancies and develop findings against the objectives of an audit. Across financial, operational and forensic audits, our systems connect the information and investigative capabilities needed to conduct the work thoroughly.",
+      },
+      {
+        label: "Financial Intelligence",
+        description:
+          "Follow the money. Trace flows of funds, examine the relationships behind transactions and understand patterns of financial activity. Give organisations with financial oversight the capabilities to identify and investigate movements that require attention.",
+      },
       {
         label: "Market Intelligence",
         description:
-          "We help organisations understand the markets they operate in — consumer behaviour, competitive dynamics, and emerging opportunity. Intelligence that changes how a brand competes and how commercial decisions are made.",
+          "Understand consumer behaviour, competitive dynamics and emerging opportunities. Connect market signals and evidence to the decisions that shape how an organisation competes, serves its customers and grows.",
       },
       {
-        label: "Mandate Intelligence",
+        label: "Regulatory Intelligence",
         description:
-          "We equip agencies and development partners with the data infrastructure and analytical capability to understand whether their interventions are working — and where to direct resources next.",
+          "Give regulators the capabilities to examine the organisations and activities under their oversight. Bring paper records, digital submissions and information from third-party systems into a form that supports scrutiny, assessment and follow-up.",
+      },
+      {
+        label: "Societal Intelligence",
+        description:
+          "Build a connected understanding of a society, state or jurisdiction: its people, institutions, resources and economic activity. Reveal local differences, opportunities and issues requiring attention to inform the work of governments, investors and development organisations.",
+      },
+      {
+        label: "Shaped around the work",
+        description:
+          "Each system reflects the mandate of its users, the evidence they need and the decisions they must make. We bring together the relevant information sources, analytical capabilities and workflows, with access tailored to each user’s role and responsibilities.",
       },
     ],
+    cta: {
+      label: "Explore our enterprise products",
+      href: "/enterprise-products",
+    },
     image: {
       src: "/landing/solution-intelligence.png",
       width: 784,
@@ -77,21 +145,15 @@ export const solutions: Solution[] = [
     },
   },
   {
-    id: "programs",
-    title: "Programs",
-    lead: "Some outcomes are too complex for a tool or a report. They need someone to own the entire journey.",
-    description:
-      "Programs is where Softcom deploys its full capability. Not technology alone — but research, design, people, systems, and accountability, working together over the full arc of delivery. We don't hand over a product and step back. We stay until the outcome is real and scalable.",
+    id: "powering-initiatives",
+    title: "Powering Initiatives",
+    lead: "Softcom brings its full capability to complex initiatives: research, design, technology, people and operational expertise.",
+    description: [],
     features: [
       {
-        label: "Who This Is For",
+        label: "What you can entrust to us",
         description:
-          "Development partners funding systemic change. Government agencies running large mandated interventions. Organisations that need a trusted implementer — not a vendor — to carry a complex, multi-year outcome.",
-      },
-      {
-        label: "What Makes It Different",
-        description:
-          "Most technology firms deliver tools. We deliver outcomes. Programs means we are accountable not for what we built, but for what changed — and we design everything from the start to be measurable and scalable.",
+          "Initiative design, participant recruitment, technology deployment, field operations, training, payment coordination and results assessment. Our involvement follows the initiative\u2019s needs: we deliver directly, manage partners or combine both, with clear responsibility for execution and results.",
       },
     ],
     image: {
@@ -112,25 +174,31 @@ export type DeliveryPhase = {
 export const deliveryPhases: DeliveryPhase[] = [
   {
     step: "01",
-    title: "Research & Discovery",
-    description: "We learn the problem deeply before designing anything.",
+    title: "Discovery",
+    description:
+      "Understand the intended outcome, the people involved and the operating environment. Assess existing systems and establish what capabilities are needed.",
   },
   {
     step: "02",
-    title: "Program Design",
+    title: "Design",
     description:
-      "We architect the intervention, people, systems, and process together.",
+      "Design the technology, workflows and delivery plan together. Define how participants will be reached and served, how information and payments will move, and who is responsible at each stage.",
   },
   {
     step: "03",
-    title: "Deployment",
+    title: "Deployment & Operations",
     description:
-      "We put the people and systems in place and run the programme.",
+      "Deploy and connect the systems, prepare teams and run operations. Use shared information to coordinate partners and keep field activities, services and payments on schedule.",
   },
   {
     step: "04",
     title: "Impact & Scale",
     description:
-      "We track what changes, assess what works, and scale what does.",
+      "Use delivery data and participant feedback to assess results and improve the approach. Determine what the technology and operations need to support greater reach.",
   },
 ]
+
+export const deliveryClose = {
+  text: "We stay accountable for what the initiative achieves, not only for what we build.",
+  cta: { label: "Discuss an initiative", href: "/contact" },
+}

@@ -97,16 +97,20 @@ function SectorCard({
   const active = hovered === index
   // Pointer devices resolve on hover; touch resolves as the card arrives.
   const resolved = coarse ? inView : active
-  const contrast = index === 1
+  // Alternate plates are a step lighter, as the middle card is in Figma.
+  const contrast = index % 2 === 1
 
   /*
    * Accordion, after the WorldQuant Foundry ethos row: explicit column widths
-   * (rest 33.3%, active 45%, yielding 27.5%), a 100ms delay so a cursor
-   * sweeping past doesn't churn the row, and an ease that gathers before it
-   * arrives rather than leaping. Nothing stacks — the hovered card squeezes
-   * its neighbours, and every plate fills exactly its own column.
+   * (at rest an even share; the hovered card grows to 1.35× that and the rest
+   * split what is left — 45% / 27.5% for three cards), a 100ms delay so a
+   * cursor sweeping past doesn't churn the row, and an ease that gathers
+   * before it arrives rather than leaping. Nothing stacks — the hovered card
+   * squeezes its neighbours, and every plate fills exactly its own column.
    */
-  const width = hovered === null ? "33.333%" : active ? "45%" : "27.5%"
+  const rest = 100 / count
+  const grown = rest * 1.35
+  const width = `${hovered === null ? rest : active ? grown : (100 - grown) / (count - 1)}%`
 
   /*
    * Two layers on purpose. Chrome folds an element's own `clip-path` into its
@@ -148,9 +152,8 @@ function SectorCard({
           },
         }}
         className={cn(
-          "relative flex flex-1 flex-col justify-between gap-12 overflow-hidden rounded-4xl p-8",
+          "@container relative flex flex-1 flex-col justify-between gap-12 overflow-hidden rounded-4xl p-8",
           "lg:min-h-[min(772px,80svh)] lg:gap-0",
-          // The middle card is a step lighter, as in Figma.
           contrast ? "bg-secondary" : "bg-popover"
         )}
       >
@@ -160,8 +163,17 @@ function SectorCard({
 
         <div className="relative flex flex-col">
           <div className="flex flex-col gap-6 text-foreground">
-            {/* The heading runs free — "Development" alone is wider than the copy measure. */}
-            <h3 className={cn(cardHeadingText, "whitespace-pre-line")}>
+            {/*
+             * The heading runs free of the copy measure and scales with the
+             * card: at four across, "Organisations" is wider than a resting
+             * column at the card scale. 14cqw fits the longest word.
+             */}
+            <h3
+              className={cn(
+                cardHeadingText,
+                "whitespace-pre-line lg:text-[clamp(1.75rem,14cqw,3.25rem)]"
+              )}
+            >
               {sector.title}
             </h3>
             {/* One fixed measure for every card, so line lengths match across the row. */}
@@ -201,7 +213,7 @@ function SectorCard({
 }
 
 /**
- * The three sector cards as one interactive row. Owns the hover state so a
+ * The sector cards as one interactive row. Owns the hover state so a
  * card's growth and its siblings' shrink are one gesture, and reads the tag
  * treatment from the variant switcher.
  */

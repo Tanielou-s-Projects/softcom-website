@@ -17,7 +17,7 @@ function Stats({
   className?: string
 }) {
   return (
-    <Container className={cn("flex flex-col gap-10 py-6 lg:gap-14", className)}>
+    <Container className={cn("flex flex-col gap-10 lg:gap-14", className)}>
       {heading ? (
         <Reveal asChild>
           <h2 className={cn(headingText, "max-w-[18ch] text-foreground")}>

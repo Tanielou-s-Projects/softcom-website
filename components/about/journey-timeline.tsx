@@ -12,7 +12,7 @@ import { bodyText, Container, headingText } from "@/components/landing/section"
  * "Our Journey" — a V7-style ruler timeline, adapted to the Softcom dark theme.
  *
  * The milestones sit on a horizontal scale positioned by their actual year
- * (2007 → 2025), so the gaps read true. Navigate by hovering a tick, dragging /
+ * (2007 → 2026), so the gaps read true. Navigate by hovering a tick, dragging /
  * horizontal-scrolling to scrub, the prev/next arrows, or the keyboard — and it
  * auto-advances while on screen until you touch it. Selecting a milestone
  * reveals its full copy; `reveal` swaps how that reveal is composed so the
@@ -21,10 +21,10 @@ import { bodyText, Container, headingText } from "@/components/landing/section"
 
 const items = milestones.items
 const YEAR_MIN = 2007
-const YEAR_MAX = 2025
-/** 0–1 position of a year across the span. */
+const YEAR_MAX = 2026
+/** 0–1 position of a year across the span; a range ("2010–2015") sits at its start. */
 const posOf = (year: string) =>
-  (Number(year) - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)
+  (parseInt(year, 10) - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)
 
 /** Decorative background rhythm — a dense, low-contrast ruler behind the marks. */
 const MINOR_TICKS = 56

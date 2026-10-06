@@ -11,7 +11,7 @@ import { SiteHeader } from "@/components/site/site-header"
 export const metadata: Metadata = {
   title: "Solutions",
   description:
-    "Three integrated solution areas that together cover the full arc of delivery — digital infrastructure, intelligence, and programmes.",
+    "Digital Infrastructure, Applied Intelligence and Powering Initiatives: technology and expertise for your most important work.",
 }
 
 export default function Page() {

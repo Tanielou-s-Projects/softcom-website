@@ -1,31 +1,64 @@
-/* eslint-disable @next/next/no-img-element -- local SVG, intentionally not run through next/image */
 import Link from "next/link"
 
-import { footerNav } from "@/components/landing/content"
+import {
+  footerLegal,
+  footerNav,
+  footerSocial,
+} from "@/components/landing/content"
+import { contactDetails, phoneHref } from "@/components/contact/content"
+import { DitherWordmark } from "@/components/site/dither-wordmark"
 import { ThemeSwitcher } from "@/components/site/theme-switcher"
 
 /**
- * The footer plate. On desktop the oversized wordmark and the copyright line
- * are absolutely placed inside a fixed 700px panel, per Figma; below `lg` they
- * fall back into normal flow so the panel can grow with its content.
+ * The footer plate — and, with no persistent top navigation, the site's full
+ * menu. Contact details lead (the closing CTA above it has already made the
+ * invitation; this gives the means), the menu lists every page and product,
+ * and the oversized wordmark, cut by the plate's bottom edge, is a greyscale
+ * dither gradient that dissolves into the crop. On desktop the wordmark and the bottom bar are placed inside a
+ * fixed panel, per Figma; below `lg` they fall back into normal flow.
  *
  * The plate stays `bg-neutral-900` in both themes rather than following `--card`
- * — a dark footer under a light page is the intent, and it keeps the oversized
- * wordmark legible. It therefore carries a local `dark` class, so every role
- * used inside resolves to its dark value even while the page is light, instead
- * of each one having to be pinned by hand.
+ * — a dark footer under a light page is the intent. It therefore carries a
+ * local `dark` class, so every role used inside resolves to its dark value
+ * even while the page is light.
  */
 function SiteFooter() {
+  const year = new Date().getFullYear()
+  const bottomLinks = [...footerLegal, ...footerSocial].filter(
+    (link): link is { label: string; href: string } => Boolean(link.href)
+  )
+
   return (
     <footer className="dark relative overflow-clip rounded-4xl bg-neutral-900 px-6 pt-14 pb-6 lg:h-[min(700px,85svh)] lg:px-[3.2%] lg:pt-[60px] lg:pb-0">
-      <div className="flex flex-col items-start justify-between gap-10 lg:flex-row lg:items-end">
-        <p className="font-heading text-3xl leading-[1.026] text-foreground lg:w-[46%] lg:text-[3.375rem]">
-          Technology for Organisations. Progress for Society.
-        </p>
+      <div className="flex flex-col items-start justify-between gap-12 lg:flex-row">
+        <address className="flex flex-col gap-6 not-italic lg:w-[30%]">
+          <p className="text-sm leading-6 font-medium text-muted-foreground">
+            Get in touch
+          </p>
+          <div className="flex flex-col gap-1 font-heading text-2xl leading-[1.15] text-foreground lg:text-[1.75rem]">
+            <a
+              href={`mailto:${contactDetails.email}`}
+              className="w-fit hover:text-brand-accent"
+            >
+              {contactDetails.email}
+            </a>
+            <a href={phoneHref} className="w-fit hover:text-brand-accent">
+              {contactDetails.phone}
+            </a>
+          </div>
+          <p className="text-sm leading-6 text-neutral-400">
+            {contactDetails.organisation}
+            {contactDetails.address.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </p>
+        </address>
 
         <nav
           aria-label="Footer"
-          className="flex flex-wrap items-start gap-x-12 gap-y-8 text-sm leading-6 font-medium lg:gap-[127px]"
+          className="grid grid-cols-2 gap-x-10 gap-y-10 text-sm leading-6 font-medium sm:grid-cols-4 lg:gap-x-16"
         >
           {footerNav.map((group) => (
             <div
@@ -47,20 +80,34 @@ function SiteFooter() {
         </nav>
       </div>
 
-      {/* Oversized wordmark, held at its natural 1268x284 proportions. */}
-      <img
+      {/*
+       * Oversized wordmark, held at its natural 1268x284 proportions. On
+       * desktop it sits on the plate's bottom edge, pushed down so the plate
+       * crops its lower ~18% — where its dither gradient has thinned to dots.
+       */}
+      <DitherWordmark
         src="/brand/softcom-wordmark.svg"
         alt="Softcom"
-        className="mt-14 block h-auto w-full lg:absolute lg:top-[44.16%] lg:right-[4.45%] lg:left-[4.45%] lg:mt-0"
+        className="mt-14 lg:absolute lg:bottom-0 lg:left-[4.45%] lg:mt-0 lg:w-[91.1%] lg:translate-y-[18%]"
       />
 
-      {/* neutral-400 on neutral-900 clears AA; the design's neutral-700 was ~2:1 and read as unreadable. */}
-      <p className="mt-10 text-sm leading-6 font-medium text-neutral-400 lg:absolute lg:bottom-[33px] lg:left-1/2 lg:mt-0 lg:-translate-x-1/2 lg:whitespace-nowrap">
-        © 2026 Softcom Limited. All rights reserved.
-      </p>
-
-      {/* Optically centred against the copyright's 24px line, not its box. */}
-      <ThemeSwitcher className="mt-6 lg:absolute lg:right-[46px] lg:bottom-[29px] lg:mt-0" />
+      {/* One bottom bar: copyright, legal and social, theme. */}
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-border pt-6 text-sm leading-6 font-medium text-neutral-400 lg:absolute lg:inset-x-[3.2%] lg:bottom-[24px] lg:mt-0 lg:border-t-0 lg:pt-0">
+        {/* neutral-400 on neutral-900 clears AA; the design's neutral-700 was ~2:1. */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <p>© {year} Softcom Limited. All rights reserved.</p>
+          {bottomLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="hover:text-foreground"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+        <ThemeSwitcher />
+      </div>
     </footer>
   )
 }

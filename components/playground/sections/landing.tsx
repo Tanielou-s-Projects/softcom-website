@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 import { bodyText, cardHeadingText } from "@/components/landing/section"
 import { SpecimenGroup, TokenLabel } from "@/components/playground/section"
 import { cn } from "@/lib/utils"
@@ -11,6 +12,19 @@ import { cn } from "@/lib/utils"
 export function LandingSection() {
   return (
     <div className="flex flex-col gap-8">
+      <SpecimenGroup label="Hero">
+        <p className="mb-3 max-w-prose text-sm text-muted-foreground">
+          The landing hero is the dither dissolve: circles, then the shared
+          dither carrying the statement and the mission in one pinned scene. The
+          circular and grid explorations are retired from the picker.
+        </p>
+        <Link
+          href="/"
+          className="inline-flex rounded-full bg-foreground px-5 py-3 text-sm text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+        >
+          View landing hero ↗
+        </Link>
+      </SpecimenGroup>
       <SpecimenGroup label="Sector card">
         <p className="mb-3 max-w-prose text-sm text-muted-foreground">
           Three of these sit in a row, each pulled 64px over the last. The

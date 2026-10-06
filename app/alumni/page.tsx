@@ -1,66 +1,63 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import { alumniFamily, alumniHero } from "@/components/about/content"
+import { alumniHero } from "@/components/about/content"
+import { AlumniForm } from "@/components/about/alumni-form"
+import { AlumniHero } from "@/components/about/alumni-hero"
+import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
   Bleed,
-  bodyText,
   Container,
-  displayText,
-  headingText,
   leadText,
+  primaryPill,
 } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
-import { SiteHeader } from "@/components/site/site-header"
+import { HeroHeader } from "@/components/landing/hero-header"
 
 export const metadata: Metadata = {
   title: "Alumni",
-  description: alumniHero.lead,
+  description: alumniHero.paragraphs[0],
 }
 
 const eyebrow =
   "text-xs font-medium uppercase tracking-widest text-muted-foreground"
 
-/** Alumni — bare-bones scaffold. */
+/** Alumni — the invitation, then the sign-up. */
 export default function Page() {
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-background">
-      <SiteHeader />
+      {/* Floats over the full-bleed hero rather than taking a band above it. */}
+      <HeroHeader />
 
-      <Container className="flex flex-col gap-6 py-12">
+      <AlumniHero
+        src="/alumni/team.jpg"
+        alt="The Softcom team gathered together on a beach in front of a hotel"
+        title={alumniHero.title}
+      />
+
+      <Container className="flex flex-col items-start gap-6 py-16">
         <p className={eyebrow}>{alumniHero.eyebrow}</p>
-        <h1 className={cn(displayText, "max-w-[16ch] text-foreground")}>
-          {alumniHero.title}
-        </h1>
-        <p className={cn(leadText, "max-w-[75ch] text-muted-foreground")}>
-          {alumniHero.lead}
-        </p>
+        {alumniHero.paragraphs.map((paragraph) => (
+          <p
+            key={paragraph}
+            className={cn(leadText, "max-w-[75ch] text-muted-foreground")}
+          >
+            {paragraph}
+          </p>
+        ))}
+        <Button asChild size="lg" className={primaryPill}>
+          <Link href={alumniHero.cta.href}>{alumniHero.cta.label}</Link>
+        </Button>
       </Container>
 
-      <Container className="flex flex-col gap-8 py-12">
-        <div className="flex flex-col gap-2">
-          <p className={eyebrow}>{alumniFamily.eyebrow}</p>
-          <h2 className={cn(headingText, "max-w-[40ch] text-foreground")}>
-            {alumniFamily.heading}
-          </h2>
-        </div>
-        <dl className="grid gap-8 border-t border-border pt-8 sm:grid-cols-3">
-          {alumniFamily.stats.map((stat) => (
-            <div key={stat.label} className="flex flex-col gap-1">
-              <dd className="font-heading text-4xl text-foreground lg:text-5xl">
-                {stat.value}
-              </dd>
-              <dt className={cn(bodyText, "text-muted-foreground")}>
-                {stat.label}
-              </dt>
-            </div>
-          ))}
-        </dl>
+      <Container className="py-12">
+        <AlumniForm />
       </Container>
 
       <Bleed className="flex flex-col gap-2.5 py-6">
-        <ClosingCta variant="build" />
+        <ClosingCta />
         <SiteFooter />
       </Bleed>
     </div>

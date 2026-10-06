@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 
 import { SoftcomWordmark } from "@/components/site/softcom-wordmark"
-import { DitherShape } from "@/components/site/dither-shape"
+import { NavPlate } from "@/components/site/nav-plate"
 import { ThemeToggleDot } from "@/components/site/theme-switcher"
 
 import {
@@ -57,10 +57,72 @@ function useMenuCue(enabled: boolean) {
   return cue
 }
 
+/** How far past the top the page must be before scrolling down hides the pill. */
+const HIDE_AFTER = 96
+/** Scroll jitter below this many px doesn't count as a direction change. */
+const SCROLL_SLOP = 6
+/** Mouse within this many px of the window's top edge brings the pill back. */
+const EDGE_REVEAL = 32
+/** Grace before a hover-opened pill closes, so a slip off its edge doesn't snap it shut. */
+const HOVER_CLOSE_DELAY = 280
+
+/**
+ * Headroom: the pill gets out of the way while the reader scrolls down — so it
+ * never sits on a heading they are reading — and returns on any scroll up, near
+ * the top of the page, or when the mouse comes up to the window's top edge.
+ *
+ * Returns whether the page has scrolled the pill away; the caller decides what
+ * keeps it shown regardless (pointer inside, focus inside, menu open).
+ * `onScrollDown` lets the caller fold an open menu as the reader moves on.
+ */
+function useScrolledAway(onScrollDown: () => void) {
+  const [away, setAway] = React.useState(false)
+
+  React.useEffect(() => {
+    let last = window.scrollY
+    let frame = 0
+
+    const onScroll = () => {
+      if (frame) return
+      frame = requestAnimationFrame(() => {
+        frame = 0
+        const y = window.scrollY
+        const delta = y - last
+        if (y < HIDE_AFTER) {
+          setAway(false)
+          last = y
+        } else if (delta > SCROLL_SLOP) {
+          setAway(true)
+          onScrollDown()
+          last = y
+        } else if (delta < -SCROLL_SLOP) {
+          setAway(false)
+          last = y
+        }
+      })
+    }
+    const onPointerMove = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return
+      if (event.clientY <= EDGE_REVEAL) setAway(false)
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("pointermove", onPointerMove, { passive: true })
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("pointermove", onPointerMove)
+    }
+  }, [onScrollDown])
+
+  return away
+}
+
 /**
  * A sticky capsule: the wordmark and the menu live in one floating pill,
- * centred at the top of every page. It stays put on scroll, its dark
- * translucent fill + ring keeping it legible over any content.
+ * centred at the top of every page. It opens on hover (mouse and pen) or on
+ * the blue dot, and steps aside while the reader scrolls down so it never
+ * covers the heading they are reading (see `useScrolledAway`).
  *
  * The menu morphs: `#site-menu` animates its width from the two collapsed dots
  * to the expanded nav + close, and the flex capsule grows with it. The two dots
@@ -82,11 +144,41 @@ function SiteHeader() {
    */
   const [menuValue, setMenuValue] = React.useState("")
   const cue = useMenuCue(!open)
+  const [focused, setFocused] = React.useState(false)
+  const closeTimer = React.useRef(0)
 
   const close = React.useCallback(() => {
+    window.clearTimeout(closeTimer.current)
     setMenuValue("")
     setOpen(false)
   }, [])
+
+  /*
+   * Scrolling down is a deliberate gesture and beats a resting cursor: it
+   * folds the menu, so a pointer parked at the top (say, after clicking a
+   * link) can't pin the pill over the page. Only keyboard focus keeps it
+   * shown — a keyboard user must never lose what they're on.
+   */
+  const scrolledAway = useScrolledAway(close)
+  const hidden = scrolledAway && !focused
+
+  React.useEffect(() => () => window.clearTimeout(closeTimer.current), [])
+
+  /*
+   * Hover opens the menu on mouse and pen — the pill is the navigation, so it
+   * shouldn't need a click on one dot first. Touch keeps tap-to-toggle: a tap
+   * also fires pointerenter, and opening on it would fight the toggle.
+   */
+  const onPointerEnter = (event: React.PointerEvent) => {
+    if (event.pointerType === "touch") return
+    window.clearTimeout(closeTimer.current)
+    setOpen(true)
+  }
+  const onPointerLeave = (event: React.PointerEvent) => {
+    if (event.pointerType === "touch") return
+    window.clearTimeout(closeTimer.current)
+    closeTimer.current = window.setTimeout(close, HOVER_CLOSE_DELAY)
+  }
 
   React.useEffect(() => {
     if (!open) return
@@ -110,12 +202,31 @@ function SiteHeader() {
   const peek = !open && cue
 
   return (
-    <header className="sticky top-0 z-40 flex justify-center px-6 pt-4 lg:px-7">
+    <header
+      data-hidden={hidden || undefined}
+      className={cn(
+        "pointer-events-none sticky top-0 z-40 flex justify-center px-6 pt-4 lg:px-7",
+        "transition-[translate,opacity] duration-300 ease-out motion-reduce:transition-none",
+        "data-hidden:-translate-y-[calc(100%+1rem)] data-hidden:opacity-0"
+      )}
+    >
       <NavigationMenu
         aria-label="Main"
         value={menuValue}
         onValueChange={setMenuValue}
-        className="max-w-max"
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
+        onFocusCapture={(event) =>
+          // Keyboard focus only: a mouse click on a link also focuses it.
+          setFocused(event.target.matches(":focus-visible"))
+        }
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget))
+            setFocused(false)
+        }}
+        // Only the pill takes the pointer, so the header's full-width strip
+        // never blocks clicks on the page beside it.
+        className={cn("max-w-max", !hidden && "pointer-events-auto")}
       >
         <div className="dark flex items-center gap-4 rounded-full bg-black py-1.5 pr-2 pl-5 text-foreground ring-1 ring-white/10">
           <Link
@@ -162,11 +273,12 @@ function SiteHeader() {
                         {/* Fixed height so every dropdown is the same size —
                             otherwise the shared viewport jumps between panels
                             and the morph reads as broken. */}
-                        <div className="flex h-52 w-full items-stretch">
-                          <DitherShape
-                            accent={
-                              item.href === "/solutions" ? "cyan" : "blue"
-                            }
+                        <div
+                          data-nav-plate-root
+                          className="flex h-52 w-full items-stretch"
+                        >
+                          <NavPlate
+                            seed={item.href === "/solutions" ? 7 : 3}
                             className="w-44 shrink-0"
                           />
                           <ul className="ml-auto flex flex-col justify-center gap-1 pr-8 text-right">

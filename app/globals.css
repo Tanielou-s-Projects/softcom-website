@@ -299,94 +299,15 @@
   }
 }
 
-/*
- * Hero variant `convergence`: rays draw outward from the centre, nodes land
- * after them, then the whole field drifts round on a very long period.
- */
-@keyframes softcom-ray-draw {
-  from {
-    stroke-dasharray: 0 1;
-  }
-  to {
-    stroke-dasharray: 1 1;
-  }
-}
-
-@keyframes softcom-node-in {
+/* The hero's scroll cue assembling pixel by pixel, stepped like the page transition. */
+@keyframes softcom-pixel-assemble {
   from {
     opacity: 0;
-    scale: 0.4;
+    transform: translateY(-12px);
   }
   to {
     opacity: 1;
-    scale: 1;
-  }
-}
-
-@keyframes softcom-field-drift {
-  from {
-    rotate: 0deg;
-  }
-  to {
-    rotate: 360deg;
-  }
-}
-
-@keyframes softcom-core-pulse {
-  from {
-    opacity: 0.75;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Hero variant `atlas`: the map resolves outward, routes draw, nodes land. */
-@keyframes softcom-atlas-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes softcom-atlas-draw {
-  from {
-    stroke-dasharray: 0 1;
-  }
-  to {
-    stroke-dasharray: 1 1;
-  }
-}
-
-@keyframes softcom-atlas-pulse {
-  from {
-    opacity: 0.55;
-    scale: 0.82;
-  }
-  to {
-    opacity: 0;
-    scale: 1.5;
-  }
-}
-
-/* Hero variant `matrix`: the capsule resolves end to end, then shimmers. */
-@keyframes softcom-band-resolve {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes softcom-band-shimmer {
-  from {
-    opacity: 0.72;
-  }
-  to {
-    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -412,112 +333,71 @@
     will-change: transform, scale;
   }
 
-  /*
-   * `convergence`. Base styles are the resting state, so reduced motion just
-   * lands on the finished field. The drift is 10 minutes a turn — present on a
-   * second look, never a spinning wheel.
-   */
-  .softcom-hero-ray {
-    stroke-dasharray: 1 1;
-    animation: softcom-ray-draw 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
-  }
-  .softcom-hero-node {
-    animation: softcom-node-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
-  }
-  .softcom-hero-field {
-    animation: softcom-field-drift 600s linear infinite;
-    will-change: rotate;
-  }
-  .softcom-hero-core {
-    animation: softcom-core-pulse 5s ease-in-out 1.4s infinite alternate;
-  }
-
-  /*
-   * `atlas`. Base styles are the resting state, so reduced motion lands on the
-   * finished map with its routes drawn.
-   */
-  .softcom-atlas-band {
-    animation: softcom-atlas-in 0.55s ease-out 1 both;
-  }
-  .softcom-atlas-route {
-    stroke-dasharray: 1 1;
-    animation: softcom-atlas-draw 1s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
-  }
-  .softcom-atlas-node {
-    animation: softcom-atlas-in 0.5s ease-out 1 both;
-  }
-  .softcom-atlas-pulse {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: softcom-atlas-pulse 3.2s ease-out 2s infinite;
-  }
-
-  /* `matrix`: each band resolves in turn, then breathes on a long period. */
-  .softcom-hero-band {
-    animation:
-      softcom-band-resolve 0.7s ease-out 1 both,
-      softcom-band-shimmer 7s ease-in-out 1.2s infinite alternate;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .softcom-hero-capsule,
-    .softcom-hero-blob,
-    .softcom-hero-ray,
-    .softcom-hero-node,
-    .softcom-hero-field,
-    .softcom-hero-core,
-    .softcom-hero-band,
-    .softcom-atlas-band,
-    .softcom-atlas-route,
-    .softcom-atlas-node,
-    .softcom-atlas-pulse {
+    .softcom-hero-blob {
       animation: none;
-    }
-    /* The pulse's resting frame is invisible, so hide it outright. */
-    .softcom-atlas-pulse {
-      display: none;
     }
   }
 
   /*
-   * `ledger`: a faint drafting ground behind the statement, faded out at the
-   * edges so it reads as a surface rather than a boxed-in grid.
+   * Portal hero (portal-hero.tsx). Only the scroll-driven geometry lives here:
+   * the component writes --p (eased progress), --exit, --arrival and, for the
+   * circles variant, --lower-x/--lower-y on the track each frame. Layout and
+   * colour are utilities on the elements, and their `motion-reduce:` variants
+   * win over these because utilities sit in a later layer.
    */
-  .softcom-hero-ledger::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-image:
-      repeating-linear-gradient(
-        to right,
-        color-mix(in oklch, var(--foreground) 6%, transparent) 0 1px,
-        transparent 1px 88px
-      ),
-      repeating-linear-gradient(
-        to bottom,
-        color-mix(in oklch, var(--foreground) 6%, transparent) 0 1px,
-        transparent 1px 88px
-      );
-    mask-image: radial-gradient(120% 90% at 30% 35%, black, transparent 72%);
+  .softcom-portal-exit-up {
+    transform: translateY(calc(var(--p) * -110%));
+    opacity: var(--exit);
+  }
+  .softcom-portal-exit-left {
+    transform: translate(calc(var(--p) * -110%), calc(var(--p) * -60%));
+  }
+  /* Grid: the top-right panel grows left and down until it fills the scene. */
+  .softcom-portal-panel {
+    left: calc(var(--split) * (1 - var(--p)));
+    width: calc(100% - var(--split) + var(--split) * var(--p));
+    height: calc(var(--row) + (100% - var(--row)) * var(--p));
+  }
+  /* Circles: a true circle until its edge has passed beyond the viewport. */
+  .softcom-portal-circle {
+    clip-path: circle(
+      calc(var(--diameter) / 2 + (75vmax - var(--diameter) / 2) * var(--p)) at
+        calc(77% - 27% * var(--p)) calc(27% + 23% * var(--p))
+    );
+  }
+  /* Circles: centre is solved in JS against the growing circle's radius. */
+  .softcom-portal-orbit {
+    visibility: var(--lower-visible, hidden);
+    left: calc(var(--lower-x, 0px) - var(--lower-diameter) / 2);
+    top: calc(var(--lower-y, 0px) - var(--lower-diameter) / 2);
+    width: var(--lower-diameter);
+    height: var(--lower-diameter);
+    transform: scale(calc(1 - var(--p) * 0.72));
+  }
+  /* Blue first; the photograph arrives before the headline does. */
+  .softcom-portal-photo-in {
+    opacity: clamp(0, calc(var(--p) * 2), 1);
+  }
+  /* The lower photo resolves to cyan while still in view. */
+  .softcom-portal-tint-in {
+    opacity: clamp(0, calc(var(--p) * 3), 1);
+  }
+  .softcom-portal-shade {
+    opacity: calc(var(--arrival) * 0.65);
+  }
+  .softcom-portal-arrival {
+    opacity: var(--arrival);
+    transform: translateY(calc((1 - var(--arrival)) * 40px));
   }
 
-  /* The page-transition pixels — stepped, no fade (see pixel-page-transition.tsx). */
-  @keyframes softcom-pixel-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  .softcom-pixel-cascade rect {
+    animation: softcom-pixel-assemble 420ms steps(4, end) both;
   }
-  @keyframes softcom-pixel-out {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
+  @media (prefers-reduced-motion: reduce) {
+    .softcom-pixel-cascade rect {
+      animation: none;
     }
   }
 

@@ -24,9 +24,11 @@ function CtaPanel({
   return (
     <div
       className={cn(
-        "dark relative flex h-[min(560px,80svh)] flex-col items-center gap-10 overflow-clip rounded-4xl pt-16",
+        "dark relative flex h-[min(420px,70svh)] flex-col items-center justify-center gap-8 overflow-clip rounded-4xl",
+        // A band, not a screen: tall enough for the photo to read, short
+        // enough that the close doesn't outweigh the content above it.
         // Capped to the viewport so the pinned plate is always fully on screen.
-        "lg:sticky lg:top-0 lg:h-[min(831px,88svh)] lg:gap-16 lg:pt-[8%]",
+        "lg:sticky lg:top-0 lg:h-[min(520px,70svh)] lg:gap-10",
         className
       )}
     >
