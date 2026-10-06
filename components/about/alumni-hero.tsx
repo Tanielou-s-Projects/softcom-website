@@ -7,9 +7,11 @@ import { displayText } from "@/components/landing/section"
 import { monoFamily } from "@/components/motion/dither-glyphs"
 
 /** CSS px per glyph cell — fixed, so the growing screen reveals more glyphs. */
-const CELL = 6
+const CELL = 10
 /** Sparse to dense. Darker pixels get heavier glyphs (see the draw pass). */
 const RAMP = " .:-=+*01x#%@"
+/** How strongly the video shows through beneath the glyphs (0–1). */
+const UNDERLAY = 0.55
 
 const ease = (t: number) => t * t * (3 - 2 * t)
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t
@@ -135,12 +137,10 @@ function AlumniHero({
           const lum =
             (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) /
             255
-          // Every cell inside the screen carries a glyph (dark ones the
-          // lightest), so the team reads as figures rather than holes.
-          // Inverted: dark subjects (the navy-shirted team) get the dense
-          // glyphs, the bright sky and sand light dots — so the people stand
-          // out as solid figures instead of holes in a white field.
-          const g = 1 + Math.round(Math.pow(1 - lum, 0.9) * (RAMP.length - 2))
+          // Bright cells get the heavier glyphs, so highlights sparkle and
+          // shadows stay open; the video underneath carries the image.
+          const g = Math.round(Math.pow(lum, 1.6) * (RAMP.length - 1))
+          if (g === 0) continue
           ctx.drawImage(
             atlas,
             g * cell,
@@ -156,13 +156,48 @@ function AlumniHero({
       }
       // Tint each glyph with its cell's colour.
       ctx.globalCompositeOperation = "source-in"
-      ctx.globalAlpha = 0.92
+      ctx.globalAlpha = 0.75
       ctx.imageSmoothingEnabled = false
       // Lift only the tint: navy shirts become a readable blue on black,
       // while glyph weight still follows the true luminance.
-      ctx.filter = "brightness(1.9) saturate(1.5)"
+      ctx.filter = "brightness(1.5) saturate(1.3)"
       ctx.drawImage(small, 0, 0, cols, rows, x0, y0, cols * cell, rows * cell)
       ctx.filter = "none"
+
+      // The picture itself, dimmed, behind the glyphs and clipped to the
+      // same curved screen: the ASCII becomes a texture over a readable
+      // image rather than the whole image.
+      ctx.globalCompositeOperation = "destination-over"
+      ctx.globalAlpha = UNDERLAY
+      ctx.imageSmoothingEnabled = true
+      ctx.save()
+      ctx.beginPath()
+      const screenW = cols * cell
+      const screenH = rows * cell
+      const bow = bulge * cell
+      ctx.moveTo(x0, y0 + bow)
+      ctx.quadraticCurveTo(x0 + screenW / 2, y0 - bow, x0 + screenW, y0 + bow)
+      ctx.lineTo(x0 + screenW, y0 + screenH - bow)
+      ctx.quadraticCurveTo(
+        x0 + screenW / 2,
+        y0 + screenH + bow,
+        x0,
+        y0 + screenH - bow
+      )
+      ctx.closePath()
+      ctx.clip()
+      ctx.drawImage(
+        source,
+        (sourceW - sw) / 2,
+        sy,
+        sw,
+        sh,
+        x0,
+        y0,
+        screenW,
+        screenH
+      )
+      ctx.restore()
       ctx.globalCompositeOperation = "source-over"
       ctx.globalAlpha = 1
     }
@@ -275,6 +310,11 @@ function AlumniHero({
           role="img"
           aria-label={alt}
           className="absolute inset-0 size-full"
+        />
+        {/* A soft shade so the headline holds over the bright picture. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[5] bg-[radial-gradient(ellipse_70%_45%_at_15%_18%,rgb(0_0_0/0.75),transparent_70%)] opacity-(--p)"
         />
         {/* The headline travels from the bottom-left up past the screen. */}
         <h1
