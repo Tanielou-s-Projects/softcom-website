@@ -87,6 +87,12 @@ export const PLAYGROUND_CATEGORIES: PlaygroundCategory[] = [
         status: "ready",
       },
       {
+        id: "dither-system",
+        label: "Dither system",
+        blurb: "Every dot effect on the shared rules, scrubbed side by side.",
+        status: "ready",
+      },
+      {
         id: "dither",
         label: "Dither",
         blurb: "Ordered-dither shaders, against the design's static export.",

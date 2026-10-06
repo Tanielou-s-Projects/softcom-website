@@ -5,6 +5,7 @@ import { ButtonsSection } from "@/components/playground/sections/buttons"
 import { ColorsSection } from "@/components/playground/sections/colors"
 import { DataSection } from "@/components/playground/sections/data"
 import { DitherSection } from "@/components/playground/sections/dither"
+import { DitherSystemSection } from "@/components/playground/sections/dither-system"
 import { FeedbackSection } from "@/components/playground/sections/feedback"
 import { IconsSection } from "@/components/playground/sections/icons"
 import { InputsSection } from "@/components/playground/sections/inputs"
@@ -31,6 +32,7 @@ export const SECTION_CONTENT: Record<string, ComponentType> = {
   shadows: ShadowsSection,
   icons: IconsSection,
   marks: MarksSection,
+  "dither-system": DitherSystemSection,
   dither: DitherSection,
   landing: LandingSection,
   buttons: ButtonsSection,
