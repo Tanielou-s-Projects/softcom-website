@@ -32,11 +32,6 @@ const viewport = { once: true, amount: 0.3 } as const
  * too so the pre-hydration paint matches the scrub's starting frame.
  */
 const CLIP_TOP = 58.01
-/*
- * Docked under the dissolve hero there is no intro above the photo — the
- * hero's statement is the intro — so the window opens near the top instead.
- */
-const CLIP_TOP_DOCKED = 6
 const CLIP_RIGHT = 24.21
 const CLIP_LEFT = 25.43
 
@@ -50,17 +45,11 @@ const CLIP_LEFT = 25.43
  * On mobile and under reduced motion there is no pin — the panel flows and
  * the second phase plays as a one-time in-view sequence.
  */
-function Mission() {
+function MissionPanel() {
   const trackRef = useRef<HTMLDivElement>(null)
   const reduceMotion = useReducedMotion()
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   const scrub = isDesktop && !reduceMotion
-  /*
-   * After the dissolve hero the blue is one surface and the hero's statement
-   * is the only statement: dock flush onto it (no page gap, square top
-   * corners), drop the intro, and let the photo open straight beneath it.
-   */
-  const docked = useVariant("hero") === "dissolve"
 
   const { scrollYProgress } = useScroll({
     target: trackRef,
@@ -75,11 +64,7 @@ function Mission() {
 
   // The crop window grows to full bleed; its radius eases 2xl → 4xl so the
   // final frame is congruent with the panel's own corners.
-  const clipTop = useTransform(
-    progress,
-    [0.1, 0.55],
-    [docked ? CLIP_TOP_DOCKED : CLIP_TOP, 0]
-  )
+  const clipTop = useTransform(progress, [0.1, 0.55], [CLIP_TOP, 0])
   const clipRight = useTransform(progress, [0.1, 0.55], [CLIP_RIGHT, 0])
   const clipLeft = useTransform(progress, [0.1, 0.55], [CLIP_LEFT, 0])
   const clipRadius = useTransform(progress, [0.1, 0.55], [16, 32])
@@ -118,23 +103,17 @@ function Mission() {
         } as const)
 
   return (
-    <Bleed className={docked ? "-mt-16 lg:-mt-32" : "pt-6"}>
+    <Bleed className="pt-6">
       {/* Scroll track — a plain div (no transforms) so the sticky child pins. */}
       <div ref={trackRef} className="relative lg:motion-safe:h-[280vh]">
         <motion.div
           style={scrub ? { backgroundColor: panelBackground } : undefined}
-          className={cn(
-            "dark relative flex flex-col items-center gap-12 overflow-clip rounded-4xl bg-brand-blue px-6 pt-20 pb-6 lg:gap-32 lg:pt-32 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:pb-6 lg:motion-reduce:h-auto lg:motion-reduce:pb-20",
-            docked && "rounded-t-none"
-          )}
+          className="dark relative flex flex-col items-center gap-12 overflow-clip rounded-4xl bg-brand-blue px-6 pt-20 pb-6 lg:gap-32 lg:pt-32 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:pb-6 lg:motion-reduce:h-auto lg:motion-reduce:pb-20"
         >
           {/* Phase one — the mission statement. */}
           <motion.div
             style={scrub ? { opacity: introOpacity, y: introY } : undefined}
-            className={cn(
-              "flex flex-col items-center gap-12 lg:gap-24",
-              docked && "hidden"
-            )}
+            className="flex flex-col items-center gap-12 lg:gap-24"
           >
             <h2
               className={cn(
@@ -166,9 +145,7 @@ function Mission() {
               "relative z-10 aspect-[701/506.668] w-full overflow-clip rounded-2xl",
               // -inset-px overdraws the panel edge by 1px so no blue antialiasing ring shows at full cover.
               "lg:motion-safe:absolute lg:motion-safe:-inset-px lg:motion-safe:aspect-auto lg:motion-safe:rounded-none",
-              docked
-                ? "lg:motion-safe:[clip-path:inset(6%_24.21%_0%_25.43%_round_16px)]"
-                : "lg:motion-safe:[clip-path:inset(58.01%_24.21%_0%_25.43%_round_16px)]"
+              "lg:motion-safe:[clip-path:inset(58.01%_24.21%_0%_25.43%_round_16px)]"
             )}
           >
             <Image
@@ -215,20 +192,6 @@ function Mission() {
               })}
               className="size-[26px] shrink-0"
             />
-            {/* Docked, the belief line the intro carried leads the copy here. */}
-            {docked ? (
-              <motion.h2
-                style={scrub ? { opacity: copyOpacity, y: copyY } : undefined}
-                {...inViewFor(0.15)}
-                className={cn(
-                  headingText,
-                  "max-w-[760px] text-center leading-[1.1] text-foreground"
-                )}
-              >
-                We believe stronger organisations are the foundation of a more
-                prosperous society.
-              </motion.h2>
-            ) : null}
             <motion.p
               style={scrub ? { opacity: copyOpacity, y: copyY } : undefined}
               {...inViewFor(0.25)}
@@ -256,6 +219,16 @@ function Mission() {
       </div>
     </Bleed>
   )
+}
+
+/**
+ * The dissolve hero carries this section's photograph and copy inside its own
+ * pinned scene (the blue drains away to reveal them), so after that variant
+ * the standalone panel would only repeat it.
+ */
+function Mission() {
+  const hero = useVariant("hero")
+  return hero === "dissolve" ? null : <MissionPanel />
 }
 
 export { Mission }

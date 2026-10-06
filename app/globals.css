@@ -392,18 +392,6 @@
     transform: translateY(calc((1 - var(--arrival)) * 40px));
   }
 
-  /*
-   * Dissolve variant's last beat: the full-bleed blue narrows to the 24px
-   * page gutter and rounds its top corners, so it docks onto the Mission card
-   * below as one continuous blue surface rather than two blue blocks.
-   */
-  .softcom-portal-settle {
-    clip-path: inset(
-      0 calc(var(--settle) * 24px) 0 round calc(var(--settle) * 32px)
-        calc(var(--settle) * 32px) 0 0
-    );
-  }
-
   .softcom-pixel-cascade rect {
     animation: softcom-pixel-assemble 420ms steps(4, end) both;
   }

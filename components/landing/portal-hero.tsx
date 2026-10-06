@@ -6,7 +6,12 @@ import { useEffect, useRef } from "react"
 import { PixelArrowDown } from "@/components/ui/pixel-arrow-down"
 import { Button } from "@/components/ui/button"
 import { YEARS_ACTIVE } from "@/components/landing/content"
-import { ghostPill, primaryPill } from "@/components/landing/section"
+import {
+  ghostPill,
+  headingText,
+  leadText,
+  primaryPill,
+} from "@/components/landing/section"
 import { cn } from "@/lib/utils"
 import { createDitherField } from "@/components/motion/dither-field"
 import { HeroHeader } from "./hero-header"
@@ -15,17 +20,21 @@ import { HeroHeader } from "./hero-header"
 const MOBILE_QUERY = "(max-width: 767.98px)"
 
 /*
- * The `dissolve` variant's timeline, as fractions of its scroll track: the
- * circles play out first, then the dither rises over them, the statement
- * decodes out of the blue, and the actions arrive last.
+ * The `dissolve` variant is one pinned scene, as fractions of its scroll
+ * track: the circles play out, blue rises over them in the shared dither, the
+ * statement decodes out of the blue, holds, and decodes back in; then the
+ * same blue drains away to reveal the mission photograph and its copy. The
+ * blue that arrived is the blue that leaves — there is no section edge.
  */
 const PHASE = {
-  circles: 0.42,
-  dither: [0.46, 0.72],
-  text: [0.66, 0.9],
-  actions: [0.88, 0.95],
-  /** The blue narrows to the Mission card's gutters and docks onto it. */
-  settle: [0.95, 1],
+  circles: 0.26,
+  dither: [0.28, 0.42],
+  text: [0.4, 0.53],
+  actions: [0.52, 0.56],
+  out: [0.62, 0.68],
+  drain: [0.68, 0.82],
+  mission: [0.79, 0.88],
+  missionCta: [0.87, 0.92],
 } as const
 
 /** Pixel glyphs for the decode — the same visual vocabulary as the dither. */
@@ -113,6 +122,9 @@ export function PortalHero({
   const fallbackRef = useRef<HTMLDivElement>(null)
   const statementRef = useRef<HTMLParagraphElement>(null)
   const actionsRef = useRef<HTMLDivElement>(null)
+  const missionRef = useRef<HTMLDivElement>(null)
+  const missionCopyRef = useRef<HTMLDivElement>(null)
+  const missionCtaRef = useRef<HTMLDivElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
     const element = track.current
@@ -154,24 +166,46 @@ export function PortalHero({
       const p = media.matches ? 0 : t * t * (3 - 2 * t)
       if (dissolving) {
         const reduce = media.matches
-        const d = reduce ? 0 : ease(segment(raw, PHASE.dither))
+        const drain = ease(segment(raw, PHASE.drain))
+        const d = reduce
+          ? 0
+          : raw < PHASE.drain[0]
+            ? ease(segment(raw, PHASE.dither))
+            : 1 - drain
         if (dither) {
           dither.resize()
           dither.draw(d)
         } else if (fallbackRef.current) {
           fallbackRef.current.style.opacity = String(d)
         }
-        decode(reduce ? 1 : segment(raw, PHASE.text))
+        // In, hold, then back out the way it came — glyph by glyph.
+        const out = segment(raw, PHASE.out)
+        decode(reduce ? 1 : segment(raw, PHASE.text) * (1 - out))
         const actions = actionsRef.current
         if (actions) {
-          const a = reduce ? 1 : ease(segment(raw, PHASE.actions))
+          const a = reduce ? 1 : ease(segment(raw, PHASE.actions)) * (1 - out)
           actions.style.opacity = String(a)
           actions.style.transform = `translateY(${(1 - a) * 16}px)`
           actions.inert = a < 0.5
         }
-        element.style.setProperty(
-          "--settle",
-          String(reduce ? 1 : ease(segment(raw, PHASE.settle)))
+        // The mission layer waits under the blue until the blue is whole.
+        const mission = missionRef.current
+        if (mission && !reduce)
+          mission.style.visibility =
+            raw >= PHASE.dither[1] ? "visible" : "hidden"
+        const reveal = (node: HTMLElement | null, value: number) => {
+          if (!node) return
+          node.style.opacity = String(value)
+          node.style.transform = `translateY(${(1 - value) * 24}px)`
+          node.inert = value < 0.5
+        }
+        reveal(
+          missionCopyRef.current,
+          reduce ? 1 : ease(segment(raw, PHASE.mission))
+        )
+        reveal(
+          missionCtaRef.current,
+          reduce ? 1 : ease(segment(raw, PHASE.missionCta))
         )
       }
       if (variant !== "grid") {
@@ -244,15 +278,14 @@ export function PortalHero({
       <div
         ref={track}
         className={cn(
-          dissolve ? "h-[380vh]" : "h-[200vh]",
-          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--settle:0] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]"
+          dissolve ? "h-[560vh]" : "h-[200vh]",
+          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]"
         )}
       >
         <section
           aria-labelledby="story-title"
           className={cn(
             "sticky top-0 isolate h-screen overflow-hidden motion-reduce:relative motion-reduce:h-auto motion-reduce:min-h-screen",
-            dissolve && "softcom-portal-settle",
             circles
               ? "[--diameter:min(43vw,30vh)] [--hero-type-size:clamp(20px,5.3vw,38px)] [--lower-diameter:min(105vw,58vh)] md:[--diameter:min(34vw,42vh)] md:[--hero-type-size:clamp(28px,min(5.7vw,11vh),100px)] md:[--lower-diameter:80vw]"
               : "border border-border"
@@ -373,6 +406,65 @@ export function PortalHero({
           )}
           {dissolve && (
             <>
+              {/*
+               * Mission, inside the scene: under the canvas, hidden until the
+               * blue is whole, then uncovered as the blue drains (top first,
+               * the shared field run backwards). Reduced motion: in flow.
+               */}
+              <div
+                ref={missionRef}
+                aria-label="Our mission"
+                role="group"
+                className="dark invisible absolute inset-0 z-5 flex flex-col items-center justify-center gap-10 px-6 text-center text-foreground motion-reduce:visible motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:py-24"
+              >
+                <Image
+                  src="/landing/story.png"
+                  alt="A Softcom team member reviewing printed reports"
+                  fill
+                  sizes="100vw"
+                  className="-z-10 object-cover object-bottom"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 -z-10 bg-black/64"
+                />
+                <div
+                  ref={missionCopyRef}
+                  className="flex flex-col items-center gap-10 opacity-0 motion-reduce:opacity-100"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element -- local SVG dot */}
+                  <img
+                    src="/brand/accent-dot.svg"
+                    alt=""
+                    width={26}
+                    height={26}
+                    className="size-[26px]"
+                  />
+                  <h2
+                    className={cn(
+                      headingText,
+                      "max-w-[760px] leading-[1.1] text-foreground"
+                    )}
+                  >
+                    We believe stronger organisations are the foundation of a
+                    more prosperous society.
+                  </h2>
+                  <p className={cn(leadText, "max-w-[576px] text-neutral-200")}>
+                    We build technology and capabilities that strengthen those
+                    organisations, helping them operate better, make informed
+                    decisions and create possibilities for the people who depend
+                    on them.
+                  </p>
+                </div>
+                <div
+                  ref={missionCtaRef}
+                  className="opacity-0 motion-reduce:opacity-100"
+                >
+                  <Button asChild size="lg" className={primaryPill}>
+                    <Link href="/about">Our story</Link>
+                  </Button>
+                </div>
+              </div>
               {/* Where WebGL is unavailable, the dither falls back to a fade. */}
               <div
                 ref={fallbackRef}
