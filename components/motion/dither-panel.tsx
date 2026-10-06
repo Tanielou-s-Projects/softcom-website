@@ -11,36 +11,49 @@ const RESOLVE_MS = 900
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
 
+type Cell = { x: number; y: number; t: number; f: number }
+
 /**
- * A still of the site's dither (lib/dither.ts): brand blue risen to `level`
- * with its cyan front frozen mid-weave. It resolves from 0 to `level` the
- * first time it scrolls into view, the same move as the hero and the page
- * transition, then holds.
+ * A canvas of the site's dither (lib/dither.ts): brand blue risen to some
+ * progress with its cyan front.
+ *
+ * Two modes. By default it is a still: it resolves from 0 to `level` the first
+ * time it scrolls into view — the same move as the hero and the page
+ * transition — then holds. Pass `progress` instead and it is controlled: it
+ * draws exactly that value, so any driver (page scroll, a slider) can own it.
  *
  * Canvas 2D rather than WebGL: panels come several to a page, and browsers
- * cap live WebGL contexts. The cell maths is the shared JS port, so the
- * weave is identical to the shader's. `seed` gives each panel its own front.
+ * cap live WebGL contexts. The cell maths is the shared JS port, so the weave
+ * is identical to the shader's. `seed` gives each panel its own front.
  */
 function DitherPanel({
   level = 0.8,
+  progress,
   seed = 0,
   className,
 }: {
-  /** How far the blue has risen, 0–1. */
+  /** Still mode: how far the blue rises when it resolves, 0–1. */
   level?: number
+  /** Controlled mode: the progress to draw, 0–1. */
+  progress?: number
   seed?: number
   className?: string
 }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const inView = useInView(canvasRef, { once: true, amount: 0.25 })
   const reduceMotion = useReducedMotion()
+  const controlled = progress !== undefined
+  /** Redraws at the given progress; set up once the canvas is laid out. */
+  const paintRef = React.useRef<(progress: number) => void>(() => {})
+  const shownRef = React.useRef(0)
 
+  // Layout, colour and repaint plumbing — independent of what drives progress.
   React.useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas?.getContext("2d")
     if (!canvas || !ctx) return
 
-    let cells: { x: number; y: number; t: number; f: number }[] = []
+    let cells: Cell[] = []
     let size = 0
     const layout = () => {
       const ratio = Math.min(window.devicePixelRatio || 1, 2)
@@ -63,57 +76,60 @@ function DitherPanel({
         }
       }
     }
-    let progress = 0
-    const draw = () => {
-      // The front's cyan is themed (see the canvas class), read per draw.
+    const paint = (value: number) => {
+      shownRef.current = value
+      // The front's cyan is themed (see the canvas class), read per paint.
       const front = getComputedStyle(canvas).color
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       for (const cell of cells) {
-        const state = cellState(progress, cell.f, cell.t)
+        const state = cellState(value, cell.f, cell.t)
         if (state === "rest") continue
         ctx.fillStyle = state === "front" ? front : BLUE
         ctx.fillRect(cell.x, cell.y, size, size)
       }
     }
+    paintRef.current = paint
 
     layout()
-    const observer = new ResizeObserver(() => {
+    paint(shownRef.current)
+    const resize = new ResizeObserver(() => {
       layout()
-      draw()
+      paint(shownRef.current)
     })
-    observer.observe(canvas)
+    resize.observe(canvas)
     // Repaint on a theme switch, which flips the front colour.
-    const theme = new MutationObserver(draw)
+    const theme = new MutationObserver(() => paint(shownRef.current))
     theme.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class"],
     })
-    const stop = () => {
-      observer.disconnect()
+    return () => {
+      resize.disconnect()
       theme.disconnect()
+      paintRef.current = () => {}
     }
+  }, [seed])
 
-    if (!inView) {
-      draw()
-      return stop
-    }
+  // Controlled: draw what we're given.
+  React.useEffect(() => {
+    if (controlled) paintRef.current(progress)
+  }, [controlled, progress])
+
+  // Still: resolve to `level` once, the first time it is seen.
+  React.useEffect(() => {
+    if (controlled || !inView) return
     if (reduceMotion) {
-      progress = level
-      draw()
-      return stop
+      paintRef.current(level)
+      return
     }
     const start = performance.now()
     let frame = requestAnimationFrame(function tick(now) {
       const t = Math.min(1, (now - start) / RESOLVE_MS)
-      progress = level * easeOut(t)
-      draw()
+      paintRef.current(level * easeOut(t))
       if (t < 1) frame = requestAnimationFrame(tick)
     })
-    return () => {
-      cancelAnimationFrame(frame)
-      stop()
-    }
-  }, [inView, reduceMotion, level, seed])
+    return () => cancelAnimationFrame(frame)
+  }, [controlled, inView, reduceMotion, level])
 
   return (
     <canvas
