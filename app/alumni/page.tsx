@@ -4,17 +4,17 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { alumniHero } from "@/components/about/content"
 import { AlumniForm } from "@/components/about/alumni-form"
+import { AlumniHero } from "@/components/about/alumni-hero"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
   Bleed,
   Container,
-  displayText,
   leadText,
   primaryPill,
 } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
-import { SiteHeader } from "@/components/site/site-header"
+import { HeroHeader } from "@/components/landing/hero-header"
 
 export const metadata: Metadata = {
   title: "Alumni",
@@ -28,13 +28,17 @@ const eyebrow =
 export default function Page() {
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-background">
-      <SiteHeader />
+      {/* Floats over the full-bleed hero rather than taking a band above it. */}
+      <HeroHeader />
 
-      <Container className="flex flex-col items-start gap-6 py-12">
+      <AlumniHero
+        src="/alumni/team.jpg"
+        alt="The Softcom team gathered together on a beach in front of a hotel"
+        title={alumniHero.title}
+      />
+
+      <Container className="flex flex-col items-start gap-6 py-16">
         <p className={eyebrow}>{alumniHero.eyebrow}</p>
-        <h1 className={cn(displayText, "max-w-[16ch] text-foreground")}>
-          {alumniHero.title}
-        </h1>
         {alumniHero.paragraphs.map((paragraph) => (
           <p
             key={paragraph}
