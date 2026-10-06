@@ -4,78 +4,95 @@ import * as React from "react"
 import { usePathname } from "next/navigation"
 import { useReducedMotion } from "motion/react"
 
-const COLS = 12
-const ROWS = 8
-/** How far the per-pixel delays spread within each phase, in ms. */
-const SPREAD = 300
-/** When the uncover phase starts, in ms — cover spread plus a short hold. */
-const HOLD = 400
+import { createDitherField } from "@/components/motion/dither-field"
+
+/** Coarser than the 6px base so the weave reads at speed; still on the grid. */
+const SCALE = 4
+const COVER_MS = 340
+const HOLD_MS = 110
+const UNCOVER_MS = 420
+
+const easeInOut = (t: number) =>
+  t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
 
 /**
- * Deterministic scatter — a pure hash of the cell index, so render stays
- * idempotent while the delays still read as random. The salt shifts the
- * order between the cover and uncover phases.
- */
-function scatter(index: number, salt: number) {
-  const x = Math.sin(index * 127.1 + salt * 311.7) * 43758.5453
-  return (x - Math.floor(x)) * SPREAD
-}
-
-/**
- * The pixel wipe between pages: on every route change a 12×8 grid of
- * brand-blue pixels flickers over the viewport in random order, then flickers
- * away to uncover the new page. A fixed overlay rather than a wrapper around
- * the page, so it can never put a transform on the sticky header/CTA
- * ancestors. Skipped on the first load, under reduced motion, and in the
- * Studio.
+ * The page transition, in the site's dither language (`lib/dither.ts`): on a
+ * route change brand blue rises over the viewport in Bayer order with a cyan
+ * front, holds, then recedes to uncover the new page — the hero's dissolve on
+ * a clock instead of scroll, so every page change passes through the same
+ * blue the hero ends on.
+ *
+ * A fixed overlay rather than a wrapper around the page, so it can never put
+ * a transform on the sticky header/CTA ancestors. The WebGL context lives
+ * only for the transition and is freed after it. Skipped on the first load,
+ * under reduced motion, and in the Studio.
  */
 function PixelPageTransition() {
   const pathname = usePathname()
   const reduceMotion = useReducedMotion()
   const [lastPathname, setLastPathname] = React.useState(pathname)
-  const [phase, setPhase] = React.useState<"idle" | "cover" | "uncover">("idle")
+  const [run, setRun] = React.useState(0)
+  const canvasRef = React.useRef<HTMLCanvasElement>(null)
+  const fallbackRef = React.useRef<HTMLDivElement>(null)
 
   // The sanctioned adjust-state-during-render pattern: react to the route
   // change in the same render that delivers it, not in an effect.
   if (lastPathname !== pathname) {
     setLastPathname(pathname)
     if (!reduceMotion && !pathname.startsWith("/studio")) {
-      setPhase("cover")
+      setRun((n) => n + 1)
     }
   }
 
-  React.useEffect(() => {
-    if (phase === "idle") return
-    const timer = setTimeout(
-      () => setPhase(phase === "cover" ? "uncover" : "idle"),
-      phase === "cover" ? HOLD : SPREAD + 150
-    )
-    return () => clearTimeout(timer)
-  }, [phase])
+  const [done, setDone] = React.useState(0)
+  const active = run > done
 
-  if (phase === "idle") return null
+  React.useEffect(() => {
+    if (!active) return
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const field = createDitherField(canvas, { scale: SCALE })
+    const fallback = fallbackRef.current
+    const draw = (progress: number) => {
+      if (field) field.draw(progress)
+      else if (fallback) fallback.style.opacity = String(progress)
+    }
+
+    const start = performance.now()
+    let frame = requestAnimationFrame(function tick(now) {
+      const t = now - start
+      if (t < COVER_MS) draw(easeInOut(t / COVER_MS))
+      else if (t < COVER_MS + HOLD_MS) draw(1)
+      else if (t < COVER_MS + HOLD_MS + UNCOVER_MS)
+        draw(1 - easeInOut((t - COVER_MS - HOLD_MS) / UNCOVER_MS))
+      else {
+        draw(0)
+        setDone(run)
+        return
+      }
+      frame = requestAnimationFrame(tick)
+    })
+
+    return () => {
+      cancelAnimationFrame(frame)
+      field?.dispose()
+    }
+  }, [active, run])
+
+  if (!active) return null
 
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none fixed inset-0 z-[100] grid"
-      style={{
-        gridTemplateColumns: `repeat(${COLS}, 1fr)`,
-        gridTemplateRows: `repeat(${ROWS}, 1fr)`,
-      }}
-    >
-      {Array.from({ length: COLS * ROWS }, (_, index) => (
-        <div
-          key={index}
-          className="bg-brand-blue"
-          style={{
-            opacity: phase === "cover" ? 0 : 1,
-            animation: `${
-              phase === "cover" ? "softcom-pixel-in" : "softcom-pixel-out"
-            } 1ms steps(1, end) ${scatter(index, phase === "cover" ? 1 : 2)}ms forwards`,
-          }}
-        />
-      ))}
+    <div aria-hidden className="pointer-events-none fixed inset-0 z-[100]">
+      <div
+        ref={fallbackRef}
+        className="absolute inset-0 bg-brand-blue opacity-0"
+      />
+      {/* Keyed per run: a disposed context cannot be revived on the same canvas. */}
+      <canvas
+        key={run}
+        ref={canvasRef}
+        className="absolute inset-0 size-full"
+      />
     </div>
   )
 }

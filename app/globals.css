@@ -401,24 +401,6 @@
     }
   }
 
-  /* The page-transition pixels — stepped, no fade (see pixel-page-transition.tsx). */
-  @keyframes softcom-pixel-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  @keyframes softcom-pixel-out {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
   /*
    * Blueprint rails — the drafting-grid texture in the side margins, only
    * where the 1336px content column leaves real room (>=1440px viewports).
