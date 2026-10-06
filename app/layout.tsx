@@ -4,6 +4,7 @@ import { MotionConfig } from "motion/react"
 
 import "./globals.css"
 import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
+import { AnimatedFavicon } from "@/components/site/animated-favicon"
 import { ThemeProvider } from "@/components/theme-provider"
 import { VariantProvider } from "@/components/variants/variant-context"
 import { VariantSwitcher } from "@/components/variants/variant-switcher"
@@ -78,6 +79,7 @@ export default function RootLayout({
           </MotionConfig>
         </ThemeProvider>
         <SanityLive />
+        <AnimatedFavicon />
       </body>
     </html>
   )
