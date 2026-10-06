@@ -1,10 +1,10 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { DitherPanel } from "@/components/motion/dither-panel"
 import {
   Dialog,
   DialogClose,
@@ -76,14 +76,12 @@ function ProductOverlay({ product }: { product: Product }) {
           </div>
         </article>
 
-        {product.panel ? (
+        {product.dither !== undefined ? (
           <div className="relative min-h-[280px] overflow-clip rounded-3xl lg:min-h-0">
-            <Image
-              src={product.panel}
-              alt=""
-              fill
-              sizes="(min-width: 1024px) 603px, 100vw"
-              className="object-cover"
+            <DitherPanel
+              seed={product.dither}
+              level={0.95}
+              className="absolute inset-0"
             />
           </div>
         ) : null}

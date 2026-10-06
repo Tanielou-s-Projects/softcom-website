@@ -66,9 +66,15 @@ function noise(x: number, y: number) {
 /**
  * The rising field for a cell: `fromBottom` is 0 at the bottom edge, 1 at the
  * top. Noise is sampled per cell so neighbouring cells arrive together.
+ * `seed` shifts the noise so several fields on one page don't share a
+ * silhouette; 0 is what the shader draws.
  */
-export const field = (col: number, row: number, fromBottom: number) =>
-  fromBottom * 0.75 + noise(col * 0.06, row * 0.06) * 0.35
+export const field = (col: number, row: number, fromBottom: number, seed = 0) =>
+  fromBottom * 0.75 + noise(col * 0.06 + seed, row * 0.06 + seed) * 0.35
+
+/** The progress at which a cell lights — the shared order, as a number. */
+export const lightsAt = (fieldValue: number, threshold: number) =>
+  (fieldValue + threshold * SPREAD) / (FIELD_MAX + SPREAD)
 
 /** How resolved the field is at a cell, 0–1, for overall progress 0–1. */
 export const coverage = (progress: number, fieldValue: number) =>

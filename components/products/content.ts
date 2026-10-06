@@ -14,10 +14,11 @@ export type Product = {
   tagline: string
   description: string
   /**
-   * The dithered panel behind a proprietary product's card, exported from
-   * Figma. Partner platforms carry none and render as text cards.
+   * The live dither panel behind a proprietary product's card: its seed, so
+   * each card has its own front. Partner platforms carry none and render as
+   * text cards.
    */
-  panel?: string
+  dither?: number
   /** The product's own wordmark, laid over the panel. Only Useforms has one. */
   wordmark?: { src: string; width: number; height: number }
 }
@@ -27,11 +28,6 @@ export const productsIntro = {
   lead: "Explore the proprietary products we have built and the global platforms we implement.",
 }
 
-/*
- * The panels are generic dither fields re-used from the products these
- * replaced (SIE → Sentinel, Rewards → Reckon, Koya → Lift). The SIE and
- * Rewards exports had a "Learn More" pill baked in; it has been painted out.
- */
 export const products: Product[] = [
   {
     id: "sentinel",
@@ -39,7 +35,7 @@ export const products: Product[] = [
     tagline: "Financial intelligence for complex investigations.",
     description:
       "Connect and analyse financial records across accounts and parties. Trace money flows, uncover transaction patterns and reveal relationships through network analysis, visualisations and investigative reports.",
-    panel: "/products/panel-sentinel.png",
+    dither: 1,
   },
   {
     id: "reckon",
@@ -47,7 +43,7 @@ export const products: Product[] = [
     tagline: "Audit beyond the limits of manual review.",
     description:
       "Reckon equips teams to conduct in-depth desk reviews, material audits and other investigations, with analysis shaped by the audit’s objectives and findings grounded in evidence. Examine extensive records, reconcile evidence across sources and uncover discrepancies that sampling can miss.",
-    panel: "/products/panel-reckon.png",
+    dither: 2,
   },
   {
     id: "useforms",
@@ -55,7 +51,7 @@ export const products: Product[] = [
     tagline: "Collect data in all its forms.",
     description:
       "Equip teams to collect and submit text, images, location, direction, biometric information and more. Bring observations and supporting evidence together in structured submissions that document people, places and activities.",
-    panel: "/products/panel-useforms.png",
+    dither: 3,
     wordmark: {
       src: "/products/useforms-wordmark.svg",
       width: 437,
@@ -68,7 +64,7 @@ export const products: Product[] = [
     tagline: "An integrated platform for entrepreneurial growth.",
     description:
       "Bring knowledge, resources, business tools and services within reach of entrepreneurs. Lift connects the support they need to develop their capabilities, run their businesses and pursue opportunities.",
-    panel: "/products/panel-lift.png",
+    dither: 4,
   },
 ]
 

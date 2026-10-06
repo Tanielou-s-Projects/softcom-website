@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element -- local SVG wordmark, intentionally not run through next/image */
-import Image from "next/image"
 
 import { cn } from "@/lib/utils"
 import {
@@ -15,6 +14,7 @@ import {
   products,
   type Product,
 } from "@/components/products/content"
+import { DitherPanel } from "@/components/motion/dither-panel"
 import { ProductOverlay } from "@/components/products/product-overlay"
 import { SectionMark } from "@/components/products/section-mark"
 
@@ -22,10 +22,9 @@ import { SectionMark } from "@/components/products/section-mark"
  * One product: a header strip over a dithered panel, or — for a partner
  * platform, which has no panel — over its description.
  *
- * The panels are Figma exports rather than a live shader. Each is a blue-to-cyan
- * radial or swept gradient run through a dither, and the export is what the
- * design actually renders — a shader would have to match four different fields
- * exactly to be worth the WebGL. This is the natural place to revisit that.
+ * The panel is the site's dither (`DitherPanel`), risen most of the way and
+ * resolving as the card scrolls in — the same weave as the hero and the page
+ * transition, with a per-product seed so no two fronts match.
  */
 function ProductCard({ product }: { product: Product }) {
   return (
@@ -39,18 +38,18 @@ function ProductCard({ product }: { product: Product }) {
         </p>
       </div>
 
-      {product.panel ? (
+      {product.dither !== undefined ? (
         /*
          * Only the top corners are rounded: the panel runs to the bottom of the
          * card, where the card's own clip takes over.
          */
         <div className="relative min-h-[min(420px,55svh)] flex-1 overflow-clip rounded-t-[32px] bg-popover lg:min-h-[min(612px,65svh)]">
-          <Image
-            src={product.panel}
-            alt=""
-            fill
-            sizes="(min-width: 1024px) 684px, 100vw"
-            className="object-cover"
+          {/* Risen less where nothing sits on it, so more of the weave shows;
+              a wordmark needs solid blue behind it to stay legible. */}
+          <DitherPanel
+            seed={product.dither}
+            level={product.wordmark ? 0.8 : 0.6}
+            className="absolute inset-0"
           />
 
           {product.wordmark && (
