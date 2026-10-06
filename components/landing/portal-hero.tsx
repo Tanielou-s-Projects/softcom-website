@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { YEARS_ACTIVE } from "@/components/landing/content"
 import { ghostPill, primaryPill } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
-import { createDitherDissolve } from "./dither-dissolve"
+import { createDitherField } from "@/components/motion/dither-field"
 import { RevealHeader } from "./hero-header"
 
 /* Mirrors Tailwind's `md` breakpoint, which the markup below switches on. */
@@ -117,7 +117,7 @@ export function PortalHero({
     const media = window.matchMedia("(prefers-reduced-motion: reduce)")
     const dissolving = variant === "dissolve"
     const canvas = canvasRef.current
-    const dither = dissolving && canvas ? createDitherDissolve(canvas) : null
+    const dither = dissolving && canvas ? createDitherField(canvas) : null
     const chars = [
       ...(statementRef.current?.querySelectorAll<HTMLElement>("[data-ch]") ??
         []),
