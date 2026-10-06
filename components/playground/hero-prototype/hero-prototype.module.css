@@ -1,0 +1,358 @@
+.study {
+  background: #0a0a0a;
+  color: #fafafa;
+  min-height: 100vh;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-template-rows: minmax(0, 52fr) minmax(0, 48fr);
+  height: 100vh;
+}
+.headline,
+.intro {
+  min-height: 0;
+  border-bottom: 1px solid #262626;
+}
+.headline {
+  position: relative;
+  display: flex;
+  align-items: end;
+  padding: 24px 3.2vw min(36px, 4vh);
+}
+.headline h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(32px, min(6.6vw, 12vh), 116px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 1.02;
+  margin: 0;
+}
+.headline h1 > span {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.headline h1 > span > span {
+  display: block;
+  animation: type-in 1.1s var(--ease) 900ms both;
+}
+.headline h1 > span:nth-child(2) > span {
+  animation-delay: 1.08s;
+}
+.intro {
+  display: flex;
+  align-items: end;
+  background: #141414;
+  border-left: 1px solid #262626;
+  padding: 36px 2.8vw;
+}
+.intro p {
+  font-size: clamp(16px, 1.45vw, 24px);
+  line-height: 1.45;
+  letter-spacing: -0.035em;
+  animation: appear 1s var(--ease) 1.7s both;
+}
+.field {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: #001c63;
+}
+.tiles {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+}
+.tiles i {
+  background: var(--tile-color);
+  animation:
+    tile-in 1s var(--ease) var(--reveal-delay) both,
+    tile-shift 5.2s steps(1, end) var(--tile-delay) infinite;
+}
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(#001c631a 1px, transparent 1px),
+    linear-gradient(90deg, #001c631a 1px, transparent 1px);
+  background-size: 8.333333% 12.5%;
+}
+.mark {
+  position: absolute;
+  width: 78%;
+  inset: 7% 11%;
+  display: grid;
+  place-items: center;
+  animation: mark-in 1.5s var(--ease) 0.4s both;
+}
+.mark svg {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: visible;
+}
+.bridge {
+  animation: bridge-in 1.8s var(--ease) 0.5s both;
+}
+.endA {
+  animation: end-a 1.8s var(--ease) 0.5s both;
+}
+.endB {
+  animation: end-b 1.8s var(--ease) 0.5s both;
+}
+.coordinateA,
+.coordinateB {
+  position: absolute;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  background: #0a0a0ae6;
+  padding: 6px 8px;
+  animation: appear 0.8s var(--ease) 2.5s both;
+}
+.coordinateA {
+  left: 4%;
+  bottom: 6%;
+}
+.coordinateB {
+  right: 4%;
+  top: 6%;
+}
+.crossA,
+.crossB {
+  position: absolute;
+  font:
+    22px var(--font-mono),
+    monospace;
+  color: #fff;
+}
+.crossA {
+  left: 8%;
+  top: 12%;
+}
+.crossB {
+  right: 8%;
+  bottom: 12%;
+}
+.outcome {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid #262626;
+  padding: min(32px, 3vh) 2.8vw min(42px, 4vh);
+}
+.arrow {
+  color: #525252;
+  font:
+    22px/1.1 var(--font-mono),
+    monospace;
+  animation: appear 1s var(--ease) 2.1s both;
+}
+.outcome > div {
+  animation: appear 1.1s var(--ease) 2.25s both;
+}
+.outcomeLabel {
+  max-width: 200px;
+  color: #a3a3a3;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.outcome h2 {
+  font: 400 clamp(30px, 3.8vw, 64px)/1.02 var(--font-heading);
+  letter-spacing: -0.05em;
+}
+.location {
+  margin-top: 28px;
+  color: #00ffff;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.controls {
+  position: fixed;
+  z-index: 5;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid #404040;
+  border-radius: 999px;
+  background: #171717f5;
+  box-shadow: 0 8px 30px #0006;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.controls > span {
+  padding: 0 12px;
+  color: #a3a3a3;
+}
+.controls button {
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fafafa;
+  cursor: pointer;
+}
+.controls button:hover,
+.controls button[aria-pressed="true"] {
+  background: #303030;
+}
+.controls button:focus-visible {
+  outline: 2px solid #00ffff;
+  outline-offset: 2px;
+}
+.controls button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.study[data-paused="true"] .hero * {
+  animation-play-state: paused;
+}
+.study[data-still="true"] .hero * {
+  animation: none;
+}
+@keyframes type-in {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes tile-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes tile-shift {
+  0%,
+  100% {
+    opacity: 0.52;
+  }
+  25% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 0.38;
+  }
+  75% {
+    opacity: 0.68;
+  }
+}
+@keyframes mark-in {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes bridge-in {
+  from {
+    stroke-dasharray: 0 1;
+    stroke-dashoffset: -0.5;
+  }
+  to {
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes end-a {
+  from {
+    transform: translate(-374px, 221.5px);
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+@keyframes end-b {
+  from {
+    transform: translate(374px, -221.5px);
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+@media (max-width: 700px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+  }
+  .headline {
+    min-height: 0;
+    padding: 4vh 24px 2vh;
+  }
+  .headline h1 {
+    font-size: clamp(28px, min(9vw, 6vh), 62px);
+  }
+  .intro {
+    min-height: auto;
+    padding: 2vh 24px;
+    border-left: 0;
+  }
+  .intro p {
+    max-width: 450px;
+    font-size: clamp(12px, 2vh, 16px);
+  }
+  .outcome {
+    padding: 2vh 24px 76px;
+    border-left: 0;
+    flex-direction: row;
+    gap: 24px;
+  }
+  .outcome > div {
+    flex: 1;
+  }
+  .outcome h2 {
+    font-size: clamp(24px, 4.5vh, 42px);
+  }
+  .outcomeLabel {
+    max-width: none;
+    margin-bottom: 1vh;
+  }
+  .location {
+    margin-top: 1vh;
+  }
+  .controls {
+    bottom: 12px;
+    max-width: calc(100% - 16px);
+    font-size: 11px;
+  }
+  .controls > span {
+    display: none;
+  }
+  .controls button {
+    padding: 10px 15px;
+  }
+  .coordinateA,
+  .coordinateB {
+    font-size: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .study .hero * {
+    animation: none;
+  }
+}

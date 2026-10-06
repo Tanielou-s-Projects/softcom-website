@@ -9,9 +9,8 @@ export const VARIANTS = {
   hero: {
     label: "Hero",
     options: [
-      { id: "conduit", label: "Conduit (current)" },
-      { id: "atlas", label: "Atlas" },
-      { id: "atlas-full", label: "Atlas full-bleed" },
+      { id: "circles", label: "Circular portals" },
+      { id: "grid", label: "Bordered grid" },
     ],
   },
   tags: {

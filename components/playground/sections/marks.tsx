@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element -- local SVGs, intentionally not run through next/image */
-import { HeroMark } from "@/components/landing/hero"
+import { HeroMark } from "@/components/landing/hero-mark"
 import { SpecimenGroup, TokenLabel } from "@/components/playground/section"
 
 const LOGOS = [

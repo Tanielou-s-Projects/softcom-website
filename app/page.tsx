@@ -6,20 +6,16 @@ import { Insights } from "@/components/landing/insights"
 import { Mission } from "@/components/landing/mission"
 import { Sectors } from "@/components/landing/sectors"
 import { Stats } from "@/components/landing/stats"
-import { SubHero } from "@/components/landing/sub-hero"
 import { Bleed } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
-import { SiteHeader } from "@/components/site/site-header"
 
 export default function Page() {
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-16 lg:gap-32">
       <BlueprintGrid />
-      <SiteHeader />
 
       <Hero />
-      <SubHero />
       <Mission />
       <Sectors />
       <Capabilities />

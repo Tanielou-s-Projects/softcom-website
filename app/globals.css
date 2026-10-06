@@ -390,6 +390,18 @@
   }
 }
 
+/* The hero's scroll cue assembling pixel by pixel, stepped like the page transition. */
+@keyframes softcom-pixel-assemble {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @layer components {
   /*
    * One 2s entrance, played once (Figma's cohort on node 210:40 looped, which
@@ -476,6 +488,67 @@
     /* The pulse's resting frame is invisible, so hide it outright. */
     .softcom-atlas-pulse {
       display: none;
+    }
+  }
+
+  /*
+   * Portal hero (portal-hero.tsx). Only the scroll-driven geometry lives here:
+   * the component writes --p (eased progress), --exit, --arrival and, for the
+   * circles variant, --lower-x/--lower-y on the track each frame. Layout and
+   * colour are utilities on the elements, and their `motion-reduce:` variants
+   * win over these because utilities sit in a later layer.
+   */
+  .softcom-portal-exit-up {
+    transform: translateY(calc(var(--p) * -110%));
+    opacity: var(--exit);
+  }
+  .softcom-portal-exit-left {
+    transform: translate(calc(var(--p) * -110%), calc(var(--p) * -60%));
+  }
+  /* Grid: the top-right panel grows left and down until it fills the scene. */
+  .softcom-portal-panel {
+    left: calc(var(--split) * (1 - var(--p)));
+    width: calc(100% - var(--split) + var(--split) * var(--p));
+    height: calc(var(--row) + (100% - var(--row)) * var(--p));
+  }
+  /* Circles: a true circle until its edge has passed beyond the viewport. */
+  .softcom-portal-circle {
+    clip-path: circle(
+      calc(var(--diameter) / 2 + (75vmax - var(--diameter) / 2) * var(--p)) at
+        calc(77% - 27% * var(--p)) calc(27% + 23% * var(--p))
+    );
+  }
+  /* Circles: centre is solved in JS against the growing circle's radius. */
+  .softcom-portal-orbit {
+    visibility: var(--lower-visible, hidden);
+    left: calc(var(--lower-x, 0px) - var(--lower-diameter) / 2);
+    top: calc(var(--lower-y, 0px) - var(--lower-diameter) / 2);
+    width: var(--lower-diameter);
+    height: var(--lower-diameter);
+    transform: scale(calc(1 - var(--p) * 0.72));
+  }
+  /* Blue first; the photograph arrives before the headline does. */
+  .softcom-portal-photo-in {
+    opacity: clamp(0, calc(var(--p) * 2), 1);
+  }
+  /* The lower photo resolves to cyan while still in view. */
+  .softcom-portal-tint-in {
+    opacity: clamp(0, calc(var(--p) * 3), 1);
+  }
+  .softcom-portal-shade {
+    opacity: calc(var(--arrival) * 0.65);
+  }
+  .softcom-portal-arrival {
+    opacity: var(--arrival);
+    transform: translateY(calc((1 - var(--arrival)) * 40px));
+  }
+
+  .softcom-pixel-cascade rect {
+    animation: softcom-pixel-assemble 420ms steps(4, end) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .softcom-pixel-cascade rect {
+      animation: none;
     }
   }
 

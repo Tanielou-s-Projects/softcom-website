@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 import { bodyText, cardHeadingText } from "@/components/landing/section"
 import { SpecimenGroup, TokenLabel } from "@/components/playground/section"
 import { cn } from "@/lib/utils"
@@ -11,6 +12,18 @@ import { cn } from "@/lib/utils"
 export function LandingSection() {
   return (
     <div className="flex flex-col gap-8">
+      <SpecimenGroup label="Hero motion study">
+        <p className="mb-3 max-w-prose text-sm text-muted-foreground">
+          Circular portals and bordered grid now live on the landing page.
+          Compare them using the shared Variants picker.
+        </p>
+        <Link
+          href="/?v.hero=circles"
+          className="inline-flex rounded-full bg-foreground px-5 py-3 text-sm text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+        >
+          View landing hero ↗
+        </Link>
+      </SpecimenGroup>
       <SpecimenGroup label="Sector card">
         <p className="mb-3 max-w-prose text-sm text-muted-foreground">
           Three of these sit in a row, each pulled 64px over the last. The
