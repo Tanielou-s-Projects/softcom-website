@@ -7,8 +7,8 @@ import { displayText } from "@/components/landing/section"
 import { monoFamily } from "@/components/motion/dither-glyphs"
 
 /** CSS px per glyph cell — fixed, so the growing screen reveals more glyphs. */
-const CELL = 8
-/** Sparse to dense: brighter pixels get heavier glyphs (data digits included). */
+const CELL = 6
+/** Sparse to dense. Darker pixels get heavier glyphs (see the draw pass). */
 const RAMP = " .:-=+*01x#%@"
 
 const ease = (t: number) => t * t * (3 - 2 * t)
@@ -31,12 +31,21 @@ function AlumniHero({
   video,
   alt,
   title,
+  focus = { y: 0.5, zoom: 1 },
+  videoFocus = focus,
 }: {
   src: string
   /** Optional video; `src` is its poster and the fallback. */
   video?: string
   alt: string
   title: string
+  /**
+   * Where the subject sits in the source (y, 0–1 from the top) and how far to
+   * crop in on it — a team in a thin strip of a wide shot needs both.
+   */
+  focus?: { y: number; zoom: number }
+  /** The video's own framing, when it differs from the photo's. */
+  videoFocus?: { y: number; zoom: number }
 }) {
   const trackRef = React.useRef<HTMLDivElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
@@ -58,6 +67,7 @@ function AlumniHero({
     let source: HTMLImageElement | HTMLVideoElement | null = null
     let sourceW = 0
     let sourceH = 0
+    let framing = focus
     let progress = reduce ? 1 : 0
 
     const buildAtlas = () => {
@@ -99,21 +109,16 @@ function AlumniHero({
       // Cover-crop the source into one pixel per cell.
       small.width = cols
       small.height = rows
-      const scale = Math.max(cols / sourceW, rows / sourceH)
+      const scale = Math.max(cols / sourceW, rows / sourceH) * framing.zoom
       const sw = cols / scale
       const sh = rows / scale
-      // Cropped low: the people are in the bottom third of the frame.
-      sctx.drawImage(
-        source,
-        (sourceW - sw) / 2,
-        (sourceH - sh) * 0.85,
-        sw,
-        sh,
+      // Centre the crop on the subject, kept inside the source.
+      const sy = Math.max(
         0,
-        0,
-        cols,
-        rows
+        Math.min(sourceH - sh, sourceH * framing.y - sh / 2)
       )
+      // Cropped in on the subject (see `focus`).
+      sctx.drawImage(source, (sourceW - sw) / 2, sy, sw, sh, 0, 0, cols, rows)
       const data = sctx.getImageData(0, 0, cols, rows).data
 
       ctx.globalCompositeOperation = "source-over"
@@ -132,7 +137,10 @@ function AlumniHero({
             255
           // Every cell inside the screen carries a glyph (dark ones the
           // lightest), so the team reads as figures rather than holes.
-          const g = 1 + Math.round(Math.pow(lum, 0.85) * (RAMP.length - 2))
+          // Inverted: dark subjects (the navy-shirted team) get the dense
+          // glyphs, the bright sky and sand light dots — so the people stand
+          // out as solid figures instead of holes in a white field.
+          const g = 1 + Math.round(Math.pow(1 - lum, 0.9) * (RAMP.length - 2))
           ctx.drawImage(
             atlas,
             g * cell,
@@ -152,7 +160,7 @@ function AlumniHero({
       ctx.imageSmoothingEnabled = false
       // Lift only the tint: navy shirts become a readable blue on black,
       // while glyph weight still follows the true luminance.
-      ctx.filter = "brightness(1.6) saturate(1.2)"
+      ctx.filter = "brightness(1.9) saturate(1.5)"
       ctx.drawImage(small, 0, 0, cols, rows, x0, y0, cols * cell, rows * cell)
       ctx.filter = "none"
       ctx.globalCompositeOperation = "source-over"
@@ -210,7 +218,10 @@ function AlumniHero({
     const image = new window.Image()
     image.decoding = "async"
     image.onload = () => {
-      if (!source) ready(image, image.naturalWidth, image.naturalHeight)
+      if (!source) {
+        framing = focus
+        ready(image, image.naturalWidth, image.naturalHeight)
+      }
     }
     image.src = src
 
@@ -224,6 +235,7 @@ function AlumniHero({
       videoEl.src = video
       videoEl.addEventListener("loadeddata", () => {
         if (!videoEl) return
+        framing = videoFocus
         ready(videoEl, videoEl.videoWidth, videoEl.videoHeight)
         if (!reduce && visible) {
           videoEl.play().catch(() => {})
@@ -248,6 +260,8 @@ function AlumniHero({
       videoEl?.pause()
       videoEl?.removeAttribute("src")
     }
+    // Framing is static per page; reading it once at mount is intended.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src, video])
 
   return (

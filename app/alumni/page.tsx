@@ -34,6 +34,9 @@ export default function Page() {
       <AlumniHero
         src="/alumni/team.jpg"
         video="/alumni/team.mp4"
+        // The team is a thin strip low in each frame: crop in on it.
+        focus={{ y: 0.76, zoom: 1.7 }}
+        videoFocus={{ y: 0.6, zoom: 1.7 }}
         alt="The Softcom team gathered together on a beach in front of a hotel"
         title={alumniHero.title}
       />
