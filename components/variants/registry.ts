@@ -9,9 +9,9 @@ export const VARIANTS = {
   hero: {
     label: "Hero",
     options: [
+      { id: "dissolve", label: "Dither dissolve" },
       { id: "circles", label: "Circular portals" },
       { id: "grid", label: "Bordered grid" },
-      { id: "dissolve", label: "Dither dissolve" },
     ],
   },
   tags: {

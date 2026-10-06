@@ -12,13 +12,14 @@ import { cn } from "@/lib/utils"
 export function LandingSection() {
   return (
     <div className="flex flex-col gap-8">
-      <SpecimenGroup label="Hero motion study">
+      <SpecimenGroup label="Hero">
         <p className="mb-3 max-w-prose text-sm text-muted-foreground">
-          Circular portals and bordered grid now live on the landing page.
-          Compare them using the shared Variants picker.
+          The landing hero is the dither dissolve: circles, then the shared
+          dither carrying the statement and the mission in one pinned scene. The
+          circular and grid explorations are retired from the picker.
         </p>
         <Link
-          href="/?v.hero=circles"
+          href="/"
           className="inline-flex rounded-full bg-foreground px-5 py-3 text-sm text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         >
           View landing hero ↗
