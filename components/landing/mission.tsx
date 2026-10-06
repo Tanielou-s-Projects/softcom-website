@@ -20,6 +20,7 @@ import {
   primaryPill,
 } from "@/components/landing/section"
 import { useMediaQuery } from "@/hooks/use-media-query"
+import { useVariant } from "@/components/variants/variant-context"
 import { cn } from "@/lib/utils"
 
 const viewport = { once: true, amount: 0.3 } as const
@@ -49,6 +50,9 @@ function Mission() {
   const reduceMotion = useReducedMotion()
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   const scrub = isDesktop && !reduceMotion
+  // After the dissolve hero the blue is one surface: dock flush onto it,
+  // cancelling the page gap and squaring the top corners where they join.
+  const docked = useVariant("hero") === "dissolve"
 
   const { scrollYProgress } = useScroll({
     target: trackRef,
@@ -102,12 +106,15 @@ function Mission() {
         } as const)
 
   return (
-    <Bleed className="pt-6">
+    <Bleed className={docked ? "-mt-16 lg:-mt-32" : "pt-6"}>
       {/* Scroll track — a plain div (no transforms) so the sticky child pins. */}
       <div ref={trackRef} className="relative lg:motion-safe:h-[280vh]">
         <motion.div
           style={scrub ? { backgroundColor: panelBackground } : undefined}
-          className="dark relative flex flex-col items-center gap-12 overflow-clip rounded-4xl bg-brand-blue px-6 pt-20 pb-6 lg:gap-32 lg:pt-32 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:pb-6 lg:motion-reduce:h-auto lg:motion-reduce:pb-20"
+          className={cn(
+            "dark relative flex flex-col items-center gap-12 overflow-clip rounded-4xl bg-brand-blue px-6 pt-20 pb-6 lg:gap-32 lg:pt-32 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:pb-6 lg:motion-reduce:h-auto lg:motion-reduce:pb-20",
+            docked && "rounded-t-none"
+          )}
         >
           {/* Phase one — the mission statement. */}
           <motion.div

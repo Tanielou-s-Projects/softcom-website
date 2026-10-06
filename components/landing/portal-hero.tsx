@@ -24,6 +24,8 @@ const PHASE = {
   dither: [0.46, 0.72],
   text: [0.66, 0.9],
   actions: [0.88, 0.95],
+  /** The blue narrows to the Mission card's gutters and docks onto it. */
+  settle: [0.95, 1],
 } as const
 
 /** Pixel glyphs for the decode — the same visual vocabulary as the dither. */
@@ -167,6 +169,10 @@ export function PortalHero({
           actions.style.transform = `translateY(${(1 - a) * 16}px)`
           actions.inert = a < 0.5
         }
+        element.style.setProperty(
+          "--settle",
+          String(reduce ? 1 : ease(segment(raw, PHASE.settle)))
+        )
       }
       if (variant !== "grid") {
         const width = element.clientWidth
@@ -239,13 +245,14 @@ export function PortalHero({
         ref={track}
         className={cn(
           dissolve ? "h-[380vh]" : "h-[200vh]",
-          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]"
+          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--settle:0] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]"
         )}
       >
         <section
           aria-labelledby="story-title"
           className={cn(
             "sticky top-0 isolate h-screen overflow-hidden motion-reduce:relative motion-reduce:h-auto motion-reduce:min-h-screen",
+            dissolve && "softcom-portal-settle",
             circles
               ? "[--diameter:min(43vw,30vh)] [--hero-type-size:clamp(20px,5.3vw,38px)] [--lower-diameter:min(105vw,58vh)] md:[--diameter:min(34vw,42vh)] md:[--hero-type-size:clamp(28px,min(5.7vw,11vh),100px)] md:[--lower-diameter:80vw]"
               : "border border-border"
