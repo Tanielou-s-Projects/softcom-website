@@ -144,7 +144,6 @@ function SiteHeader() {
    */
   const [menuValue, setMenuValue] = React.useState("")
   const cue = useMenuCue(!open)
-  const [hovered, setHovered] = React.useState(false)
   const [focused, setFocused] = React.useState(false)
   const closeTimer = React.useRef(0)
 
@@ -154,9 +153,14 @@ function SiteHeader() {
     setOpen(false)
   }, [])
 
-  // Scrolling on folds an open menu; pointer, focus or an open menu keep it shown.
+  /*
+   * Scrolling down is a deliberate gesture and beats a resting cursor: it
+   * folds the menu, so a pointer parked at the top (say, after clicking a
+   * link) can't pin the pill over the page. Only keyboard focus keeps it
+   * shown — a keyboard user must never lose what they're on.
+   */
   const scrolledAway = useScrolledAway(close)
-  const hidden = scrolledAway && !(open || hovered || focused)
+  const hidden = scrolledAway && !focused
 
   React.useEffect(() => () => window.clearTimeout(closeTimer.current), [])
 
@@ -168,12 +172,10 @@ function SiteHeader() {
   const onPointerEnter = (event: React.PointerEvent) => {
     if (event.pointerType === "touch") return
     window.clearTimeout(closeTimer.current)
-    setHovered(true)
     setOpen(true)
   }
   const onPointerLeave = (event: React.PointerEvent) => {
     if (event.pointerType === "touch") return
-    setHovered(false)
     window.clearTimeout(closeTimer.current)
     closeTimer.current = window.setTimeout(close, HOVER_CLOSE_DELAY)
   }
@@ -214,7 +216,10 @@ function SiteHeader() {
         onValueChange={setMenuValue}
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
-        onFocusCapture={() => setFocused(true)}
+        onFocusCapture={(event) =>
+          // Keyboard focus only: a mouse click on a link also focuses it.
+          setFocused(event.target.matches(":focus-visible"))
+        }
         onBlurCapture={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget))
             setFocused(false)
