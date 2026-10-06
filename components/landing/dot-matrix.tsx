@@ -2,17 +2,17 @@
 
 import * as React from "react"
 
+import { bayer8, cellState, field } from "@/lib/dither"
 import { cn } from "@/lib/utils"
 
 /* Fine enough for the globe's ring and meridians to survive sampling. */
 const COLS = 20
 const ROWS = 24
-/* Every cell, same dot, same tone at rest — a grid, not a texture. */
-const REST_OPACITY = 0.14
-/* The silhouette's cells at rest: legible, still neutral. */
-const SHAPE_REST_OPACITY = 0.55
-/* The field around the shape once it is in colour. */
-const DIM_OPACITY = 0.07
+/*
+ * Opacities, as classes on each cell: every cell 14% at rest (a grid, not a
+ * texture), the silhouette's cells 55% (legible, still neutral), and the field
+ * around the shape 7% once it is in colour.
+ */
 
 /*
  * Sample a silhouette into per-cell coverage (0–1) by drawing it onto a canvas
@@ -70,54 +70,111 @@ function useCoverage(src: string) {
 type DotMatrixProps = {
   /** Opaque silhouette on a transparent artboard. */
   src: string
-  /** Lit dots take `currentColor` when resolved — set a `text-*` token on the wrapper. */
+  /** Lit cells take `currentColor` when resolved — set a `text-*` token on the wrapper. */
   resolved: boolean
   className?: string
 }
 
+/** How long a full resolve takes, and the quicker un-resolve. */
+const RESOLVE_MS = 650
+const RELEASE_MS = 320
+/** Square cell inside its 1×1 slot — the same visual weight as the old dots. */
+const CELL = 0.56
+const INSET = (1 - CELL) / 2
+
+const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
+
+/*
+ * Per-cell constants for the shared dither (lib/dither.ts): each cell's Bayer
+ * threshold and its place in the rising field. Rows count from the bottom, as
+ * gl_FragCoord does, so the mark fills the same way the hero does.
+ */
+const CELLS = Array.from({ length: COLS * ROWS }, (_, i) => {
+  const col = i % COLS
+  const fromTop = Math.floor(i / COLS)
+  const row = ROWS - 1 - fromTop
+  return {
+    col,
+    fromTop,
+    threshold: bayer8(col, row),
+    field: field(col, row, row / (ROWS - 1)),
+  }
+})
+
 /**
- * The sector mark: a uniform 20 × 24 field of identical dots. At rest every
- * dot is the same quiet neutral, so the mark is a clean grid. When `resolved`
- * the cells under the silhouette light up in the sector's colour and the rest
- * of the field dims, so the building / skyline / globe reads inside an
- * unchanged grid. The transition staggers along the grid so the image
- * "arrives" rather than switching on.
+ * The sector mark: a uniform 20 × 24 field of identical square cells. At rest
+ * every cell is the same quiet neutral, so the mark is a clean grid. When
+ * `resolved` it fills in the site's dither language: the cells under the
+ * silhouette light from the bottom in Bayer order, flash brand cyan at the
+ * front and settle into the sector colour, while the rest of the field dims —
+ * the hero's dissolve in miniature.
+ *
+ * Progress is tweened in JS and written straight to `data-state` on each cell,
+ * so a resolve costs no React renders. Reduced motion jumps to the end state.
  */
 function DotMatrix({ src, resolved, className }: DotMatrixProps) {
   const coverage = useCoverage(src)
+  const svgRef = React.useRef<SVGSVGElement>(null)
+  const progressRef = React.useRef(0)
+
+  React.useEffect(() => {
+    const rects = svgRef.current?.querySelectorAll<SVGRectElement>("rect")
+    if (!rects) return
+    const apply = (progress: number) => {
+      progressRef.current = progress
+      CELLS.forEach((cell, i) => {
+        const state = cellState(progress, cell.field, cell.threshold)
+        const rect = rects[i]
+        if (rect && rect.dataset.state !== state) rect.dataset.state = state
+      })
+    }
+
+    const target = resolved ? 1 : 0
+    const from = progressRef.current
+    if (
+      from === target ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      apply(target)
+      return
+    }
+
+    const duration =
+      (resolved ? RESOLVE_MS : RELEASE_MS) * Math.abs(target - from)
+    const start = performance.now()
+    let frame = requestAnimationFrame(function tick(now) {
+      const t = Math.min(1, (now - start) / duration)
+      apply(from + (target - from) * easeOut(t))
+      if (t < 1) frame = requestAnimationFrame(tick)
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [resolved, coverage])
 
   return (
     <svg
+      ref={svgRef}
       aria-hidden
       viewBox={`0 0 ${COLS} ${ROWS}`}
       className={cn("block aspect-[20/24] w-full", className)}
     >
-      {Array.from({ length: COLS * ROWS }, (_, i) => {
-        const col = i % COLS
-        const row = Math.floor(i / COLS)
+      {CELLS.map((cell, i) => {
         // The shape is always drawn — in neutral at rest, in the sector colour when resolved.
         const shape = coverage !== null && coverage[i] > 0.4
         return (
-          <circle
+          <rect
             key={i}
-            cx={col + 0.5}
-            cy={row + 0.5}
-            r={0.28}
+            x={cell.col + INSET}
+            y={cell.fromTop + INSET}
+            width={CELL}
+            height={CELL}
+            data-state="rest"
             className={cn(
-              "transition-[opacity,fill] duration-500 ease-out motion-reduce:transition-none",
               // Foreground, not a fixed grey, so the grid shows on both themes.
-              shape && resolved ? "fill-current" : "fill-foreground"
+              "fill-foreground data-[state=front]:fill-brand-cyan",
+              shape
+                ? "opacity-55 data-[state=front]:opacity-100 data-[state=on]:fill-current data-[state=on]:opacity-100"
+                : "opacity-14 data-[state=front]:opacity-35 data-[state=on]:opacity-7"
             )}
-            style={{
-              opacity: shape
-                ? resolved
-                  ? 1
-                  : SHAPE_REST_OPACITY
-                : resolved
-                  ? DIM_OPACITY
-                  : REST_OPACITY,
-              transitionDelay: `${(col + row) * 8}ms`,
-            }}
           />
         )
       })}
