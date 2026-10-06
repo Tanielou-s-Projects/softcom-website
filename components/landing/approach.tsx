@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils"
 /** How Softcom works: the technology, then the expertise that puts it to use. */
 function Approach() {
   return (
-    <Container className="flex flex-col gap-10 py-6 lg:flex-row lg:gap-16">
+    <Container className="flex flex-col gap-10 lg:flex-row lg:gap-16">
       <Reveal asChild>
         <h2 className={cn(headingText, "text-foreground lg:w-[50%]")}>
           Technology to make it happen. Expertise to make it work.

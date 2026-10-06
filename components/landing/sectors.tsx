@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils"
 
 function Sectors() {
   return (
-    <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">
+    <Container className="flex flex-col gap-10 overflow-clip lg:gap-16">
       <Reveal asChild>
         <header className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-16">
           <h2 className={cn(headingText, "text-foreground lg:w-[61%]")}>

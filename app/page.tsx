@@ -14,7 +14,12 @@ import { BlueprintGrid } from "@/components/site/blueprint-grid"
 
 export default function Page() {
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-16 lg:gap-32">
+    /*
+     * One spacing rhythm: the gap is the only space between sections — the
+     * sections carry no vertical padding of their own — so every visible gap
+     * is the same 80px / 112px.
+     */
+    <div className="relative flex min-h-svh w-full flex-col gap-20 lg:gap-28">
       <BlueprintGrid />
 
       <Hero />

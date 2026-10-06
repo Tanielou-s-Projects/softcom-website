@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils"
 /** "Our thinking" — the homepage's window onto Insights. */
 function Insights() {
   return (
-    <Container className="flex flex-col gap-10 overflow-clip pt-6 lg:gap-16">
+    <Container className="flex flex-col gap-10 overflow-clip lg:gap-16">
       <Reveal asChild>
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div className="flex flex-col gap-4">
