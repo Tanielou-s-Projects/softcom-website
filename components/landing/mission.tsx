@@ -19,7 +19,6 @@ import {
   leadText,
   primaryPill,
 } from "@/components/landing/section"
-import { TENURE } from "@/components/landing/content"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 
@@ -129,10 +128,8 @@ function Mission() {
                 "max-w-[684px] text-center text-neutral-200"
               )}
             >
-              Founded in Lagos in 2007, Softcom builds the systems that help
-              organisations operate, grow, and better serve the people who
-              depend on them. We believe stronger organisations are the
-              foundation of a more prosperous society.
+              We believe stronger organisations are the foundation of a more
+              prosperous society.
             </p>
           </motion.div>
 
@@ -202,10 +199,10 @@ function Mission() {
                 "max-w-[576px] text-center text-neutral-200"
               )}
             >
-              For {TENURE}, we have partnered with governments, financial
-              institutions, global development agencies, and growth-stage
-              enterprises to build the platforms, data systems, and digital
-              capabilities that drive their most important outcomes.
+              We build technology and capabilities that strengthen those
+              organisations, helping them operate better, make informed
+              decisions and create possibilities for the people who depend on
+              them.
             </motion.p>
             <motion.div
               style={scrub ? { opacity: buttonOpacity, y: buttonY } : undefined}
@@ -213,7 +210,7 @@ function Mission() {
               className="pointer-events-auto"
             >
               <Button asChild size="lg" className={primaryPill}>
-                <Link href="/about">Our Story</Link>
+                <Link href="/about">Our story</Link>
               </Button>
             </motion.div>
           </div>

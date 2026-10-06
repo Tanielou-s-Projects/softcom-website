@@ -24,27 +24,27 @@ export type Sector = {
 export const sectors: Sector[] = [
   {
     id: "public",
-    title: "Public\nSector",
+    title: "Public\nInstitutions",
     description:
-      "The institutions responsible for delivering services to millions. We help them do it at scale.",
+      "We work with public institutions on the technology and systems needed to serve people, support oversight and coordinate delivery. Our approach considers the mandate, the operating environment and the people the solution must reach.",
     tags: ["Government MDAs", "Regulators", "Law Enforcement Agencies"],
     silhouette: "/landing/sector-public-silhouette.svg",
     tone: "cyan",
   },
   {
     id: "private",
-    title: "Private\nSector",
+    title: "Private\nOrganisations",
     description:
-      "Enterprises that need technology to move faster, reach further, and operate with more precision.",
+      "We help businesses apply technology to the priorities that shape their performance. From enterprise systems to intelligence and digital services, we connect technical capability with the organisation’s commercial ambitions.",
     tags: ["Financial Services", "FMCG", "Oil & Gas", "Education"],
     silhouette: "/landing/sector-private-silhouette.svg",
     tone: "blue",
   },
   {
     id: "enablers",
-    title: "Development Enablers",
+    title: "Development\nEnablers",
     description:
-      "Organisations driving systemic change, we give them the infrastructure to measure and prove it.",
+      "Local understanding, coordinated implementation and visibility into results are essential to development work. Our technology and delivery expertise help development organisations reach intended beneficiaries, follow progress and respond to what they learn.",
     tags: [
       "Multilateral Organisations",
       "Cooperatives",
@@ -53,12 +53,24 @@ export const sectors: Sector[] = [
     silhouette: "/landing/sector-enablers-silhouette.svg",
     tone: "neutral",
   },
+  {
+    id: "partners",
+    title: "Technology\nPartners",
+    description:
+      "We collaborate with technology companies whose platforms and solutions can serve organisations in our markets. Together, we explore opportunities and bring the technical expertise, local understanding and implementation capability needed to put those solutions to work.",
+    // The two partner platforms the deck names; extend as partnerships are confirmed.
+    tags: ["Kitsoft", "RTGS.global"],
+    silhouette: "/landing/sector-partners-silhouette.svg",
+    tone: "cyan",
+  },
 ]
 
 export type Capability = {
   number: string
+  /** Anchor on /solutions, so each slide's link lands on its own area. */
+  id: string
   title: string
-  description: string
+  description: string[]
   image: string
   /** Tailwind classes for the number chip — the accent inverts per slide. */
   chipClassName: string
@@ -67,27 +79,65 @@ export type Capability = {
 export const capabilities: Capability[] = [
   {
     number: "01",
+    id: "digital-infrastructure",
     title: "Digital Infrastructure",
-    description:
-      "We design and deploy the core systems organisations depend on enterprise platforms, APIs, payment infrastructure, and integration layers. Whether building from scratch or modernising legacy estates, we make technology perform reliably at scale across regulated, high-stakes environments.",
+    description: [
+      "We build the digital rails that enable people and organisations to access services, connect and transact. These systems provide a common foundation through which many participants can operate, repeatedly and at scale.",
+      "We do this with our own technology, partner platforms and custom-built systems. Where the infrastructure already exists globally, we are the partner that makes it work locally.",
+    ],
     image: "/landing/capability-01.png",
     chipClassName: "bg-brand-blue text-brand-cyan",
   },
   {
     number: "02",
-    title: "Intelligence",
-    description:
-      "We turn complex data into clear decisions. Our intelligence practice builds BI platforms, anomaly detection engines, fraud monitoring systems, and custom analytics — giving organisations deep visibility into their customers, operations, and market position.",
+    id: "applied-intelligence",
+    title: "Applied Intelligence",
+    description: [
+      "Our intelligence systems connect fragmented information and help organisations examine it in depth. Across documents, records and datasets, including market data, our technology helps people investigate activity, understand relationships, track changes and identify what needs attention.",
+      "We shape the intelligence around the questions people need to answer and the decisions they need to make.",
+    ],
     image: "/landing/capability-02.png",
     chipClassName: "bg-brand-cyan text-brand-blue",
   },
   {
     number: "03",
-    title: "Programs",
-    description:
-      "End-to-end ownership of ambitious digital programmes — from discovery and design through build, deployment, and sustained impact measurement. We embed with client teams, absorb delivery risk, and stay accountable until real outcomes are achieved.",
+    id: "powering-initiatives",
+    title: "Powering Initiatives",
+    description: [
+      "We bring technology, people and processes together to deliver complex initiatives. We design how an initiative will operate, put the required systems in place and coordinate the activities needed to reach its intended beneficiaries.",
+      "We stay accountable for what the initiative achieves, not only for what we build.",
+    ],
     image: "/landing/capability-03.png",
     chipClassName: "bg-background text-foreground",
+  },
+]
+
+/**
+ * What guides the work — shared by the homepage people section and About.
+ * The deck repeats them verbatim in both places.
+ */
+export type Value = { title: string; description: string }
+
+export const values: Value[] = [
+  {
+    title: "Depth of thought",
+    description:
+      "Our teams question assumptions, examine the context and consider the implications before settling on an answer.",
+  },
+  {
+    title: "Technical competence",
+    description:
+      "Thoughtful design, disciplined engineering and attention to detail shape how our solutions are built and put into use.",
+  },
+  {
+    title: "Ownership",
+    description:
+      "We make commitments carefully, raise issues openly and follow through on the work entrusted to us.",
+  },
+  {
+    title: "Collective strength",
+    description:
+      "We bring different expertise and perspectives together. Sharing knowledge and working across disciplines makes us more capable as a team.",
   },
 ]
 
@@ -109,7 +159,7 @@ export type Stat = { value: string; label: string }
 export const stats: Stat[] = [
   { value: "20M+", label: "People reached" },
   { value: "100+", label: "Projects delivered" },
-  { value: "30+", label: "Enterprise clients" },
+  { value: "30+", label: "Organisations served" },
   { value: String(YEARS_ACTIVE), label: "Years of delivery" },
 ]
 
@@ -130,26 +180,25 @@ export const portraits: Portrait[] = [
   },
 ]
 
-export type Insight = {
-  slug: string
-  category: string
-  date: string
-  title: string
-}
+/**
+ * "Our thinking" on the homepage. Perspectives, not dated news: the deck gives
+ * each a title and a one-line summary. They link to the Insights index until
+ * the articles themselves are written.
+ */
+export type Perspective = { title: string; summary: string; href: string }
 
-export const insights: Insight[] = [
+export const perspectives: Perspective[] = [
   {
-    slug: "why-digital-transformation-fails-in-african-enterprises",
-    category: "Digital Strategy",
-    date: "April 26, 2026",
-    title:
-      "Why Digital Transformation Fails in African Enterprises — And What to Do About It",
+    title: "Start with the service, then design the system",
+    summary:
+      "Useful technology begins with a clear understanding of the work it needs to support. A perspective on connecting systems, responsibilities and the experience of the people using them.",
+    href: "/insights",
   },
   {
-    slug: "building-a-data-culture-nigerian-financial-sector",
-    category: "Data",
-    date: "April 26, 2026",
-    title: "Building a Data Culture: Lessons from Nigeria's Financial Sector",
+    title: "A useful dashboard starts with a decision",
+    summary:
+      "Information becomes valuable when someone can act on it. Why the purpose of a dashboard should shape its measures, its design and its place in an organisation’s work.",
+    href: "/insights",
   },
 ]
 
@@ -184,7 +233,7 @@ export const headerNav: HeaderNavItem[] = [
     href: "/solutions",
     submenu: [
       { label: "Solutions", href: "/solutions" },
-      { label: "Products & Services", href: "/products-and-services" },
+      { label: "Enterprise Products", href: "/enterprise-products" },
       { label: "Case Studies", href: "/case-studies" },
     ],
   },
@@ -206,7 +255,7 @@ export const footerNav = [
     heading: "What We Do",
     links: [
       { label: "Solutions", href: "/solutions" },
-      { label: "Products & Services", href: "/products-and-services" },
+      { label: "Enterprise Products", href: "/enterprise-products" },
       { label: "Case Studies", href: "/case-studies" },
     ],
   },

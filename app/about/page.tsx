@@ -3,15 +3,18 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { aboutHero, principles, story } from "@/components/about/content"
+import { values } from "@/components/landing/content"
 import { AboutHero } from "@/components/about/about-hero"
 import { JourneyTimeline } from "@/components/about/journey-timeline"
 import { News } from "@/components/about/news"
+import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
   Bleed,
   bodyText,
   Container,
   headingText,
+  primaryPill,
 } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { Team } from "@/components/landing/team"
@@ -69,10 +72,7 @@ export default function Page() {
           <JourneyTimeline reveal="side" />
         </Container>
 
-        {/* The people and the impact numbers. */}
-        <Team />
-
-        {/* Principles */}
+        {/* What guides our work — the same four values as the homepage. */}
         <Container className="flex flex-col gap-8">
           <Reveal asChild>
             <h2 className={cn(headingText, "text-foreground")}>
@@ -80,35 +80,53 @@ export default function Page() {
             </h2>
           </Reveal>
           <RevealStagger as="ol" className="flex flex-col gap-6">
-            {principles.items.map((item) => (
+            {values.map((value, index) => (
               <RevealItem
                 as="li"
-                key={item.num}
+                key={value.title}
                 className="grid gap-2 border-t border-border pt-6 sm:grid-cols-[4rem_1fr] sm:gap-8"
               >
                 <p className="font-mono text-sm text-muted-foreground">
-                  {item.num}
+                  {String(index + 1).padStart(2, "0")}
                 </p>
                 <div className="flex max-w-[70ch] flex-col gap-2">
                   <h3 className="font-heading text-xl text-foreground">
-                    {item.title}
+                    {value.title}
                   </h3>
-                  {item.description && (
-                    <p className={cn(bodyText, "text-muted-foreground")}>
-                      {item.description}
-                    </p>
-                  )}
+                  <p className={cn(bodyText, "text-muted-foreground")}>
+                    {value.description}
+                  </p>
                 </div>
               </RevealItem>
             ))}
           </RevealStagger>
         </Container>
 
+        {/* The people and the impact numbers. */}
+        <Team />
+
+        {/* Build with us — careers. */}
+        <Container>
+          <Reveal className="flex flex-col items-start gap-6 lg:max-w-[684px]">
+            <h2 className={cn(headingText, "text-foreground")}>
+              Build with us.
+            </h2>
+            <p className={cn(bodyText, "text-muted-foreground")}>
+              Bring original thinking, an innovator&rsquo;s mindset and a strong
+              sense of ownership. Work alongside exceptional peers whose
+              expertise complements yours and expands what you can achieve.
+            </p>
+            <Button asChild size="lg" className={primaryPill}>
+              <Link href="/careers">Explore careers at Softcom</Link>
+            </Button>
+          </Reveal>
+        </Container>
+
         {/* Latest news — V7-style list. */}
         <News />
 
         <Bleed className="flex flex-col gap-2.5 py-6">
-          <ClosingCta variant="build" />
+          <ClosingCta />
           <SiteFooter />
         </Bleed>
       </div>

@@ -1,16 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import Link from "next/link"
 import { motion } from "motion/react"
 
-import { Button } from "@/components/ui/button"
-import {
-  bodyText,
-  Container,
-  headingText,
-  primaryPill,
-} from "@/components/landing/section"
+import { Container, headingText } from "@/components/landing/section"
 import { portraits, type Portrait } from "@/components/landing/content"
 import { Stats } from "@/components/landing/stats"
 import { cn } from "@/lib/utils"
@@ -63,20 +56,7 @@ function Team() {
   return (
     <section id="team" className="flex scroll-mt-24 flex-col gap-16">
       <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">
-        <header className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-[15%]">
-          <h2 className={cn(headingText, "text-foreground lg:w-[50%]")}>
-            Built by people who&apos;ve done this before.
-          </h2>
-          <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-4">
-            <p className={cn(bodyText, "text-foreground")}>
-              Eighteen years of enterprise delivery, led by a team that&apos;s
-              shipped technology at national scale.
-            </p>
-            <Button asChild size="lg" className={primaryPill}>
-              <Link href="/careers">Join the team</Link>
-            </Button>
-          </div>
-        </header>
+        <h2 className={cn(headingText, "text-foreground")}>Our leadership</h2>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:max-w-[1029px] lg:grid-cols-3">
           {portraits.map((portrait) => (

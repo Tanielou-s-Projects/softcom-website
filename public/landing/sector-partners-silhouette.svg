@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" fill="#000">
+  <!-- Placeholder: two interlocking pieces. Replace with brand silhouette; any opaque shape on transparent samples correctly. -->
+  <path d="M4 16h44v18a10 10 0 1 0 0 20v18H4z"/>
+  <path d="M52 16h64v56H72V54a10 10 0 1 1 0-20H52z" transform="translate(0 0)"/>
+  <path d="M4 76h56v16a10 10 0 1 1 0 20v16H4z"/>
+  <path d="M64 76h52v52H64v-16a10 10 0 1 0 0-20z"/>
+</svg>

@@ -1,12 +1,12 @@
 import Link from "next/link"
 
-import { insights } from "@/components/landing/content"
+import { news } from "@/components/about/content"
 import { Container, headingText } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 
 /**
- * "Want to know more?" — a V7-style news list: a label column on the left, the
+ * "Latest news" — a V7-style news list: a label column on the left, the
  * heading, then hairline-separated rows (title · category · date). The avatar is
  * a placeholder until authors are wired to Sanity.
  */
@@ -20,14 +20,12 @@ function News() {
 
       <div className="flex min-w-0 flex-1 flex-col gap-10 lg:gap-12">
         <Reveal className="flex flex-col gap-3">
-          <h2 className={cn(headingText, "text-foreground")}>
-            Want to know more?
-          </h2>
-          <p className="text-lg text-muted-foreground">Read the latest news.</p>
+          <h2 className={cn(headingText, "text-foreground")}>{news.heading}</h2>
+          <p className="text-lg text-muted-foreground">{news.lead}</p>
         </Reveal>
 
         <RevealStagger as="ul" className="flex flex-col border-t border-border">
-          {insights.map((insight) => (
+          {news.items.map((insight) => (
             <RevealItem
               as="li"
               key={insight.slug}
@@ -56,6 +54,13 @@ function News() {
             </RevealItem>
           ))}
         </RevealStagger>
+
+        <Link
+          href={news.viewAll.href}
+          className="self-start text-sm font-medium text-foreground underline underline-offset-4"
+        >
+          {news.viewAll.label}
+        </Link>
       </div>
     </Container>
   )

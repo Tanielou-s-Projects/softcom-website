@@ -1,112 +1,95 @@
 /**
- * Products & Services copy, transcribed from Figma `Product & Services`
- * (node 215:22) and the Useforms overlay (node 317:1634).
+ * Enterprise Products copy, from the client's website copy deck (October
+ * 2026), laid out on Figma `Product & Services` (node 215:22).
  *
- * Held here for the same reason as the other pages' copy: products and
- * deliverables are the obvious Sanity document types, and keeping them out of
- * the components means that swap touches one file.
+ * Held here for the same reason as the other pages' copy: products are the
+ * obvious Sanity document type, and keeping them out of the components means
+ * that swap touches one file.
  */
-
-export type ProductDetail = {
-  /** The accented one-liner above the body copy. Repeats the card's tagline. */
-  lead: string
-  description: string
-  features: string[]
-}
 
 export type Product = {
   id: string
   name: string
+  /** The bold one-liner under the name. */
   tagline: string
-  /** The dithered panel behind the card, exported from Figma. */
-  panel: string
+  description: string
   /**
-   * The product's own wordmark, laid over the panel. Only Useforms has one in
-   * the design; the rest carry the dither alone.
+   * The dithered panel behind a proprietary product's card, exported from
+   * Figma. Partner platforms carry none and render as text cards.
    */
+  panel?: string
+  /** The product's own wordmark, laid over the panel. Only Useforms has one. */
   wordmark?: { src: string; width: number; height: number }
-  /**
-   * Present only where the design has an overlay to open. Useforms is the one
-   * that was drawn, so the others' buttons stay inert until theirs exist.
-   */
-  detail?: ProductDetail & {
-    panel: string
-  }
 }
 
+export const productsIntro = {
+  title: "Enterprise Products",
+  lead: "Explore the proprietary products we have built and the global platforms we implement.",
+}
+
+/*
+ * The panels are generic dither fields re-used from the products these
+ * replaced (SIE → Sentinel, Rewards → Reckon, Koya → Lift). The SIE and
+ * Rewards exports had a "Learn More" pill baked in; it has been painted out.
+ */
 export const products: Product[] = [
+  {
+    id: "sentinel",
+    name: "Sentinel",
+    tagline: "Financial intelligence for complex investigations.",
+    description:
+      "Connect and analyse financial records across accounts and parties. Trace money flows, uncover transaction patterns and reveal relationships through network analysis, visualisations and investigative reports.",
+    panel: "/products/panel-sentinel.png",
+  },
+  {
+    id: "reckon",
+    name: "Reckon",
+    tagline: "Audit beyond the limits of manual review.",
+    description:
+      "Reckon equips teams to conduct in-depth desk reviews, material audits and other investigations, with analysis shaped by the audit’s objectives and findings grounded in evidence. Examine extensive records, reconcile evidence across sources and uncover discrepancies that sampling can miss.",
+    panel: "/products/panel-reckon.png",
+  },
   {
     id: "useforms",
     name: "Useforms",
-    tagline: "The smarter way to ask questions, collect data, and take action.",
+    tagline: "Collect data in all its forms.",
+    description:
+      "Equip teams to collect and submit text, images, location, direction, biometric information and more. Bring observations and supporting evidence together in structured submissions that document people, places and activities.",
     panel: "/products/panel-useforms.png",
     wordmark: {
       src: "/products/useforms-wordmark.svg",
       width: 437,
       height: 76,
     },
-    detail: {
-      panel: "/products/panel-useforms-overlay.png",
-      lead: "The smarter way to ask questions, collect data, and take action.",
-      description:
-        "Useforms is Softcom's enterprise data capture and field intelligence platform — built to help individuals and organisations collect better information and act on it with confidence. From feedback and payment collection to requirements capture and beneficiary enrolment, Useforms works online, offline, and everywhere in between.",
-      features: [
-        "Feedback & Survey Collection",
-        "Payment & Order Forms",
-        "Requirements & Project Capture",
-        "Offline-to-Online Field Data Sync",
-        "Analytics & Reporting Dashboard",
-      ],
-    },
   },
   {
-    id: "rewards",
-    name: "Rewards",
-    tagline: "From product sale to direct consumer relationship.",
-    panel: "/products/panel-rewards.png",
-  },
-  {
-    id: "koya",
-    name: "Koya",
-    tagline: "Impactful, connected, sustained learning.",
-    panel: "/products/panel-koya.png",
-  },
-  {
-    id: "sie",
-    name: "SIE",
-    tagline: "Turn financial documents into actionable intelligence.",
-    panel: "/products/panel-sie.png",
+    id: "lift",
+    name: "Lift",
+    tagline: "An integrated platform for entrepreneurial growth.",
+    description:
+      "Bring knowledge, resources, business tools and services within reach of entrepreneurs. Lift connects the support they need to develop their capabilities, run their businesses and pursue opportunities.",
+    panel: "/products/panel-lift.png",
   },
 ]
 
-export type Deliverable = {
-  id: string
-  title: string
-  description: string
-  /** The dot-matrix mark, exported from Figma as a flat SVG. */
-  mark: string
+export const partnersIntro = {
+  title: "Partner Platforms",
+  lead: "Global technology, delivered with Softcom’s local expertise in implementation and integration.",
 }
 
-export const deliverables: Deliverable[] = [
+export const partnerPlatforms: Product[] = [
   {
-    id: "government",
-    title: "Government & Social Infrastructure",
+    id: "liquio",
+    name: "Liquio by Kitsoft",
+    tagline: "The foundation for digital government services.",
     description:
-      "National-scale platforms for recruitment, payment, beneficiary management, and conditional cash transfers — deployed across all 36 states and hard-to-reach communities.",
-    mark: "/products/deliver-government.svg",
+      "Build and deploy public services through a low-code platform designed for government. Softcom works with Kitsoft to put Liquio into operation for ministries, departments and agencies, adapting delivery to local requirements and workflows.",
   },
   {
-    id: "custom",
-    title: "Custom Solutions",
+    id: "rtgs-global",
+    name: "RTGS.global",
+    tagline: "Infrastructure for cross-border payments and settlement.",
     description:
-      "Bespoke digital strategy, custom software development, and end-to-end digital transformation programmes — designed for the complexity of Africa's emerging markets. From systems architecture to cloud modernisation, we engineer solutions precisely tailored to your organisation's context and ambitions.",
-    mark: "/products/deliver-custom.svg",
-  },
-  {
-    id: "market",
-    title: "Market & Revenue Enablement",
-    description:
-      "Equipping businesses and institutions to discover and unlock new revenue streams through modern market intelligence, consumer engagement infrastructure, and digital commerce platforms — moving organisations from traditional distribution to direct consumer relationships.",
-    mark: "/products/deliver-market.svg",
+      "Connect regulated financial institutions through infrastructure for real-time cross-border payments and foreign-exchange settlement. Softcom works with RTGS.global to support implementation for institutions in Nigeria and across Africa.",
   },
 ]

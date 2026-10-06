@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
+import Link from "next/link"
 import {
   motion,
   useReducedMotion,
@@ -11,12 +12,13 @@ import {
 } from "motion/react"
 
 import {
-  bodyText,
   cardHeadingText,
   Container,
   headingText,
   leadText,
+  primaryPill,
 } from "@/components/landing/section"
+import { Button } from "@/components/ui/button"
 import { capabilities } from "@/components/landing/content"
 import { Reveal } from "@/components/motion/reveal"
 import { useMediaQuery } from "@/hooks/use-media-query"
@@ -78,12 +80,12 @@ function Capabilities() {
         <Reveal asChild>
           <Container className="flex flex-col items-center gap-8 pt-6 text-center lg:gap-10">
             <h2 className={cn(headingText, "max-w-[533px] text-foreground")}>
-              From infrastructure → intelligence.
+              Our focus areas
             </h2>
             <p className={cn(leadText, "max-w-[576px] text-muted-foreground")}>
-              We design and deliver across the full stack of enterprise
-              technology, from core operational platforms to data systems that
-              turn complexity into clarity.
+              Our work focuses on building the foundations organisations depend
+              on, the intelligence that informs their decisions, and the
+              capabilities that power their initiatives.
             </p>
           </Container>
         </Reveal>
@@ -105,7 +107,7 @@ function Capabilities() {
             <article
               key={capability.number}
               /* Figma's 1176×1024 is a ceiling, not a size: the slide never exceeds the viewport. */
-              className="dark relative flex h-[min(560px,75svh)] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 sm:h-[min(720px,80svh)] lg:h-[min(1024px,58svh)] lg:p-6"
+              className="dark relative flex h-[min(640px,85svh)] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 sm:h-[min(760px,85svh)] lg:h-[min(1024px,66svh)] lg:p-6"
             >
               <Image
                 src={capability.image}
@@ -126,13 +128,21 @@ function Capabilities() {
                 </p>
               </div>
 
-              <div className="relative flex flex-col items-start gap-6 overflow-clip rounded-4xl bg-background p-6 text-foreground lg:gap-8 lg:p-[47px]">
+              <div className="relative flex flex-col items-start gap-5 overflow-clip rounded-4xl bg-background p-6 text-foreground lg:gap-6 lg:p-8">
                 <h3 className={cn(cardHeadingText, "lg:max-w-[359px]")}>
                   {capability.title}
                 </h3>
-                <p className={cn(bodyText, "lg:max-w-[600px]")}>
-                  {capability.description}
-                </p>
+                {/* Body size, not the larger lg body: two paragraphs share the slide. */}
+                <div className="flex flex-col gap-3 text-base leading-[1.6] lg:max-w-[600px]">
+                  {capability.description.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+                <Button asChild size="lg" className={primaryPill}>
+                  <Link href={`/solutions#${capability.id}`}>
+                    Explore {capability.title}
+                  </Link>
+                </Button>
               </div>
             </article>
           ))}
