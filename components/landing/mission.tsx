@@ -32,6 +32,11 @@ const viewport = { once: true, amount: 0.3 } as const
  * too so the pre-hydration paint matches the scrub's starting frame.
  */
 const CLIP_TOP = 58.01
+/*
+ * Docked under the dissolve hero there is no intro above the photo — the
+ * hero's statement is the intro — so the window opens near the top instead.
+ */
+const CLIP_TOP_DOCKED = 6
 const CLIP_RIGHT = 24.21
 const CLIP_LEFT = 25.43
 
@@ -50,8 +55,11 @@ function Mission() {
   const reduceMotion = useReducedMotion()
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   const scrub = isDesktop && !reduceMotion
-  // After the dissolve hero the blue is one surface: dock flush onto it,
-  // cancelling the page gap and squaring the top corners where they join.
+  /*
+   * After the dissolve hero the blue is one surface and the hero's statement
+   * is the only statement: dock flush onto it (no page gap, square top
+   * corners), drop the intro, and let the photo open straight beneath it.
+   */
   const docked = useVariant("hero") === "dissolve"
 
   const { scrollYProgress } = useScroll({
@@ -67,7 +75,11 @@ function Mission() {
 
   // The crop window grows to full bleed; its radius eases 2xl → 4xl so the
   // final frame is congruent with the panel's own corners.
-  const clipTop = useTransform(progress, [0.1, 0.55], [CLIP_TOP, 0])
+  const clipTop = useTransform(
+    progress,
+    [0.1, 0.55],
+    [docked ? CLIP_TOP_DOCKED : CLIP_TOP, 0]
+  )
   const clipRight = useTransform(progress, [0.1, 0.55], [CLIP_RIGHT, 0])
   const clipLeft = useTransform(progress, [0.1, 0.55], [CLIP_LEFT, 0])
   const clipRadius = useTransform(progress, [0.1, 0.55], [16, 32])
@@ -119,7 +131,10 @@ function Mission() {
           {/* Phase one — the mission statement. */}
           <motion.div
             style={scrub ? { opacity: introOpacity, y: introY } : undefined}
-            className="flex flex-col items-center gap-12 lg:gap-24"
+            className={cn(
+              "flex flex-col items-center gap-12 lg:gap-24",
+              docked && "hidden"
+            )}
           >
             <h2
               className={cn(
@@ -151,7 +166,9 @@ function Mission() {
               "relative z-10 aspect-[701/506.668] w-full overflow-clip rounded-2xl",
               // -inset-px overdraws the panel edge by 1px so no blue antialiasing ring shows at full cover.
               "lg:motion-safe:absolute lg:motion-safe:-inset-px lg:motion-safe:aspect-auto lg:motion-safe:rounded-none",
-              "lg:motion-safe:[clip-path:inset(58.01%_24.21%_0%_25.43%_round_16px)]"
+              docked
+                ? "lg:motion-safe:[clip-path:inset(6%_24.21%_0%_25.43%_round_16px)]"
+                : "lg:motion-safe:[clip-path:inset(58.01%_24.21%_0%_25.43%_round_16px)]"
             )}
           >
             <Image
@@ -198,6 +215,20 @@ function Mission() {
               })}
               className="size-[26px] shrink-0"
             />
+            {/* Docked, the belief line the intro carried leads the copy here. */}
+            {docked ? (
+              <motion.h2
+                style={scrub ? { opacity: copyOpacity, y: copyY } : undefined}
+                {...inViewFor(0.15)}
+                className={cn(
+                  headingText,
+                  "max-w-[760px] text-center leading-[1.1] text-foreground"
+                )}
+              >
+                We believe stronger organisations are the foundation of a more
+                prosperous society.
+              </motion.h2>
+            ) : null}
             <motion.p
               style={scrub ? { opacity: copyOpacity, y: copyY } : undefined}
               {...inViewFor(0.25)}

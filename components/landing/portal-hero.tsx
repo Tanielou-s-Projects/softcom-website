@@ -389,7 +389,7 @@ export function PortalHero({
               <div
                 aria-label="About Softcom"
                 role="group"
-                className="dark pointer-events-none absolute inset-0 z-7 flex flex-col items-start justify-center gap-10 px-6 text-foreground motion-reduce:pointer-events-auto motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:bg-brand-blue motion-reduce:py-16 md:px-[7vw]"
+                className="dark pointer-events-none absolute inset-0 z-7 flex flex-col items-start justify-center gap-10 px-6 pt-24 pb-12 text-foreground motion-reduce:pointer-events-auto motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:bg-brand-blue motion-reduce:py-16 md:px-[7vw]"
               >
                 <p className="sr-only">
                   {STATEMENT.map((run) => run.text).join("")}
