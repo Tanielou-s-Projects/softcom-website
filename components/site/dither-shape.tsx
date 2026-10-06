@@ -2,6 +2,7 @@
 
 import { Dithering } from "@paper-design/shaders-react"
 
+import { CELL } from "@/lib/dither"
 import { cn } from "@/lib/utils"
 
 /**
@@ -9,7 +10,9 @@ import { cn } from "@/lib/utils"
  * dithering effect rather than a static image, so it reads as a shader texture.
  * `accent` picks the per-category preset (tuned in the `/dither` workshop). Both
  * use the same brand blue; the categories read apart by pattern instead —
- * a warp for About, a swirl for Solutions.
+ * a warp for About, a swirl for Solutions. Cell size and the 8×8 Bayer order
+ * come from the shared dither (lib/dither.ts); unlike the transitions these
+ * keep their own slow motion, because they are decoration, not a resolve.
  *
  * Only the open dropdown's plate mounts (Radix unmounts inactive content), so at
  * most one WebGL canvas runs at a time. `bg-black` shows through until it paints.
@@ -17,19 +20,19 @@ import { cn } from "@/lib/utils"
 const ACCENTS = {
   blue: {
     colorBack: "#020617",
-    colorFront: "#0b3bff",
+    colorFront: "#004bff",
     shape: "warp",
-    type: "4x4",
-    size: 2,
+    type: "8x8",
+    size: CELL,
     scale: 1,
     speed: 0.6,
   },
   cyan: {
     colorBack: "#020617",
-    colorFront: "#0b3bff",
+    colorFront: "#004bff",
     shape: "swirl",
-    type: "4x4",
-    size: 2,
+    type: "8x8",
+    size: CELL,
     scale: 1.2,
     speed: 0.5,
   },
