@@ -8,6 +8,7 @@ export function Hero() {
       cases={{
         circles: <PortalHero variant="circles" />,
         grid: <PortalHero variant="grid" />,
+        dissolve: <PortalHero variant="dissolve" />,
       }}
     />
   )

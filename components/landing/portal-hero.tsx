@@ -1,22 +1,141 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useEffect, useRef } from "react"
 import { PixelArrowDown } from "@/components/ui/pixel-arrow-down"
-import { TENURE } from "@/components/landing/content"
+import { Button } from "@/components/ui/button"
+import { YEARS_ACTIVE } from "@/components/landing/content"
+import { ghostPill, primaryPill } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
+import { createDitherDissolve } from "./dither-dissolve"
 import { RevealHeader } from "./hero-header"
 
 /* Mirrors Tailwind's `md` breakpoint, which the markup below switches on. */
 const MOBILE_QUERY = "(max-width: 767.98px)"
 
+/*
+ * The `dissolve` variant's timeline, as fractions of its scroll track: the
+ * circles play out first, then the dither rises over them, the statement
+ * decodes out of the blue, and the actions arrive last.
+ */
+const PHASE = {
+  circles: 0.42,
+  dither: [0.46, 0.72],
+  text: [0.66, 0.9],
+  actions: [0.88, 0.95],
+} as const
+
+/** Pixel glyphs for the decode — the same visual vocabulary as the dither. */
+const GLYPHS = "▖▗▘▝▚▞▙▟"
+/** How many characters are mid-decode at once. */
+const SCRAMBLE_WINDOW = 14
+
+const segment = (raw: number, [from, to]: readonly [number, number]) =>
+  Math.max(0, Math.min(1, (raw - from) / (to - from)))
+const ease = (t: number) => t * t * (3 - 2 * t)
+
+const statementClass =
+  "max-w-[1140px] font-heading text-[clamp(26px,3.6vw,58px)] leading-[1.25] tracking-[-0.035em]"
+
+/** The positioning statement, in runs so the tenure can carry the accent. */
+const STATEMENT = [
+  {
+    text: "Softcom is a technology and innovation company with ",
+    accent: false,
+  },
+  { text: `${YEARS_ACTIVE} years`, accent: true },
+  {
+    text: " of experience building for public institutions, private organisations and development enablers. We help organisations think through what they want to achieve, then bring together the technology, people and processes to make it happen.",
+    accent: false,
+  },
+]
+
+function StatementActions() {
+  return (
+    <>
+      <Button asChild size="lg" className={primaryPill}>
+        <Link href="/solutions">Explore our solutions</Link>
+      </Button>
+      <Button asChild size="lg" variant="ghost" className={ghostPill}>
+        <Link href="/contact">Start a conversation</Link>
+      </Button>
+    </>
+  )
+}
+
+/**
+ * The statement, one span per character so each can decode on its own. A
+ * character mid-decode keeps its real glyph (transparent) for layout and shows
+ * a pixel glyph over it, so lines never reflow as the text resolves.
+ */
+function ScrambleStatement({
+  ref,
+}: {
+  ref: React.RefObject<HTMLParagraphElement | null>
+}) {
+  return (
+    <p ref={ref} aria-hidden className={statementClass}>
+      {STATEMENT.map((run) =>
+        [...run.text].map((char, i) =>
+          char === " " ? (
+            " "
+          ) : (
+            <span
+              key={`${run.text}-${i}`}
+              data-ch
+              data-state="hidden"
+              className={cn(
+                "relative data-[state=hidden]:text-transparent data-[state=scramble]:text-transparent",
+                "after:pointer-events-none after:absolute after:inset-0 after:text-brand-cyan data-[state=scramble]:after:content-[attr(data-glyph)]",
+                run.accent && "text-brand-accent"
+              )}
+            >
+              {char}
+            </span>
+          )
+        )
+      )}
+    </p>
+  )
+}
+
 // Illustrative story using existing photography, not a customer case study.
-export function PortalHero({ variant }: { variant: "grid" | "circles" }) {
+export function PortalHero({
+  variant,
+}: {
+  variant: "grid" | "circles" | "dissolve"
+}) {
   const track = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const fallbackRef = useRef<HTMLDivElement>(null)
+  const statementRef = useRef<HTMLParagraphElement>(null)
+  const actionsRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const element = track.current
     if (!element) return
     const media = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const dissolving = variant === "dissolve"
+    const canvas = canvasRef.current
+    const dither = dissolving && canvas ? createDitherDissolve(canvas) : null
+    const chars = [
+      ...(statementRef.current?.querySelectorAll<HTMLElement>("[data-ch]") ??
+        []),
+    ]
+    const decode = (q: number) => {
+      const front = q * (chars.length + SCRAMBLE_WINDOW)
+      chars.forEach((char, i) => {
+        const state =
+          i < front - SCRAMBLE_WINDOW
+            ? "done"
+            : i < front
+              ? "scramble"
+              : "hidden"
+        if (char.dataset.state !== state) char.dataset.state = state
+        if (state === "scramble")
+          char.dataset.glyph = GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+      })
+    }
     let frame = 0
     const update = () => {
       frame = 0
@@ -28,9 +147,27 @@ export function PortalHero({ variant }: { variant: "grid" | "circles" }) {
           -element.getBoundingClientRect().top / Math.max(1, distance)
         )
       )
-      const t = Math.min(1, raw / 0.88)
+      const t = Math.min(1, raw / (dissolving ? PHASE.circles : 0.88))
       const p = media.matches ? 0 : t * t * (3 - 2 * t)
-      if (variant === "circles") {
+      if (dissolving) {
+        const reduce = media.matches
+        const d = reduce ? 0 : ease(segment(raw, PHASE.dither))
+        if (dither) {
+          dither.resize()
+          dither.draw(d)
+        } else if (fallbackRef.current) {
+          fallbackRef.current.style.opacity = String(d)
+        }
+        decode(reduce ? 1 : segment(raw, PHASE.text))
+        const actions = actionsRef.current
+        if (actions) {
+          const a = reduce ? 1 : ease(segment(raw, PHASE.actions))
+          actions.style.opacity = String(a)
+          actions.style.transform = `translateY(${(1 - a) * 16}px)`
+          actions.inert = a < 0.5
+        }
+      }
+      if (variant !== "grid") {
         const width = element.clientWidth
         const height = window.innerHeight
         const mobile = window.matchMedia(MOBILE_QUERY).matches
@@ -76,15 +213,21 @@ export function PortalHero({ variant }: { variant: "grid" | "circles" }) {
       window.removeEventListener("scroll", schedule)
       window.removeEventListener("resize", schedule)
       media.removeEventListener("change", schedule)
+      dither?.dispose()
     }
   }, [variant])
-  const circles = variant === "circles"
+  // `dissolve` is the circles composition with a longer, dithered ending.
+  const circles = variant !== "grid"
+  const dissolve = variant === "dissolve"
   return (
     <div className="bg-background text-foreground">
       <RevealHeader heroRef={track} />
       <div
         ref={track}
-        className="h-[200vh] [--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]"
+        className={cn(
+          dissolve ? "h-[380vh]" : "h-[200vh]",
+          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]"
+        )}
       >
         <section
           aria-labelledby="story-title"
@@ -195,7 +338,8 @@ export function PortalHero({ variant }: { variant: "grid" | "circles" }) {
                     top +
                     (reduce
                       ? element.offsetHeight
-                      : (element.offsetHeight - window.innerHeight) * 0.88),
+                      : (element.offsetHeight - window.innerHeight) *
+                        (dissolve ? PHASE.circles : 0.88)),
                   behavior: reduce ? "instant" : "smooth",
                 })
               }}
@@ -206,21 +350,63 @@ export function PortalHero({ variant }: { variant: "grid" | "circles" }) {
               />
             </button>
           )}
+          {dissolve && (
+            <>
+              {/* Where WebGL is unavailable, the dither falls back to a fade. */}
+              <div
+                ref={fallbackRef}
+                aria-hidden
+                className="pointer-events-none absolute inset-0 z-6 bg-brand-blue opacity-0 motion-reduce:hidden"
+              />
+              <canvas
+                ref={canvasRef}
+                aria-hidden
+                className="pointer-events-none absolute inset-0 z-6 size-full motion-reduce:hidden"
+              />
+              {/* The statement lives inside the scene: it is the dither's end
+                  state, so there is no section edge to cross. */}
+              <div
+                aria-label="About Softcom"
+                role="group"
+                className="dark pointer-events-none absolute inset-0 z-7 flex flex-col items-start justify-center gap-10 px-6 text-foreground motion-reduce:pointer-events-auto motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:bg-brand-blue motion-reduce:py-16 md:px-[7vw]"
+              >
+                <p className="sr-only">
+                  {STATEMENT.map((run) => run.text).join("")}
+                </p>
+                <ScrambleStatement ref={statementRef} />
+                <div
+                  ref={actionsRef}
+                  className="pointer-events-auto flex flex-wrap items-center gap-2 opacity-0 motion-reduce:opacity-100"
+                >
+                  <StatementActions />
+                </div>
+              </div>
+            </>
+          )}
         </section>
       </div>
-      {/* Brand blue in both themes; `dark` resolves the accent to cyan. */}
-      <section
-        aria-label="Our experience and impact"
-        className="dark flex min-h-[90vh] items-center justify-center bg-brand-blue px-6 py-16 text-foreground md:px-[7vw] md:py-25"
-      >
-        <p className="max-w-[1140px] font-heading text-[clamp(26px,3.6vw,58px)] leading-[1.25] tracking-[-0.035em]">
-          For <span className="text-brand-accent">{TENURE}</span>, we have
-          pioneered the technology that organisations rely on to expand access
-          to digital services, reach underserved communities, bridge
-          infrastructure gaps, and unlock opportunities across Nigeria and
-          Africa.
-        </p>
-      </section>
+      {/* Brand blue in both themes; `dark` resolves the pills and accent. */}
+      {!dissolve && (
+        <section
+          aria-label="About Softcom"
+          className="dark flex min-h-[90vh] flex-col items-start justify-center gap-10 bg-brand-blue px-6 py-16 text-foreground md:px-[7vw] md:py-25"
+        >
+          <p className={statementClass}>
+            {STATEMENT.map((run) =>
+              run.accent ? (
+                <span key={run.text} className="text-brand-accent">
+                  {run.text}
+                </span>
+              ) : (
+                run.text
+              )
+            )}
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <StatementActions />
+          </div>
+        </section>
+      )}
     </div>
   )
 }

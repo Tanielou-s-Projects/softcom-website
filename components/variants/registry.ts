@@ -11,6 +11,7 @@ export const VARIANTS = {
     options: [
       { id: "circles", label: "Circular portals" },
       { id: "grid", label: "Bordered grid" },
+      { id: "dissolve", label: "Dither dissolve" },
     ],
   },
   tags: {
