@@ -165,3 +165,28 @@ export const alumniHero = {
   ],
   cta: { label: "Explore our alumni community", href: "#join" },
 }
+
+/** Careers, from the copy deck. The deck lists no roles yet. */
+export const careers = {
+  eyebrow: "Careers",
+  title: "Original thinkers. Exceptional peers.",
+  paragraphs: [
+    "Softcom is for people who question assumptions, see possibilities and take responsibility for turning ideas into working solutions.",
+    "Original thinking matters here. So does ownership: working through difficult problems, raising issues early and following through. We look for people who care enough about the outcome to act, learn and improve.",
+    "In return, expect exceptional peers—people with depth in their disciplines whose capabilities complement yours. Colleagues who challenge your thinking, contribute answers you would not reach alone and bring the same sense of ownership to the work.",
+  ],
+  work: {
+    heading: "The work you could help build.",
+    paragraphs: [
+      "Digital infrastructure through which people access services, connect and transact. Intelligence systems that help organisations investigate complex information and make decisions. Initiatives that bring technology, people and processes together to reach intended beneficiaries.",
+      "Across these areas, the work calls for understanding the problem, developing an answer and taking responsibility for how it performs in practice.",
+    ],
+  },
+  roles: {
+    heading: "Open roles",
+    // TODO(client): the deck has the heading but no roles; replace when listed.
+    empty:
+      "There are no open roles listed right now. If you would like to introduce yourself, we would be glad to hear from you.",
+    cta: { label: "Start a conversation", href: "/contact" },
+  },
+}
