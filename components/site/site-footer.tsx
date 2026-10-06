@@ -83,12 +83,12 @@ function SiteFooter() {
       {/*
        * Oversized wordmark, held at its natural 1268x284 proportions. On
        * desktop it sits on the plate's bottom edge, pushed down so the plate
-       * crops its lower ~40% — where its dither gradient has thinned to dots.
+       * crops its lower ~18% — where its dither gradient has thinned to dots.
        */}
       <DitherWordmark
         src="/brand/softcom-wordmark.svg"
         alt="Softcom"
-        className="mt-14 lg:absolute lg:bottom-0 lg:left-[4.45%] lg:mt-0 lg:w-[91.1%] lg:translate-y-[40%]"
+        className="mt-14 lg:absolute lg:bottom-0 lg:left-[4.45%] lg:mt-0 lg:w-[91.1%] lg:translate-y-[18%]"
       />
 
       {/* One bottom bar: copyright, legal and social, theme. */}
