@@ -69,6 +69,10 @@ export function DitherSystemSection() {
           <li>One order: 8×8 Bayer against a field rising from the bottom.</li>
           <li>One edge: cells at the front show brand cyan, then settle.</li>
           <li>One input: progress 0 → 1. Only the driver differs.</li>
+          <li>
+            One tech layer: data fragments (0x4B, 200 OK, ▲) glimpsed only in
+            the front, fixed per position; settled areas stay plain.
+          </li>
         </ul>
       </SpecimenGroup>
 

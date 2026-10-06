@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { bayer8, cellState, field } from "@/lib/dither"
+import { bayer8, cellState, field, glyphAt } from "@/lib/dither"
 import { cn } from "@/lib/utils"
 
 /* Fine enough for the globe's ring and meridians to survive sampling. */
@@ -96,6 +96,8 @@ const CELLS = Array.from({ length: COLS * ROWS }, (_, i) => {
   return {
     col,
     fromTop,
+    // The tech layer: this cell's data glyph, shown only while it is front.
+    glyph: glyphAt(col, row),
     threshold: bayer8(col, row),
     field: field(col, row, row / (ROWS - 1)),
   }
@@ -118,7 +120,7 @@ function DotMatrix({ src, resolved, className }: DotMatrixProps) {
   const progressRef = React.useRef(0)
 
   React.useEffect(() => {
-    const rects = svgRef.current?.querySelectorAll<SVGRectElement>("rect")
+    const rects = svgRef.current?.querySelectorAll<SVGGElement>("g[data-state]")
     if (!rects) return
     const apply = (progress: number) => {
       progressRef.current = progress
@@ -160,24 +162,37 @@ function DotMatrix({ src, resolved, className }: DotMatrixProps) {
       {CELLS.map((cell, i) => {
         // The shape is always drawn — in neutral at rest, in the sector colour when resolved.
         const shape = coverage !== null && coverage[i] > 0.4
+        // A data glyph replaces the square while the cell is at the front.
+        const glyph = shape && cell.glyph !== " "
         return (
-          <rect
-            key={i}
-            x={cell.col + INSET}
-            y={cell.fromTop + INSET}
-            width={CELL}
-            height={CELL}
-            data-state="rest"
-            className={cn(
-              // Foreground, not a fixed grey, so the grid shows on both themes.
-              // Pure cyan manages ~1.3:1 on the light cards; the ramp's 600 holds
-              // the edge legible there, and dark mode keeps the brand anchor.
-              "fill-foreground data-[state=front]:fill-brand-cyan-600 dark:data-[state=front]:fill-brand-cyan",
-              shape
-                ? "opacity-55 data-[state=front]:opacity-100 data-[state=on]:fill-current data-[state=on]:opacity-100"
-                : "opacity-14 data-[state=front]:opacity-35 data-[state=on]:opacity-7"
-            )}
-          />
+          <g key={i} data-state="rest" className="group/cell">
+            <rect
+              x={cell.col + INSET}
+              y={cell.fromTop + INSET}
+              width={CELL}
+              height={CELL}
+              className={cn(
+                // Foreground, not a fixed grey, so the grid shows on both themes.
+                // Pure cyan manages ~1.3:1 on the light cards; the ramp's 600 holds
+                // the edge legible there, and dark mode keeps the brand anchor.
+                "fill-foreground group-data-[state=front]/cell:fill-brand-cyan-600 dark:group-data-[state=front]/cell:fill-brand-cyan",
+                shape
+                  ? "opacity-55 group-data-[state=front]/cell:opacity-100 group-data-[state=on]/cell:fill-current group-data-[state=on]/cell:opacity-100"
+                  : "opacity-14 group-data-[state=front]/cell:opacity-35 group-data-[state=on]/cell:opacity-7",
+                glyph && "group-data-[state=front]/cell:opacity-0"
+              )}
+            />
+            {glyph ? (
+              <text
+                x={cell.col + 0.5}
+                y={cell.fromTop + 0.82}
+                textAnchor="middle"
+                className="hidden fill-brand-cyan-600 font-mono text-[0.95px] font-semibold group-data-[state=front]/cell:inline dark:fill-brand-cyan"
+              >
+                {cell.glyph}
+              </text>
+            ) : null}
+          </g>
         )
       })}
     </svg>

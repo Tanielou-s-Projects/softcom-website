@@ -4,6 +4,7 @@ import * as React from "react"
 import { useReducedMotion } from "motion/react"
 
 import { bayer8, CELL, cellState, field } from "@/lib/dither"
+import { paintGlyphs } from "@/components/motion/dither-glyphs"
 import { cn } from "@/lib/utils"
 
 const BLUE = "#004bff"
@@ -49,9 +50,10 @@ function NavPlate({
     let cols = 0
     let rows = 0
     let size = 0
+    let ratio = 1
     let cells: { col: number; row: number; t: number; f: number }[] = []
     const layout = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2)
+      ratio = Math.min(window.devicePixelRatio || 1, 2)
       canvas.width = Math.round(canvas.clientWidth * ratio)
       canvas.height = Math.round(canvas.clientHeight * ratio)
       size = CELL * ratio
@@ -107,15 +109,30 @@ function NavPlate({
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       const progress = LEVEL * resolve
+      // The swell: distance from the pointer, in plate heights, as a field.
+      const swell = (col: number, row: number) =>
+        (Math.hypot(col - shown.x, row - shown.y) / rows) * 2.4 -
+        0.3 +
+        (1 - shown.on) * 2
       for (const cell of cells) {
-        // The swell: distance from the pointer, in plate heights, as a field.
-        const d = Math.hypot(cell.col - shown.x, cell.row - shown.y) / rows
-        const swell = d * 2.4 - 0.3 + (1 - shown.on) * 2
-        const state = cellState(progress, Math.min(cell.f, swell), cell.t)
+        const f = Math.min(cell.f, swell(cell.col, cell.row))
+        const state = cellState(progress, f, cell.t)
         if (state === "rest") continue
         ctx.fillStyle = state === "front" ? CYAN : BLUE
         ctx.fillRect(cell.col * size, cell.row * size, size, size)
       }
+      // The tech layer: data glyphs in the front, around the swell too.
+      paintGlyphs(ctx, {
+        progress,
+        cell: size,
+        ratio,
+        color: CYAN,
+        fieldAt: (col, up) =>
+          Math.min(
+            field(col, up, up / Math.max(1, rows - 1), seed),
+            swell(col, rows - 1 - up)
+          ),
+      })
       frame = requestAnimationFrame(tick)
     })
 

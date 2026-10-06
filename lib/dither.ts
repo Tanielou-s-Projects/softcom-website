@@ -122,3 +122,31 @@ float ditherCoverage(float progress, float fieldValue) {
   return clamp((progress * (FIELD_MAX + SPREAD) - fieldValue) / SPREAD, 0.0, 1.0);
 }
 `
+
+/*
+ * The tech layer: data fragments glimpsed in the front. Only cells at the
+ * front ever show a glyph, so text marks the moment of change and settled
+ * areas stay calm. Each position always shows the same character (static),
+ * laid out in reading order so whole fragments line up when a front passes.
+ * Spaces render as plain cells — not every node carries text.
+ */
+export const GLYPH_STREAM =
+  "0x4B ff 1010 0x004BFF 200 OK ▲ 6.52N 3.38E 0110 4B 1101 ff 0x00 SYNC 0011 ACK 2007 0xFF 1001 ▲ LAGOS 404 0x1F 0101 "
+
+/** Glyphs need room to read: never smaller than this, in CSS px. */
+export const GLYPH_MIN = 12
+/** Row stride through the stream, so stacked rows don't repeat in columns. */
+const GLYPH_STRIDE = 29
+
+/** The character at a glyph-grid position (`up` counts from the bottom). */
+export function glyphAt(gx: number, gyUp: number) {
+  const n = GLYPH_STREAM.length
+  return GLYPH_STREAM[(((gx + gyUp * GLYPH_STRIDE) % n) + n) % n]
+}
+
+/** GLSL twin of glyphAt's index, for sampling a one-row glyph atlas. */
+export const GLSL_GLYPH = `
+float glyphIndex(vec2 g, float count) {
+  return mod(g.x + g.y * ${GLYPH_STRIDE.toFixed(1)}, count);
+}
+`

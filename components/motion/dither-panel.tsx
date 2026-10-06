@@ -4,6 +4,7 @@ import * as React from "react"
 import { useInView, useReducedMotion } from "motion/react"
 
 import { bayer8, CELL, cellState, field } from "@/lib/dither"
+import { paintGlyphs } from "@/components/motion/dither-glyphs"
 import { cn } from "@/lib/utils"
 
 const BLUE = "#004bff"
@@ -55,13 +56,15 @@ function DitherPanel({
 
     let cells: Cell[] = []
     let size = 0
+    let ratio = 1
+    let rows = 0
     const layout = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2)
+      ratio = Math.min(window.devicePixelRatio || 1, 2)
       canvas.width = Math.round(canvas.clientWidth * ratio)
       canvas.height = Math.round(canvas.clientHeight * ratio)
       size = CELL * ratio
       const cols = Math.ceil(canvas.width / size)
-      const rows = Math.ceil(canvas.height / size)
+      rows = Math.ceil(canvas.height / size)
       cells = []
       for (let row = 0; row < rows; row++) {
         // Rows count up from the bottom, as the shader's do.
@@ -87,6 +90,14 @@ function DitherPanel({
         ctx.fillStyle = state === "front" ? front : BLUE
         ctx.fillRect(cell.x, cell.y, size, size)
       }
+      // The tech layer: data glyphs in the front.
+      paintGlyphs(ctx, {
+        progress: value,
+        cell: size,
+        ratio,
+        color: front,
+        fieldAt: (col, up) => field(col, up, up / Math.max(1, rows - 1), seed),
+      })
     }
     paintRef.current = paint
 
