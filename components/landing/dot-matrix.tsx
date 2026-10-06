@@ -170,7 +170,9 @@ function DotMatrix({ src, resolved, className }: DotMatrixProps) {
             data-state="rest"
             className={cn(
               // Foreground, not a fixed grey, so the grid shows on both themes.
-              "fill-foreground data-[state=front]:fill-brand-cyan",
+              // Pure cyan manages ~1.3:1 on the light cards; the ramp's 600 holds
+              // the edge legible there, and dark mode keeps the brand anchor.
+              "fill-foreground data-[state=front]:fill-brand-cyan-600 dark:data-[state=front]:fill-brand-cyan",
               shape
                 ? "opacity-55 data-[state=front]:opacity-100 data-[state=on]:fill-current data-[state=on]:opacity-100"
                 : "opacity-14 data-[state=front]:opacity-35 data-[state=on]:opacity-7"

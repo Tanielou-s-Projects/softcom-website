@@ -7,7 +7,6 @@ import { bayer8, CELL, cellState, field } from "@/lib/dither"
 import { cn } from "@/lib/utils"
 
 const BLUE = "#004bff"
-const CYAN = "#00ffff"
 const RESOLVE_MS = 900
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
@@ -66,11 +65,13 @@ function DitherPanel({
     }
     let progress = 0
     const draw = () => {
+      // The front's cyan is themed (see the canvas class), read per draw.
+      const front = getComputedStyle(canvas).color
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       for (const cell of cells) {
         const state = cellState(progress, cell.f, cell.t)
         if (state === "rest") continue
-        ctx.fillStyle = state === "front" ? CYAN : BLUE
+        ctx.fillStyle = state === "front" ? front : BLUE
         ctx.fillRect(cell.x, cell.y, size, size)
       }
     }
@@ -81,15 +82,25 @@ function DitherPanel({
       draw()
     })
     observer.observe(canvas)
+    // Repaint on a theme switch, which flips the front colour.
+    const theme = new MutationObserver(draw)
+    theme.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
+    const stop = () => {
+      observer.disconnect()
+      theme.disconnect()
+    }
 
     if (!inView) {
       draw()
-      return () => observer.disconnect()
+      return stop
     }
     if (reduceMotion) {
       progress = level
       draw()
-      return () => observer.disconnect()
+      return stop
     }
     const start = performance.now()
     let frame = requestAnimationFrame(function tick(now) {
@@ -100,7 +111,7 @@ function DitherPanel({
     })
     return () => {
       cancelAnimationFrame(frame)
-      observer.disconnect()
+      stop()
     }
   }, [inView, reduceMotion, level, seed])
 
@@ -108,7 +119,11 @@ function DitherPanel({
     <canvas
       ref={canvasRef}
       aria-hidden
-      className={cn("block size-full", className)}
+      // Pure cyan barely shows on light plates; the ramp's 600 holds there.
+      className={cn(
+        "block size-full text-brand-cyan-600 dark:text-brand-cyan",
+        className
+      )}
     />
   )
 }
