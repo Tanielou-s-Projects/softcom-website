@@ -13,6 +13,7 @@ import {
 } from "@/components/motion/dither-field"
 import { DitherPanel } from "@/components/motion/dither-panel"
 import { PixelArrowDown } from "@/components/ui/pixel-arrow-down"
+import { NavPlate } from "@/components/site/nav-plate"
 
 /** The hero / page-transition renderer, driven by the slider instead of scroll. */
 function FieldSpecimen({
@@ -158,6 +159,29 @@ export function DitherSystemSection() {
             <TokenLabel>Scroll arrow · SVG · on load</TokenLabel>
           </div>
         </div>
+      </SpecimenGroup>
+
+      <SpecimenGroup label="Pointer-driven — the nav plate">
+        <div
+          data-nav-plate-root
+          className="dark flex h-52 max-w-xl items-stretch overflow-clip rounded-(--card-radius) bg-black"
+        >
+          <NavPlate seed={3} className="w-44 shrink-0" />
+          <ul className="ml-auto flex flex-col justify-center gap-1 pr-8 text-right text-sm font-medium text-foreground/70">
+            {["About", "Leadership", "Alumni", "Careers"].map((item) => (
+              <li
+                key={item}
+                className="rounded-lg px-3 py-2 hover:text-brand-accent"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <TokenLabel>
+          Hover the items · canvas 2D · the margin rails use the same panel,
+          driven by page scroll
+        </TokenLabel>
       </SpecimenGroup>
     </div>
   )
