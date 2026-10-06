@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 
 import { SoftcomWordmark } from "@/components/site/softcom-wordmark"
-import { DitherShape } from "@/components/site/dither-shape"
+import { NavPlate } from "@/components/site/nav-plate"
 import { ThemeToggleDot } from "@/components/site/theme-switcher"
 
 import {
@@ -268,11 +268,12 @@ function SiteHeader() {
                         {/* Fixed height so every dropdown is the same size —
                             otherwise the shared viewport jumps between panels
                             and the morph reads as broken. */}
-                        <div className="flex h-52 w-full items-stretch">
-                          <DitherShape
-                            accent={
-                              item.href === "/solutions" ? "cyan" : "blue"
-                            }
+                        <div
+                          data-nav-plate-root
+                          className="flex h-52 w-full items-stretch"
+                        >
+                          <NavPlate
+                            seed={item.href === "/solutions" ? 7 : 3}
                             className="w-44 shrink-0"
                           />
                           <ul className="ml-auto flex flex-col justify-center gap-1 pr-8 text-right">
