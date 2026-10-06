@@ -247,8 +247,9 @@ export const footerNav = [
     links: [
       { label: "About", href: "/about" },
       { label: "Leadership", href: "/about#team" },
-      { label: "Alumni", href: "/alumni" },
       { label: "Careers", href: "/careers" },
+      { label: "Alumni", href: "/alumni" },
+      { label: "Join the alumni network", href: "/alumni#join" },
     ],
   },
   {
@@ -260,10 +261,35 @@ export const footerNav = [
     ],
   },
   {
+    // The footer is the site's full menu, so the products are listed by name.
+    heading: "Products",
+    links: [
+      { label: "Sentinel", href: "/enterprise-products#sentinel" },
+      { label: "Reckon", href: "/enterprise-products#reckon" },
+      { label: "Useforms", href: "/enterprise-products#useforms" },
+      { label: "Lift", href: "/enterprise-products#lift" },
+      { label: "Liquio", href: "/enterprise-products#liquio" },
+      { label: "RTGS.global", href: "/enterprise-products#rtgs-global" },
+    ],
+  },
+  {
     heading: "Resources",
     links: [
       { label: "Insights", href: "/insights" },
       { label: "Contact", href: "/contact" },
     ],
   },
+]
+
+/*
+ * TODO(client): Privacy and Terms pages don't exist yet, and the social
+ * profile URLs haven't been supplied. Entries without an href are left out of
+ * the footer's bottom bar until they are filled in.
+ */
+export const footerLegal: { label: string; href?: string }[] = [
+  { label: "Privacy" },
+  { label: "Terms" },
+]
+export const footerSocial: { label: string; href?: string }[] = [
+  { label: "LinkedIn" },
 ]

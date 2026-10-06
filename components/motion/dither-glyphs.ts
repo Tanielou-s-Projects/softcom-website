@@ -50,12 +50,15 @@ export function paintGlyphs(
     ratio,
     color,
     fieldAt,
+    maskAt,
   }: {
     progress: number
     cell: number
     ratio: number
     color: string
     fieldAt: (col: number, up: number) => number
+    /** Optional silhouette: glyphs only where this is true. */
+    maskAt?: (col: number, up: number) => boolean
   }
 ) {
   if (progress <= 0) return
@@ -70,7 +73,10 @@ export function paintGlyphs(
   for (let gyUp = 0; gyUp < rows; gyUp++) {
     for (let gx = 0; gx < cols; gx++) {
       const centre = (n: number) => ((n + 0.5) * glyph) / cell
-      const f = fieldAt(Math.floor(centre(gx)), Math.floor(centre(gyUp)))
+      const col = Math.floor(centre(gx))
+      const up = Math.floor(centre(gyUp))
+      if (maskAt && !maskAt(col, up)) continue
+      const f = fieldAt(col, up)
       if (cellState(progress, f, bayer8(gx, gyUp)) !== "front") continue
       const char = glyphAt(gx, gyUp)
       if (char === " ") continue

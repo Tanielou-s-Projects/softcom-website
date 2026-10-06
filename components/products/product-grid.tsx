@@ -28,7 +28,10 @@ import { SectionMark } from "@/components/products/section-mark"
  */
 function ProductCard({ product }: { product: Product }) {
   return (
-    <article className="flex h-full flex-col gap-6 overflow-clip rounded-3xl bg-muted">
+    <article
+      id={product.id}
+      className="flex h-full scroll-mt-24 flex-col gap-6 overflow-clip rounded-3xl bg-muted"
+    >
       <div className="flex flex-col items-start gap-2.5 p-6 sm:flex-row sm:items-center">
         <h3 className={cn(cardHeadingText, "text-foreground sm:w-[56%]")}>
           {product.name}
