@@ -33,6 +33,7 @@ export default function Page() {
 
       <AlumniHero
         src="/alumni/team.jpg"
+        video="/alumni/team.mp4"
         alt="The Softcom team gathered together on a beach in front of a hotel"
         title={alumniHero.title}
       />
