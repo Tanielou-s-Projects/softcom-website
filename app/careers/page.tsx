@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { careers } from "@/components/about/content"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
@@ -23,9 +24,6 @@ export const metadata: Metadata = {
   description: careers.paragraphs[0],
 }
 
-const eyebrow =
-  "text-xs font-medium uppercase tracking-widest text-muted-foreground"
-
 /** Careers — the invitation, the work, and the roles (none listed yet). */
 export default function Page() {
   return (
@@ -33,7 +31,7 @@ export default function Page() {
       <SiteHeader />
 
       <Container className="flex flex-col items-start gap-6 py-12">
-        <p className={eyebrow}>{careers.eyebrow}</p>
+        <Badge variant="brand">{careers.eyebrow}</Badge>
         <h1 className={cn(displayText, "max-w-[16ch] text-foreground")}>
           {careers.title}
         </h1>

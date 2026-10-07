@@ -15,11 +15,12 @@ const badgeVariants = cva(
          */
         contrast: "bg-background text-muted-foreground",
         /**
-         * On brand cyan. The label is pinned dark rather than tokenised because
-         * the cyan is a fixed light colour in either theme, so `--background`
-         * would turn the text white and unreadable in light mode.
+         * The section label. Brand blue with white text in light mode, brand
+         * cyan with dark text in dark mode (and inside any `dark` region) —
+         * cyan is too light to carry on a light page.
          */
-        brand: "bg-brand-cyan text-neutral-950",
+        brand:
+          "bg-brand-blue text-white dark:bg-brand-cyan dark:text-neutral-950",
         /** The flipped plate the design uses on brand-blue panels. */
         inverse: "bg-foreground text-background",
       },
