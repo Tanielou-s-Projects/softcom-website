@@ -22,6 +22,7 @@ import {
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { useVariant } from "@/components/variants/variant-context"
 import { cn } from "@/lib/utils"
+import { ColorReveal } from "@/components/motion/color-reveal"
 
 const viewport = { once: true, amount: 0.3 } as const
 
@@ -148,13 +149,15 @@ function MissionPanel() {
               "lg:motion-safe:[clip-path:inset(58.01%_24.21%_0%_25.43%_round_16px)]"
             )}
           >
-            <Image
-              src="/landing/story.png"
-              alt="A Softcom team member reviewing printed reports"
-              fill
-              sizes="100vw"
-              className="object-cover object-bottom"
-            />
+            <ColorReveal>
+              <Image
+                src="/landing/story.png"
+                alt="A Softcom team member reviewing printed reports"
+                fill
+                sizes="100vw"
+                className="object-cover object-bottom"
+              />
+            </ColorReveal>
             <motion.div
               aria-hidden
               style={scrub ? { opacity: overlayOpacity } : undefined}

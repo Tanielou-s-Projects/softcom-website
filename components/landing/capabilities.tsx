@@ -23,6 +23,7 @@ import { capabilities } from "@/components/landing/content"
 import { Reveal } from "@/components/motion/reveal"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
+import { ColorReveal } from "@/components/motion/color-reveal"
 
 /**
  * Three full-bleed capability slides on a horizontal rail. Figma sizes each at
@@ -109,13 +110,15 @@ function Capabilities() {
               /* Figma's 1176×1024 is a ceiling, not a size: the slide never exceeds the viewport. */
               className="dark relative flex h-[min(640px,85svh)] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 sm:h-[min(760px,85svh)] lg:h-[min(1024px,66svh)] lg:p-6"
             >
-              <Image
-                src={capability.image}
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 1176px, 85vw"
-                className="object-cover"
-              />
+              <ColorReveal>
+                <Image
+                  src={capability.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1024px) 1176px, 85vw"
+                  className="object-cover"
+                />
+              </ColorReveal>
 
               <div
                 className={cn(

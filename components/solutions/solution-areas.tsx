@@ -21,6 +21,7 @@ import {
   type SolutionFeature,
   type SolutionList,
 } from "@/components/solutions/content"
+import { ColorReveal } from "@/components/motion/color-reveal"
 
 /**
  * A labelled point beneath a solution's body copy.
@@ -103,13 +104,15 @@ function SolutionBlock({
       )}
     >
       <div className="relative h-[min(320px,45svh)] shrink-0 overflow-clip rounded-3xl bg-background lg:h-auto lg:w-[30%]">
-        <Image
-          src={solution.image.src}
-          alt=""
-          fill
-          sizes="(min-width: 1024px) 30vw, 100vw"
-          className="object-cover"
-        />
+        <ColorReveal>
+          <Image
+            src={solution.image.src}
+            alt=""
+            fill
+            sizes="(min-width: 1024px) 30vw, 100vw"
+            className="object-cover"
+          />
+        </ColorReveal>
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-2.5">

@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { formatInsightDate, type Insight } from "@/components/insights/content"
+import { ColorReveal } from "@/components/motion/color-reveal"
 
 /**
  * One insight: cover, then a meta line, then the title and its standfirst.
@@ -32,13 +33,15 @@ function InsightCard({
        * through while the cover loads and behind its transparent edges.
        */}
       <div className="relative h-[min(324px,40svh)] w-full shrink-0 overflow-clip rounded-2xl bg-neutral-900">
-        <Image
-          src={insight.cover}
-          alt=""
-          fill
-          sizes={sizes}
-          className="object-cover object-left"
-        />
+        <ColorReveal>
+          <Image
+            src={insight.cover}
+            alt=""
+            fill
+            sizes={sizes}
+            className="object-cover object-left"
+          />
+        </ColorReveal>
       </div>
 
       <div className="flex flex-col gap-6">
