@@ -392,6 +392,11 @@
     transform: translateY(calc((1 - var(--arrival)) * 40px));
   }
 
+  /* Photographs: greyscale until scrolled into view (color-reveal.tsx). */
+  .softcom-color-reveal img {
+    filter: grayscale(calc(1 - var(--reveal, 1)));
+  }
+
   .softcom-pixel-cascade rect {
     animation: softcom-pixel-assemble 420ms steps(4, end) both;
   }

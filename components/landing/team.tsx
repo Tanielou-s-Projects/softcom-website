@@ -7,6 +7,7 @@ import { Container, headingText } from "@/components/landing/section"
 import { portraits, type Portrait } from "@/components/landing/content"
 import { Stats } from "@/components/landing/stats"
 import { cn } from "@/lib/utils"
+import { ColorReveal } from "@/components/motion/color-reveal"
 
 /** A portrait; the brand-blue name plate springs up from the bottom on hover. */
 function PortraitCell({ image, name, role }: Portrait) {
@@ -17,13 +18,15 @@ function PortraitCell({ image, name, role }: Portrait) {
       whileHover="hover"
       className="relative flex aspect-[335/471] flex-col justify-end overflow-clip rounded-2xl bg-neutral-900"
     >
-      <Image
-        src={image}
-        alt={name ? `${name}, ${role}` : ""}
-        fill
-        sizes="(min-width: 1024px) 420px, 50vw"
-        className="object-cover object-center"
-      />
+      <ColorReveal>
+        <Image
+          src={image}
+          alt={name ? `${name}, ${role}` : ""}
+          fill
+          sizes="(min-width: 1024px) 420px, 50vw"
+          className="object-cover object-center"
+        />
+      </ColorReveal>
       {name ? (
         <motion.div
           variants={{ rest: { y: "110%" }, hover: { y: 0 } }}

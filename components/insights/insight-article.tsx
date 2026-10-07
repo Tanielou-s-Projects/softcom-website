@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Container, displayText, leadText } from "@/components/landing/section"
 import { formatInsightDate, type Article } from "@/components/insights/content"
 import { Reveal } from "@/components/motion/reveal"
+import { ColorReveal } from "@/components/motion/color-reveal"
 
 /**
  * The rail beside the body: one rule per paragraph, the first one longer and
@@ -76,14 +77,16 @@ function InsightArticle({ article }: { article: Article }) {
       </Reveal>
 
       <div className="relative h-[min(280px,40svh)] w-full overflow-clip rounded-2xl bg-neutral-900 sm:h-[min(400px,50svh)] lg:h-[min(577px,65svh)]">
-        <Image
-          src={article.cover}
-          alt=""
-          fill
-          sizes="100vw"
-          priority
-          className="object-cover object-left"
-        />
+        <ColorReveal>
+          <Image
+            src={article.cover}
+            alt=""
+            fill
+            sizes="100vw"
+            priority
+            className="object-cover object-left"
+          />
+        </ColorReveal>
       </div>
 
       <div className="flex gap-8 lg:gap-32">

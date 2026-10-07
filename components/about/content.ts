@@ -12,6 +12,12 @@ export const aboutHero = {
   lead: `Softcom is a technology and innovation company with ${YEARS_ACTIVE} years of experience building digital products, enterprise systems and large-scale initiatives for public institutions, private organisations and development enablers.`,
 }
 
+/**
+ * Photographs for the About hero's circles, in order. Empty slots fall back to
+ * a placeholder; add paths here as the "life at Softcom" set is produced.
+ */
+export const aboutHeroImages: string[] = []
+
 export const story = {
   eyebrow: "Our Story",
   heading: "Built from a conviction about Africa’s potential.",

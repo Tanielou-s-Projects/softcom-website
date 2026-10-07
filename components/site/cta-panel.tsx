@@ -1,6 +1,7 @@
 import Image from "next/image"
 
 import { cn } from "@/lib/utils"
+import { ColorReveal } from "@/components/motion/color-reveal"
 
 /**
  * The photographic plate every page closes on: the same darkened image, the
@@ -32,13 +33,15 @@ function CtaPanel({
         className
       )}
     >
-      <Image
-        src="/landing/story.png"
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover object-bottom"
-      />
+      <ColorReveal>
+        <Image
+          src="/landing/story.png"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-bottom"
+        />
+      </ColorReveal>
       <div aria-hidden className="absolute inset-0 bg-black/75" />
 
       {/*

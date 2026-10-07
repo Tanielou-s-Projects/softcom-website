@@ -63,6 +63,8 @@ function DitherWordmark({
       size = Math.max(3, Math.min(CELL, canvas.clientWidth / 220)) * ratio
       const cols = Math.ceil(canvas.width / size)
       const rows = Math.ceil(canvas.height / size)
+      // Not laid out yet (or hidden): nothing to sample.
+      if (!cols || !rows) return
       const probe = document.createElement("canvas")
       probe.width = cols
       probe.height = rows

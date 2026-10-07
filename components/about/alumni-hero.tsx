@@ -5,270 +5,235 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { displayText } from "@/components/landing/section"
 import { monoFamily } from "@/components/motion/dither-glyphs"
+import {
+  createAsciiScreen,
+  type ScreenState,
+} from "@/components/about/ascii-screen"
 
-/** CSS px per glyph cell — fixed, so the growing screen reveals more glyphs. */
-const CELL = 8
-/** Sparse to dense: brighter pixels get heavier glyphs (data digits included). */
-const RAMP = " .:-=+*01x#%@"
+const POWER_MS = 1000
+/** Pointer trail: points kept, and how fast each fades per frame. */
+const TRAIL_MAX = 12
+const TRAIL_DECAY = 0.86
 
-const ease = (t: number) => t * t * (3 - 2 * t)
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v))
 
 /**
- * The Alumni hero, after revelatio.studio: the team photograph (or, once it
- * exists, a video of it) rendered as a coloured ASCII mosaic on a curved
- * screen. It starts small and centred; scrolling grows it toward full bleed
- * while its curvature relaxes, and the headline travels up past it.
+ * The Alumni hero: the team video rendered as coloured ASCII (see
+ * ascii-screen.ts), filling the hero edge to edge with the headline over its
+ * lower edge. It switches on with a flare when first seen, and the pointer
+ * leaves a glitch trail through the glyphs. No scroll animation.
  *
- * Canvas 2D, three passes per frame: glyphs chosen by each cell's luminance
- * are stamped from a white atlas, then the source drawn at one pixel per cell
- * is composited `source-in`, so each glyph takes its cell's colour. Images
- * redraw only on scroll; video redraws per frame while visible. Reduced
- * motion: the finished state, unpinned, with no autoplay.
+ * Renders only while on screen. Reduced motion: drawn once from the poster —
+ * no autoplay or switch-on. Without WebGL the poster is shown as a plain image.
  */
 function AlumniHero({
-  src,
   video,
+  poster,
   alt,
   title,
+  focus,
 }: {
-  src: string
-  /** Optional video; `src` is its poster and the fallback. */
   video?: string
+  poster: string
   alt: string
   title: string
+  /** Subject position in the footage (x, y from the top) and zoom. */
+  focus?: { x: number; y: number; zoom: number }
 }) {
   const trackRef = React.useRef<HTMLDivElement>(null)
+  const screenRef = React.useRef<HTMLDivElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
+  const [fallback, setFallback] = React.useState(false)
+  // Primitives, so a fresh object literal each render doesn't re-run setup.
+  const fx = focus?.x ?? 0.5
+  const fy = focus?.y ?? 0.5
+  const fz = focus?.zoom ?? 1
 
   React.useEffect(() => {
     const track = trackRef.current
+    const screenEl = screenRef.current
     const canvas = canvasRef.current
-    const ctx = canvas?.getContext("2d")
-    if (!track || !canvas || !ctx) return
+    if (!track || !screenEl || !canvas) return
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
-    const small = document.createElement("canvas")
-    const sctx = small.getContext("2d", { willReadFrequently: true })
-    const atlas = document.createElement("canvas")
-    if (!sctx) return
-
-    let ratio = 1
-    let cell = CELL
-    let source: HTMLImageElement | HTMLVideoElement | null = null
-    let sourceW = 0
-    let sourceH = 0
-    let progress = reduce ? 1 : 0
-
-    const buildAtlas = () => {
-      atlas.width = RAMP.length * cell
-      atlas.height = cell
-      const a = atlas.getContext("2d")
-      if (!a) return
-      a.clearRect(0, 0, atlas.width, atlas.height)
-      a.fillStyle = "#fff"
-      a.font = `600 ${Math.round(cell * 1.05)}px ${monoFamily()}`
-      a.textAlign = "center"
-      a.textBaseline = "middle"
-      ;[...RAMP].forEach((char, i) =>
-        a.fillText(char, i * cell + cell / 2, cell / 2 + cell * 0.06)
-      )
-    }
-
-    const resize = () => {
-      ratio = Math.min(window.devicePixelRatio || 1, 2)
-      canvas.width = Math.round(canvas.clientWidth * ratio)
-      canvas.height = Math.round(canvas.clientHeight * ratio)
-      cell = Math.round(CELL * ratio)
-      buildAtlas()
-    }
-
-    const draw = () => {
-      if (!source || !sourceW) return
-      const W = canvas.width
-      const H = canvas.height
-      const mobile = canvas.clientWidth < 768
-      const p = progress
-      const cols = Math.floor((W * lerp(mobile ? 0.86 : 0.58, 0.97, p)) / cell)
-      const rows = Math.floor((H * lerp(mobile ? 0.42 : 0.5, 0.9, p)) / cell)
-      // Centred high at the start, leaving the headline room beneath it.
-      const centre = lerp(mobile ? 0.38 : 0.42, 0.5, p)
-      const x0 = Math.round((W - cols * cell) / 2)
-      const y0 = Math.round(H * centre - (rows * cell) / 2)
-
-      // Cover-crop the source into one pixel per cell.
-      small.width = cols
-      small.height = rows
-      const scale = Math.max(cols / sourceW, rows / sourceH)
-      const sw = cols / scale
-      const sh = rows / scale
-      // Cropped low: the people are in the bottom third of the frame.
-      sctx.drawImage(
-        source,
-        (sourceW - sw) / 2,
-        (sourceH - sh) * 0.85,
-        sw,
-        sh,
-        0,
-        0,
-        cols,
-        rows
-      )
-      const data = sctx.getImageData(0, 0, cols, rows).data
-
-      ctx.globalCompositeOperation = "source-over"
-      ctx.globalAlpha = 1
-      ctx.clearRect(0, 0, W, H)
-      // The curved screen: top and bottom edges bow outward, relaxing to flat.
-      const bulge = lerp(0.07, 0.012, p) * rows
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const u = ((c + 0.5) / cols) * 2 - 1
-          const edge = bulge * u * u
-          if (r < edge || r >= rows - edge) continue
-          const i = (r * cols + c) * 4
-          const lum =
-            (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) /
-            255
-          // Every cell inside the screen carries a glyph (dark ones the
-          // lightest), so the team reads as figures rather than holes.
-          const g = 1 + Math.round(Math.pow(lum, 0.85) * (RAMP.length - 2))
-          ctx.drawImage(
-            atlas,
-            g * cell,
-            0,
-            cell,
-            cell,
-            x0 + c * cell,
-            y0 + r * cell,
-            cell,
-            cell
-          )
-        }
-      }
-      // Tint each glyph with its cell's colour.
-      ctx.globalCompositeOperation = "source-in"
-      ctx.globalAlpha = 0.92
-      ctx.imageSmoothingEnabled = false
-      // Lift only the tint: navy shirts become a readable blue on black,
-      // while glyph weight still follows the true luminance.
-      ctx.filter = "brightness(1.6) saturate(1.2)"
-      ctx.drawImage(small, 0, 0, cols, rows, x0, y0, cols * cell, rows * cell)
-      ctx.filter = "none"
-      ctx.globalCompositeOperation = "source-over"
-      ctx.globalAlpha = 1
-    }
-
-    const readProgress = () => {
-      if (reduce) return 1
-      const distance = track.offsetHeight - window.innerHeight
-      const raw = -track.getBoundingClientRect().top / Math.max(1, distance)
-      return ease(Math.max(0, Math.min(1, raw)))
-    }
-
-    let frame = 0
-    const schedule = () => {
-      if (frame) return
-      frame = requestAnimationFrame(() => {
-        frame = 0
-        progress = readProgress()
-        track.style.setProperty("--p", String(progress))
-        draw()
-      })
-    }
-
-    // Video redraws every frame while it is on screen.
-    let videoFrame = 0
-    let visible = true
-    const loop = () => {
-      draw()
-      videoFrame = requestAnimationFrame(loop)
-    }
-    const io = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting
-      if (!(source instanceof HTMLVideoElement)) return
-      cancelAnimationFrame(videoFrame)
-      if (visible) {
-        source.play().catch(() => {})
-        videoFrame = requestAnimationFrame(loop)
-      } else source.pause()
+    const created = createAsciiScreen(canvas, {
+      font: monoFamily(),
+      focus: { x: fx, y: fy, zoom: fz },
     })
-    io.observe(track)
-
-    const ready = (
-      element: HTMLImageElement | HTMLVideoElement,
-      w: number,
-      h: number
-    ) => {
-      source = element
-      sourceW = w
-      sourceH = h
-      resize()
-      schedule()
+    // Without WebGL the poster stands in, but the screen still grows on scroll.
+    if (!created) setFallback(true)
+    const screen = created ?? {
+      upload: () => {},
+      draw: () => {},
+      resize: () => {},
+      dispose: () => {},
     }
 
+    const state: ScreenState = {
+      // A flat, full-bleed screen: no tube curvature, no scroll animation.
+      tv: 0,
+      power: reduce ? 1 : 0,
+      flash: 0,
+      time: 0,
+      trail: [],
+    }
+    let hasFrame = false
+
+    // --- Layout: the screen simply fills the hero. ------------------------
+    const layout = () => screen.resize()
+
+    // --- Render loop, only while on screen. -------------------------------
+    let frame = 0
+    let running = false
+    let powerStart = 0
+    const start = performance.now()
+    const render = () => {
+      if (hasFrame) screen.draw(state)
+    }
+
+    // --- Source: the video once it can play, the poster until then. ------
     const image = new window.Image()
     image.decoding = "async"
     image.onload = () => {
-      if (!source) ready(image, image.naturalWidth, image.naturalHeight)
+      if (hasFrame) return
+      screen.upload(image, image.naturalWidth, image.naturalHeight)
+      hasFrame = true
+      render()
     }
-    image.src = src
+    image.src = poster
 
     let videoEl: HTMLVideoElement | null = null
-    if (video) {
+    if (video && !reduce) {
       videoEl = document.createElement("video")
       videoEl.muted = true
       videoEl.loop = true
       videoEl.playsInline = true
       videoEl.preload = "auto"
       videoEl.src = video
-      videoEl.addEventListener("loadeddata", () => {
-        if (!videoEl) return
-        ready(videoEl, videoEl.videoWidth, videoEl.videoHeight)
-        if (!reduce && visible) {
-          videoEl.play().catch(() => {})
-          videoFrame = requestAnimationFrame(loop)
+    }
+
+    const tick = (now: number) => {
+      state.time = (now - start) / 1000
+      if (powerStart) {
+        const t = clamp01((now - powerStart) / POWER_MS)
+        // Opens fast to a sliver, then slower to full; two flare pulses.
+        state.power =
+          t < 0.35
+            ? Math.pow(t / 0.35, 0.6) * 0.28
+            : 0.28 + Math.pow((t - 0.35) / 0.65, 1.3) * 0.72
+        state.flash =
+          Math.exp(-Math.pow((t - 0.12) / 0.08, 2)) * 1.5 +
+          Math.exp(-Math.pow((t - 0.32) / 0.14, 2)) * 0.5
+        if (t >= 1) {
+          state.power = 1
+          state.flash = 0
+          powerStart = 0
         }
+      }
+      for (const point of state.trail) point[2] *= TRAIL_DECAY
+      state.trail = state.trail.filter((point) => point[2] > 0.02)
+
+      if (videoEl && videoEl.readyState >= 2) {
+        screen.upload(videoEl, videoEl.videoWidth, videoEl.videoHeight)
+        hasFrame = true
+      }
+      render()
+      frame = requestAnimationFrame(tick)
+    }
+
+    const play = () => {
+      if (running || reduce || !created) return
+      running = true
+      videoEl?.play().catch(() => {})
+      if (state.power === 0 && !powerStart) powerStart = performance.now()
+      frame = requestAnimationFrame(tick)
+    }
+    const pause = () => {
+      running = false
+      cancelAnimationFrame(frame)
+      videoEl?.pause()
+    }
+
+    const io = new IntersectionObserver(([entry]) =>
+      entry.isIntersecting ? play() : pause()
+    )
+    io.observe(track)
+
+    // --- Pointer trail. ---------------------------------------------------
+    let last: { x: number; y: number; t: number } | null = null
+    const onMove = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return
+      const r = canvas.getBoundingClientRect()
+      const x = (event.clientX - r.left) / r.width
+      const y = 1 - (event.clientY - r.top) / r.height
+      const now = performance.now()
+      const speed = last
+        ? Math.hypot(x - last.x, y - last.y) / Math.max(1, now - last.t)
+        : 0
+      last = { x, y, t: now }
+      state.trail.unshift([x, y, Math.min(1, 0.35 + speed * 120)])
+      if (state.trail.length > TRAIL_MAX) state.trail.length = TRAIL_MAX
+    }
+    const onLeave = () => {
+      last = null
+    }
+    const stage = screenEl.parentElement ?? screenEl
+    stage.addEventListener("pointermove", onMove)
+    stage.addEventListener("pointerleave", onLeave)
+
+    // --- Scroll and resize. -----------------------------------------------
+    let layoutFrame = 0
+    const scheduleLayout = () => {
+      if (layoutFrame) return
+      layoutFrame = requestAnimationFrame(() => {
+        layoutFrame = 0
+        layout()
+        if (!running) render()
       })
     }
-
-    const ro = new ResizeObserver(() => {
-      resize()
-      schedule()
-    })
-    ro.observe(canvas)
-    window.addEventListener("scroll", schedule, { passive: true })
+    layout()
+    window.addEventListener("resize", scheduleLayout)
 
     return () => {
-      cancelAnimationFrame(frame)
-      cancelAnimationFrame(videoFrame)
+      pause()
+      cancelAnimationFrame(layoutFrame)
       io.disconnect()
-      ro.disconnect()
-      window.removeEventListener("scroll", schedule)
-      videoEl?.pause()
-      videoEl?.removeAttribute("src")
+      stage.removeEventListener("pointermove", onMove)
+      stage.removeEventListener("pointerleave", onLeave)
+      window.removeEventListener("resize", scheduleLayout)
+      if (videoEl) {
+        videoEl.removeAttribute("src")
+        videoEl.load()
+      }
+      screen.dispose()
     }
-  }, [src, video])
+  }, [video, poster, fx, fy, fz])
 
   return (
-    <div
-      ref={trackRef}
-      className="h-[260vh] [--p:0] motion-reduce:h-auto motion-reduce:[--p:1]"
-    >
-      <section className="dark sticky top-0 h-svh overflow-hidden bg-black motion-reduce:relative">
-        <canvas
-          ref={canvasRef}
-          role="img"
-          aria-label={alt}
-          className="absolute inset-0 size-full"
+    <div ref={trackRef}>
+      <section className="dark relative h-svh min-h-[560px] overflow-hidden bg-black">
+        <div ref={screenRef} className="absolute inset-0">
+          {fallback ? (
+            // eslint-disable-next-line @next/next/no-img-element -- poster only when WebGL is unavailable
+            <img src={poster} alt={alt} className="size-full object-cover" />
+          ) : (
+            <canvas
+              ref={canvasRef}
+              role="img"
+              aria-label={alt}
+              className="block size-full"
+            />
+          )}
+        </div>
+        {/* A low shade so the headline holds over the picture. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/80 to-transparent"
         />
-        {/* The headline travels from the bottom-left up past the screen. */}
         <h1
           className={cn(
             displayText,
-            "absolute left-6 z-10 max-w-[14ch] text-foreground md:left-[3.2vw]",
-            // Bottom-anchored at the start (86%), top-anchored at the end (14%).
-            "top-[calc(14%+(1-var(--p))*72%)] -translate-y-[calc((1-var(--p))*100%)]"
+            "absolute bottom-[8vh] left-6 z-10 max-w-[14ch] text-foreground md:left-[3.2vw]"
           )}
         >
           {title}

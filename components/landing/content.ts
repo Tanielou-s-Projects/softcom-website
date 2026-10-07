@@ -96,7 +96,7 @@ export const capabilities: Capability[] = [
       "Our intelligence systems connect fragmented information and help organisations examine it in depth. Across documents, records and datasets, including market data, our technology helps people investigate activity, understand relationships, track changes and identify what needs attention.",
       "We shape the intelligence around the questions people need to answer and the decisions they need to make.",
     ],
-    image: "/landing/capability-02.png",
+    image: "/images/intelligence-ops-room.jpg",
     chipClassName: "bg-brand-cyan text-brand-blue",
   },
   {
