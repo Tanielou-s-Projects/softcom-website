@@ -85,7 +85,7 @@ export const capabilities: Capability[] = [
       "We build the digital rails that enable people and organisations to access services, connect and transact. These systems provide a common foundation through which many participants can operate, repeatedly and at scale.",
       "We do this with our own technology, partner platforms and custom-built systems. Where the infrastructure already exists globally, we are the partner that makes it work locally.",
     ],
-    image: "/landing/capability-01.png",
+    image: "/images/filling-station.jpg",
     chipClassName: "bg-brand-blue text-brand-cyan",
   },
   {
@@ -107,7 +107,7 @@ export const capabilities: Capability[] = [
       "We bring technology, people and processes together to deliver complex initiatives. We design how an initiative will operate, put the required systems in place and coordinate the activities needed to reach its intended beneficiaries.",
       "We stay accountable for what the initiative achieves, not only for what we build.",
     ],
-    image: "/landing/capability-03.png",
+    image: "/images/field-enrolment.jpg",
     chipClassName: "bg-background text-foreground",
   },
 ]

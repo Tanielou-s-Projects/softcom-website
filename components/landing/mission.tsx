@@ -151,8 +151,8 @@ function MissionPanel() {
           >
             <ColorReveal>
               <Image
-                src="/landing/story.png"
-                alt="A Softcom team member reviewing printed reports"
+                src="/images/lagos-dusk.jpg"
+                alt="Lagos at dusk across the lagoon, a fisherman in a canoe"
                 fill
                 sizes="100vw"
                 className="object-cover object-bottom"

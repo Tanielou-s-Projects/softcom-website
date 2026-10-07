@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { alumniHero } from "@/components/about/content"
 import { AlumniForm } from "@/components/about/alumni-form"
 import { AlumniHero } from "@/components/about/alumni-hero"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
@@ -21,9 +22,6 @@ export const metadata: Metadata = {
   description: alumniHero.paragraphs[0],
 }
 
-const eyebrow =
-  "text-xs font-medium uppercase tracking-widest text-muted-foreground"
-
 /** Alumni — the invitation, then the sign-up. */
 export default function Page() {
   return (
@@ -32,14 +30,13 @@ export default function Page() {
       <HeroHeader />
 
       <AlumniHero
-        video="/alumni/team.mp4"
-        poster="/alumni/team-poster.jpg"
+        src="/alumni/team.jpg"
         alt="The Softcom team gathered on a beach, waving and cheering at the camera"
         title={alumniHero.title}
       />
 
       <Container className="flex flex-col items-start gap-6 py-16">
-        <p className={eyebrow}>{alumniHero.eyebrow}</p>
+        <Badge variant="brand">{alumniHero.eyebrow}</Badge>
         {alumniHero.paragraphs.map((paragraph) => (
           <p
             key={paragraph}

@@ -50,7 +50,7 @@ const placeholder = {
   title:
     "Why Digital Transformation Fails in African Enterprises — And What to Do About It",
   dek: "Most digital transformation efforts fail not because of bad technology, but because of a fundamental misreading of what needs to change.",
-  cover: "/insights/cover-digital-transformation.png",
+  cover: "/images/market-payment.jpg",
 }
 
 /**
@@ -60,10 +60,30 @@ const placeholder = {
  */
 export const insights: Insight[] = [
   { id: "featured", topic: "Digital Strategy", ...placeholder },
-  { id: "latest-1", topic: "Data", ...placeholder },
-  { id: "latest-2", topic: "Government Tech", ...placeholder },
-  { id: "latest-3", topic: "Leadership", ...placeholder },
-  { id: "latest-4", topic: "Strategy", ...placeholder },
+  {
+    id: "latest-1",
+    topic: "Data",
+    ...placeholder,
+    cover: "/images/intelligence-ops-room.jpg",
+  },
+  {
+    id: "latest-2",
+    topic: "Government Tech",
+    ...placeholder,
+    cover: "/images/service-centre.jpg",
+  },
+  {
+    id: "latest-3",
+    topic: "Leadership",
+    ...placeholder,
+    cover: "/images/team-workshop.jpg",
+  },
+  {
+    id: "latest-4",
+    topic: "Strategy",
+    ...placeholder,
+    cover: "/images/lagos-dusk.jpg",
+  },
 ]
 
 export const articles: Article[] = [

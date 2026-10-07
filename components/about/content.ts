@@ -16,7 +16,15 @@ export const aboutHero = {
  * Photographs for the About hero's circles, in order. Empty slots fall back to
  * a placeholder; add paths here as the "life at Softcom" set is produced.
  */
-export const aboutHeroImages: string[] = []
+export const aboutHeroImages: string[] = [
+  "/images/team-code-review.jpg",
+  "/images/field-team.jpg",
+  "/images/team-workshop.jpg",
+  "/images/service-centre.jpg",
+  "/images/team-balcony.jpg",
+  "/images/team-hardware.jpg",
+  "/images/telecom-mast.jpg",
+]
 
 export const story = {
   eyebrow: "Our Story",
