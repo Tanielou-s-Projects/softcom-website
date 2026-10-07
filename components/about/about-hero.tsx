@@ -1,10 +1,12 @@
 "use client"
 
 import { useRef } from "react"
+import Image from "next/image"
 import { Image as ImageIcon } from "@phosphor-icons/react"
 import { motion, useScroll, useSpring, useTransform } from "motion/react"
 
-import { aboutHero } from "@/components/about/content"
+import { aboutHero, aboutHeroImages } from "@/components/about/content"
+import { ColorReveal } from "@/components/motion/color-reveal"
 import { Container, displayText, leadText } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
 
@@ -18,11 +20,12 @@ import { cn } from "@/lib/utils"
  * row drifts sideways through a spring — the lag gives it a weighty, physical,
  * carousel-like feel rather than a rigid scroll lock.
  *
- * The circles are plain grey placeholders with an image icon for now — the real
- * "life at Softcom" photography drops into these seven slots later. Seven keeps
- * the row wider than the viewport so the edges always read as half-circles.
+ * Each circle takes the next photograph from `aboutHeroImages` (greyscale
+ * until scrolled into view, like every photo on the site); a slot without one
+ * stays a grey placeholder with an image icon. Seven keeps the row wider than
+ * the viewport so the edges always read as half-circles.
  */
-const SLOTS = Array.from({ length: 7 })
+const SLOTS = Array.from({ length: 7 }, (_, i) => aboutHeroImages[i])
 
 const band = {
   hidden: {},
@@ -92,11 +95,11 @@ function AboutHero() {
           className="flex w-max items-center will-change-transform"
           aria-hidden
         >
-          {SLOTS.map((_, i) => (
+          {SLOTS.map((photo, i) => (
             <motion.div
               key={i}
               variants={circle}
-              className="flex shrink-0 items-center justify-center rounded-full border border-white/10 bg-neutral-800 ring-8 ring-background lg:ring-[12px]"
+              className="relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-neutral-800 ring-8 ring-background lg:ring-[12px]"
               style={{
                 width: "var(--d)",
                 height: "var(--d)",
@@ -105,11 +108,23 @@ function AboutHero() {
                   i % 2 ? "calc(var(--d) * 0.035)" : "calc(var(--d) * -0.035)",
               }}
             >
-              <ImageIcon
-                size="32%"
-                weight="light"
-                className="text-neutral-600"
-              />
+              {photo ? (
+                <ColorReveal>
+                  <Image
+                    src={photo}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 540px, 33vw"
+                    className="object-cover"
+                  />
+                </ColorReveal>
+              ) : (
+                <ImageIcon
+                  size="32%"
+                  weight="light"
+                  className="text-neutral-600"
+                />
+              )}
             </motion.div>
           ))}
         </motion.div>
