@@ -22,6 +22,26 @@ void main() {
 
 const TRAIL = 12
 
+/**
+ * Temporal smoothing pass. Each frame blends the incoming video frame into a
+ * running average (ping-ponged between two framebuffers). Glyphs are chosen
+ * by luminance, so without this, compression noise — tiny frame-to-frame
+ * wobbles in flat areas like sand — keeps crossing glyph boundaries and the
+ * screen sparkles. Real motion still comes through within ~0.1s.
+ */
+const SMOOTH = `
+precision highp float;
+varying vec2 v_uv;
+uniform sampler2D u_frame;
+uniform sampler2D u_prev;
+uniform float u_k;
+void main() {
+  gl_FragColor = mix(texture2D(u_prev, v_uv), texture2D(u_frame, v_uv), u_k);
+}
+`
+/** Smoothing time constant, in seconds. */
+const TAU = 0.12
+
 const FRAGMENT = `
 precision highp float;
 varying vec2 v_uv;
@@ -101,14 +121,21 @@ void main() {
   p.x /= aspect;
   uv = clamp(p * 0.5 + 0.5, 0.001, 0.999);
 
-  vec2 s = cover(uv);
+  // Average the cell's whole footprint, not one pixel at its centre: four
+  // bilinear taps across the cell, so source grain can't pick the glyph.
+  vec2 foot = 0.3 * u_cell / u_res;
   float ch = 0.006 * influence;
-  vec3 col = vec3(
-    texture2D(u_src, s + vec2(ch, 0.0)).r,
-    texture2D(u_src, s).g,
-    texture2D(u_src, s - vec2(ch, 0.0)).b
-  );
-  col = grade(col);
+  vec3 col = vec3(0.0);
+  for (int i = 0; i < 4; i++) {
+    vec2 o = vec2(i == 0 || i == 2 ? -foot.x : foot.x, i < 2 ? -foot.y : foot.y);
+    vec2 s = cover(uv + o);
+    col += vec3(
+      texture2D(u_src, s + vec2(ch, 0.0)).r,
+      texture2D(u_src, s).g,
+      texture2D(u_src, s - vec2(ch, 0.0)).b
+    );
+  }
+  col = grade(col * 0.25);
 
   // Luminance, pushed bright so most cells carry dense glyphs and colour
   // does the picture-making; the trail adds flicker.
@@ -232,15 +259,21 @@ export function createAsciiScreen(
   })
   if (!gl) return null
 
-  const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX)
-  const fragment = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT)
-  const program = gl.createProgram()
-  if (!vertex || !fragment || !program) return null
-  gl.attachShader(program, vertex)
-  gl.attachShader(program, fragment)
-  gl.linkProgram(program)
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return null
-  gl.useProgram(program)
+  const link = (fragmentSource: string) => {
+    const vs = compile(gl, gl.VERTEX_SHADER, VERTEX)
+    const fs = compile(gl, gl.FRAGMENT_SHADER, fragmentSource)
+    const prog = gl.createProgram()
+    if (!vs || !fs || !prog) return null
+    gl.attachShader(prog, vs)
+    gl.attachShader(prog, fs)
+    gl.linkProgram(prog)
+    gl.deleteShader(vs)
+    gl.deleteShader(fs)
+    return gl.getProgramParameter(prog, gl.LINK_STATUS) ? prog : null
+  }
+  const program = link(FRAGMENT)
+  const smoothProgram = link(SMOOTH)
+  if (!program || !smoothProgram) return null
 
   const buffer = gl.createBuffer()
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
@@ -249,10 +282,20 @@ export function createAsciiScreen(
     new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
     gl.STATIC_DRAW
   )
-  const position = gl.getAttribLocation(program, "a_pos")
-  gl.enableVertexAttribArray(position)
-  gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
+  // Both programs share the one quad; bind its attribute in each.
+  for (const prog of [program, smoothProgram]) {
+    const position = gl.getAttribLocation(prog, "a_pos")
+    gl.enableVertexAttribArray(position)
+    gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
+  }
 
+  const su = (name: string) => gl.getUniformLocation(smoothProgram, name)
+  gl.useProgram(smoothProgram)
+  gl.uniform1i(su("u_frame"), 0)
+  gl.uniform1i(su("u_prev"), 2)
+  const uK = su("u_k")
+
+  gl.useProgram(program)
   const u = (name: string) => gl.getUniformLocation(program, name)
   const texture = (unit: number) => {
     const t = gl.createTexture()
@@ -268,7 +311,8 @@ export function createAsciiScreen(
   // Both textures flipped so v runs bottom-up, matching gl_FragCoord.
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
   const srcTexture = texture(0)
-  gl.uniform1i(u("u_src"), 0)
+  // The main pass samples the smoothed average (unit 3), not the raw frame.
+  gl.uniform1i(u("u_src"), 3)
   const atlasTexture = texture(1)
   gl.texImage2D(
     gl.TEXTURE_2D,
@@ -294,6 +338,24 @@ export function createAsciiScreen(
   const uTrail = u("u_trail")
   const trailData = new Float32Array(TRAIL * 3)
 
+  // Ping-pong targets for the running average, sized to the source.
+  const targets = [0, 1].map(() => {
+    const tex = gl.createTexture()
+    gl.bindTexture(gl.TEXTURE_2D, tex)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    const fb = gl.createFramebuffer()
+    return { tex, fb }
+  })
+  let srcW = 0
+  let srcH = 0
+  let current = 0
+  /** No average yet: the first frame is copied straight in. */
+  let primed = false
+  let lastSmooth = 0
+
   const api: AsciiScreen = {
     upload(source, width, height) {
       gl.activeTexture(gl.TEXTURE0)
@@ -307,6 +369,57 @@ export function createAsciiScreen(
         source
       )
       gl.uniform2f(uSrcRes, width, height)
+
+      if (width !== srcW || height !== srcH) {
+        srcW = width
+        srcH = height
+        for (const t of targets) {
+          gl.bindTexture(gl.TEXTURE_2D, t.tex)
+          gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            width,
+            height,
+            0,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            null
+          )
+          gl.bindFramebuffer(gl.FRAMEBUFFER, t.fb)
+          gl.framebufferTexture2D(
+            gl.FRAMEBUFFER,
+            gl.COLOR_ATTACHMENT0,
+            gl.TEXTURE_2D,
+            t.tex,
+            0
+          )
+        }
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+        primed = false
+      }
+
+      // Blend this frame into the running average, frame-rate independent.
+      const now = performance.now()
+      const dt = lastSmooth ? (now - lastSmooth) / 1000 : 1
+      lastSmooth = now
+      const k = primed ? 1 - Math.exp(-dt / TAU) : 1
+      primed = true
+      const read = targets[current]
+      const write = targets[1 - current]
+      gl.useProgram(smoothProgram)
+      gl.activeTexture(gl.TEXTURE2)
+      gl.bindTexture(gl.TEXTURE_2D, read.tex)
+      gl.uniform1f(uK, k)
+      gl.bindFramebuffer(gl.FRAMEBUFFER, write.fb)
+      gl.viewport(0, 0, srcW, srcH)
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+      gl.viewport(0, 0, canvas.width, canvas.height)
+      current = 1 - current
+      gl.activeTexture(gl.TEXTURE3)
+      gl.bindTexture(gl.TEXTURE_2D, write.tex)
+      gl.useProgram(program)
     },
     resize() {
       const ratio = Math.min(window.devicePixelRatio || 1, 2)
@@ -336,11 +449,14 @@ export function createAsciiScreen(
     },
     dispose() {
       gl.deleteTexture(srcTexture)
+      for (const t of targets) {
+        gl.deleteTexture(t.tex)
+        gl.deleteFramebuffer(t.fb)
+      }
+      gl.deleteProgram(smoothProgram)
       gl.deleteTexture(atlasTexture)
       gl.deleteBuffer(buffer)
       gl.deleteProgram(program)
-      gl.deleteShader(vertex)
-      gl.deleteShader(fragment)
       gl.getExtension("WEBGL_lose_context")?.loseContext()
     },
   }
