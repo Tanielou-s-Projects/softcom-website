@@ -329,8 +329,8 @@ export function PortalHero({
             )}
           >
             <Image
-              src="/landing/capability-02.png"
-              alt="A team sharing digital tools and working together with a tablet"
+              src="/images/market-payment.jpg"
+              alt="A market trader at her stall confirming a payment on her phone"
               fill
               priority
               sizes="100vw"

@@ -139,9 +139,9 @@ export const solutions: Solution[] = [
       href: "/enterprise-products",
     },
     image: {
-      src: "/landing/solution-intelligence.png",
-      width: 784,
-      height: 1512,
+      src: "/images/offshore-rig.jpg",
+      width: 1152,
+      height: 2048,
     },
   },
   {
