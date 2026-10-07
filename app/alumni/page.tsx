@@ -32,8 +32,7 @@ export default function Page() {
       <HeroHeader />
 
       <AlumniHero
-        video="/alumni/team.mp4"
-        poster="/alumni/team-poster.jpg"
+        src="/alumni/team.jpg"
         alt="The Softcom team gathered on a beach, waving and cheering at the camera"
         title={alumniHero.title}
       />
