@@ -111,6 +111,7 @@ function SolutionBlock({
             fill
             sizes="(min-width: 1024px) 30vw, 100vw"
             className="object-cover"
+            style={{ objectPosition: solution.image.position }}
           />
         </ColorReveal>
       </div>

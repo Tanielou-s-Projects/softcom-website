@@ -35,7 +35,7 @@ function CtaPanel({
     >
       <ColorReveal>
         <Image
-          src="/landing/story.png"
+          src="/images/market-aerial.jpg"
           alt=""
           fill
           sizes="100vw"

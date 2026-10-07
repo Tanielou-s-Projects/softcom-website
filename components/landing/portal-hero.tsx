@@ -363,8 +363,8 @@ export function PortalHero({
             )}
           >
             <Image
-              src="/landing/capability-01.png"
-              alt="Paper reports, handwritten notes, and laptops spread across a table"
+              src="/images/pos-agent.jpg"
+              alt="A mobile-money agent handing cash to a customer under a blue umbrella"
               fill
               priority
               sizes="(max-width: 767px) 60vw, 70vw"
@@ -418,8 +418,8 @@ export function PortalHero({
                 className="dark invisible absolute inset-0 z-5 flex flex-col items-center justify-center gap-10 px-6 text-center text-foreground motion-reduce:visible motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:py-24"
               >
                 <Image
-                  src="/landing/story.png"
-                  alt="A Softcom team member reviewing printed reports"
+                  src="/images/lagos-dusk.jpg"
+                  alt="Lagos at dusk across the lagoon, a fisherman in a canoe"
                   fill
                   sizes="100vw"
                   className="-z-10 object-cover object-bottom"

@@ -35,6 +35,8 @@ export type Solution = {
     /** Intrinsic size of the export, for `next/image`. */
     width: number
     height: number
+    /** CSS object-position, when the subject isn't central. */
+    position?: string
   }
 }
 
@@ -90,9 +92,9 @@ export const solutions: Solution[] = [
       href: "/enterprise-products",
     },
     image: {
-      src: "/landing/solution-infrastructure.png",
-      width: 780,
-      height: 1488,
+      src: "/images/data-centre.jpg",
+      width: 1152,
+      height: 2048,
     },
   },
   {
@@ -157,9 +159,10 @@ export const solutions: Solution[] = [
       },
     ],
     image: {
-      src: "/landing/solution-programs.png",
-      width: 784,
-      height: 2442,
+      src: "/images/graduates-training.jpg",
+      width: 1152,
+      height: 2048,
+      position: "30% 85%",
     },
   },
 ]
