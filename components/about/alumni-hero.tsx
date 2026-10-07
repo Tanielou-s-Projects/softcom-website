@@ -10,29 +10,21 @@ import {
   type ScreenState,
 } from "@/components/about/ascii-screen"
 
-/* Scroll timeline, as fractions of the track. */
-const SIZE_END = 0.7
-const TV_END = 0.55
 const POWER_MS = 1000
 /** Pointer trail: points kept, and how fast each fades per frame. */
 const TRAIL_MAX = 12
 const TRAIL_DECAY = 0.86
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v))
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t
-const ease = (t: number) => t * t * (3 - 2 * t)
 
 /**
- * The Alumni hero, after revelatio.studio: the team video rendered as
- * coloured ASCII on a curved CRT screen (see ascii-screen.ts). The screen
- * switches on with a flare when first seen, sits small and lifted on a black
- * stage, and as the page scrolls it grows to fill the viewport while its tube
- * curvature relaxes and the headline rises past it. The pointer leaves a
- * glitch trail through the glyphs.
+ * The Alumni hero: the team video rendered as coloured ASCII (see
+ * ascii-screen.ts), filling the hero edge to edge with the headline over its
+ * lower edge. It switches on with a flare when first seen, and the pointer
+ * leaves a glitch trail through the glyphs. No scroll animation.
  *
- * Renders only while on screen. Reduced motion: the finished, flat,
- * full-width screen drawn once from the poster — no pinning, autoplay or
- * switch-on. Without WebGL the poster is shown as a plain image.
+ * Renders only while on screen. Reduced motion: drawn once from the poster —
+ * no autoplay or switch-on. Without WebGL the poster is shown as a plain image.
  */
 function AlumniHero({
   video,
@@ -78,7 +70,8 @@ function AlumniHero({
     }
 
     const state: ScreenState = {
-      tv: reduce ? 0 : 1,
+      // A flat, full-bleed screen: no tube curvature, no scroll animation.
+      tv: 0,
       power: reduce ? 1 : 0,
       flash: 0,
       time: 0,
@@ -86,33 +79,8 @@ function AlumniHero({
     }
     let hasFrame = false
 
-    // --- Layout: screen size, lift and tube-ness follow scroll. -----------
-    const layout = () => {
-      const vw = window.innerWidth
-      const vh = window.visualViewport?.height ?? window.innerHeight
-      if (reduce) {
-        screen.resize()
-        return
-      }
-      const distance = track.offsetHeight - vh
-      const raw =
-        distance > 4
-          ? clamp01(-track.getBoundingClientRect().top / distance)
-          : 0
-      const size = ease(clamp01(raw / SIZE_END))
-      state.tv = 1 - clamp01(raw / TV_END)
-
-      const mobile = vw < 768
-      const baseW = mobile ? vw * 0.92 : Math.min(vw * 0.62, vh * 0.6 * 1.6)
-      const baseH = mobile ? Math.min(baseW * 0.9, vh * 0.48) : baseW / 1.6
-      const lift = lerp(mobile ? -0.1 : -0.07, 0, size) * vh
-
-      screenEl.style.width = `${lerp(baseW, vw, size)}px`
-      screenEl.style.height = `${lerp(baseH, vh, size)}px`
-      screenEl.style.transform = `translate(-50%, calc(-50% + ${lift}px))`
-      track.style.setProperty("--p", String(size))
-      screen.resize()
-    }
+    // --- Layout: the screen simply fills the hero. ------------------------
+    const layout = () => screen.resize()
 
     // --- Render loop, only while on screen. -------------------------------
     let frame = 0
@@ -224,7 +192,6 @@ function AlumniHero({
       })
     }
     layout()
-    window.addEventListener("scroll", scheduleLayout, { passive: true })
     window.addEventListener("resize", scheduleLayout)
 
     return () => {
@@ -233,7 +200,6 @@ function AlumniHero({
       io.disconnect()
       stage.removeEventListener("pointermove", onMove)
       stage.removeEventListener("pointerleave", onLeave)
-      window.removeEventListener("scroll", scheduleLayout)
       window.removeEventListener("resize", scheduleLayout)
       if (videoEl) {
         videoEl.removeAttribute("src")
@@ -244,21 +210,9 @@ function AlumniHero({
   }, [video, poster, fx, fy, fz])
 
   return (
-    <div
-      ref={trackRef}
-      className="h-[300vh] [--p:0] motion-reduce:h-auto motion-reduce:[--p:1]"
-    >
-      <section
-        className={cn(
-          "dark sticky top-0 h-svh overflow-hidden bg-black",
-          "motion-reduce:relative motion-reduce:flex motion-reduce:h-auto motion-reduce:flex-col motion-reduce:gap-10 motion-reduce:pt-28 motion-reduce:pb-6"
-        )}
-      >
-        {/* Centred by the transform the layout pass writes (it adds the lift). */}
-        <div
-          ref={screenRef}
-          className="absolute top-1/2 left-1/2 motion-reduce:relative motion-reduce:top-auto motion-reduce:left-auto motion-reduce:aspect-[1.6] motion-reduce:w-full motion-reduce:transform-none"
-        >
+    <div ref={trackRef}>
+      <section className="dark relative h-svh min-h-[560px] overflow-hidden bg-black">
+        <div ref={screenRef} className="absolute inset-0">
           {fallback ? (
             // eslint-disable-next-line @next/next/no-img-element -- poster only when WebGL is unavailable
             <img src={poster} alt={alt} className="size-full object-cover" />
@@ -271,13 +225,15 @@ function AlumniHero({
             />
           )}
         </div>
-        {/* The headline rises from beneath the screen to the top-left. */}
+        {/* A low shade so the headline holds over the picture. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/80 to-transparent"
+        />
         <h1
           className={cn(
             displayText,
-            "absolute left-6 z-10 max-w-[14ch] text-foreground md:left-[3.2vw]",
-            "top-[calc(14%+(1-var(--p))*72%)] -translate-y-[calc((1-var(--p))*100%)]",
-            "motion-reduce:static motion-reduce:order-first motion-reduce:translate-y-0 motion-reduce:px-6 motion-reduce:md:px-[3.2vw]"
+            "absolute bottom-[8vh] left-6 z-10 max-w-[14ch] text-foreground md:left-[3.2vw]"
           )}
         >
           {title}
