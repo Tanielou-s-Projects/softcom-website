@@ -135,17 +135,18 @@ void main() {
       texture2D(u_src, s - vec2(ch, 0.0)).b
     );
   }
-  col = grade(col * 0.25);
-
-  // Luminance, pushed bright so most cells carry dense glyphs and colour
-  // does the picture-making; the trail adds flicker.
-  // Already tone-mapped into the mid band: a gentle lift so most cells
-  // carry dense glyphs and colour does the picture-making.
+  col *= 0.25;
+  // Glyph weight comes from the shadow-lifted (graded) luminance, stretched
+  // across the ramp: highlights go dense, the navy-and-skin crowd lands
+  // mid-ramp instead of collapsing into sparse dots, true black stays open.
+  col = grade(col);
   float l = dot(col, vec3(0.299, 0.587, 0.114));
-  l = clamp(l * 1.05 + 0.12, 0.0, 1.0);
+  l = smoothstep(0.2, 0.82, l);
   l = clamp(l + (hash(cell + floor(u_time * 40.0)) - 0.5) * 0.8 * influence, 0.0, 1.0);
   float gi = floor((1.0 - l) * (u_glyphs - 1.0) + 0.5);
-  vec2 local = (fract(frag / u_cell) - 0.5) / 1.3 + 0.5;
+  // The atlas is drawn at exactly one cell per glyph in device pixels, so
+  // sample it texel for texel: crisp letterforms, no minification blur.
+  vec2 local = (floor(mod(frag, u_cell)) + 0.5) / u_cell;
   float glyph = texture2D(u_atlas, vec2((gi + local.x) / u_glyphs, local.y)).r;
   vec3 outc = col * glyph;
 
@@ -199,7 +200,7 @@ function glyphAtlas(font: string, size = 48) {
   ctx.fillStyle = "#fff"
   ctx.textAlign = "center"
   ctx.textBaseline = "middle"
-  ctx.font = `700 ${Math.floor(size * 0.8)}px ${font}`
+  ctx.font = `600 ${Math.max(6, Math.round(size * 0.92))}px ${font}`
   ;[...RAMP].forEach((char, i) =>
     ctx.fillText(char, i * size + size / 2, size * 0.54)
   )
@@ -242,7 +243,7 @@ export type AsciiScreen = {
 export function createAsciiScreen(
   canvas: HTMLCanvasElement,
   {
-    cell = 5,
+    cell = 9,
     font = "ui-monospace, monospace",
     focus = { x: 0.5, y: 0.5, zoom: 1 },
   }: {
@@ -314,14 +315,24 @@ export function createAsciiScreen(
   // The main pass samples the smoothed average (unit 3), not the raw frame.
   gl.uniform1i(u("u_src"), 3)
   const atlasTexture = texture(1)
-  gl.texImage2D(
-    gl.TEXTURE_2D,
-    0,
-    gl.RGBA,
-    gl.RGBA,
-    gl.UNSIGNED_BYTE,
-    glyphAtlas(font)
-  )
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
+  let atlasSize = 0
+  /** (Re)draw the atlas at the cell's device-pixel size. */
+  const uploadAtlas = (size: number) => {
+    if (size === atlasSize) return
+    atlasSize = size
+    gl.activeTexture(gl.TEXTURE1)
+    gl.bindTexture(gl.TEXTURE_2D, atlasTexture)
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      glyphAtlas(font, size)
+    )
+  }
   gl.uniform1i(u("u_atlas"), 1)
   gl.uniform1f(u("u_glyphs"), RAMP.length)
 
@@ -431,7 +442,10 @@ export function createAsciiScreen(
       }
       gl.viewport(0, 0, w, h)
       gl.uniform2f(uRes, w, h)
-      gl.uniform1f(uCell, cell * ratio)
+      // Whole device pixels per cell, so cells and atlas texels line up.
+      const cellPx = Math.round(cell * ratio)
+      gl.uniform1f(uCell, cellPx)
+      uploadAtlas(cellPx)
     },
     draw(state) {
       gl.uniform1f(uTv, state.tv)
