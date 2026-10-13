@@ -103,7 +103,7 @@ export const capabilities: Capability[] = [
 ]
 
 /**
- * What guides the work — shared by the homepage people section and About.
+ * What guides the work — the values About opens "What guides our work" with.
  * The deck repeats them verbatim in both places.
  */
 export type Value = { title: string; description: string }

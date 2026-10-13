@@ -6,7 +6,6 @@ import { ClosingCta } from "@/components/landing/closing-cta"
 import { Hero } from "@/components/landing/hero"
 import { Insights } from "@/components/landing/insights"
 import { Mission } from "@/components/landing/mission"
-import { People } from "@/components/landing/people"
 import { Sectors } from "@/components/landing/sectors"
 import { Stats } from "@/components/landing/stats"
 import { Bleed, ghostPill, primaryPill } from "@/components/landing/section"
@@ -44,7 +43,6 @@ export default function Page() {
         </Reveal>
       </Stats>
       <Approach />
-      <People />
       <Insights />
 
       {/*
