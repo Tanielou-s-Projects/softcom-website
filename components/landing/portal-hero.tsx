@@ -37,6 +37,15 @@ const PHASE = {
   missionCta: [0.87, 0.92],
 } as const
 
+/**
+ * Where the scroll arrow stops, as fractions of the scene's scroll track: each
+ * scene's resting points, in order. Past the last, it leaves the scene.
+ */
+const SCROLL_STOPS = {
+  dissolve: [PHASE.circles, PHASE.out[0], PHASE.missionCta[1]],
+  circles: [0.88],
+} as const
+
 /** Pixel glyphs for the decode — the same visual vocabulary as the dither. */
 const GLYPHS = "▖▗▘▝▚▞▙▟"
 /** How many characters are mid-decode at once. */
@@ -306,14 +315,19 @@ export function PortalHero({
               className={cn(
                 "font-heading font-normal tracking-[-0.055em]",
                 // Size before leading: tailwind-merge drops a leading-* that a later text-* follows.
+                /*
+                 * One line from md up, as the client asked: sized so the whole
+                 * line ends short of the blue circle (~55vw against its ~62vw).
+                 * Phones keep the two-line break.
+                 */
                 circles
-                  ? "text-(length:--hero-type-size)"
+                  ? "text-(length:--hero-type-size) md:text-[clamp(28px,min(4.1vw,8vh),72px)] md:whitespace-nowrap"
                   : "text-[clamp(20px,5.3vw,38px)] md:text-[clamp(30px,min(6.6vw,12vh),116px)]",
                 "leading-[1.04]"
               )}
             >
               Technology for
-              <br />
+              <br className={circles ? "md:hidden" : undefined} />{" "}
               Organisations.
             </h1>
           </div>
@@ -378,8 +392,8 @@ export function PortalHero({
           </figure>
           {circles && (
             <button
-              className="absolute right-[5vw] bottom-22 z-5 grid h-18 w-14 cursor-pointer place-items-center rounded-full text-brand-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
-              aria-label="Scroll to Progress for Society"
+              className="group absolute right-[5vw] bottom-22 z-8 flex cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-brand-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
+              aria-label="Scroll to the next section"
               onClick={() => {
                 const element = track.current
                 if (!element) return
@@ -387,21 +401,34 @@ export function PortalHero({
                   "(prefers-reduced-motion: reduce)"
                 ).matches
                 const top = window.scrollY + element.getBoundingClientRect().top
+                const range = element.offsetHeight - window.innerHeight
+                const progress = (window.scrollY - top) / range
+                /*
+                 * Section by section: each press goes to the next resting
+                 * point of the pinned scene, and past the last one to the
+                 * section below. It used to stop after the first.
+                 */
+                const next = SCROLL_STOPS[
+                  dissolve ? "dissolve" : "circles"
+                ].find((stop) => stop > progress + 0.01)
                 window.scrollTo({
                   top:
-                    top +
-                    (reduce
-                      ? element.offsetHeight
-                      : (element.offsetHeight - window.innerHeight) *
-                        (dissolve ? PHASE.circles : 0.88)),
+                    next === undefined || reduce
+                      ? top + element.offsetHeight
+                      : top + range * next,
                   behavior: reduce ? "instant" : "smooth",
                 })
               }}
             >
-              <PixelArrowDown
-                cascade
-                className="softcom-pixel-cascade size-12"
-              />
+              <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
+                Scroll
+              </span>
+              <span className="softcom-nudge group-hover:[animation-play-state:paused]">
+                <PixelArrowDown
+                  cascade
+                  className="softcom-pixel-cascade size-12"
+                />
+              </span>
             </button>
           )}
           {dissolve && (
