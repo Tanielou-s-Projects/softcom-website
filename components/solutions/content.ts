@@ -141,7 +141,8 @@ export const solutions: Solution[] = [
       href: "/enterprise-products",
     },
     image: {
-      src: "/images/offshore-rig.jpg",
+      // Placeholder until Fig 02 is drawn; the rig wasn't Softcom's work.
+      src: "/images/intelligence-ops-room.jpg",
       width: 1152,
       height: 2048,
     },

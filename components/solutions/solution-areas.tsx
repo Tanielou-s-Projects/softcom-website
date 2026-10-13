@@ -1,3 +1,4 @@
+import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -11,161 +12,196 @@ import {
   leadText,
   primaryPill,
 } from "@/components/landing/section"
-import { Reveal } from "@/components/motion/reveal"
+import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
+import { RailsFigure } from "@/components/solutions/figures/rails/figure"
 import {
   deliveryClose,
   deliveryPhases,
   solutions,
   solutionsIntro,
   type Solution,
-  type SolutionFeature,
   type SolutionList,
 } from "@/components/solutions/content"
 import { ColorReveal } from "@/components/motion/color-reveal"
 
 /**
- * A labelled point beneath a solution's body copy.
- *
- * The dot alternates cyan then blue down every block — derived from position
- * rather than stored per feature, so it cannot drift out of step.
+ * A point in a solution's copy, as a tile: the dense lists read as a set of
+ * equal things to scan rather than one long column. `mark` is an index
+ * ("01") or, left empty, the alternating brand dot.
  */
-function FeatureRow({
-  feature,
+function Tile({
+  label,
+  description,
   index,
+  numbered,
 }: {
-  feature: SolutionFeature
+  label: string
+  description: string
   index: number
+  numbered?: boolean
 }) {
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
-      <div className="flex shrink-0 items-center gap-4">
+    <div className="flex flex-col gap-3 rounded-2xl bg-card p-6">
+      {numbered ? (
+        <span className="font-mono text-xs text-muted-foreground tabular-nums">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      ) : (
         <span
           aria-hidden
           className={cn(
-            "size-3 shrink-0 rounded-full",
+            "size-2.5 rounded-full",
             index % 2 === 0 ? "bg-brand-cyan" : "bg-brand-blue"
           )}
         />
-        <h3 className="font-heading text-2xl leading-[1.1] font-medium text-foreground sm:w-[180px]">
-          {feature.label}
-        </h3>
-      </div>
-      <p className={cn(bodyText, "min-w-0 flex-1 text-foreground")}>
-        {feature.description}
+      )}
+      <h3 className="font-heading text-xl leading-[1.15] text-card-foreground">
+        {label}
+      </h3>
+      <p className="text-base leading-[1.6] text-muted-foreground">
+        {description}
       </p>
     </div>
   )
 }
 
-/** A subheaded list inside a solution's plate, e.g. the parts of an operation. */
+/** A subheaded list inside a solution, e.g. the parts of an operation. */
 function ListBlock({ list }: { list: SolutionList }) {
   return (
-    <div className="flex flex-col gap-4">
-      <h3 className="font-heading text-2xl leading-[1.1] font-medium text-foreground">
-        {list.heading}
-      </h3>
-      <p className={cn(bodyText, "text-foreground")}>{list.intro}</p>
-      <ul className="flex flex-col gap-3 border-l border-border pl-5">
-        {list.items.map((item) => (
-          <li key={item.label} className={cn(bodyText, "text-foreground")}>
-            <strong className="font-semibold">{item.label}:</strong>{" "}
-            {item.description}
-          </li>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-3">
+        <h3 className="font-heading text-2xl leading-[1.1] text-foreground">
+          {list.heading}
+        </h3>
+        <p className={cn(bodyText, "text-muted-foreground")}>{list.intro}</p>
+      </div>
+      <RevealStagger className="grid gap-2.5">
+        {list.items.map((item, index) => (
+          <RevealItem key={item.label}>
+            <Tile {...item} index={index} numbered />
+          </RevealItem>
         ))}
-      </ul>
+      </RevealStagger>
       <p className={cn(bodyText, "text-muted-foreground")}>{list.outro}</p>
     </div>
   )
 }
 
 /**
- * One solution area: a full-height photo beside a plate of copy.
- *
- * The photo alternates sides down the page. `children` is how Powering Initiatives
- * block hangs the delivery panel under its plate — it shares the column, so it
- * lines up with the copy above it rather than with the page.
+ * Each area's illustration. An anatomy figure where one is drawn; until
+ * then, the area's photograph in the same slot.
+ */
+const FIGURES: Partial<Record<string, React.ReactNode>> = {
+  "digital-infrastructure": <RailsFigure />,
+}
+
+function Illustration({ solution }: { solution: Solution }) {
+  const figure = FIGURES[solution.id]
+  if (figure) return figure
+  return (
+    <div className="relative aspect-[4/5] overflow-clip rounded-3xl bg-card">
+      <ColorReveal>
+        <Image
+          src={solution.image.src}
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          className="object-cover"
+          style={{ objectPosition: solution.image.position }}
+        />
+      </ColorReveal>
+    </div>
+  )
+}
+
+/**
+ * One solution area. A numbered header runs the full width; below it the
+ * illustration holds still in a sticky column while the copy beside it
+ * arrives in pieces as it scrolls by — the area is read in steps rather
+ * than as one wall of text. The illustration alternates sides down the page.
+ * `children` runs the full width under both columns (Powering Initiatives'
+ * delivery phases), where its four phases have room to sit side by side.
  */
 function SolutionBlock({
   solution,
+  number,
   reversed,
   children,
 }: {
   solution: Solution
+  number: number
   reversed?: boolean
   children?: React.ReactNode
 }) {
   return (
     <Container
       id={solution.id}
-      className={cn(
-        "flex scroll-mt-24 flex-col gap-2.5 py-3",
-        "lg:flex-row lg:items-stretch",
-        reversed && "lg:flex-row-reverse"
-      )}
+      className="flex scroll-mt-24 flex-col gap-10 lg:gap-16"
     >
-      <div className="relative h-[min(320px,45svh)] shrink-0 overflow-clip rounded-3xl bg-background lg:h-auto lg:w-[30%]">
-        <ColorReveal>
-          <Image
-            src={solution.image.src}
-            alt=""
-            fill
-            sizes="(min-width: 1024px) 30vw, 100vw"
-            className="object-cover"
-            style={{ objectPosition: solution.image.position }}
-          />
-        </ColorReveal>
-      </div>
-
-      <div className="flex min-w-0 flex-1 flex-col gap-2.5">
-        <article
-          className={cn(
-            "flex flex-col justify-center gap-16 overflow-clip rounded-3xl bg-muted p-8",
-            "lg:min-h-[min(744px,80svh)] lg:p-[47px]"
-          )}
-        >
-          <div className="flex flex-col gap-8">
-            <h2
-              className={cn(
-                cardHeadingText,
-                "text-foreground lg:max-w-[359px]"
-              )}
-            >
+      <Reveal asChild>
+        <header className="grid gap-6 border-t border-border pt-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+          <div className="flex items-baseline gap-5">
+            <span className="font-mono text-sm text-muted-foreground tabular-nums">
+              {String(number).padStart(2, "0")}
+            </span>
+            <h2 className={cn(cardHeadingText, "text-foreground")}>
               {solution.title}
             </h2>
-            <div className="flex flex-col gap-8">
-              {/*
-               * The role, not the cyan the design names: cyan manages 1.25:1
-               * on a light card where the blue anchor gets 6.09:1, and
-               * `--brand-accent` is what already resolves per theme.
-               */}
-              <p className={cn(bodyText, "text-brand-accent")}>
-                {solution.lead}
-              </p>
-              {solution.description.map((paragraph) => (
-                <p key={paragraph} className={cn(bodyText, "text-foreground")}>
-                  {paragraph}
-                </p>
-              ))}
-            </div>
           </div>
+          {/*
+           * The role, not the cyan the design names: cyan manages 1.25:1 on
+           * a light card where the blue anchor gets 6.09:1, and
+           * `--brand-accent` is what already resolves per theme.
+           */}
+          <p className={cn(leadText, "text-brand-accent")}>{solution.lead}</p>
+        </header>
+      </Reveal>
 
-          {solution.list ? <ListBlock list={solution.list} /> : null}
+      <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className={cn("lg:sticky lg:top-24", reversed && "lg:order-2")}>
+          <Reveal amount={0.2}>
+            <Illustration solution={solution} />
+          </Reveal>
+        </div>
 
-          <div className="flex flex-col gap-8">
+        <div className="flex min-w-0 flex-col gap-12">
+          {solution.description.map((paragraph) => (
+            <Reveal key={paragraph}>
+              <p className={cn(bodyText, "text-foreground")}>{paragraph}</p>
+            </Reveal>
+          ))}
+
+          {solution.list ? (
+            <Reveal amount={0.1}>
+              <ListBlock list={solution.list} />
+            </Reveal>
+          ) : null}
+
+          <RevealStagger
+            amount={0.1}
+            className={cn(
+              "grid gap-2.5",
+              solution.features.length > 1 && "sm:grid-cols-2"
+            )}
+          >
             {solution.features.map((feature, index) => (
-              <FeatureRow key={feature.label} feature={feature} index={index} />
+              <RevealItem key={feature.label}>
+                <Tile {...feature} index={index} />
+              </RevealItem>
             ))}
-          </div>
+          </RevealStagger>
 
           {solution.cta ? (
-            <Button asChild size="lg" className={cn(primaryPill, "self-start")}>
-              <Link href={solution.cta.href}>{solution.cta.label}</Link>
-            </Button>
+            <Reveal>
+              <Button asChild size="lg" className={primaryPill}>
+                <Link href={solution.cta.href}>{solution.cta.label}</Link>
+              </Button>
+            </Reveal>
           ) : null}
-        </article>
-
-        {children}
+        </div>
       </div>
+
+      {children}
     </Container>
   )
 }
@@ -187,13 +223,13 @@ function DeliveryPhases() {
         </h2>
       </header>
 
-      <ol className="grid gap-8 sm:grid-cols-2 sm:gap-x-11">
+      <ol className="grid gap-8 sm:grid-cols-2 sm:gap-x-11 lg:grid-cols-4">
         {deliveryPhases.map((phase) => (
-          <li key={phase.step} className="flex items-start gap-6">
+          <li key={phase.step} className="flex flex-col items-start gap-4">
             <span className="font-heading text-5xl leading-none font-medium text-foreground">
               {phase.step}
             </span>
-            <div className="flex min-w-0 flex-1 flex-col justify-center gap-2.5 text-lg leading-[1.4] text-foreground">
+            <div className="flex min-w-0 flex-col gap-2.5 text-lg leading-[1.4] text-foreground">
               <h3 className="font-bold">{phase.title}</h3>
               <p>{phase.description}</p>
             </div>
@@ -235,13 +271,20 @@ function SolutionAreas() {
         </Reveal>
       </Container>
 
-      <div className="flex flex-col gap-16 lg:gap-32">
+      <div className="flex flex-col gap-24 lg:gap-40">
         {solutions.map((solution, index) => (
-          <Reveal key={solution.id} amount={0.1}>
-            <SolutionBlock solution={solution} reversed={index === 1}>
-              {solution.id === "powering-initiatives" && <DeliveryPhases />}
-            </SolutionBlock>
-          </Reveal>
+          <SolutionBlock
+            key={solution.id}
+            solution={solution}
+            number={index + 1}
+            reversed={index % 2 === 1}
+          >
+            {solution.id === "powering-initiatives" && (
+              <Reveal amount={0.1}>
+                <DeliveryPhases />
+              </Reveal>
+            )}
+          </SolutionBlock>
         ))}
       </div>
     </section>
