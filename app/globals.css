@@ -592,3 +592,10 @@
     --page-bg: var(--background);
   }
 }
+
+/* The partner strip's loop: one full copy of the list, then repeat. */
+@keyframes partner-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}

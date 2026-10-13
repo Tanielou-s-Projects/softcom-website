@@ -1,9 +1,6 @@
-import {
-  bodyText,
-  Container,
-  headingText,
-} from "@/components/landing/section"
+import { bodyText, Container, headingText } from "@/components/landing/section"
 import { sectors } from "@/components/landing/content"
+import { PartnerLogos } from "@/components/landing/partner-logos"
 import { SectorRow } from "@/components/landing/sector-row"
 import { Reveal } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
@@ -30,6 +27,10 @@ function Sectors() {
        * render as plain blocks until then.
        */}
       <SectorRow sectors={sectors} />
+
+      <Reveal>
+        <PartnerLogos className="pt-6 lg:pt-10" />
+      </Reveal>
     </Container>
   )
 }

@@ -283,3 +283,53 @@ export const footerLegal: { label: string; href?: string }[] = [
 export const footerSocial: { label: string; href?: string }[] = [
   { label: "LinkedIn" },
 ]
+
+/**
+ * Partner logos under "Who we work with", in the client's order. Each file
+ * in /public/partners is the organisation's own logo, taken from its site
+ * and reduced to a one-colour silhouette so the row reads as one line and
+ * follows the theme. `width` and `height` are the file's proportions.
+ */
+export type Partner = {
+  name: string
+  logo: string
+  width: number
+  height: number
+}
+
+export const partners: Partner[] = [
+  { name: "MTN Nigeria", logo: "/partners/mtn.svg", width: 567, height: 283 },
+  {
+    name: "Bank of Industry",
+    logo: "/partners/bank-of-industry.png",
+    width: 559,
+    height: 111,
+  },
+  {
+    name: "Rockefeller Philanthropy Advisors",
+    logo: "/partners/rockefeller-philanthropy-advisors.png",
+    width: 300,
+    height: 79,
+  },
+  { name: "GSK", logo: "/partners/gsk.svg", width: 106, height: 33 },
+  { name: "GB Foods", logo: "/partners/gb-foods.svg", width: 131, height: 77 },
+  { name: "Ardova Plc", logo: "/partners/ardova.png", width: 133, height: 160 },
+  {
+    name: "Honeywell Flour Mills",
+    logo: "/partners/honeywell-flour-mills.png",
+    width: 193,
+    height: 140,
+  },
+  { name: "NAICOM", logo: "/partners/naicom.png", width: 114, height: 121 },
+  { name: "NLNG", logo: "/partners/nlng.png", width: 219, height: 160 },
+  {
+    name: "Office of the Secretary to the Government of the Federation",
+    logo: "/partners/osgf.png",
+    width: 406,
+    height: 75,
+  },
+  { name: "ARM", logo: "/partners/arm.png", width: 451, height: 140 },
+  { name: "FCCPC", logo: "/partners/fccpc.png", width: 255, height: 160 },
+  { name: "NIBSS", logo: "/partners/nibss.png", width: 303, height: 160 },
+  { name: "SPAR Nigeria", logo: "/partners/spar.png", width: 266, height: 75 },
+]
