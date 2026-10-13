@@ -94,9 +94,29 @@ function CaseStudyPanel({
  *
  * The filter is real rather than decorative — the design draws it in an active
  * state, and a row of pills that does nothing when clicked is worse than none.
+ * On desktop it is sticky, so it follows the reader down the list.
  */
 function CaseStudyList() {
   const [filter, setFilter] = React.useState<Filter>("All")
+  const listRef = React.useRef<HTMLDivElement>(null)
+
+  /*
+   * Filtering from deep in the list shortens the page under the reader, who
+   * would land somewhere arbitrary. Bring the top of the results back into
+   * view instead — only when it has scrolled away, so a filter used at the
+   * top of the list doesn't jolt the page.
+   */
+  const choose = (option: Filter) => {
+    setFilter(option)
+    const list = listRef.current
+    if (!list || list.getBoundingClientRect().top >= 0) return
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)")
+      .matches
+    window.scrollTo({
+      top: list.getBoundingClientRect().top + window.scrollY - 96,
+      behavior: smooth ? "smooth" : "auto",
+    })
+  }
 
   const filtered =
     filter === "All"
@@ -107,7 +127,11 @@ function CaseStudyList() {
 
   return (
     <Container className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-0">
-      <aside className="lg:w-[28%] lg:shrink-0 lg:pt-32">
+      {/*
+       * Margin rather than padding for the drop, so the sticky box itself
+       * starts low and then pins 96px down — clear of the floating nav pill.
+       */}
+      <aside className="lg:sticky lg:top-24 lg:mt-32 lg:w-[28%] lg:shrink-0 lg:pr-8">
         <div
           role="group"
           aria-label="Filter case studies by sector"
@@ -125,7 +149,7 @@ function CaseStudyList() {
                 key={option}
                 type="button"
                 aria-pressed={active}
-                onClick={() => setFilter(option)}
+                onClick={() => choose(option)}
                 className={cn(
                   badgeVariants({ variant: active ? "inverse" : "default" }),
                   "cursor-pointer transition-colors"
@@ -138,7 +162,7 @@ function CaseStudyList() {
         </div>
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-6">
+      <div ref={listRef} className="flex min-w-0 flex-1 flex-col gap-6">
         {filtered.map((study, index) => (
           <Reveal key={study.id} amount={0.1}>
             <CaseStudyPanel
