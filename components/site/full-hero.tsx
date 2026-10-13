@@ -25,6 +25,7 @@ function FullHero({
   title,
   lead,
   rail,
+  align = "bottom",
   className,
 }: {
   /** Fills the section. */
@@ -35,17 +36,29 @@ function FullHero({
   lead?: string
   /** A ruled row under the copy — wrap its items in `HeroRail`. */
   rail?: React.ReactNode
+  /**
+   * Where the copy sits. `top` is for a photo whose subject fills the foot
+   * of the frame (a group shot): the copy takes the sky, the people stay
+   * clear. Pair it with `HeroPhoto film="top"`.
+   */
+  align?: "bottom" | "top"
   className?: string
 }) {
   return (
     <section
       className={cn(
-        "dark relative isolate flex h-svh min-h-[640px] flex-col justify-end overflow-hidden bg-black text-foreground",
+        "dark relative isolate flex h-svh min-h-[640px] flex-col overflow-hidden bg-black text-foreground",
+        align === "top" ? "justify-between" : "justify-end",
         className
       )}
     >
       <div className="absolute inset-0 -z-10">{background}</div>
-      <Container className="flex flex-col gap-10 pb-10 lg:gap-14 lg:pb-16">
+      <Container
+        className={cn(
+          "flex flex-col gap-10 lg:gap-14",
+          align === "top" ? "pt-32 lg:pt-36" : "pb-10 lg:pb-16"
+        )}
+      >
         <Reveal className="flex flex-col items-start gap-6">
           <Badge variant="brand">{badge}</Badge>
           <h1 className={cn(displayText, "max-w-[20ch] text-foreground")}>
@@ -59,6 +72,15 @@ function FullHero({
         </Reveal>
         {rail ? <Reveal delay={0.1}>{rail}</Reveal> : null}
       </Container>
+      {/*
+       * The blend into the page: black at the hero's foot easing to the
+       * page's own background, so the next section doesn't start on a hard
+       * edge. `--page-bg` resolves outside this `dark` scope (globals.css).
+       */}
+      <div
+        aria-hidden
+        className="h-24 shrink-0 bg-linear-to-b from-black to-(--page-bg) lg:h-40"
+      />
     </section>
   )
 }
@@ -102,6 +124,7 @@ function HeroPhoto({
   alt = "",
   position = "50% 50%",
   raised = false,
+  film = "bottom",
 }: {
   src: string
   alt?: string
@@ -113,12 +136,19 @@ function HeroPhoto({
    * above the copy, so the copy never sits on faces.
    */
   raised?: boolean
+  /** Which end the film deepens toward: under bottom copy, or top copy. */
+  film?: "bottom" | "top"
 }) {
   return (
     <div
       className={cn(
         "absolute inset-x-0 top-0",
-        raised ? "bottom-[50%] lg:bottom-[40%]" : "bottom-0"
+        raised
+          ? "bottom-[50%] lg:bottom-[40%]"
+          : film === "top"
+            ? // Ends where the hero's blend begins, so the front row is whole.
+              "bottom-24 lg:bottom-40"
+            : "bottom-0"
       )}
     >
       <Image
@@ -134,15 +164,24 @@ function HeroPhoto({
         aria-hidden
         className={cn(
           "absolute inset-0 bg-linear-to-b",
-          raised
-            ? "from-black/20 via-transparent via-70% to-black"
-            : "from-black/20 via-black/40 to-black/90"
+          film === "top"
+            ? "from-black/90 via-black/60 via-40% to-transparent to-70%"
+            : raised
+              ? "from-black/20 via-transparent via-70% to-black"
+              : "from-black/20 via-black/40 to-black/90"
         )}
       />
       <div
         aria-hidden
         className="absolute inset-0 bg-linear-to-r from-black/60 via-black/20 to-transparent"
       />
+      {film === "top" ? (
+        // Only the last strip fades, into the hero's blend: faces stay bright.
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-linear-to-t from-black to-transparent to-20%"
+        />
+      ) : null}
     </div>
   )
 }

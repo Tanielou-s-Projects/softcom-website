@@ -34,9 +34,10 @@ export default function Page() {
             src="/alumni/team.jpg"
             alt="The Softcom team gathered on a beach, waving and cheering at the camera"
             position="50% 85%"
-            raised
+            film="top"
           />
         }
+        align="top"
         badge={alumniHero.eyebrow}
         title={alumniHero.title}
         lead={alumniHero.paragraphs[0]}
@@ -66,7 +67,7 @@ export default function Page() {
         <AlumniForm />
       </Container>
 
-      <Bleed className="flex flex-col gap-2.5 py-6">
+      <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
         <ClosingCta />
         <SiteFooter />
       </Bleed>

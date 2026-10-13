@@ -28,7 +28,7 @@ export default function Page() {
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
        * against it — the footer then scrolls up over the pinned panel.
        */}
-      <Bleed className="flex flex-col gap-2.5 py-6">
+      <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
         <ClosingCta variant="products" />
         <SiteFooter />
       </Bleed>

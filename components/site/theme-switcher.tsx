@@ -28,7 +28,7 @@ function ThemeSwitcher({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-0.5 rounded-full border border-white/15 p-0.5",
+        "inline-flex items-center gap-0.5 rounded-full border border-white/15 bg-neutral-800 p-0.5",
         className
       )}
     >

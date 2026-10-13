@@ -126,7 +126,7 @@ export default function Page() {
         {/* Latest news — V7-style list. */}
         <News />
 
-        <Bleed className="flex flex-col gap-2.5 py-6">
+        <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
           <ClosingCta />
           <SiteFooter />
         </Bleed>
