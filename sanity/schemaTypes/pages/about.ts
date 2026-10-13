@@ -4,7 +4,7 @@ import {
   aboutPage,
   alumniPage,
   careersPage,
-} from "@/components/about/page-copy"
+} from "@/content/about/page-copy"
 import type { PageDefinition } from "@/sanity/lib/page-schema"
 
 /** About, Careers and Alumni page singletons (see sanity/schemaTypes/pages.ts). */

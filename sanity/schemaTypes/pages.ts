@@ -1,6 +1,6 @@
 import { EnvelopeIcon } from "@sanity/icons"
 
-import { contactPage } from "@/components/contact/content"
+import { contactPage } from "@/content/contact/content"
 import { pageSingleton, type PageDefinition } from "@/sanity/lib/page-schema"
 import { ABOUT_PAGES } from "./pages/about"
 import { GLOBAL_PAGES } from "./pages/global"

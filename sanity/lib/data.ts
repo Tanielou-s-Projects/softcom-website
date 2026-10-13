@@ -1,14 +1,14 @@
 import type { PortableTextBlock } from "next-sanity"
 
-import type { Sector, CaseStudy } from "@/components/case-studies/content"
-import type { Insight, Topic } from "@/components/insights/content"
-import type { Portrait } from "@/components/landing/content"
-import type { Product } from "@/components/products/content"
+import type { Sector, CaseStudy } from "@/content/case-studies/content"
+import type { Insight, Topic } from "@/content/insights/content"
+import type { Portrait } from "@/content/home/content"
+import type { Product } from "@/content/products/content"
 import type {
   ProductFigure,
   ProductPage,
   ProductSection,
-} from "@/components/products/pages"
+} from "@/content/products/pages"
 import { client } from "@/sanity/lib/client"
 import { sanityFetch } from "@/sanity/lib/live"
 import {

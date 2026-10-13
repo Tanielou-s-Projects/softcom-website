@@ -5,10 +5,10 @@ import {
   PackageIcon,
 } from "@sanity/icons"
 
-import { caseStudiesPage } from "@/components/case-studies/page-copy"
-import { insightsPage } from "@/components/insights/page-copy"
-import { productsPage } from "@/components/products/page-copy"
-import { solutionsPage } from "@/components/solutions/page-copy"
+import { caseStudiesPage } from "@/content/case-studies/page-copy"
+import { insightsPage } from "@/content/insights/page-copy"
+import { productsPage } from "@/content/products/page-copy"
+import { solutionsPage } from "@/content/solutions/page-copy"
 import type { PageDefinition } from "@/sanity/lib/page-schema"
 
 /** Solutions and the index pages (see sanity/schemaTypes/pages.ts). */

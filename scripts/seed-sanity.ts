@@ -12,17 +12,17 @@
 import { randomBytes } from "node:crypto"
 import path from "node:path"
 
-import { caseStudies } from "@/components/case-studies/content"
-import { contactDetails } from "@/components/contact/content"
-import { articles } from "@/components/insights/content"
-import { portraits } from "@/components/landing/content"
-import { DIAGRAMS } from "@/components/products/diagram-keys"
+import { caseStudies } from "@/content/case-studies/content"
+import { contactDetails } from "@/content/contact/content"
+import { articles } from "@/content/insights/content"
+import { portraits } from "@/content/home/content"
+import { DIAGRAMS } from "@/content/products/diagram-keys"
 import {
   partnerPlatforms,
   products,
   type Product,
-} from "@/components/products/content"
-import { productPages, type ProductFigure } from "@/components/products/pages"
+} from "@/content/products/content"
+import { productPages, type ProductFigure } from "@/content/products/pages"
 
 const PUBLIC = path.resolve(process.cwd(), "public")
 const key = () => randomBytes(6).toString("hex")

@@ -1,7 +1,7 @@
 import { PackageIcon } from "@sanity/icons"
 import { defineArrayMember, defineField, defineType } from "sanity"
 
-import { DIAGRAM_OPTIONS } from "@/components/products/diagram-keys"
+import { DIAGRAM_OPTIONS } from "@/content/products/diagram-keys"
 
 /*
  * Products — Softcom's own and the partner platforms it implements. One
