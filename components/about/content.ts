@@ -29,7 +29,6 @@ export const aboutHeroImages: string[] = [
 export const story = {
   eyebrow: "Our Story",
   heading: "Built from a conviction about Africa’s potential.",
-  cta: { label: "Meet the team", href: "/about#team" },
   paragraphs: [
     "Softcom was founded in 2007 with a mission to give many people a path to growth, achievement and fulfilment.",
     "When technology was largely associated with global giants, solving an everyday problem with software showed us what was possible. We took that same approach into enterprises: understand what they wanted to achieve and build the answers they needed.",

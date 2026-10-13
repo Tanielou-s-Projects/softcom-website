@@ -13,6 +13,7 @@ import {
   Bleed,
   bodyText,
   Container,
+  ghostPill,
   headingText,
   primaryPill,
 } from "@/components/landing/section"
@@ -48,12 +49,6 @@ export default function Page() {
             <h2 className={cn(headingText, "max-w-[24ch] text-foreground")}>
               {story.heading}
             </h2>
-            <Link
-              href={story.cta.href}
-              className="text-sm underline underline-offset-4"
-            >
-              {story.cta.label}
-            </Link>
             <div className="flex max-w-[75ch] flex-col gap-4">
               {story.paragraphs.map((paragraph) => (
                 <p
@@ -116,9 +111,14 @@ export default function Page() {
               sense of ownership. Work alongside exceptional peers whose
               expertise complements yours and expands what you can achieve.
             </p>
-            <Button asChild size="lg" className={primaryPill}>
-              <Link href="/careers">Explore careers at Softcom</Link>
-            </Button>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button asChild size="lg" className={primaryPill}>
+                <Link href="/careers">Explore careers at Softcom</Link>
+              </Button>
+              <Button asChild size="lg" variant="ghost" className={ghostPill}>
+                <Link href="/alumni">Explore our alumni community</Link>
+              </Button>
+            </div>
           </Reveal>
         </Container>
 
