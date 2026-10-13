@@ -10,7 +10,6 @@ import { FullHero } from "@/components/site/full-hero"
 function InsightsHero() {
   return (
     <FullHero
-      art="band"
       background={<DitherMark layout="insights" />}
       badge="News & Insights"
       title="Research, analysis, & perspectives from the field."
