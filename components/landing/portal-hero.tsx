@@ -22,17 +22,25 @@ const MOBILE_QUERY = "(max-width: 767.98px)"
 /*
  * The `dissolve` variant is one pinned scene, as fractions of its scroll
  * track: the circles play out, blue rises over them in the shared dither, the
- * statement decodes out of the blue, holds, and decodes back in; then the
- * same blue drains away to reveal the mission photograph and its copy. The
- * blue that arrived is the blue that leaves — there is no section edge.
+ * statement decodes out of the blue and holds; then the same blue drains away
+ * — taking the statement with it — to reveal the mission photograph and its
+ * copy. The blue that arrived is the blue that leaves — there is no section
+ * edge.
  */
 const PHASE = {
   circles: 0.26,
   dither: [0.28, 0.42],
   text: [0.4, 0.53],
   actions: [0.52, 0.56],
-  out: [0.62, 0.68],
+  /** Where the arrow rests on the statement, before the drain. */
+  hold: 0.62,
   drain: [0.68, 0.82],
+  /**
+   * The statement's exit, inside the drain: it fades while the draining
+   * front (top first) crosses the middle of the screen where it sits, so the
+   * dither reads as carrying it away. No exit of its own.
+   */
+  statementOut: [0.7, 0.75],
   mission: [0.79, 0.88],
   missionCta: [0.87, 0.92],
 } as const
@@ -42,7 +50,7 @@ const PHASE = {
  * scene's resting points, in order. Past the last, it leaves the scene.
  */
 const SCROLL_STOPS = {
-  dissolve: [PHASE.circles, PHASE.out[0], PHASE.missionCta[1]],
+  dissolve: [PHASE.circles, PHASE.hold, PHASE.missionCta[1]],
   circles: [0.88],
 } as const
 
@@ -187,9 +195,11 @@ export function PortalHero({
         } else if (fallbackRef.current) {
           fallbackRef.current.style.opacity = String(d)
         }
-        // In, hold, then back out the way it came — glyph by glyph.
-        const out = segment(raw, PHASE.out)
-        decode(reduce ? 1 : segment(raw, PHASE.text) * (1 - out))
+        // Decodes in and holds; the drain carries it out (see PHASE).
+        const out = reduce ? 0 : ease(segment(raw, PHASE.statementOut))
+        decode(reduce ? 1 : segment(raw, PHASE.text))
+        if (statementRef.current)
+          statementRef.current.style.opacity = String(1 - out)
         const actions = actionsRef.current
         if (actions) {
           const a = reduce ? 1 : ease(segment(raw, PHASE.actions)) * (1 - out)
@@ -357,7 +367,7 @@ export function PortalHero({
             <h2
               id="progress-title"
               className={cn(
-                "softcom-portal-arrival relative z-1 p-3.5 font-heading font-normal motion-reduce:transform-none motion-reduce:opacity-100 md:p-6",
+                "softcom-portal-arrival relative z-1 p-3.5 text-center font-heading font-normal motion-reduce:transform-none motion-reduce:opacity-100 md:p-6",
                 circles
                   ? "text-(length:--hero-type-size) leading-[1.04] tracking-[-0.055em]"
                   : "text-[clamp(22px,12cqw,84px)] leading-[1.02] tracking-[-0.05em] md:text-[clamp(24px,10cqw,144px)]"
