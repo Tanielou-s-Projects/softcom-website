@@ -7,13 +7,11 @@ import { motion, useScroll, useSpring, useTransform } from "motion/react"
 
 import { aboutHero, aboutHeroImages } from "@/components/about/content"
 import { ColorReveal } from "@/components/motion/color-reveal"
-import { Container, displayText, leadText } from "@/components/landing/section"
-import { cn } from "@/lib/utils"
+import { FullHero } from "@/components/site/full-hero"
 
 /**
- * The About hero, after Apollo's "Life at Apollo" section: a headline, then a
- * band of huge circular team cutouts, then the sub text. The portraits sit on
- * near-black backgrounds, so on the dark theme the faces emerge from the page.
+ * The circular team band, after Apollo's "Life at Apollo" section. The
+ * portraits sit on near-black backgrounds, so the faces emerge from the hero.
  *
  * The band is wider than the viewport and full-bleed, so the outermost circles
  * are cut to half-circles at the screen edges. As the page scrolls, the whole
@@ -41,17 +39,12 @@ const circle = {
   },
 } as const
 
-const rise = {
-  hidden: { opacity: 0, y: 16 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
-  },
-} as const
-
-function AboutHero() {
-  const ref = useRef<HTMLElement>(null)
+/**
+ * The band of circles, as the hero's background: full-bleed across the upper
+ * part of the frame, drifting sideways on a spring as the page scrolls.
+ */
+function CircleBand() {
+  const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -61,37 +54,15 @@ function AboutHero() {
   const x = useSpring(xRaw, { stiffness: 45, damping: 20, mass: 1.3 })
 
   return (
-    <section
-      ref={ref}
-      className="flex flex-col items-center gap-10 pt-4 pb-6 lg:gap-16 lg:pt-8"
-    >
-      {/* Headline — above the band, like the reference. */}
-      <motion.div
-        variants={rise}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.6 }}
-      >
-        <Container className="flex justify-center">
-          <h1
-            className={cn(
-              displayText,
-              "max-w-[16ch] text-center text-foreground"
-            )}
-          >
-            {aboutHero.title}
-          </h1>
-        </Container>
-      </motion.div>
-
-      {/* The huge circular carousel — full-bleed, edge circles cut to half. */}
-      <div className="relative flex w-full justify-center overflow-hidden py-2">
+    <div ref={ref} className="absolute inset-0">
+      {/* Rides high, like the dither marks, so the copy owns the bottom. */}
+      <div className="absolute inset-x-0 top-[12svh] flex justify-center overflow-hidden py-2 lg:top-[10svh]">
         <motion.div
           variants={band}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
-          style={{ x, ["--d" as string]: "clamp(240px, 33vw, 540px)" }}
+          style={{ x, ["--d" as string]: "clamp(200px, 26vw, 420px)" }}
           className="flex w-max items-center will-change-transform"
           aria-hidden
         >
@@ -99,7 +70,7 @@ function AboutHero() {
             <motion.div
               key={i}
               variants={circle}
-              className="relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-neutral-800 ring-8 ring-background lg:ring-[12px]"
+              className="relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-neutral-800 ring-8 ring-black lg:ring-[12px]"
               style={{
                 width: "var(--d)",
                 height: "var(--d)",
@@ -114,7 +85,7 @@ function AboutHero() {
                     src={photo}
                     alt=""
                     fill
-                    sizes="(min-width: 1024px) 540px, 33vw"
+                    sizes="(min-width: 1024px) 420px, 26vw"
                     className="object-cover"
                   />
                 </ColorReveal>
@@ -129,26 +100,27 @@ function AboutHero() {
           ))}
         </motion.div>
       </div>
+      {/* The standard film's bottom half, so the copy holds below the band. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-b from-transparent to-black"
+      />
+    </div>
+  )
+}
 
-      {/* Sub text — after the huge hero. */}
-      <motion.div
-        variants={rise}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.6 }}
-      >
-        <Container className="flex justify-center">
-          <p
-            className={cn(
-              leadText,
-              "max-w-[60ch] text-center text-muted-foreground"
-            )}
-          >
-            {aboutHero.lead}
-          </p>
-        </Container>
-      </motion.div>
-    </section>
+/**
+ * The About hero, on the shared frame: the circular team band (after Apollo's
+ * "Life at Apollo") as its background, the shared anatomy beneath it.
+ */
+function AboutHero() {
+  return (
+    <FullHero
+      background={<CircleBand />}
+      badge={aboutHero.eyebrow}
+      title={aboutHero.title}
+      lead={aboutHero.lead}
+    />
   )
 }
 

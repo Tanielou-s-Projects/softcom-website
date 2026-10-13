@@ -4,8 +4,6 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { alumniHero } from "@/components/about/content"
 import { AlumniForm } from "@/components/about/alumni-form"
-import { AlumniHero } from "@/components/about/alumni-hero"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
@@ -16,6 +14,7 @@ import {
 } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
 import { HeroHeader } from "@/components/landing/hero-header"
+import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
 
 export const metadata: Metadata = {
   title: "Alumni",
@@ -29,15 +28,31 @@ export default function Page() {
       {/* Floats over the full-bleed hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <AlumniHero
-        src="/alumni/team.jpg"
-        alt="The Softcom team gathered on a beach, waving and cheering at the camera"
+      <FullHero
+        background={
+          <HeroPhoto
+            src="/alumni/team.jpg"
+            alt="The Softcom team gathered on a beach, waving and cheering at the camera"
+            position="50% 85%"
+            raised
+          />
+        }
+        badge={alumniHero.eyebrow}
         title={alumniHero.title}
+        lead={alumniHero.paragraphs[0]}
+        rail={
+          <HeroRail>
+            <div>
+              <Button asChild size="lg" className={primaryPill}>
+                <Link href="#join">Join the network</Link>
+              </Button>
+            </div>
+          </HeroRail>
+        }
       />
 
       <Container className="flex flex-col items-start gap-6 py-16">
-        <Badge variant="brand">{alumniHero.eyebrow}</Badge>
-        {alumniHero.paragraphs.map((paragraph) => (
+        {alumniHero.paragraphs.slice(1).map((paragraph) => (
           <p
             key={paragraph}
             className={cn(leadText, "max-w-[75ch] text-muted-foreground")}
@@ -45,9 +60,6 @@ export default function Page() {
             {paragraph}
           </p>
         ))}
-        <Button asChild size="lg" className={primaryPill}>
-          <Link href={alumniHero.cta.href}>{alumniHero.cta.label}</Link>
-        </Button>
       </Container>
 
       <Container className="py-12">

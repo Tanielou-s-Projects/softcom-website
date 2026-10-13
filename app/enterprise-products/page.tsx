@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
 
 import { ClosingCta } from "@/components/landing/closing-cta"
+import { HeroHeader } from "@/components/landing/hero-header"
 import { Bleed } from "@/components/landing/section"
 import { productsIntro } from "@/components/products/content"
 import { ProductGrid } from "@/components/products/product-grid"
 import { ProductsHero } from "@/components/products/products-hero"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
-import { SiteHeader } from "@/components/site/site-header"
 
 export const metadata: Metadata = {
   title: productsIntro.title,
@@ -18,7 +18,8 @@ export default function Page() {
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-32">
       <BlueprintGrid />
-      <SiteHeader />
+      {/* Floats over the full-height hero rather than taking a band above it. */}
+      <HeroHeader />
 
       <ProductsHero />
       <ProductGrid />

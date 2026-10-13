@@ -1,84 +1,39 @@
-import { cn } from "@/lib/utils"
-import { Container, displayText } from "@/components/landing/section"
-import { Reveal } from "@/components/motion/reveal"
+import Link from "next/link"
+
+import { DitherMark } from "@/components/motion/dither-mark"
+import { FullHero, HeroRail } from "@/components/site/full-hero"
+import { solutions } from "@/components/solutions/content"
 
 /**
- * The pair of discs the statement sits under.
- *
- * Rebuilt from node 305:569 verbatim, including its greys. Worth knowing they
- * are Figma's default `#D9D9D9` fill rather than anything from the palette, and
- * that the connector is a flat 2px line where the landing hero's is a 346px
- * gradient conduit — this reads as a placeholder for that mark rather than a
- * second one. Inlined so swapping it later is a single-file change.
- */
-function SolutionsMark({ className }: { className?: string }) {
-  return (
-    <svg
-      aria-hidden
-      className={cn("block w-full max-w-[649px]", className)}
-      viewBox="0 0 649 189"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <linearGradient
-          id="softcom-solutions-thread"
-          x1="201"
-          y1="95"
-          x2="448"
-          y2="95"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#3D3D3D" />
-          <stop offset="0.5" stopColor="#A3A3A3" />
-          <stop offset="1" stopColor="#3D3D3D" />
-        </linearGradient>
-      </defs>
-      <circle cx="94.5" cy="94.5" r="94.5" fill="#D9D9D9" />
-      <path
-        d="M201 94.5H448"
-        stroke="url(#softcom-solutions-thread)"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <circle cx="554.5" cy="94.5" r="94.5" fill="#D9D9D9" />
-    </svg>
-  )
-}
-
-/**
- * The page's opening statement: one plate, the mark, and the claim.
- *
- * The plate is a step off the page rather than the page itself, which is what
- * `--card` already means — in dark it resolves to the `#171717` the design
- * specifies, and in light it inverts with the rest of the site.
+ * The conduit mark in dither, the claim, and the three solution areas —
+ * numbered, as the client asked — as links down to their sections.
  */
 function SolutionsHero() {
   return (
-    <Container className="pt-6">
-      <div
-        className={cn(
-          "flex flex-col items-center justify-center gap-16 overflow-clip rounded-2xl bg-card px-6 py-24",
-          "w-full lg:min-h-[min(1024px,88svh)] lg:gap-32 lg:py-32"
-        )}
-      >
-        <Reveal>
-          <SolutionsMark />
-        </Reveal>
-
-        <Reveal asChild delay={0.1}>
-          <h1
-            className={cn(
-              displayText,
-              "max-w-[810px] text-center text-card-foreground"
-            )}
-          >
-            Technology and expertise for your most important work.
-          </h1>
-        </Reveal>
-      </div>
-    </Container>
+    <FullHero
+      background={<DitherMark layout="conduit" />}
+      badge="Solutions"
+      title="Technology and expertise for your most important work."
+      rail={
+        <HeroRail as="nav" label="Solution areas">
+          {solutions.map((solution, index) => (
+            <Link
+              key={solution.id}
+              href={`#${solution.id}`}
+              className="group flex items-baseline gap-4 text-foreground"
+            >
+              <span className="font-mono text-sm text-muted-foreground tabular-nums">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="font-heading text-xl leading-tight transition-colors group-hover:text-brand-cyan lg:text-2xl">
+                {solution.title}
+              </span>
+            </Link>
+          ))}
+        </HeroRail>
+      }
+    />
   )
 }
 
-export { SolutionsHero, SolutionsMark }
+export { SolutionsHero }

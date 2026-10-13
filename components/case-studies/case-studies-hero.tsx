@@ -1,48 +1,34 @@
-import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
-import { Container, displayText, leadText } from "@/components/landing/section"
-import { Reveal } from "@/components/motion/reveal"
+import { stats } from "@/components/landing/content"
+import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
 
 /**
- * The page's opening statement, centred on its own plate.
- *
- * The same shape as the Solutions hero — one full-height card the copy sits in
- * the middle of — but stating the claim rather than drawing a mark.
+ * An engagement in the field, the claim, and the impact numbers carrying the
+ * "measurable" until the case studies arrive; a featured study can take this
+ * slot then.
  */
 function CaseStudiesHero() {
   return (
-    <Container className="pt-6">
-      <div
-        className={cn(
-          "flex flex-col items-center justify-center gap-8 overflow-clip rounded-3xl bg-popover px-6 py-24",
-          "lg:min-h-[min(976px,85svh)] lg:gap-16"
-        )}
-      >
-        <Reveal className="flex flex-col items-center gap-8 lg:gap-16">
-          <Badge variant="brand">Case Studies</Badge>
-
-          <h1
-            className={cn(
-              displayText,
-              "max-w-[725px] text-center text-popover-foreground"
-            )}
-          >
-            Real engagements. Measurable outcomes.
-          </h1>
-
-          <p
-            className={cn(
-              leadText,
-              "max-w-[848px] text-center leading-[1.6] text-popover-foreground"
-            )}
-          >
-            A portfolio of real engagements — spanning government, financial
-            services, consumer goods, and agriculture — each delivering
-            measurable, lasting outcomes.
-          </p>
-        </Reveal>
-      </div>
-    </Container>
+    <FullHero
+      background={<HeroPhoto src="/images/pos-agent.jpg" position="50% 40%" />}
+      badge="Case Studies"
+      title="Real engagements. Measurable outcomes."
+      lead="A portfolio of real engagements — spanning government, financial services, consumer goods, and agriculture — each delivering measurable, lasting outcomes."
+      rail={
+        <HeroRail as="dl" className="grid-cols-2">
+          {stats.map((stat) => (
+            // Label first in the markup, figure first on screen.
+            <div key={stat.label} className="flex flex-col-reverse gap-1">
+              <dt className="text-sm text-foreground/70 lg:text-base">
+                {stat.label}
+              </dt>
+              <dd className="font-heading text-4xl leading-[0.9] text-foreground lg:text-6xl">
+                {stat.value}
+              </dd>
+            </div>
+          ))}
+        </HeroRail>
+      }
+    />
   )
 }
 
