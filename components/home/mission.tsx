@@ -1,9 +1,8 @@
-import Image from "next/image"
-
 import { ArrowLink } from "@/components/ui/button"
+import { ImagePlaceholder } from "@/components/ui/image-placeholder"
 import type { HomePage } from "@/content/home/page-copy"
 
-/* The mission beside a tall photograph, its body text dropped below. */
+/* The mission beside a tall image, its body text dropped below. */
 export function Mission({ copy }: { copy: HomePage["mission"] }) {
   return (
     <section className="shell mt-24 grid gap-10 md:mt-40 md:grid-cols-12 md:gap-x-6">
@@ -22,13 +21,7 @@ export function Mission({ copy }: { copy: HomePage["mission"] }) {
         </div>
       </div>
       <div className="relative aspect-[4/5] overflow-hidden rounded-xl md:col-span-7 md:aspect-[7/6]">
-        <Image
-          src={copy.image}
-          alt={copy.imageAlt}
-          fill
-          sizes="(min-width: 768px) 58vw, 100vw"
-          className="object-cover"
-        />
+        <ImagePlaceholder label={copy.imageAlt} />
       </div>
     </section>
   )

@@ -1,6 +1,5 @@
-import Image from "next/image"
-
 import { ArrowLink } from "@/components/ui/button"
+import { ImagePlaceholder } from "@/components/ui/image-placeholder"
 import { SectionHeading } from "@/components/ui/section-heading"
 import { capabilities } from "@/content/home/content"
 import type { HomePage } from "@/content/home/page-copy"
@@ -21,13 +20,7 @@ export function FocusAreas({ copy }: { copy: HomePage["focusAreas"] }) {
             </p>
             <h3 className="mt-4 text-title">{area.title}</h3>
             <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-lg">
-              <Image
-                src={area.image}
-                alt=""
-                fill
-                sizes="(min-width: 768px) 30vw, 100vw"
-                className="object-cover"
-              />
+              <ImagePlaceholder />
             </div>
             <div className="mt-6 space-y-4 text-ink-soft">
               {area.paragraphs.map((p) => (
