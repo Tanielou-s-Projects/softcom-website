@@ -513,14 +513,14 @@ export function PortalHero({
                       "max-w-[760px] leading-[1.1] text-foreground"
                     )}
                   >
-                    We believe stronger organisations are the foundation of a
-                    more prosperous society.
+                    {/* Trimmed from the deck's "We believe stronger organisations
+                        are the foundation of a more prosperous society." */}
+                    Stronger organisations build a more prosperous society.
                   </h2>
                   <p className={cn(leadText, "max-w-[576px] text-neutral-200")}>
-                    We build technology and capabilities that strengthen those
-                    organisations, helping them operate better, make informed
-                    decisions and create possibilities for the people who depend
-                    on them.
+                    We build the technology and capabilities that help them work
+                    better, decide better and serve the people who depend on
+                    them.
                   </p>
                 </div>
                 <div
