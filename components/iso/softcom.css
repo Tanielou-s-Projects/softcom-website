@@ -61,3 +61,8 @@
 .softcom-iso .iso-progress {
   fill: var(--anatomy-lit);
 }
+
+/* Full-width figure panels: the drawing keeps a readable size, centred. */
+.softcom-iso .iso-plate .iso-svg {
+  max-width: 920px;
+}

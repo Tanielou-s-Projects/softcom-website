@@ -1,5 +1,4 @@
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
@@ -9,10 +8,13 @@ import {
   bodyText,
   cardHeadingText,
   Container,
+  headingText,
   leadText,
   primaryPill,
 } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
+import { FieldLineFigure } from "@/components/solutions/figures/field-line/figure"
+import { LightTableFigure } from "@/components/solutions/figures/light-table/figure"
 import { RailsFigure } from "@/components/solutions/figures/rails/figure"
 import {
   deliveryClose,
@@ -20,186 +22,159 @@ import {
   solutions,
   solutionsIntro,
   type Solution,
-  type SolutionList,
+  type SolutionFeature,
 } from "@/components/solutions/content"
-import { ColorReveal } from "@/components/motion/color-reveal"
 
-/**
- * A point in a solution's copy, as a tile: the dense lists read as a set of
- * equal things to scan rather than one long column. `mark` is an index
- * ("01") or, left empty, the alternating brand dot.
+/*
+ * The Solutions body, on the rhythm of Palantir's Ontology page (a client
+ * reference): each area is an intro plate with a centred title, a grid of
+ * short cards, and its figure in a full-width panel. Every block is its own
+ * plate on the page, 10px apart, so an area reads as a set of pieces rather
+ * than one column of text.
  */
-function Tile({
-  label,
-  description,
+
+/** The small label over a plate's title: a dot and a mono caption. */
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="flex items-center gap-2 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
+      <span aria-hidden className="size-1.5 rounded-full bg-brand-accent" />
+      {children}
+    </p>
+  )
+}
+
+/** A short card: an accent title and a few lines of muted copy. */
+function Card({
+  feature,
   index,
-  numbered,
 }: {
-  label: string
-  description: string
-  index: number
-  numbered?: boolean
+  feature: SolutionFeature
+  /** Shown as "01" when the cards are a sequence. */
+  index?: number
 }) {
   return (
-    <div className="flex flex-col gap-3 rounded-2xl bg-card p-6">
-      {numbered ? (
+    <div className="flex h-full flex-col gap-3 rounded-3xl bg-card p-6 lg:p-8">
+      {index === undefined ? null : (
         <span className="font-mono text-xs text-muted-foreground tabular-nums">
           {String(index + 1).padStart(2, "0")}
         </span>
-      ) : (
-        <span
-          aria-hidden
-          className={cn(
-            "size-2.5 rounded-full",
-            index % 2 === 0 ? "bg-brand-cyan" : "bg-brand-blue"
-          )}
-        />
       )}
-      <h3 className="font-heading text-xl leading-[1.15] text-card-foreground">
-        {label}
+      <h3 className="font-heading text-xl leading-[1.2] text-brand-accent">
+        {feature.label}
       </h3>
       <p className="text-base leading-[1.6] text-muted-foreground">
-        {description}
+        {feature.description}
       </p>
     </div>
   )
 }
 
-/** A subheaded list inside a solution, e.g. the parts of an operation. */
-function ListBlock({ list }: { list: SolutionList }) {
+/** Cards in a grid of two or three, revealing one after another. */
+function Cards({
+  items,
+  numbered,
+}: {
+  items: SolutionFeature[]
+  numbered?: boolean
+}) {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-3">
-        <h3 className="font-heading text-2xl leading-[1.1] text-foreground">
-          {list.heading}
-        </h3>
-        <p className={cn(bodyText, "text-muted-foreground")}>{list.intro}</p>
-      </div>
-      <RevealStagger className="grid gap-2.5">
-        {list.items.map((item, index) => (
-          <RevealItem key={item.label}>
-            <Tile {...item} index={index} numbered />
-          </RevealItem>
-        ))}
-      </RevealStagger>
-      <p className={cn(bodyText, "text-muted-foreground")}>{list.outro}</p>
-    </div>
+    <RevealStagger
+      amount={0.1}
+      className={cn(
+        "grid gap-2.5",
+        items.length > 1 && "sm:grid-cols-2",
+        items.length % 3 === 0 && "lg:grid-cols-3"
+      )}
+    >
+      {items.map((item, index) => (
+        <RevealItem key={item.label} className="h-full">
+          <Card feature={item} index={numbered ? index : undefined} />
+        </RevealItem>
+      ))}
+    </RevealStagger>
   )
 }
 
-/**
- * Each area's illustration. An anatomy figure where one is drawn; until
- * then, the area's photograph in the same slot.
- */
-const FIGURES: Partial<Record<string, React.ReactNode>> = {
+/** Each area's figure, full width in its own panel. */
+const FIGURES: Record<string, React.ReactNode> = {
   "digital-infrastructure": <RailsFigure />,
-}
-
-function Illustration({ solution }: { solution: Solution }) {
-  const figure = FIGURES[solution.id]
-  if (figure) return figure
-  return (
-    <div className="relative aspect-[4/5] overflow-clip rounded-3xl bg-card">
-      <ColorReveal>
-        <Image
-          src={solution.image.src}
-          alt=""
-          fill
-          sizes="(min-width: 1024px) 45vw, 100vw"
-          className="object-cover"
-          style={{ objectPosition: solution.image.position }}
-        />
-      </ColorReveal>
-    </div>
-  )
+  "applied-intelligence": <LightTableFigure />,
+  "powering-initiatives": <FieldLineFigure />,
 }
 
 /**
- * One solution area. A numbered header runs the full width; below it the
- * illustration holds still in a sticky column while the copy beside it
- * arrives in pieces as it scrolls by — the area is read in steps rather
- * than as one wall of text. The illustration alternates sides down the page.
- * `children` runs the full width under both columns (Powering Initiatives'
- * delivery phases), where its four phases have room to sit side by side.
+ * One solution area: intro plate, the parts of the area as cards, its figure
+ * full width, then the remaining points as cards. `children` closes the
+ * area (Powering Initiatives' delivery phases).
  */
 function SolutionBlock({
   solution,
   number,
-  reversed,
   children,
 }: {
   solution: Solution
   number: number
-  reversed?: boolean
   children?: React.ReactNode
 }) {
   return (
-    <Container
-      id={solution.id}
-      className="flex scroll-mt-24 flex-col gap-10 lg:gap-16"
-    >
+    <Container id={solution.id} className="flex scroll-mt-24 flex-col gap-2.5">
       <Reveal asChild>
-        <header className="grid gap-6 border-t border-border pt-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-          <div className="flex items-baseline gap-5">
-            <span className="font-mono text-sm text-muted-foreground tabular-nums">
-              {String(number).padStart(2, "0")}
-            </span>
-            <h2 className={cn(cardHeadingText, "text-foreground")}>
-              {solution.title}
-            </h2>
-          </div>
+        <header className="flex flex-col items-center gap-6 rounded-3xl bg-card px-6 py-16 text-center lg:py-24">
+          <Eyebrow>Solution {String(number).padStart(2, "0")}</Eyebrow>
+          <h2 className={cn(headingText, "max-w-[18ch] text-foreground")}>
+            {solution.title}
+          </h2>
           {/*
            * The role, not the cyan the design names: cyan manages 1.25:1 on
            * a light card where the blue anchor gets 6.09:1, and
            * `--brand-accent` is what already resolves per theme.
            */}
-          <p className={cn(leadText, "text-brand-accent")}>{solution.lead}</p>
+          <p className={cn(leadText, "max-w-[52ch] text-brand-accent")}>
+            {solution.lead}
+          </p>
+          {solution.description.map((paragraph) => (
+            <p
+              key={paragraph}
+              className={cn(bodyText, "max-w-[62ch] text-muted-foreground")}
+            >
+              {paragraph}
+            </p>
+          ))}
         </header>
       </Reveal>
 
-      <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
-        <div className={cn("lg:sticky lg:top-24", reversed && "lg:order-2")}>
-          <Reveal amount={0.2}>
-            <Illustration solution={solution} />
+      {solution.list ? (
+        <>
+          <Reveal asChild>
+            <div className="grid gap-4 rounded-3xl bg-card p-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:p-8">
+              <h3 className="font-heading text-2xl leading-[1.15] text-foreground">
+                {solution.list.heading}
+              </h3>
+              <div className="flex flex-col gap-3">
+                <p className={cn(bodyText, "text-muted-foreground")}>
+                  {solution.list.intro}
+                </p>
+                <p className={cn(bodyText, "text-muted-foreground")}>
+                  {solution.list.outro}
+                </p>
+              </div>
+            </div>
           </Reveal>
-        </div>
+          <Cards items={solution.list.items} numbered />
+        </>
+      ) : null}
 
-        <div className="flex min-w-0 flex-col gap-12">
-          {solution.description.map((paragraph) => (
-            <Reveal key={paragraph}>
-              <p className={cn(bodyText, "text-foreground")}>{paragraph}</p>
-            </Reveal>
-          ))}
+      <Reveal amount={0.15}>{FIGURES[solution.id]}</Reveal>
 
-          {solution.list ? (
-            <Reveal amount={0.1}>
-              <ListBlock list={solution.list} />
-            </Reveal>
-          ) : null}
+      <Cards items={solution.features} />
 
-          <RevealStagger
-            amount={0.1}
-            className={cn(
-              "grid gap-2.5",
-              solution.features.length > 1 && "sm:grid-cols-2"
-            )}
-          >
-            {solution.features.map((feature, index) => (
-              <RevealItem key={feature.label}>
-                <Tile {...feature} index={index} />
-              </RevealItem>
-            ))}
-          </RevealStagger>
-
-          {solution.cta ? (
-            <Reveal>
-              <Button asChild size="lg" className={primaryPill}>
-                <Link href={solution.cta.href}>{solution.cta.label}</Link>
-              </Button>
-            </Reveal>
-          ) : null}
-        </div>
-      </div>
+      {solution.cta ? (
+        <Reveal className="flex justify-center rounded-3xl bg-card p-6">
+          <Button asChild size="lg" className={primaryPill}>
+            <Link href={solution.cta.href}>{solution.cta.label}</Link>
+          </Button>
+        </Reveal>
+      ) : null}
 
       {children}
     </Container>
@@ -247,16 +222,10 @@ function DeliveryPhases() {
   )
 }
 
-/**
- * The body of the page: the framing sentence, then the three areas.
- *
- * The delivery panel belongs to Powering Initiatives rather than to the page, which is why
- * it is passed in as that block's child — in the design it sits inside the same
- * column as the Powering Initiatives copy, not below the whole section.
- */
+/** The body of the page: the framing sentence, then the three areas. */
 function SolutionAreas() {
   return (
-    <section className="flex flex-col gap-16">
+    <section className="flex flex-col gap-24 lg:gap-32">
       <Container className="flex flex-col items-start justify-center gap-6 pt-6">
         <Reveal className="flex flex-col items-start gap-6">
           <Badge variant="brand">Our Solutions</Badge>
@@ -271,22 +240,15 @@ function SolutionAreas() {
         </Reveal>
       </Container>
 
-      <div className="flex flex-col gap-24 lg:gap-40">
-        {solutions.map((solution, index) => (
-          <SolutionBlock
-            key={solution.id}
-            solution={solution}
-            number={index + 1}
-            reversed={index % 2 === 1}
-          >
-            {solution.id === "powering-initiatives" && (
-              <Reveal amount={0.1}>
-                <DeliveryPhases />
-              </Reveal>
-            )}
-          </SolutionBlock>
-        ))}
-      </div>
+      {solutions.map((solution, index) => (
+        <SolutionBlock key={solution.id} solution={solution} number={index + 1}>
+          {solution.id === "powering-initiatives" && (
+            <Reveal amount={0.1}>
+              <DeliveryPhases />
+            </Reveal>
+          )}
+        </SolutionBlock>
+      ))}
     </section>
   )
 }
