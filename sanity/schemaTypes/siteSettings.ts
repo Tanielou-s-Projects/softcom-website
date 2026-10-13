@@ -26,6 +26,15 @@ export const siteSettings = defineType({
         r.required().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { name: "email" }),
     }),
     defineField({
+      name: "notifyEmail",
+      title: "Form notifications",
+      description:
+        "Where Contact form messages are emailed. Leave empty to use the email above.",
+      type: "string",
+      validation: (r) =>
+        r.regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { name: "email" }),
+    }),
+    defineField({
       name: "address",
       description: "One entry per line.",
       type: "array",

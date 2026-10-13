@@ -3,6 +3,7 @@ import type { SchemaTypeDefinition } from "sanity"
 import { alumnus } from "./alumnus"
 import { blockContent } from "./blockContent"
 import { caseStudy } from "./caseStudy"
+import { contactSubmission } from "./contactSubmission"
 import { insight } from "./insight"
 import { leader } from "./leader"
 import { PAGES } from "./pages"
@@ -20,6 +21,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     alumnus,
     product,
     siteSettings,
+    contactSubmission,
     ...PAGES,
     // Objects
     blockContent,

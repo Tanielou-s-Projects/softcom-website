@@ -2,6 +2,7 @@ import {
   CaseIcon,
   CogIcon,
   DocumentsIcon,
+  EnvelopeIcon,
   PackageIcon,
   DocumentTextIcon,
   FolderIcon,
@@ -20,6 +21,16 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title("Softcom")
     .items([
+      // Messages from the Contact form, newest first.
+      S.listItem()
+        .title("Inbox")
+        .icon(EnvelopeIcon)
+        .child(
+          S.documentTypeList("contactSubmission")
+            .title("Inbox")
+            .defaultOrdering([{ field: "submittedAt", direction: "desc" }])
+        ),
+      S.divider(),
       // Every page's copy, one document each, opened directly.
       S.listItem()
         .title("Pages")

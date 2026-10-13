@@ -23,7 +23,10 @@ export default defineConfig({
     ...schema,
     // Pages and site settings are singletons: no "new document" for them.
     templates: (templates) =>
-      templates.filter(({ schemaType }) => !SINGLETONS.has(schemaType)),
+      templates.filter(
+        ({ schemaType }) =>
+          !SINGLETONS.has(schemaType) && schemaType !== "contactSubmission"
+      ),
   },
   document: {
     actions: (actions, { schemaType }) =>

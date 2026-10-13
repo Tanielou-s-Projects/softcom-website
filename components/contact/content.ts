@@ -40,6 +40,15 @@ export const contactPage = {
     messageLabel: "Message",
     messagePlaceholder: "Your message…",
     submit: "Send Message",
+    sending: "Sending…",
+    successHeading: "Thank you.",
+    successText:
+      "Your message is with us. We’ll reply to you by email as soon as we can.",
+    errorText:
+      "Something went wrong and your message wasn’t sent. Please try again, or email us directly.",
+    nameError: "Please tell us your name.",
+    emailError: "Please enter an email address we can reply to.",
+    messageError: "Please write a message.",
   },
   details: {
     heading: "Get In Touch",

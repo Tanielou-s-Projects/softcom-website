@@ -107,6 +107,617 @@ export type BlockContent = Array<
     }
 >
 
+export type ContactPage = {
+  _id: string
+  _type: "contactPage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  hero?: {
+    badge?: string
+    title?: string
+    intro?: string
+  }
+  form?: {
+    heading?: string
+    nameLabel?: string
+    namePlaceholder?: string
+    emailLabel?: string
+    emailPlaceholder?: string
+    phoneLabel?: string
+    phonePlaceholder?: string
+    companyLabel?: string
+    companyPlaceholder?: string
+    messageLabel?: string
+    messagePlaceholder?: string
+    submit?: string
+    sending?: string
+    successHeading?: string
+    successText?: string
+    errorText?: string
+    nameError?: string
+    emailError?: string
+    messageError?: string
+  }
+  details?: {
+    heading?: string
+  }
+}
+
+export type CaseStudiesPage = {
+  _id: string
+  _type: "caseStudiesPage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  meta?: {
+    description?: string
+  }
+  hero?: {
+    badge?: string
+    title?: string
+    lead?: string
+    image?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+  }
+  filter?: {
+    allLabel?: string
+    sectors?: Array<string>
+  }
+  labels?: {
+    client?: string
+  }
+}
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop"
+  top?: number
+  bottom?: number
+  left?: number
+  right?: number
+}
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot"
+  x?: number
+  y?: number
+  height?: number
+  width?: number
+}
+
+export type InsightsPage = {
+  _id: string
+  _type: "insightsPage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  hero?: {
+    badge?: string
+    title?: string
+  }
+  intro?: {
+    text?: string
+  }
+  filter?: {
+    allLabel?: string
+    topics?: Array<string>
+  }
+  headings?: {
+    featured?: string
+    latest?: string
+  }
+}
+
+export type ProductsPage = {
+  _id: string
+  _type: "productsPage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  hero?: {
+    badge?: string
+    title?: string
+    lead?: string
+  }
+  softcom?: {
+    title?: string
+  }
+  partners?: {
+    title?: string
+    lead?: string
+  }
+  labels?: {
+    explore?: string
+    audience?: string
+  }
+}
+
+export type SolutionsPage = {
+  _id: string
+  _type: "solutionsPage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  meta?: {
+    description?: string
+  }
+  hero?: {
+    badge?: string
+    title?: string
+  }
+  intro?: {
+    badge?: string
+    paragraphs?: Array<string>
+  }
+  infrastructure?: {
+    title?: string
+    lead?: string
+    listHeading?: string
+    listIntro?: string
+    steps?: Array<{
+      label?: string
+      description?: string
+      _type: "stepsItem"
+      _key: string
+    }>
+    outro?: string
+    buildLabel?: string
+    buildTitle?: string
+    buildText?: string
+    implementLabel?: string
+    implementTitle?: string
+    implementText?: string
+    ctaLabel?: string
+    ctaHref?: string
+  }
+  intelligence?: {
+    title?: string
+    lead?: string
+    railLabel?: string
+    railIntro?: Array<string>
+    kinds?: Array<{
+      label?: string
+      description?: string
+      _type: "kindsItem"
+      _key: string
+    }>
+    shapedHeading?: string
+    shapedPoints?: Array<string>
+    shapedText?: string
+    ctaLabel?: string
+    ctaHref?: string
+  }
+  initiatives?: {
+    title?: string
+    lead?: string
+    entrustHeading?: string
+    entrustText?: string
+    entrustItems?: Array<string>
+    phasesBadge?: string
+    phasesHeading?: string
+    phases?: Array<{
+      step?: string
+      title?: string
+      description?: string
+      _type: "phasesItem"
+      _key: string
+    }>
+    closeText?: string
+    closeCtaLabel?: string
+    closeCtaHref?: string
+  }
+  close?: {
+    heading?: string
+    text?: string
+    ctaLabel?: string
+    ctaHref?: string
+  }
+}
+
+export type AlumniPage = {
+  _id: string
+  _type: "alumniPage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  hero?: {
+    badge?: string
+    title?: string
+    lead?: string
+    ctaLabel?: string
+    image?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    imageAlt?: string
+  }
+  intro?: {
+    paragraphs?: Array<string>
+  }
+  form?: {
+    heading?: string
+    intro?: string
+    nameLabel?: string
+    emailLabel?: string
+    yearsLabel?: string
+    yearsHint?: string
+    yearsPlaceholder?: string
+    roleLabel?: string
+    nowLabel?: string
+    hopesLabel?: string
+    optionalHint?: string
+    consent?: string
+    submit?: string
+  }
+}
+
+export type CareersPage = {
+  _id: string
+  _type: "careersPage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  hero?: {
+    badge?: string
+    title?: string
+    lead?: string
+    ctaLabel?: string
+    image?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+  }
+  intro?: {
+    paragraphs?: Array<string>
+  }
+  work?: {
+    heading?: string
+    paragraphs?: Array<string>
+  }
+  roles?: {
+    heading?: string
+    empty?: string
+    ctaLabel?: string
+    ctaHref?: string
+    applyLabel?: string
+  }
+}
+
+export type AboutPage = {
+  _id: string
+  _type: "aboutPage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  hero?: {
+    badge?: string
+    title?: string
+    lead?: string
+    images?: Array<{
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+      _key: string
+    }>
+  }
+  story?: {
+    heading?: string
+    paragraphs?: Array<string>
+  }
+  journey?: {
+    heading?: string
+    items?: Array<{
+      year?: string
+      headline?: string
+      description?: string
+      _type: "itemsItem"
+      _key: string
+    }>
+  }
+  values?: {
+    heading?: string
+    items?: Array<{
+      title?: string
+      description?: string
+      _type: "itemsItem"
+      _key: string
+    }>
+  }
+  leadership?: {
+    heading?: string
+  }
+  careers?: {
+    heading?: string
+    body?: string
+    primaryLabel?: string
+    primaryHref?: string
+    secondaryLabel?: string
+    secondaryHref?: string
+  }
+  news?: {
+    label?: string
+    heading?: string
+    lead?: string
+    items?: Array<{
+      title?: string
+      category?: string
+      date?: string
+      slug?: string
+      _type: "itemsItem"
+      _key: string
+    }>
+    viewAllLabel?: string
+    viewAllHref?: string
+  }
+}
+
+export type HomePage = {
+  _id: string
+  _type: "homePage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  hero?: {
+    headlineFirstLine?: string
+    headlineSecondLine?: string
+    progressFirstLine?: string
+    progressSecondLine?: string
+    progressImage?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    progressImageAlt?: string
+    portalImage?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    portalImageAlt?: string
+    scrollLabel?: string
+    statementBefore?: string
+    statementHighlight?: string
+    statementAfter?: string
+    primaryCta?: {
+      label?: string
+      href?: string
+    }
+    secondaryCta?: {
+      label?: string
+      href?: string
+    }
+    missionHeading?: string
+    missionText?: string
+    missionImage?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    missionImageAlt?: string
+    missionCta?: {
+      label?: string
+      href?: string
+    }
+  }
+  mission?: {
+    heading?: string
+    intro?: string
+    image?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    imageAlt?: string
+    body?: string
+    cta?: {
+      label?: string
+      href?: string
+    }
+  }
+  focusAreas?: {
+    heading?: string
+    intro?: string
+    linkPrefix?: string
+    areas?: Array<{
+      title?: string
+      paragraphs?: Array<string>
+      image?: {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: "image"
+      }
+      _type: "areasItem"
+      _key: string
+    }>
+  }
+  whoWeWorkWith?: {
+    heading?: string
+    intro?: string
+    sectors?: Array<{
+      title?: string
+      description?: string
+      tags?: Array<string>
+      silhouette?: {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: "image"
+      }
+      _type: "sectorsItem"
+      _key: string
+    }>
+  }
+  partners?: {
+    label?: string
+    logos?: Array<{
+      name?: string
+      logo?: {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: "image"
+      }
+      width?: number
+      height?: number
+      _type: "logosItem"
+      _key: string
+    }>
+  }
+  numbers?: {
+    items?: Array<{
+      value?: string
+      label?: string
+      _type: "itemsItem"
+      _key: string
+    }>
+    primaryCta?: {
+      label?: string
+      href?: string
+    }
+    secondaryCta?: {
+      label?: string
+      href?: string
+    }
+  }
+  approach?: {
+    heading?: string
+    lead?: string
+    body?: string
+    cta?: {
+      label?: string
+      href?: string
+    }
+  }
+  ourThinking?: {
+    heading?: string
+    intro?: string
+    cta?: {
+      label?: string
+      href?: string
+    }
+    readLabel?: string
+    perspectives?: Array<{
+      title?: string
+      summary?: string
+      href?: string
+      _type: "perspectivesItem"
+      _key: string
+    }>
+  }
+}
+
+export type Navigation = {
+  _id: string
+  _type: "navigation"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  header?: {
+    menuLabel?: string
+    items?: Array<{
+      label?: string
+      href?: string
+      links?: Array<{
+        label?: string
+        href?: string
+        _type: "linksItem"
+        _key: string
+      }>
+      _type: "itemsItem"
+      _key: string
+    }>
+  }
+  footer?: {
+    contactLabel?: string
+    columns?: Array<{
+      heading?: string
+      links?: Array<{
+        label?: string
+        href?: string
+        _type: "linksItem"
+        _key: string
+      }>
+      _type: "columnsItem"
+      _key: string
+    }>
+    copyright?: string
+    legal?: Array<{
+      label?: string
+      href?: string
+      _type: "legalItem"
+      _key: string
+    }>
+  }
+  closingCtas?: {
+    image?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    home?: {
+      heading?: string
+      lead?: string
+      buttonLabel?: string
+      buttonHref?: string
+    }
+    products?: {
+      heading?: string
+      lead?: string
+      buttonLabel?: string
+      buttonHref?: string
+    }
+    careers?: {
+      heading?: string
+      lead?: string
+      buttonLabel?: string
+      buttonHref?: string
+    }
+  }
+}
+
+export type ContactSubmission = {
+  _id: string
+  _type: "contactSubmission"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  status?: "new" | "read" | "replied" | "spam"
+  name?: string
+  email?: string
+  phone?: string
+  company?: string
+  message?: string
+  submittedAt?: string
+  emailed?: boolean
+}
+
 export type SiteSettings = {
   _id: string
   _type: "siteSettings"
@@ -115,6 +726,7 @@ export type SiteSettings = {
   _rev: string
   organisation?: string
   email?: string
+  notifyEmail?: string
   address?: Array<string>
   social?: Array<{
     label?: string
@@ -169,22 +781,6 @@ export type Product = {
       href?: string
     }
   }
-}
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop"
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
-}
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot"
-  x?: number
-  y?: number
-  height?: number
-  width?: number
 }
 
 export type Slug = {
@@ -419,10 +1015,21 @@ export type AllSanitySchemaTypes =
   | SanityImageAssetReference
   | ProductFigure
   | BlockContent
-  | SiteSettings
-  | Product
+  | ContactPage
+  | CaseStudiesPage
   | SanityImageCrop
   | SanityImageHotspot
+  | InsightsPage
+  | ProductsPage
+  | SolutionsPage
+  | AlumniPage
+  | CareersPage
+  | AboutPage
+  | HomePage
+  | Navigation
+  | ContactSubmission
+  | SiteSettings
+  | Product
   | Slug
   | Alumnus
   | Leader
@@ -445,6 +1052,12 @@ export type SETTINGS_QUERY_RESULT =
   | {
       organisation: null
       email: null
+      address: null
+      social: null
+    }
+  | {
+      organisation: null
+      email: string | null
       address: null
       social: null
     }
