@@ -7,16 +7,20 @@ import { HeroHeader } from "@/components/landing/hero-header"
 import { Bleed } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
+import { caseStudiesPage } from "@/components/case-studies/page-copy"
 import { getCaseStudies } from "@/sanity/lib/data"
+import { getPageContent } from "@/sanity/lib/page-content"
 
-export const metadata: Metadata = {
-  title: "Case Studies",
-  description:
-    "A portfolio of real engagements — spanning government, financial services, consumer goods, and agriculture — each delivering measurable, lasting outcomes.",
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getPageContent("caseStudiesPage", caseStudiesPage)
+  return { title: "Case Studies", description: copy.meta.description }
 }
 
 export default async function Page() {
-  const caseStudies = await getCaseStudies()
+  const [caseStudies, copy] = await Promise.all([
+    getCaseStudies(),
+    getPageContent("caseStudiesPage", caseStudiesPage),
+  ])
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
@@ -24,8 +28,8 @@ export default async function Page() {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <CaseStudiesHero />
-      <CaseStudyList caseStudies={caseStudies} />
+      <CaseStudiesHero copy={copy.hero} />
+      <CaseStudyList caseStudies={caseStudies} copy={copy} />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves

@@ -1,7 +1,8 @@
 import type { ReactNode } from "react"
 
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
-import { stats } from "@/components/landing/content"
+import { stats, type Stat } from "@/components/landing/content"
+import { withYears } from "@/components/landing/home-copy"
 import { bodyText, Container, headingText } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
 
@@ -14,10 +15,13 @@ import { cn } from "@/lib/utils"
  */
 function Stats({
   heading,
+  items = stats,
   className,
   children,
 }: {
   heading?: string
+  /** The numbers; `{years}` in a value becomes the years of operation. */
+  items?: Stat[]
   className?: string
   children?: ReactNode
 }) {
@@ -36,10 +40,10 @@ function Stats({
         amount={0.5}
         className="grid grid-cols-2 gap-x-6 gap-y-10 border-t border-border pt-10 sm:grid-cols-4 sm:gap-8"
       >
-        {stats.map((stat) => (
+        {items.map((stat) => (
           <RevealItem key={stat.label} className="flex flex-col gap-2">
             <dd className="font-heading text-5xl leading-[0.9] text-foreground lg:text-7xl">
-              {stat.value}
+              {withYears(stat.value)}
             </dd>
             <dt className={cn(bodyText, "text-muted-foreground")}>
               {stat.label}

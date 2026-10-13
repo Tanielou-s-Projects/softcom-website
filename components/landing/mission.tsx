@@ -23,6 +23,7 @@ import { useMediaQuery } from "@/hooks/use-media-query"
 import { useVariant } from "@/components/variants/variant-context"
 import { cn } from "@/lib/utils"
 import { ColorReveal } from "@/components/motion/color-reveal"
+import type { HomePage } from "@/components/landing/home-copy"
 
 const viewport = { once: true, amount: 0.3 } as const
 
@@ -46,7 +47,7 @@ const CLIP_LEFT = 25.43
  * On mobile and under reduced motion there is no pin — the panel flows and
  * the second phase plays as a one-time in-view sequence.
  */
-function MissionPanel() {
+function MissionPanel({ copy }: { copy: HomePage["mission"] }) {
   const trackRef = useRef<HTMLDivElement>(null)
   const reduceMotion = useReducedMotion()
   const isDesktop = useMediaQuery("(min-width: 1024px)")
@@ -122,7 +123,7 @@ function MissionPanel() {
                 "max-w-[600px] text-center leading-[1.1] text-foreground"
               )}
             >
-              We exist to create lasting impact.
+              {copy.heading}
             </h2>
             <p
               className={cn(
@@ -130,8 +131,7 @@ function MissionPanel() {
                 "max-w-[684px] text-center text-neutral-200"
               )}
             >
-              We believe stronger organisations are the foundation of a more
-              prosperous society.
+              {copy.intro}
             </p>
           </motion.div>
 
@@ -151,8 +151,8 @@ function MissionPanel() {
           >
             <ColorReveal>
               <Image
-                src="/images/lagos-dusk.jpg"
-                alt="Lagos at dusk across the lagoon, a fisherman in a canoe"
+                src={copy.image}
+                alt={copy.imageAlt}
                 fill
                 sizes="100vw"
                 className="object-cover object-bottom"
@@ -203,10 +203,7 @@ function MissionPanel() {
                 "max-w-[576px] text-center text-neutral-200"
               )}
             >
-              We build technology and capabilities that strengthen those
-              organisations, helping them operate better, make informed
-              decisions and create possibilities for the people who depend on
-              them.
+              {copy.body}
             </motion.p>
             <motion.div
               style={scrub ? { opacity: buttonOpacity, y: buttonY } : undefined}
@@ -214,7 +211,7 @@ function MissionPanel() {
               className="pointer-events-auto"
             >
               <Button asChild size="lg" className={primaryPill}>
-                <Link href="/about">Our story</Link>
+                <Link href={copy.cta.href}>{copy.cta.label}</Link>
               </Button>
             </motion.div>
           </div>
@@ -229,9 +226,9 @@ function MissionPanel() {
  * pinned scene (the blue drains away to reveal them), so after that variant
  * the standalone panel would only repeat it.
  */
-function Mission() {
+function Mission({ copy }: { copy: HomePage["mission"] }) {
   const hero = useVariant("hero")
-  return hero === "dissolve" ? null : <MissionPanel />
+  return hero === "dissolve" ? null : <MissionPanel copy={copy} />
 }
 
 export { Mission }

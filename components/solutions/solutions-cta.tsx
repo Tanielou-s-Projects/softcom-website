@@ -5,6 +5,7 @@ import { headingText, primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
 import { cn } from "@/lib/utils"
+import type { SolutionsPage } from "@/components/solutions/page-copy"
 
 /**
  * The Solutions page's closing call to action.
@@ -12,7 +13,7 @@ import { cn } from "@/lib/utils"
  * Where the landing page centres a single line over two buttons, this sets the
  * question against its answer and offers one way forward.
  */
-function SolutionsCta() {
+function SolutionsCta({ copy }: { copy: SolutionsPage["close"] }) {
   return (
     <CtaPanel accent="cyan">
       {/* Reveal stays on the inner content — the panel itself is sticky and must never gain a transform. */}
@@ -25,17 +26,15 @@ function SolutionsCta() {
                 "text-center text-foreground lg:max-w-[394px] lg:text-left"
               )}
             >
-              Not sure where to start?
+              {copy.heading}
             </h2>
             <p className="max-w-[339px] text-center text-lg leading-[1.4] text-foreground lg:text-left">
-              Most of our engagements begin with a conversation. Tell us what
-              you&rsquo;re trying to solve; we will tell you honestly whether we
-              can help.
+              {copy.text}
             </p>
           </div>
 
           <Button asChild size="lg" className={primaryPill}>
-            <Link href="/contact">Start a conversation</Link>
+            <Link href={copy.ctaHref}>{copy.ctaLabel}</Link>
           </Button>
         </div>
       </Reveal>

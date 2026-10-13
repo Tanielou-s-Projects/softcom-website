@@ -2,6 +2,7 @@ import Image from "next/image"
 
 import { cn } from "@/lib/utils"
 import { ColorReveal } from "@/components/motion/color-reveal"
+import { getNavigation } from "@/components/site/get-navigation"
 
 /**
  * The photographic plate every page closes on: the same darkened image, the
@@ -13,15 +14,19 @@ import { ColorReveal } from "@/components/motion/color-reveal"
  *
  * Scoped `dark` because the backdrop is a dark photograph in either theme.
  */
-function CtaPanel({
+async function CtaPanel({
   accent = "blue",
+  image,
   className,
   children,
 }: {
   accent?: "blue" | "cyan"
+  /** The photograph; defaults to the one set in Sanity's `navigation`. */
+  image?: string
   className?: string
   children: React.ReactNode
 }) {
+  const src = image ?? (await getNavigation()).closingCtas.image
   return (
     <div
       className={cn(
@@ -35,7 +40,7 @@ function CtaPanel({
     >
       <ColorReveal>
         <Image
-          src="/images/market-aerial.jpg"
+          src={src}
           alt=""
           fill
           sizes="100vw"

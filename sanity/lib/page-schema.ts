@@ -34,6 +34,23 @@ export const titleOf = (key: string) => {
 
 const isLong = (text: string) => text.length > 70 || text.includes("\n")
 
+const isFilled = (v: unknown) =>
+  Array.isArray(v) ? v.length > 0 : v !== "" && v !== undefined && v !== null
+
+/**
+ * One item's shape for a list of objects: every key any item has, each with
+ * the first filled-in value, so an empty list or blank field in the first
+ * item doesn't decide the form.
+ */
+function shapeOf(items: object[]): Record<string, unknown> {
+  const shape: Record<string, unknown> = {}
+  for (const item of items)
+    for (const [key, value] of Object.entries(item))
+      if (!(key in shape) || (!isFilled(shape[key]) && isFilled(value)))
+        shape[key] = value
+  return shape
+}
+
 function fieldOf(
   name: string,
   value: unknown,
@@ -78,7 +95,8 @@ function fieldOf(
         description:
           notes[path] ?? "Leave empty to keep the images the site uses now.",
       })
-    if (typeof first === "object" && first !== null)
+    if (typeof first === "object" && first !== null) {
+      const shape = shapeOf(value as object[])
       return defineField({
         ...base,
         type: "array",
@@ -87,12 +105,12 @@ function fieldOf(
             type: "object",
             name: `${name}Item`,
             title: titleOf(name),
-            fields: Object.entries(first).map(([key, v]) =>
+            fields: Object.entries(shape).map(([key, v]) =>
               fieldOf(key, v, undefined, notes, `${path}.${key}`)
             ),
             preview: {
               select: Object.fromEntries(
-                Object.entries(first)
+                Object.entries(shape)
                   .filter(([, v]) => typeof v === "string" && !IMAGE.test(v))
                   .slice(0, 2)
                   .map(([key], i) => [i === 0 ? "title" : "subtitle", key])
@@ -101,6 +119,7 @@ function fieldOf(
           }),
         ],
       })
+    }
     return defineField({
       ...base,
       type: "array",

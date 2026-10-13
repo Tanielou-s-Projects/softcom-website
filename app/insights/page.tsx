@@ -3,20 +3,24 @@ import type { Metadata } from "next"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { Bleed } from "@/components/landing/section"
-import { insightsIntro } from "@/components/insights/content"
+import { insightsPage } from "@/components/insights/page-copy"
 import { InsightList } from "@/components/insights/insight-list"
 import { InsightsHero } from "@/components/insights/insights-hero"
 import { SiteFooter } from "@/components/site/site-footer"
 import { getInsights } from "@/sanity/lib/data"
+import { getPageContent } from "@/sanity/lib/page-content"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
 
-export const metadata: Metadata = {
-  title: "Insights",
-  description: insightsIntro,
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getPageContent("insightsPage", insightsPage)
+  return { title: "Insights", description: copy.intro.text }
 }
 
 export default async function Page() {
-  const insights = await getInsights()
+  const [insights, copy] = await Promise.all([
+    getInsights(),
+    getPageContent("insightsPage", insightsPage),
+  ])
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
@@ -24,8 +28,8 @@ export default async function Page() {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <InsightsHero />
-      <InsightList insights={insights} />
+      <InsightsHero copy={copy.hero} />
+      <InsightList insights={insights} copy={copy} />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves

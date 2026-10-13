@@ -9,14 +9,12 @@ import {
   cardHeadingText,
   Container,
 } from "@/components/landing/section"
-import {
-  sectors,
-  type CaseStudy,
-  type Sector,
-} from "@/components/case-studies/content"
+import type { CaseStudy } from "@/components/case-studies/content"
+import type { CaseStudiesPage } from "@/components/case-studies/page-copy"
 import { Reveal } from "@/components/motion/reveal"
 
-type Filter = Sector | "All"
+/** A sector name, or `null` for every sector. */
+type Filter = string | null
 
 /**
  * One engagement, bottom-weighted on a full-height plate.
@@ -28,10 +26,12 @@ function CaseStudyPanel({
   study,
   position,
   total,
+  clientLabel,
 }: {
   study: CaseStudy
   position: number
   total: number
+  clientLabel: string
 }) {
   const pad = (n: number) => String(n).padStart(2, "0")
 
@@ -77,7 +77,9 @@ function CaseStudyPanel({
           </div>
 
           <div className="flex w-full flex-col gap-3 overflow-clip rounded-3xl bg-background p-6">
-            <p className={cn(bodyText, "text-muted-foreground")}>Client</p>
+            <p className={cn(bodyText, "text-muted-foreground")}>
+              {clientLabel}
+            </p>
             <p className="font-heading text-lg leading-[1.1] text-foreground">
               {study.client}
             </p>
@@ -95,8 +97,14 @@ function CaseStudyPanel({
  * state, and a row of pills that does nothing when clicked is worse than none.
  * On desktop it is sticky, so it follows the reader down the list.
  */
-function CaseStudyList({ caseStudies }: { caseStudies: CaseStudy[] }) {
-  const [filter, setFilter] = React.useState<Filter>("All")
+function CaseStudyList({
+  caseStudies,
+  copy,
+}: {
+  caseStudies: CaseStudy[]
+  copy: CaseStudiesPage
+}) {
+  const [filter, setFilter] = React.useState<Filter>(null)
   const listRef = React.useRef<HTMLDivElement>(null)
 
   /*
@@ -118,11 +126,14 @@ function CaseStudyList({ caseStudies }: { caseStudies: CaseStudy[] }) {
   }
 
   const filtered =
-    filter === "All"
+    filter === null
       ? caseStudies
       : caseStudies.filter((study) => study.sector === filter)
 
-  const filters: Filter[] = ["All", ...sectors]
+  const filters: { value: Filter; label: string }[] = [
+    { value: null, label: copy.filter.allLabel },
+    ...copy.filter.sectors.map((sector) => ({ value: sector, label: sector })),
+  ]
 
   return (
     <Container className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-0">
@@ -142,19 +153,19 @@ function CaseStudyList({ caseStudies }: { caseStudies: CaseStudy[] }) {
            * be buttons to be operable by keyboard.
            */}
           {filters.map((option) => {
-            const active = option === filter
+            const active = option.value === filter
             return (
               <button
-                key={option}
+                key={option.label}
                 type="button"
                 aria-pressed={active}
-                onClick={() => choose(option)}
+                onClick={() => choose(option.value)}
                 className={cn(
                   badgeVariants({ variant: active ? "inverse" : "default" }),
                   "cursor-pointer transition-colors"
                 )}
               >
-                {option}
+                {option.label}
               </button>
             )
           })}
@@ -168,6 +179,7 @@ function CaseStudyList({ caseStudies }: { caseStudies: CaseStudy[] }) {
               study={study}
               position={index + 1}
               total={filtered.length}
+              clientLabel={copy.labels.client}
             />
           </Reveal>
         ))}

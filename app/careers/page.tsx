@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import { careers } from "@/components/about/content"
+import { careersPage } from "@/components/about/page-copy"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
@@ -18,15 +18,19 @@ import { HeroHeader } from "@/components/landing/hero-header"
 import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
 import { SiteFooter } from "@/components/site/site-footer"
 import { getRoles } from "@/sanity/lib/data"
+import { getPageContent } from "@/sanity/lib/page-content"
 
-export const metadata: Metadata = {
-  title: "Careers",
-  description: careers.paragraphs[0],
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getPageContent("careersPage", careersPage)
+  return { title: "Careers", description: copy.hero.lead }
 }
 
 /** Careers — the invitation, the work, and the open roles from Sanity. */
 export default async function Page() {
-  const roles = await getRoles()
+  const [roles, copy] = await Promise.all([
+    getRoles(),
+    getPageContent("careersPage", careersPage),
+  ])
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-background">
@@ -34,17 +38,15 @@ export default async function Page() {
       <HeroHeader />
 
       <FullHero
-        background={
-          <HeroPhoto src="/images/team-code-review.jpg" position="50% 35%" />
-        }
-        badge={careers.eyebrow}
-        title={careers.title}
-        lead={careers.paragraphs[0]}
+        background={<HeroPhoto src={copy.hero.image} position="50% 35%" />}
+        badge={copy.hero.badge}
+        title={copy.hero.title}
+        lead={copy.hero.lead}
         rail={
           <HeroRail>
             <div>
               <Button asChild size="lg" className={primaryPill}>
-                <Link href="#roles">See open roles</Link>
+                <Link href="#roles">{copy.hero.ctaLabel}</Link>
               </Button>
             </div>
           </HeroRail>
@@ -53,7 +55,7 @@ export default async function Page() {
 
       {/* The rest of the invitation, out of the hero so it stays one line. */}
       <Container className="flex flex-col gap-4 py-12">
-        {careers.paragraphs.slice(1).map((paragraph) => (
+        {copy.intro.paragraphs.map((paragraph) => (
           <Reveal key={paragraph}>
             <p className={cn(leadText, "max-w-[75ch] text-muted-foreground")}>
               {paragraph}
@@ -65,10 +67,10 @@ export default async function Page() {
       <Container className="py-12">
         <Reveal className="flex flex-col gap-6 border-t border-border pt-12 lg:flex-row lg:gap-16">
           <h2 className={cn(headingText, "text-foreground lg:w-[40%]")}>
-            {careers.work.heading}
+            {copy.work.heading}
           </h2>
           <div className="flex min-w-0 flex-1 flex-col gap-4">
-            {careers.work.paragraphs.map((paragraph) => (
+            {copy.work.paragraphs.map((paragraph) => (
               <p key={paragraph} className={cn(bodyText, "text-foreground")}>
                 {paragraph}
               </p>
@@ -80,7 +82,7 @@ export default async function Page() {
       <Container id="roles" className="scroll-mt-24 py-12">
         <Reveal className="flex flex-col items-start gap-6 rounded-3xl bg-card p-8 lg:p-[47px]">
           <h2 className={cn(headingText, "text-foreground")}>
-            {careers.roles.heading}
+            {copy.roles.heading}
           </h2>
           {roles.length ? (
             <ul className="flex w-full flex-col">
@@ -107,7 +109,7 @@ export default async function Page() {
                           ? { target: "_blank", rel: "noreferrer" }
                           : {})}
                       >
-                        Apply
+                        {copy.roles.applyLabel}
                       </a>
                     </Button>
                   ) : null}
@@ -117,12 +119,10 @@ export default async function Page() {
           ) : (
             <>
               <p className={cn(bodyText, "max-w-[60ch] text-muted-foreground")}>
-                {careers.roles.empty}
+                {copy.roles.empty}
               </p>
               <Button asChild size="lg" className={primaryPill}>
-                <Link href={careers.roles.cta.href}>
-                  {careers.roles.cta.label}
-                </Link>
+                <Link href={copy.roles.ctaHref}>{copy.roles.ctaLabel}</Link>
               </Button>
             </>
           )}

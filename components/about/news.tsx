@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { news } from "@/components/about/content"
+import type { AboutPage } from "@/components/about/page-copy"
 import { Container, headingText } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
@@ -10,22 +10,24 @@ import { cn } from "@/lib/utils"
  * heading, then hairline-separated rows (title · category · date). The avatar is
  * a placeholder until authors are wired to Sanity.
  */
-function News() {
+function News({ copy }: { copy: AboutPage["news"] }) {
   return (
     <Container className="flex flex-col gap-10 lg:flex-row lg:gap-16">
       <div className="flex shrink-0 items-center gap-2 lg:w-40">
         <span aria-hidden className="size-2.5 rounded-full bg-brand-accent" />
-        <span className="text-sm font-medium text-muted-foreground">News</span>
+        <span className="text-sm font-medium text-muted-foreground">
+          {copy.label}
+        </span>
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-10 lg:gap-12">
         <Reveal className="flex flex-col gap-3">
-          <h2 className={cn(headingText, "text-foreground")}>{news.heading}</h2>
-          <p className="text-lg text-muted-foreground">{news.lead}</p>
+          <h2 className={cn(headingText, "text-foreground")}>{copy.heading}</h2>
+          <p className="text-lg text-muted-foreground">{copy.lead}</p>
         </Reveal>
 
         <RevealStagger as="ul" className="flex flex-col border-t border-border">
-          {news.items.map((insight) => (
+          {copy.items.map((insight) => (
             <RevealItem
               as="li"
               key={insight.slug}
@@ -56,10 +58,10 @@ function News() {
         </RevealStagger>
 
         <Link
-          href={news.viewAll.href}
+          href={copy.viewAllHref}
           className="self-start text-sm font-medium text-foreground underline underline-offset-4"
         >
-          {news.viewAll.label}
+          {copy.viewAllLabel}
         </Link>
       </div>
     </Container>

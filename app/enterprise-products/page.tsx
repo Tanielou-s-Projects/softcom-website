@@ -3,20 +3,24 @@ import type { Metadata } from "next"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { Bleed } from "@/components/landing/section"
-import { productsIntro } from "@/components/products/content"
+import { productsPage } from "@/components/products/page-copy"
 import { ProductGrid } from "@/components/products/product-grid"
 import { ProductsHero } from "@/components/products/products-hero"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { getProducts } from "@/sanity/lib/data"
+import { getPageContent } from "@/sanity/lib/page-content"
 
-export const metadata: Metadata = {
-  title: productsIntro.title,
-  description: productsIntro.lead,
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getPageContent("productsPage", productsPage)
+  return { title: copy.hero.title, description: copy.hero.lead }
 }
 
 export default async function Page() {
-  const all = await getProducts()
+  const [all, copy] = await Promise.all([
+    getProducts(),
+    getPageContent("productsPage", productsPage),
+  ])
   const products = all.filter((product) => product.kind === "softcom")
   const partners = all.filter((product) => product.kind === "partner")
 
@@ -26,8 +30,12 @@ export default async function Page() {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <ProductsHero products={all} />
-      <ProductGrid products={products} partnerPlatforms={partners} />
+      <ProductsHero products={all} copy={copy.hero} />
+      <ProductGrid
+        products={products}
+        partnerPlatforms={partners}
+        copy={copy}
+      />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves

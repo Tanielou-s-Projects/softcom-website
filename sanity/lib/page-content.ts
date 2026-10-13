@@ -30,6 +30,19 @@ const isImage = (value: unknown): value is SanityImage =>
   value !== null &&
   typeof (value as SanityImage).asset?._ref === "string"
 
+/** A document value as plain data: `_key`/`_type` dropped, images as URLs. */
+function plainOf(value: unknown): unknown {
+  if (isImage(value)) return urlFor(value).auto("format").url()
+  if (Array.isArray(value)) return value.map(plainOf)
+  if (typeof value === "object" && value !== null)
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([key]) => key !== "_key" && key !== "_type")
+        .map(([key, v]) => [key, plainOf(v)])
+    )
+  return value
+}
+
 /** A default's shape with its text emptied. */
 function blankOf(value: unknown): unknown {
   if (typeof value === "string") return ""
@@ -56,6 +69,9 @@ export function merge<T>(defaults: T, doc: unknown): T {
 
   if (Array.isArray(defaults)) {
     if (!Array.isArray(doc) || doc.length === 0) return defaults
+    // No default to take a shape from (an empty list in code): use the
+    // editor's items as written, minus Sanity's keys, images as URLs.
+    if (defaults.length === 0) return doc.map(plainOf) as T
     // Items match their default by position; an item an editor adds beyond
     // the defaults takes the first default's shape with every field blank,
     // so it never borrows another item's copy.

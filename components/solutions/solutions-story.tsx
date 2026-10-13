@@ -22,13 +22,8 @@ import {
 import { PinnedStory } from "@/components/solutions/sections/pinned-story"
 import { ScrollRail } from "@/components/solutions/sections/scroll-rail"
 import { Timeline } from "@/components/solutions/sections/timeline"
-import {
-  deliveryClose,
-  deliveryPhases,
-  entrust,
-  solutions,
-  solutionsIntro,
-} from "@/components/solutions/content"
+import { solutions } from "@/components/solutions/content"
+import type { SolutionsPage } from "@/components/solutions/page-copy"
 
 /*
  * The Solutions body as a landing page: each area opens on its own number
@@ -37,7 +32,10 @@ import {
  * and a drawn timeline for delivery.
  */
 
-const [infrastructure, intelligence, initiatives] = solutions
+/** The areas' anchors, which the hero rail links to; fixed, not copy. */
+const [infrastructureId, intelligenceId, initiativesId] = solutions.map(
+  (solution) => solution.id
+)
 
 /** An area's opening: a large index, the title and its one-line claim. */
 function Opener({
@@ -72,28 +70,28 @@ function Opener({
 
 const STEP_IDS = ["identity", "records", "services"]
 
-function Infrastructure() {
-  const list = infrastructure.list!
-  const [built, global] = infrastructure.features
+function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
   return (
     <section className="flex flex-col gap-24 lg:gap-40">
       <Opener
-        id={infrastructure.id}
+        id={infrastructureId}
         number="01"
-        title={infrastructure.title}
-        lead={infrastructure.lead}
+        title={copy.title}
+        lead={copy.lead}
       />
 
       <Container className="flex flex-col gap-6">
         <Reveal className="flex max-w-[60ch] flex-col gap-4">
           <h3 className="font-heading text-2xl leading-[1.15] text-foreground lg:text-[2rem]">
-            {list.heading}
+            {copy.listHeading}
           </h3>
-          <p className={cn(bodyText, "text-muted-foreground")}>{list.intro}</p>
+          <p className={cn(bodyText, "text-muted-foreground")}>
+            {copy.listIntro}
+          </p>
         </Reveal>
         <PinnedStory
-          steps={list.items.map((item, index) => ({
-            id: STEP_IDS[index],
+          steps={copy.steps.map((item, index) => ({
+            id: STEP_IDS[index] ?? `step-${index}`,
             label: item.label,
             title: item.label,
             body: item.description,
@@ -109,7 +107,7 @@ function Infrastructure() {
       <Container>
         <Reveal>
           <p className="mx-auto max-w-[30ch] text-center font-heading text-2xl leading-[1.2] text-foreground lg:text-[2.25rem]">
-            {list.outro}
+            {copy.outro}
           </p>
         </Reveal>
       </Container>
@@ -120,14 +118,14 @@ function Infrastructure() {
           <RevealItem className="h-full">
             <div className="dark flex h-full min-h-[360px] flex-col justify-between gap-10 rounded-3xl bg-brand-blue p-8 lg:p-12">
               <span className="font-mono text-xs tracking-[0.12em] text-foreground/70 uppercase">
-                Build
+                {copy.buildLabel}
               </span>
               <div className="flex flex-col gap-4">
                 <h3 className={cn(headingText, "text-foreground")}>
-                  {built.label}
+                  {copy.buildTitle}
                 </h3>
                 <p className={cn(bodyText, "max-w-[48ch] text-foreground/85")}>
-                  {built.description}
+                  {copy.buildText}
                 </p>
               </div>
             </div>
@@ -135,27 +133,25 @@ function Infrastructure() {
           <RevealItem className="h-full">
             <div className="flex h-full min-h-[360px] flex-col justify-between gap-10 rounded-3xl bg-card p-8 lg:p-12">
               <span className="font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
-                Implement
+                {copy.implementLabel}
               </span>
               <div className="flex flex-col gap-4">
                 <h3 className={cn(headingText, "text-foreground")}>
-                  {global.label}
+                  {copy.implementTitle}
                 </h3>
                 <p
                   className={cn(bodyText, "max-w-[48ch] text-muted-foreground")}
                 >
-                  {global.description}
+                  {copy.implementText}
                 </p>
               </div>
             </div>
           </RevealItem>
         </RevealStagger>
-        {infrastructure.cta ? (
+        {copy.ctaLabel ? (
           <Reveal className="flex justify-center pt-6">
             <Button asChild size="lg" className={primaryPill}>
-              <Link href={infrastructure.cta.href}>
-                {infrastructure.cta.label}
-              </Link>
+              <Link href={copy.ctaHref}>{copy.ctaLabel}</Link>
             </Button>
           </Reveal>
         ) : null}
@@ -166,40 +162,32 @@ function Infrastructure() {
 
 /* ── 02 · Applied Intelligence ── */
 
-const VIGNETTE_OF: Record<string, VignetteId> = {
-  "Audit Intelligence": "audit",
-  "Financial Intelligence": "financial",
-  "Market Intelligence": "market",
-  "Regulatory Intelligence": "regulatory",
-  "Societal Intelligence": "societal",
-}
-
-/** "Each system reflects the mandate of its users, the evidence they need and the decisions they must make." */
-const SHAPED_BY = [
-  "The mandate of its users",
-  "The evidence they need",
-  "The decisions they must make",
+/** The rail's drawings, in card order: the first card sits over audit. */
+const VIGNETTES: VignetteId[] = [
+  "audit",
+  "financial",
+  "market",
+  "regulatory",
+  "societal",
 ]
 
-function Intelligence() {
-  const kinds = intelligence.features.filter((f) => VIGNETTE_OF[f.label])
-  const shaped = intelligence.features.find((f) => !VIGNETTE_OF[f.label])
+function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
   return (
     <section className="flex flex-col gap-10 lg:gap-0">
       <Opener
-        id={intelligence.id}
+        id={intelligenceId}
         number="02"
-        title={intelligence.title}
-        lead={intelligence.lead}
+        title={copy.title}
+        lead={copy.lead}
       />
 
       <ScrollRail
         intro={
           <div className="flex w-[82vw] shrink-0 snap-start flex-col justify-end gap-6 rounded-3xl p-2 sm:w-[420px] lg:w-[460px] lg:p-8">
             <span className="font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
-              Five kinds of intelligence →
+              {copy.railLabel}
             </span>
-            {intelligence.description.map((paragraph) => (
+            {copy.railIntro.map((paragraph) => (
               <p
                 key={paragraph}
                 className="text-xl leading-[1.4] text-foreground lg:text-2xl"
@@ -210,13 +198,16 @@ function Intelligence() {
           </div>
         }
       >
-        {kinds.map((kind, index) => (
+        {copy.kinds.map((kind, index) => (
           <article
             key={kind.label}
             className="flex w-[82vw] shrink-0 snap-start flex-col overflow-clip rounded-3xl bg-card sm:w-[420px] lg:w-[440px]"
           >
             <div className="line-panel px-6 pt-6">
-              <VignetteFigure id={VIGNETTE_OF[kind.label]} label={kind.label} />
+              <VignetteFigure
+                id={VIGNETTES[index % VIGNETTES.length]}
+                label={kind.label}
+              />
             </div>
             <div className="flex flex-1 flex-col gap-3 p-6 lg:p-8">
               <span className="font-mono text-xs text-muted-foreground tabular-nums">
@@ -233,12 +224,12 @@ function Intelligence() {
         ))}
       </ScrollRail>
 
-      {shaped ? (
+      {copy.shapedHeading ? (
         <Container className="pt-24 lg:pt-40">
           <div className="grid gap-10 border-t border-border pt-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
             <Reveal>
               <h3 className={cn(headingText, "text-foreground")}>
-                {shaped.label}
+                {copy.shapedHeading}
               </h3>
             </Reveal>
             <div className="flex flex-col gap-10">
@@ -247,7 +238,7 @@ function Intelligence() {
                 amount={0.2}
                 className="grid border-y border-border sm:grid-cols-3"
               >
-                {SHAPED_BY.map((item, index) => (
+                {copy.shapedPoints.map((item, index) => (
                   <RevealItem key={item}>
                     <div className="flex h-full flex-col gap-6 border-border py-6 sm:border-l sm:px-6 sm:first:border-l-0 sm:first:pl-0">
                       <span className="font-mono text-xs text-muted-foreground tabular-nums">
@@ -264,13 +255,11 @@ function Intelligence() {
                 <p
                   className={cn(bodyText, "max-w-[56ch] text-muted-foreground")}
                 >
-                  {shaped.description.split(". ").slice(1).join(". ")}
+                  {copy.shapedText}
                 </p>
-                {intelligence.cta ? (
+                {copy.ctaLabel ? (
                   <Button asChild size="lg" className={primaryPill}>
-                    <Link href={intelligence.cta.href}>
-                      {intelligence.cta.label}
-                    </Link>
+                    <Link href={copy.ctaHref}>{copy.ctaLabel}</Link>
                   </Button>
                 ) : null}
               </Reveal>
@@ -284,14 +273,14 @@ function Intelligence() {
 
 /* ── 03 · Powering Initiatives ── */
 
-function Initiatives() {
+function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
   return (
     <section className="flex flex-col gap-24 lg:gap-40">
       <Opener
-        id={initiatives.id}
+        id={initiativesId}
         number="03"
-        title={initiatives.title}
-        lead={initiatives.lead}
+        title={copy.title}
+        lead={copy.lead}
       />
 
       <Container>
@@ -304,15 +293,15 @@ function Initiatives() {
         <div>
           <Reveal className="flex flex-col gap-6 lg:sticky lg:top-32">
             <h3 className="font-heading text-2xl leading-[1.15] text-foreground lg:text-[2rem]">
-              {entrust.heading}
+              {copy.entrustHeading}
             </h3>
             <p className={cn(bodyText, "text-muted-foreground")}>
-              {entrust.outro}
+              {copy.entrustText}
             </p>
           </Reveal>
         </div>
         <RevealStagger amount={0.15} className="flex flex-col">
-          {entrust.items.map((item, index) => (
+          {copy.entrustItems.map((item, index) => (
             <RevealItem key={item}>
               <div className="group flex items-baseline gap-6 border-b border-border py-5 lg:py-6">
                 <span className="w-8 font-mono text-sm text-muted-foreground tabular-nums">
@@ -331,20 +320,18 @@ function Initiatives() {
         <Reveal amount={0.1}>
           <div className="dark flex flex-col gap-12 overflow-clip rounded-3xl bg-brand-blue p-8 lg:gap-16 lg:p-14">
             <header className="flex flex-col items-start gap-3">
-              <Badge variant="inverse">Phases</Badge>
+              <Badge variant="inverse">{copy.phasesBadge}</Badge>
               <h2 className={cn(headingText, "text-foreground")}>
-                How we deliver
+                {copy.phasesHeading}
               </h2>
             </header>
-            <Timeline phases={deliveryPhases} />
+            <Timeline phases={copy.phases} />
             <div className="flex flex-col items-start gap-6 border-t border-foreground/20 pt-8 lg:flex-row lg:items-center lg:justify-between">
               <p className="max-w-[40ch] font-heading text-2xl leading-[1.25] text-foreground">
-                {deliveryClose.text}
+                {copy.closeText}
               </p>
               <Button asChild size="lg" className={primaryPill}>
-                <Link href={deliveryClose.cta.href}>
-                  {deliveryClose.cta.label}
-                </Link>
+                <Link href={copy.closeCtaHref}>{copy.closeCtaLabel}</Link>
               </Button>
             </div>
           </div>
@@ -355,20 +342,20 @@ function Initiatives() {
 }
 
 /** The body of the Solutions page, after the hero. */
-function SolutionsStory() {
+function SolutionsStory({ copy }: { copy: SolutionsPage }) {
   return (
     <div className="flex flex-col gap-48 lg:gap-80">
       <Container className="flex flex-col items-start gap-8 pt-16 lg:pt-24">
-        <Badge variant="brand">Our Solutions</Badge>
+        <Badge variant="brand">{copy.intro.badge}</Badge>
         <ScrollWords
-          paragraphs={solutionsIntro}
+          paragraphs={copy.intro.paragraphs}
           className="max-w-[1040px]"
           paragraphClassName="font-heading text-3xl leading-[1.15] tracking-tight text-foreground lg:text-5xl"
         />
       </Container>
-      <Infrastructure />
-      <Intelligence />
-      <Initiatives />
+      <Infrastructure copy={copy.infrastructure} />
+      <Intelligence copy={copy.intelligence} />
+      <Initiatives copy={copy.initiatives} />
     </div>
   )
 }

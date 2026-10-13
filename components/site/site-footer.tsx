@@ -1,10 +1,7 @@
 import Link from "next/link"
 
-import {
-  footerLegal,
-  footerNav,
-  footerSocial,
-} from "@/components/landing/content"
+import { footerSocial } from "@/components/landing/content"
+import { getNavigation } from "@/components/site/get-navigation"
 import { getProducts, getSettings } from "@/sanity/lib/data"
 import { DitherWordmark } from "@/components/site/dither-wordmark"
 import { ThemeSwitcher } from "@/components/site/theme-switcher"
@@ -23,19 +20,20 @@ import { ThemeSwitcher } from "@/components/site/theme-switcher"
  * even while the page is light.
  */
 async function SiteFooter() {
-  const [contactDetails, products] = await Promise.all([
+  const [contactDetails, products, { footer }] = await Promise.all([
     getSettings(),
     getProducts(),
+    getNavigation(),
   ])
   const year = new Date().getFullYear()
   const social = contactDetails.social.length
     ? contactDetails.social
     : footerSocial
-  const bottomLinks = [...footerLegal, ...social].filter(
+  const bottomLinks = [...footer.legal, ...social].filter(
     (link): link is { label: string; href: string } => Boolean(link.href)
   )
   // The Products column lists Softcom's own products, from Sanity.
-  const nav = footerNav.map((group) =>
+  const nav = footer.columns.map((group) =>
     group.heading === "Products" && products.length
       ? {
           ...group,
@@ -56,7 +54,7 @@ async function SiteFooter() {
       <div className="flex flex-col items-start justify-between gap-12 lg:flex-row">
         <address className="flex flex-col gap-6 not-italic lg:w-[30%]">
           <p className="text-sm leading-6 font-medium text-muted-foreground">
-            Get in touch
+            {footer.contactLabel}
           </p>
           <div className="flex flex-col gap-1 font-heading text-2xl leading-[1.15] text-foreground lg:text-[1.75rem]">
             <a
@@ -115,7 +113,9 @@ async function SiteFooter() {
       <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-border pt-6 text-sm leading-6 font-medium text-neutral-400 lg:absolute lg:inset-x-[3.2%] lg:bottom-[24px] lg:mt-0 lg:border-t-0 lg:pt-0">
         {/* neutral-400 on neutral-900 clears AA; the design's neutral-700 was ~2:1. */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <p>© {year} Softcom Limited. All rights reserved.</p>
+          <p>
+            © {year} {footer.copyright}
+          </p>
           {bottomLinks.map((link) => (
             <a
               key={link.label}

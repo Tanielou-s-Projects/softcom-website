@@ -12,22 +12,26 @@ import {
   primaryPill,
 } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
-import { partnersIntro, type Product } from "@/components/products/content"
+import type { Product } from "@/components/products/content"
+import type { ProductsPage } from "@/components/products/page-copy"
 import { DitherPanel } from "@/components/motion/dither-panel"
 import { SectionMark } from "@/components/products/section-mark"
 
 /** The way into a product's own page. */
 function ExploreLink({
   product,
+  explore,
   className,
 }: {
   product: Product
+  /** The word before the name: "Explore". */
+  explore: string
   className?: string
 }) {
   return (
     <Button asChild size="lg" className={cn(primaryPill, className)}>
       <Link href={`/enterprise-products/${product.id}`}>
-        Explore {product.name}
+        {explore} {product.name}
       </Link>
     </Button>
   )
@@ -41,7 +45,13 @@ function ExploreLink({
  * resolving as the card scrolls in — the same weave as the hero and the page
  * transition, with a per-product seed so no two fronts match.
  */
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({
+  product,
+  explore,
+}: {
+  product: Product
+  explore: string
+}) {
   return (
     <article
       id={product.id}
@@ -82,6 +92,7 @@ function ProductCard({ product }: { product: Product }) {
 
           <ExploreLink
             product={product}
+            explore={explore}
             className="absolute right-3 bottom-3"
           />
         </div>
@@ -90,7 +101,7 @@ function ProductCard({ product }: { product: Product }) {
           <p className={cn(bodyText, "text-foreground lg:max-w-[600px]")}>
             {product.description}
           </p>
-          <ExploreLink product={product} />
+          <ExploreLink product={product} explore={explore} />
         </div>
       )}
     </article>
@@ -102,11 +113,13 @@ function ProductSection({
   lead,
   accent,
   items,
+  explore,
 }: {
   title: string
   lead?: string
   accent: "cyan" | "blue"
   items: Product[]
+  explore: string
 }) {
   return (
     <section className="flex flex-col gap-16 lg:gap-[68px]">
@@ -128,7 +141,7 @@ function ProductSection({
         <Container className="grid gap-6 lg:grid-cols-2">
           {items.map((product) => (
             <RevealItem key={product.id}>
-              <ProductCard product={product} />
+              <ProductCard product={product} explore={explore} />
             </RevealItem>
           ))}
         </Container>
@@ -141,18 +154,26 @@ function ProductSection({
 function ProductGrid({
   products,
   partnerPlatforms,
+  copy,
 }: {
   products: Product[]
   partnerPlatforms: Product[]
+  copy: ProductsPage
 }) {
   return (
     <>
-      <ProductSection title="Softcom Products" accent="cyan" items={products} />
       <ProductSection
-        title={partnersIntro.title}
-        lead={partnersIntro.lead}
+        title={copy.softcom.title}
+        accent="cyan"
+        items={products}
+        explore={copy.labels.explore}
+      />
+      <ProductSection
+        title={copy.partners.title}
+        lead={copy.partners.lead}
         accent="blue"
         items={partnerPlatforms}
+        explore={copy.labels.explore}
       />
     </>
   )

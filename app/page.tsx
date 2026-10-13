@@ -13,8 +13,12 @@ import { Reveal } from "@/components/motion/reveal"
 import { Button } from "@/components/ui/button"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
+import { homePage } from "@/components/landing/home-copy"
+import { getPageContent } from "@/sanity/lib/page-content"
 
-export default function Page() {
+export default async function Page() {
+  const copy = await getPageContent("homePage", homePage)
+
   return (
     /*
      * One spacing rhythm: the gap is the only space between sections — the
@@ -24,26 +28,30 @@ export default function Page() {
     <div className="relative flex min-h-svh w-full flex-col gap-36 lg:gap-64">
       <BlueprintGrid />
 
-      <Hero />
-      <Mission />
-      <Capabilities />
-      <Sectors />
+      <Hero copy={copy.hero} />
+      <Mission copy={copy.mission} />
+      <Capabilities copy={copy.focusAreas} />
+      <Sectors copy={copy.whoWeWorkWith} partners={copy.partners} />
       {/*
        * No heading: the 19-year tile already says it. The sectors' call to
        * action moved here, so it lands after the proof rather than the pitch.
        */}
-      <Stats>
+      <Stats items={copy.numbers.items}>
         <Reveal className="flex flex-wrap items-center gap-2">
           <Button asChild size="lg" className={primaryPill}>
-            <Link href="/contact">Explore working with Softcom</Link>
+            <Link href={copy.numbers.primaryCta.href}>
+              {copy.numbers.primaryCta.label}
+            </Link>
           </Button>
           <Button asChild size="lg" variant="ghost" className={ghostPill}>
-            <Link href="/case-studies">View case studies</Link>
+            <Link href={copy.numbers.secondaryCta.href}>
+              {copy.numbers.secondaryCta.label}
+            </Link>
           </Button>
         </Reveal>
       </Stats>
-      <Approach />
-      <Insights />
+      <Approach copy={copy.approach} />
+      <Insights copy={copy.ourThinking} />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves

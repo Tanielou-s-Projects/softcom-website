@@ -1,6 +1,7 @@
 import type * as React from "react"
 
-import { partners, type Partner } from "@/components/landing/content"
+import type { Partner } from "@/components/landing/content"
+import type { HomePage } from "@/components/landing/home-copy"
 import { cn } from "@/lib/utils"
 
 /** Area every logo is given, so wide and square marks weigh the same. */
@@ -83,7 +84,7 @@ function Row({
             className={cn(
               "flex shrink-0 items-center gap-16 pr-16 lg:gap-24 lg:pr-24",
               copy === 1 && "motion-reduce:hidden",
-              "motion-reduce:w-full motion-reduce:shrink motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-x-10 motion-reduce:gap-y-8 motion-reduce:lg:gap-x-14 motion-reduce:pr-0"
+              "motion-reduce:w-full motion-reduce:shrink motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-x-10 motion-reduce:gap-y-8 motion-reduce:pr-0 motion-reduce:lg:gap-x-14"
             )}
           >
             {run.map((partner, index) => (
@@ -110,11 +111,18 @@ function Row({
  * opposite directions at slightly different speeds, each pausing under the
  * pointer. With reduced motion both rows stand still, wrapped and centred.
  */
-function PartnerLogos({ className }: { className?: string }) {
+function PartnerLogos({
+  copy,
+  className,
+}: {
+  copy: HomePage["partners"]
+  className?: string
+}) {
+  const partners: Partner[] = copy.logos
   const half = Math.ceil(partners.length / 2)
   return (
     <section
-      aria-label="Organisations we have worked with"
+      aria-label={copy.label}
       className={cn(
         "flex flex-col gap-4 text-foreground/55 lg:gap-6",
         className

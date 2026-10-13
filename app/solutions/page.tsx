@@ -8,14 +8,17 @@ import { SolutionsCta } from "@/components/solutions/solutions-cta"
 import { SolutionsHero } from "@/components/solutions/solutions-hero"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
+import { solutionsPage } from "@/components/solutions/page-copy"
+import { getPageContent } from "@/sanity/lib/page-content"
 
-export const metadata: Metadata = {
-  title: "Solutions",
-  description:
-    "Digital Infrastructure, Applied Intelligence and Powering Initiatives: technology and expertise for your most important work.",
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getPageContent("solutionsPage", solutionsPage)
+  return { title: "Solutions", description: copy.meta.description }
 }
 
-export default function Page() {
+export default async function Page() {
+  const copy = await getPageContent("solutionsPage", solutionsPage)
+
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
       <BlueprintGrid />
@@ -23,15 +26,15 @@ export default function Page() {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <SolutionsHero />
-      <SolutionsStory />
+      <SolutionsHero copy={copy} />
+      <SolutionsStory copy={copy} />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
        * against it — the footer then scrolls up over the pinned panel.
        */}
       <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
-        <SolutionsCta />
+        <SolutionsCta copy={copy.close} />
         <SiteFooter />
       </Bleed>
     </div>

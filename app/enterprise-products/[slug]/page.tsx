@@ -11,7 +11,9 @@ import {
 } from "@/components/products/product-page"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
+import { productsPage } from "@/components/products/page-copy"
 import { getProductPage, getProductSlugs } from "@/sanity/lib/data"
+import { getPageContent } from "@/sanity/lib/page-content"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -28,7 +30,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { slug } = await params
-  const result = await getProductPage(slug)
+  const [result, copy] = await Promise.all([
+    getProductPage(slug),
+    getPageContent("productsPage", productsPage),
+  ])
   if (!result) notFound()
 
   const { name, seed, page } = result
@@ -40,8 +45,13 @@ export default async function Page({ params }: Props) {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <ProductHero page={page} name={name} seed={seed} />
-      <ProductBody page={page} />
+      <ProductHero
+        page={page}
+        name={name}
+        seed={seed}
+        explore={copy.labels.explore}
+      />
+      <ProductBody page={page} audienceLabel={copy.labels.audience} />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves

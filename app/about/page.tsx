@@ -2,8 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import { aboutHero, principles, story } from "@/components/about/content"
-import { values } from "@/components/landing/content"
+import { aboutPage } from "@/components/about/page-copy"
 import { AboutHero } from "@/components/about/about-hero"
 import { JourneyTimeline } from "@/components/about/journey-timeline"
 import { News } from "@/components/about/news"
@@ -23,10 +22,11 @@ import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { getLeaders } from "@/sanity/lib/data"
+import { getPageContent } from "@/sanity/lib/page-content"
 
-export const metadata: Metadata = {
-  title: "About",
-  description: aboutHero.lead,
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getPageContent("aboutPage", aboutPage)
+  return { title: "About", description: copy.hero.lead }
 }
 
 /**
@@ -35,7 +35,10 @@ export const metadata: Metadata = {
  * numbers stay close to the portraits via the Team component's own internal gap.
  */
 export default async function Page() {
-  const leaders = await getLeaders()
+  const [leaders, copy] = await Promise.all([
+    getLeaders(),
+    getPageContent("aboutPage", aboutPage),
+  ])
 
   return (
     <div className="relative flex min-h-svh w-full flex-col">
@@ -45,16 +48,16 @@ export default async function Page() {
 
       <div className="flex flex-col gap-60">
         {/* Hero — the shared frame, over the circular team-photo band. */}
-        <AboutHero />
+        <AboutHero copy={copy.hero} />
 
         {/* Our Story */}
         <Container className="flex flex-col gap-6">
           <Reveal className="flex flex-col gap-6">
             <h2 className={cn(headingText, "max-w-[24ch] text-foreground")}>
-              {story.heading}
+              {copy.story.heading}
             </h2>
             <div className="flex max-w-[75ch] flex-col gap-4">
-              {story.paragraphs.map((paragraph) => (
+              {copy.story.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph}
                   className={cn(bodyText, "text-muted-foreground")}
@@ -68,18 +71,18 @@ export default async function Page() {
 
         {/* Our Journey — the V7-style ruler timeline (renders its own header). */}
         <Container>
-          <JourneyTimeline reveal="side" />
+          <JourneyTimeline reveal="side" copy={copy.journey} />
         </Container>
 
         {/* What guides our work — the same four values as the homepage. */}
         <Container className="flex flex-col gap-8">
           <Reveal asChild>
             <h2 className={cn(headingText, "text-foreground")}>
-              {principles.heading}
+              {copy.values.heading}
             </h2>
           </Reveal>
           <RevealStagger as="ol" className="flex flex-col gap-6">
-            {values.map((value, index) => (
+            {copy.values.items.map((value, index) => (
               <RevealItem
                 as="li"
                 key={value.title}
@@ -102,32 +105,34 @@ export default async function Page() {
         </Container>
 
         {/* The people and the impact numbers. */}
-        <Team portraits={leaders} />
+        <Team portraits={leaders} heading={copy.leadership.heading} />
 
         {/* Build with us — careers. */}
         <Container>
           <Reveal className="flex flex-col items-start gap-6 lg:max-w-[684px]">
             <h2 className={cn(headingText, "text-foreground")}>
-              Build with us.
+              {copy.careers.heading}
             </h2>
             <p className={cn(bodyText, "text-muted-foreground")}>
-              Bring original thinking, an innovator&rsquo;s mindset and a strong
-              sense of ownership. Work alongside exceptional peers whose
-              expertise complements yours and expands what you can achieve.
+              {copy.careers.body}
             </p>
             <div className="flex flex-wrap items-center gap-2">
               <Button asChild size="lg" className={primaryPill}>
-                <Link href="/careers">Explore careers at Softcom</Link>
+                <Link href={copy.careers.primaryHref}>
+                  {copy.careers.primaryLabel}
+                </Link>
               </Button>
               <Button asChild size="lg" variant="ghost" className={ghostPill}>
-                <Link href="/alumni">Explore our alumni community</Link>
+                <Link href={copy.careers.secondaryHref}>
+                  {copy.careers.secondaryLabel}
+                </Link>
               </Button>
             </div>
           </Reveal>
         </Container>
 
         {/* Latest news — V7-style list. */}
-        <News />
+        <News copy={copy.news} />
 
         <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
           <ClosingCta />

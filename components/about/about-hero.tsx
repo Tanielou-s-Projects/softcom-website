@@ -5,7 +5,7 @@ import Image from "next/image"
 import { Image as ImageIcon } from "@phosphor-icons/react"
 import { motion, useScroll, useSpring, useTransform } from "motion/react"
 
-import { aboutHero, aboutHeroImages } from "@/components/about/content"
+import type { AboutPage } from "@/components/about/page-copy"
 import { ColorReveal } from "@/components/motion/color-reveal"
 import { FullHero } from "@/components/site/full-hero"
 
@@ -18,12 +18,13 @@ import { FullHero } from "@/components/site/full-hero"
  * row drifts sideways through a spring — the lag gives it a weighty, physical,
  * carousel-like feel rather than a rigid scroll lock.
  *
- * Each circle takes the next photograph from `aboutHeroImages` (greyscale
+ * Each circle takes the next photograph from the hero copy's `images` (greyscale
  * until scrolled into view, like every photo on the site); a slot without one
  * stays a grey placeholder with an image icon. Seven keeps the row wider than
  * the viewport so the edges always read as half-circles.
  */
-const SLOTS = Array.from({ length: 7 }, (_, i) => aboutHeroImages[i])
+/** Seven keeps the row wider than the viewport, so its ends read as half-circles. */
+const SLOT_COUNT = 7
 
 const band = {
   hidden: {},
@@ -43,7 +44,8 @@ const circle = {
  * The band of circles, as the hero's background: full-bleed across the upper
  * part of the frame, drifting sideways on a spring as the page scrolls.
  */
-function CircleBand() {
+function CircleBand({ images }: { images: string[] }) {
+  const slots = Array.from({ length: SLOT_COUNT }, (_, i) => images[i])
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -66,7 +68,7 @@ function CircleBand() {
           className="flex w-max items-center will-change-transform"
           aria-hidden
         >
-          {SLOTS.map((photo, i) => (
+          {slots.map((photo, i) => (
             <motion.div
               key={i}
               variants={circle}
@@ -113,13 +115,13 @@ function CircleBand() {
  * The About hero, on the shared frame: the circular team band (after Apollo's
  * "Life at Apollo") as its background, the shared anatomy beneath it.
  */
-function AboutHero() {
+function AboutHero({ copy }: { copy: AboutPage["hero"] }) {
   return (
     <FullHero
-      background={<CircleBand />}
-      badge={aboutHero.eyebrow}
-      title={aboutHero.title}
-      lead={aboutHero.lead}
+      background={<CircleBand images={copy.images} />}
+      badge={copy.badge}
+      title={copy.title}
+      lead={copy.lead}
     />
   )
 }

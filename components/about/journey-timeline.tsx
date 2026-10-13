@@ -20,7 +20,6 @@ import { bodyText, Container, headingText } from "@/components/landing/section"
  * variations can be compared side by side.
  */
 
-const items = milestones.items
 const YEAR_MIN = 2007
 const YEAR_MAX = 2026
 /** 0–1 position of a year across the span; a range ("2010–2015") sits at its start. */
@@ -30,7 +29,7 @@ const posOf = (year: string) =>
  * Phones space the marks evenly instead: at ~340px a year is 18px wide, so
  * 2015–2018 and 2025/2026 stacked on top of each other.
  */
-const evenPos = (index: number) => index / (items.length - 1)
+const evenPos = (index: number, count: number) => index / (count - 1)
 
 /** How long the ruler takes to draw in on arrival, before it starts advancing. */
 const DRAW_S = 1.1
@@ -42,11 +41,15 @@ export type JourneyReveal = "side" | "below" | "card"
 
 export function JourneyTimeline({
   reveal = "side",
+  copy = milestones,
   className,
 }: {
   reveal?: JourneyReveal
+  /** The heading and milestones; the About page passes Sanity's copy. */
+  copy?: { heading: string; items: Milestone[] }
   className?: string
 }) {
+  const items = copy.items
   const [active, setActive] = React.useState(0)
   const [hovered, setHovered] = React.useState<number | null>(null)
   const [paused, setPaused] = React.useState(false)
@@ -63,7 +66,8 @@ export function JourneyTimeline({
    */
   const arrived = useInView(rulerRef, { once: true, amount: 1 })
   const narrow = useMediaQuery("(max-width: 767.98px)")
-  const at = (i: number) => (narrow ? evenPos(i) : posOf(items[i].year))
+  const at = (i: number) =>
+    narrow ? evenPos(i, items.length) : posOf(items[i].year)
 
   const current = items[active]
 
@@ -156,9 +160,7 @@ export function JourneyTimeline({
     >
       {/* Header — eyebrow + heading on the left, arrows on the right. */}
       <div className="flex items-end justify-between gap-6">
-        <h2 className={cn(headingText, "text-foreground")}>
-          {milestones.heading}
-        </h2>
+        <h2 className={cn(headingText, "text-foreground")}>{copy.heading}</h2>
         <div className="flex items-center gap-2">
           <Arrow direction="left" onClick={() => clampGo(-1)} />
           <Arrow direction="right" onClick={() => clampGo(1)} />
@@ -291,7 +293,7 @@ export function JourneyTimeline({
       </div>
 
       {/* The reveal — swapped by variation. */}
-      <Reveal reveal={reveal} active={active} />
+      <Reveal reveal={reveal} m={current} />
     </motion.div>
   )
 }
@@ -423,8 +425,7 @@ function CardReveal({ m }: { m: Milestone }) {
 }
 
 /** The detail panel — each variation composes the same fields differently. */
-function Reveal({ reveal, active }: { reveal: JourneyReveal; active: number }) {
-  const m = items[active]
+function Reveal({ reveal, m }: { reveal: JourneyReveal; m: Milestone }) {
   switch (reveal) {
     case "below":
       return <BelowReveal m={m} />

@@ -5,6 +5,8 @@ import { MotionConfig } from "motion/react"
 import "./globals.css"
 import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
 import { AnimatedFavicon } from "@/components/site/animated-favicon"
+import { ChromeProvider } from "@/components/site/chrome-context"
+import { getNavigation } from "@/components/site/get-navigation"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 
@@ -32,11 +34,13 @@ export const metadata: Metadata = {
     "Softcom builds the systems that help organisations operate, grow, and better serve the people who depend on them.",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // The header menu, from Sanity, for every page's SiteHeader.
+  const { header } = await getNavigation()
   return (
     <html
       lang="en"
@@ -65,7 +69,7 @@ export default function RootLayout({
              * resolves to its default for everyone. Re-mount VariantProvider
              * and VariantSwitcher here to explore again.
              */}
-            {children}
+            <ChromeProvider header={header}>{children}</ChromeProvider>
             <PixelPageTransition />
           </MotionConfig>
         </ThemeProvider>

@@ -7,31 +7,32 @@ import {
   headingText,
   primaryPill,
 } from "@/components/landing/section"
-import { perspectives } from "@/components/landing/content"
+import type { HomePage } from "@/components/landing/home-copy"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 
 /** "Our thinking" — the homepage's window onto Insights. */
-function Insights() {
+function Insights({ copy }: { copy: HomePage["ourThinking"] }) {
   return (
     <Container className="flex flex-col gap-10 overflow-clip lg:gap-16">
       <Reveal asChild>
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div className="flex flex-col gap-4">
-            <h2 className={cn(headingText, "text-foreground")}>Our thinking</h2>
+            <h2 className={cn(headingText, "text-foreground")}>
+              {copy.heading}
+            </h2>
             <p className={cn(bodyText, "max-w-[576px] text-muted-foreground")}>
-              Perspectives on technology, organisations and the decisions that
-              shape what comes next.
+              {copy.intro}
             </p>
           </div>
           <Button asChild size="lg" className={primaryPill}>
-            <Link href="/insights">Explore our thinking</Link>
+            <Link href={copy.cta.href}>{copy.cta.label}</Link>
           </Button>
         </header>
       </Reveal>
 
       <RevealStagger className="grid gap-4 lg:grid-cols-2">
-        {perspectives.map((perspective) => (
+        {copy.perspectives.map((perspective) => (
           <RevealItem key={perspective.title} asChild>
             <Link
               href={perspective.href}
@@ -48,7 +49,7 @@ function Insights() {
                   {perspective.summary}
                 </p>
                 <span className="text-sm font-medium text-foreground underline-offset-4 group-hover:underline">
-                  Read perspective
+                  {copy.readLabel}
                 </span>
               </div>
             </Link>

@@ -1,5 +1,6 @@
 import { DitherMark } from "@/components/motion/dither-mark"
 import { FullHero } from "@/components/site/full-hero"
+import type { InsightsPage } from "@/components/insights/page-copy"
 
 /**
  * Discs of different weight, loosely joined — ideas connecting — and the
@@ -7,12 +8,12 @@ import { FullHero } from "@/components/site/full-hero"
  * directly below, and repeating them here would split the filter from what it
  * filters.
  */
-function InsightsHero() {
+function InsightsHero({ copy }: { copy: InsightsPage["hero"] }) {
   return (
     <FullHero
       background={<DitherMark layout="insights" />}
-      badge="News & Insights"
-      title="Research, analysis, & perspectives from the field."
+      badge={copy.badge}
+      title={copy.title}
     />
   )
 }

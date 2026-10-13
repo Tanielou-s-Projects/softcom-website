@@ -55,11 +55,17 @@ function PortraitCell({ image, name, role }: Portrait) {
  * on hover, kept visually separate from the impact numbers below. `id="team"` is
  * the anchor the header's "Leadership" link and the closing CTAs point at.
  */
-function Team({ portraits }: { portraits: Portrait[] }) {
+function Team({
+  portraits,
+  heading = "Our leadership",
+}: {
+  portraits: Portrait[]
+  heading?: string
+}) {
   return (
     <section id="team" className="flex scroll-mt-24 flex-col gap-16">
       <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">
-        <h2 className={cn(headingText, "text-foreground")}>Our leadership</h2>
+        <h2 className={cn(headingText, "text-foreground")}>{heading}</h2>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:max-w-[1029px] lg:grid-cols-3">
           {portraits.map((portrait) => (

@@ -34,10 +34,13 @@ function ProductHero({
   page,
   name,
   seed,
+  explore = "Explore",
 }: {
   page: ProductPage
   name: string
   seed: number
+  /** The word before the name on the second button (productsPage copy). */
+  explore?: string
 }) {
   return (
     <FullHero
@@ -59,7 +62,9 @@ function ProductHero({
           </Button>
           {page.sections.length > 0 || page.lead.length > 1 ? (
             <Button asChild size="lg" variant="ghost" className={ghostPill}>
-              <Link href="#overview">Explore {name}</Link>
+              <Link href="#overview">
+                {explore} {name}
+              </Link>
             </Button>
           ) : null}
         </div>
@@ -148,7 +153,14 @@ function Section({
 }
 
 /** The page body: opening copy and figure, the sections, who it is for. */
-function ProductBody({ page }: { page: ProductPage }) {
+function ProductBody({
+  page,
+  audienceLabel = "Who it is for",
+}: {
+  page: ProductPage
+  /** Over the "Built for …" block (productsPage copy). */
+  audienceLabel?: string
+}) {
   // Figures count up down the page, the hero's first.
   const counts = page.sections.map((section) => figuresOf(section).length)
   const numbers = counts.map(
@@ -204,7 +216,7 @@ function ProductBody({ page }: { page: ProductPage }) {
         <Container>
           <Reveal asChild>
             <div className="flex flex-col items-center gap-6 rounded-3xl bg-card px-6 py-16 text-center lg:py-24">
-              <Eyebrow>Who it is for</Eyebrow>
+              <Eyebrow>{audienceLabel}</Eyebrow>
               <h2 className={cn(headingText, "max-w-[22ch] text-foreground")}>
                 {page.audience.heading}
               </h2>

@@ -1,18 +1,19 @@
 import { stats } from "@/components/landing/content"
 import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
+import type { CaseStudiesPage } from "@/components/case-studies/page-copy"
 
 /**
  * An engagement in the field, the claim, and the impact numbers carrying the
  * "measurable" until the case studies arrive; a featured study can take this
  * slot then.
  */
-function CaseStudiesHero() {
+function CaseStudiesHero({ copy }: { copy: CaseStudiesPage["hero"] }) {
   return (
     <FullHero
-      background={<HeroPhoto src="/images/pos-agent.jpg" position="50% 40%" />}
-      badge="Case Studies"
-      title="Real engagements. Measurable outcomes."
-      lead="A portfolio of real engagements — spanning government, financial services, consumer goods, and agriculture — each delivering measurable, lasting outcomes."
+      background={<HeroPhoto src={copy.image} position="50% 40%" />}
+      badge={copy.badge}
+      title={copy.title}
+      lead={copy.lead}
       rail={
         <HeroRail as="dl" className="grid-cols-2">
           {stats.map((stat) => (

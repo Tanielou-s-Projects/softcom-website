@@ -11,14 +11,11 @@ import {
 } from "@/components/landing/section"
 import { InsightCard } from "@/components/insights/insight-card"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
-import {
-  insightsIntro,
-  topics,
-  type Insight,
-  type Topic,
-} from "@/components/insights/content"
+import type { Insight } from "@/components/insights/content"
+import type { InsightsPage } from "@/components/insights/page-copy"
 
-type Filter = Topic | "All"
+/** A topic name, or `null` for every topic. */
+type Filter = string | null
 
 /**
  * The topic filter. Figma parks it in the right gutter inside a container that
@@ -32,11 +29,16 @@ type Filter = Topic | "All"
 function TopicFilter({
   filter,
   onFilterChange,
+  copy,
 }: {
   filter: Filter
   onFilterChange: (filter: Filter) => void
+  copy: InsightsPage["filter"]
 }) {
-  const options: Filter[] = ["All", ...topics]
+  const options: { value: Filter; label: string }[] = [
+    { value: null, label: copy.allLabel },
+    ...copy.topics.map((topic) => ({ value: topic, label: topic })),
+  ]
 
   return (
     <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-[29%]">
@@ -51,19 +53,19 @@ function TopicFilter({
          * be operable by keyboard.
          */}
         {options.map((option) => {
-          const active = option === filter
+          const active = option.value === filter
           return (
             <button
-              key={option}
+              key={option.label}
               type="button"
               aria-pressed={active}
-              onClick={() => onFilterChange(option)}
+              onClick={() => onFilterChange(option.value)}
               className={cn(
                 badgeVariants({ variant: active ? "inverse" : "default" }),
                 "cursor-pointer transition-colors"
               )}
             >
-              {option}
+              {option.label}
             </button>
           )
         })}
@@ -81,11 +83,17 @@ function TopicFilter({
  * fill the grid — that way narrowing to a topic still reads as a page rather
  * than leaving a featured card that contradicts the active filter.
  */
-function InsightList({ insights }: { insights: Insight[] }) {
-  const [filter, setFilter] = React.useState<Filter>("All")
+function InsightList({
+  insights,
+  copy,
+}: {
+  insights: Insight[]
+  copy: InsightsPage
+}) {
+  const [filter, setFilter] = React.useState<Filter>(null)
 
   const filtered =
-    filter === "All"
+    filter === null
       ? insights
       : insights.filter((insight) => insight.topic === filter)
 
@@ -93,11 +101,15 @@ function InsightList({ insights }: { insights: Insight[] }) {
 
   return (
     <Container className="relative flex flex-col gap-16 pt-16">
-      <TopicFilter filter={filter} onFilterChange={setFilter} />
+      <TopicFilter
+        filter={filter}
+        onFilterChange={setFilter}
+        copy={copy.filter}
+      />
 
       <Reveal className="flex flex-col gap-6">
         <p className={cn(leadText, "max-w-[629px] leading-[1.6]")}>
-          {insightsIntro}
+          {copy.intro.text}
         </p>
         <div aria-hidden className="h-px w-full bg-border" />
       </Reveal>
@@ -105,7 +117,7 @@ function InsightList({ insights }: { insights: Insight[] }) {
       {featured && (
         <Reveal as="section" className="flex max-w-[921px] flex-col gap-12">
           <h2 className={cn(cardHeadingText, "max-w-[359px] text-foreground")}>
-            Featured Insight
+            {copy.headings.featured}
           </h2>
           <InsightCard
             insight={featured}
@@ -121,9 +133,12 @@ function InsightList({ insights }: { insights: Insight[] }) {
             <h2
               className={cn(cardHeadingText, "max-w-[359px] text-foreground")}
             >
-              Latest
-              <br />
-              Insights
+              {copy.headings.latest.split("\n").map((line, index) => (
+                <React.Fragment key={index}>
+                  {index > 0 ? <br /> : null}
+                  {line}
+                </React.Fragment>
+              ))}
             </h2>
           </Reveal>
 

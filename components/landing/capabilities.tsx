@@ -20,6 +20,7 @@ import {
 } from "@/components/landing/section"
 import { Button } from "@/components/ui/button"
 import { capabilities } from "@/components/landing/content"
+import type { HomePage } from "@/components/landing/home-copy"
 import { Reveal } from "@/components/motion/reveal"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
@@ -34,7 +35,15 @@ import { ColorReveal } from "@/components/motion/color-reveal"
  * Mobile and reduced motion: a plain scroll-snap rail, navigable by pointer,
  * keyboard, and touch.
  */
-function Capabilities() {
+function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
+  // Copy from the CMS; the number, anchor and chip colour stay with the design.
+  const areas = copy.areas.map((area, index) => ({
+    ...area,
+    number: String(index + 1).padStart(2, "0"),
+    id: capabilities[index]?.id ?? "",
+    chipClassName:
+      capabilities[index % capabilities.length]?.chipClassName ?? "",
+  }))
   const trackRef = React.useRef<HTMLDivElement>(null)
   const railRef = React.useRef<HTMLDivElement>(null)
   const reduceMotion = useReducedMotion()
@@ -81,12 +90,10 @@ function Capabilities() {
         <Reveal asChild>
           <Container className="flex flex-col items-center gap-8 pt-6 text-center lg:gap-10">
             <h2 className={cn(headingText, "max-w-[533px] text-foreground")}>
-              Our focus areas
+              {copy.heading}
             </h2>
             <p className={cn(leadText, "max-w-[576px] text-muted-foreground")}>
-              Our work focuses on building the foundations organisations depend
-              on, the intelligence that informs their decisions, and the
-              capabilities that power their initiatives.
+              {copy.intro}
             </p>
           </Container>
         </Reveal>
@@ -104,7 +111,7 @@ function Capabilities() {
             "lg:motion-safe:snap-none lg:motion-safe:overflow-visible"
           )}
         >
-          {capabilities.map((capability) => (
+          {areas.map((capability) => (
             <article
               key={capability.number}
               /* Figma's 1176×1024 is a ceiling, not a size: the slide never exceeds the viewport. */
@@ -137,13 +144,19 @@ function Capabilities() {
                 </h3>
                 {/* Body size, not the larger lg body: two paragraphs share the slide. */}
                 <div className="flex flex-col gap-3 text-base leading-[1.6] lg:max-w-[600px]">
-                  {capability.description.map((paragraph) => (
+                  {capability.paragraphs.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
                   ))}
                 </div>
                 <Button asChild size="lg" className={primaryPill}>
-                  <Link href={`/solutions#${capability.id}`}>
-                    Explore {capability.title}
+                  <Link
+                    href={
+                      capability.id
+                        ? `/solutions#${capability.id}`
+                        : "/solutions"
+                    }
+                  >
+                    {copy.linkPrefix} {capability.title}
                   </Link>
                 </Button>
               </div>

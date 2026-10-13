@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useEffect, useRef } from "react"
 import { PixelArrowDown } from "@/components/ui/pixel-arrow-down"
 import { Button } from "@/components/ui/button"
-import { YEARS_ACTIVE } from "@/components/landing/content"
+import { withYears, type HomePage } from "@/components/landing/home-copy"
 import {
   ghostPill,
   headingText,
@@ -66,27 +66,25 @@ const ease = (t: number) => t * t * (3 - 2 * t)
 const statementClass =
   "max-w-[1140px] font-heading text-[clamp(26px,3.6vw,58px)] leading-[1.25] tracking-[-0.035em]"
 
-/** The positioning statement, in runs so the tenure can carry the accent. */
-const STATEMENT = [
-  {
-    text: "Softcom is a technology and innovation company with ",
-    accent: false,
-  },
-  { text: `${YEARS_ACTIVE} years`, accent: true },
-  {
-    text: " of experience building for public institutions, private organisations and development enablers. We help organisations think through what they want to achieve, then bring together the technology, people and processes to make it happen.",
-    accent: false,
-  },
-]
+type HeroCopy = HomePage["hero"]
+type Run = { text: string; accent: boolean }
 
-function StatementActions() {
+/** The positioning statement, in runs so the tenure can carry the accent. */
+const statementOf = (copy: HeroCopy): Run[] =>
+  [
+    { text: copy.statementBefore, accent: false },
+    { text: withYears(copy.statementHighlight), accent: true },
+    { text: copy.statementAfter, accent: false },
+  ].filter((run) => run.text)
+
+function StatementActions({ copy }: { copy: HeroCopy }) {
   return (
     <>
       <Button asChild size="lg" className={primaryPill}>
-        <Link href="/solutions">Explore our solutions</Link>
+        <Link href={copy.primaryCta.href}>{copy.primaryCta.label}</Link>
       </Button>
       <Button asChild size="lg" variant="ghost" className={ghostPill}>
-        <Link href="/contact">Start a conversation</Link>
+        <Link href={copy.secondaryCta.href}>{copy.secondaryCta.label}</Link>
       </Button>
     </>
   )
@@ -99,12 +97,14 @@ function StatementActions() {
  */
 function ScrambleStatement({
   ref,
+  runs,
 }: {
   ref: React.RefObject<HTMLParagraphElement | null>
+  runs: Run[]
 }) {
   return (
     <p ref={ref} aria-hidden className={statementClass}>
-      {STATEMENT.map((run) =>
+      {runs.map((run) =>
         [...run.text].map((char, i) =>
           char === " " ? (
             " "
@@ -158,9 +158,12 @@ function circlesOf(
 // Illustrative story using existing photography, not a customer case study.
 export function PortalHero({
   variant,
+  copy,
 }: {
   variant: "grid" | "circles" | "dissolve"
+  copy: HeroCopy
 }) {
+  const statement = statementOf(copy)
   const track = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const fallbackRef = useRef<HTMLDivElement>(null)
@@ -366,9 +369,9 @@ export function PortalHero({
                 "leading-[1.04]"
               )}
             >
-              Technology for
+              {copy.headlineFirstLine}
               <br />
-              Organisations.
+              {copy.headlineSecondLine}
             </h1>
           </div>
           {/* Always dark: white type over a shaded photograph in either theme. */}
@@ -383,8 +386,8 @@ export function PortalHero({
             )}
           >
             <Image
-              src="/images/market-payment.jpg"
-              alt="A market trader at her stall confirming a payment on her phone"
+              src={copy.progressImage}
+              alt={copy.progressImageAlt}
               fill
               priority
               sizes="100vw"
@@ -403,9 +406,9 @@ export function PortalHero({
                   : "text-[clamp(22px,12cqw,84px)] leading-[1.02] tracking-[-0.05em] md:text-[clamp(24px,10cqw,144px)]"
               )}
             >
-              Progress
+              {copy.progressFirstLine}
               <br />
-              for Society.
+              {copy.progressSecondLine}
             </h2>
           </section>
           <figure
@@ -417,8 +420,8 @@ export function PortalHero({
             )}
           >
             <Image
-              src="/images/pos-agent.jpg"
-              alt="A mobile-money agent handing cash to a customer under a blue umbrella"
+              src={copy.portalImage}
+              alt={copy.portalImageAlt}
               fill
               priority
               sizes="(max-width: 767px) 60vw, 70vw"
@@ -461,7 +464,7 @@ export function PortalHero({
               }}
             >
               <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
-                Scroll
+                {copy.scrollLabel}
               </span>
               <span className="softcom-nudge group-hover:[animation-play-state:paused]">
                 <PixelArrowDown
@@ -485,8 +488,8 @@ export function PortalHero({
                 className="dark invisible absolute inset-0 z-5 flex flex-col items-center justify-center gap-10 px-6 text-center text-foreground motion-reduce:visible motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:py-24"
               >
                 <Image
-                  src="/images/lagos-dusk.jpg"
-                  alt="Lagos at dusk across the lagoon, a fisherman in a canoe"
+                  src={copy.missionImage}
+                  alt={copy.missionImageAlt}
                   fill
                   sizes="100vw"
                   className="-z-10 object-cover object-bottom"
@@ -515,12 +518,10 @@ export function PortalHero({
                   >
                     {/* Trimmed from the deck's "We believe stronger organisations
                         are the foundation of a more prosperous society." */}
-                    Stronger organisations build a more prosperous society.
+                    {copy.missionHeading}
                   </h2>
                   <p className={cn(leadText, "max-w-[576px] text-neutral-200")}>
-                    We build the technology and capabilities that help them work
-                    better, decide better and serve the people who depend on
-                    them.
+                    {copy.missionText}
                   </p>
                 </div>
                 <div
@@ -528,7 +529,9 @@ export function PortalHero({
                   className="opacity-0 motion-reduce:opacity-100"
                 >
                   <Button asChild size="lg" className={primaryPill}>
-                    <Link href="/about">Our story</Link>
+                    <Link href={copy.missionCta.href}>
+                      {copy.missionCta.label}
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -551,14 +554,14 @@ export function PortalHero({
                 className="dark pointer-events-none absolute inset-0 z-7 flex flex-col items-start justify-center gap-10 px-6 pt-24 pb-12 text-foreground motion-reduce:pointer-events-auto motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:bg-brand-blue motion-reduce:py-16 md:px-[7vw]"
               >
                 <p className="sr-only">
-                  {STATEMENT.map((run) => run.text).join("")}
+                  {statement.map((run) => run.text).join("")}
                 </p>
-                <ScrambleStatement ref={statementRef} />
+                <ScrambleStatement ref={statementRef} runs={statement} />
                 <div
                   ref={actionsRef}
                   className="pointer-events-auto flex flex-wrap items-center gap-2 opacity-0 motion-reduce:opacity-100"
                 >
-                  <StatementActions />
+                  <StatementActions copy={copy} />
                 </div>
               </div>
             </>
@@ -572,7 +575,7 @@ export function PortalHero({
           className="dark flex min-h-[90vh] flex-col items-start justify-center gap-10 bg-brand-blue px-6 py-16 text-foreground md:px-[7vw] md:py-25"
         >
           <p className={statementClass}>
-            {STATEMENT.map((run) =>
+            {statement.map((run) =>
               run.accent ? (
                 <span key={run.text} className="text-brand-accent">
                   {run.text}
@@ -583,7 +586,7 @@ export function PortalHero({
             )}
           </p>
           <div className="flex flex-wrap items-center gap-2">
-            <StatementActions />
+            <StatementActions copy={copy} />
           </div>
         </section>
       )}

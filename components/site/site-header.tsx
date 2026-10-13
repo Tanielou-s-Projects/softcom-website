@@ -16,7 +16,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { headerNav } from "@/components/landing/content"
+import { useHeaderCopy } from "@/components/site/chrome-context"
 import { cn } from "@/lib/utils"
 
 /**
@@ -139,6 +139,7 @@ function useScrolledAway(onScrollDown: () => void) {
  */
 function SiteHeader() {
   const router = useRouter()
+  const copy = useHeaderCopy()
   const [open, setOpen] = React.useState(false)
   /*
    * The dropdown is controlled so collapsing the pill can close it too —
@@ -265,8 +266,16 @@ function SiteHeader() {
 
             {open ? (
               <NavigationMenuList className="gap-[22px]">
-                {headerNav.map((item) =>
-                  item.submenu ? (
+                {copy.items.map((rawItem) => {
+                  // Drop half-filled dropdown entries rather than render
+                  // blank links.
+                  const item = {
+                    ...rawItem,
+                    links: (rawItem.links ?? []).filter(
+                      (link) => link?.label && link?.href
+                    ),
+                  }
+                  return item.links.length ? (
                     <NavigationMenuItem key={item.href}>
                       {/*
                        * The label is also the section's link: hover still
@@ -299,7 +308,7 @@ function SiteHeader() {
                             className="w-44 shrink-0"
                           />
                           <ul className="ml-auto flex flex-col justify-center gap-1 pr-8 text-right">
-                            {item.submenu.map((sub) => (
+                            {item.links.map((sub) => (
                               <li key={sub.href}>
                                 <NavigationMenuLink
                                   asChild
@@ -324,7 +333,7 @@ function SiteHeader() {
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   )
-                )}
+                })}
                 <NavigationMenuItem>
                   <ThemeToggleDot />
                 </NavigationMenuItem>
@@ -338,7 +347,7 @@ function SiteHeader() {
                   peek ? "opacity-100 delay-150" : "opacity-0"
                 )}
               >
-                Menu
+                {copy.menuLabel}
               </span>
             )}
 
