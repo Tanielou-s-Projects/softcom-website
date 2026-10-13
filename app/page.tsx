@@ -1,6 +1,7 @@
+import Link from "next/link"
+
 import { Approach } from "@/components/landing/approach"
 import { Capabilities } from "@/components/landing/capabilities"
-import { TENURE_TITLE } from "@/components/landing/content"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { Hero } from "@/components/landing/hero"
 import { Insights } from "@/components/landing/insights"
@@ -8,7 +9,9 @@ import { Mission } from "@/components/landing/mission"
 import { People } from "@/components/landing/people"
 import { Sectors } from "@/components/landing/sectors"
 import { Stats } from "@/components/landing/stats"
-import { Bleed } from "@/components/landing/section"
+import { Bleed, ghostPill, primaryPill } from "@/components/landing/section"
+import { Reveal } from "@/components/motion/reveal"
+import { Button } from "@/components/ui/button"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
 
@@ -26,7 +29,20 @@ export default function Page() {
       <Mission />
       <Capabilities />
       <Sectors />
-      <Stats heading={`${TENURE_TITLE} of delivery.`} />
+      {/*
+       * No heading: the 19-year tile already says it. The sectors' call to
+       * action moved here, so it lands after the proof rather than the pitch.
+       */}
+      <Stats>
+        <Reveal className="flex flex-wrap items-center gap-2">
+          <Button asChild size="lg" className={primaryPill}>
+            <Link href="/contact">Explore working with Softcom</Link>
+          </Button>
+          <Button asChild size="lg" variant="ghost" className={ghostPill}>
+            <Link href="/case-studies">View case studies</Link>
+          </Button>
+        </Reveal>
+      </Stats>
       <Approach />
       <People />
       <Insights />

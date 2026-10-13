@@ -53,16 +53,6 @@ export const sectors: Sector[] = [
     silhouette: "/landing/sector-enablers-silhouette.svg",
     tone: "neutral",
   },
-  {
-    id: "partners",
-    title: "Technology\nPartners",
-    description:
-      "We collaborate with technology companies whose platforms and solutions can serve organisations in our markets. Together, we explore opportunities and bring the technical expertise, local understanding and implementation capability needed to put those solutions to work.",
-    // The two partner platforms the deck names; extend as partnerships are confirmed.
-    tags: ["Kitsoft", "RTGS.global"],
-    silhouette: "/landing/sector-partners-silhouette.svg",
-    tone: "cyan",
-  },
 ]
 
 export type Capability = {

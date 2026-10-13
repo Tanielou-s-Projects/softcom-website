@@ -20,12 +20,13 @@ const TONE: Record<Sector["tone"], string> = {
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
-type TagsVariant = "pill" | "index" | "inline"
+type TagsVariant = "flat" | "index" | "inline"
 
 /**
- * Three treatments for the sector labels, chosen on the switcher. `pill` is
- * the shipped Badge; `index` and `inline` set them in mono caps so they read
- * as a spec sheet rather than a keyword cloud.
+ * Three treatments for the sector labels, chosen on the switcher. `flat` is
+ * the shipped Badge squared off — the client asked for rectangular tags over
+ * pills; `index` and `inline` set them in mono caps so they read as a spec
+ * sheet rather than a keyword cloud.
  */
 function SectorTags({
   tags,
@@ -36,11 +37,15 @@ function SectorTags({
   variant: TagsVariant
   contrast: boolean
 }) {
-  if (variant === "pill") {
+  if (variant === "flat") {
     return (
       <div className="flex flex-wrap items-start gap-2">
         {tags.map((tag) => (
-          <Badge key={tag} variant={contrast ? "contrast" : "default"}>
+          <Badge
+            key={tag}
+            variant={contrast ? "contrast" : "default"}
+            className="rounded-sm"
+          >
             {tag}
           </Badge>
         ))}
@@ -165,7 +170,7 @@ function SectorCard({
           <div className="flex flex-col gap-6 text-foreground">
             {/*
              * The heading runs free of the copy measure and scales with the
-             * card: at four across, "Organisations" is wider than a resting
+             * card: in a resting column, "Organisations" is wider than a resting
              * column at the card scale. 14cqw fits the longest word.
              */}
             <h3

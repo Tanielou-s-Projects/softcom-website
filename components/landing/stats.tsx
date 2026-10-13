@@ -1,3 +1,5 @@
+import type { ReactNode } from "react"
+
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { stats } from "@/components/landing/content"
 import { bodyText, Container, headingText } from "@/components/landing/section"
@@ -6,15 +8,18 @@ import { cn } from "@/lib/utils"
 /**
  * Impact numbers — a clean row of big figures over short labels, after the
  * Employment Hero / Ramp pattern. Shared by the homepage and the About team
- * section; pass a `heading` for the standalone homepage block, omit it when the
- * numbers sit under another section's header.
+ * section; pass a `heading` when the block stands alone, omit it when the
+ * numbers sit under another section's header. `children` sit beneath the row —
+ * the homepage hangs its calls to action there.
  */
 function Stats({
   heading,
   className,
+  children,
 }: {
   heading?: string
   className?: string
+  children?: ReactNode
 }) {
   return (
     <Container className={cn("flex flex-col gap-10 lg:gap-14", className)}>
@@ -42,6 +47,8 @@ function Stats({
           </RevealItem>
         ))}
       </RevealStagger>
+
+      {children}
     </Container>
   )
 }
