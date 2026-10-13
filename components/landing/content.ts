@@ -231,15 +231,18 @@ export const headerNav: HeaderNavItem[] = [
   { label: "Contact", href: "/contact" },
 ]
 
+/*
+ * Columns and order as the client laid them out in the October 2026 feedback.
+ * Products lists Softcom's own four; the partner platforms (Liquio,
+ * RTGS.global) live on the Enterprise Products page.
+ */
 export const footerNav = [
   {
     heading: "Company",
     links: [
       { label: "About", href: "/about" },
-      { label: "Leadership", href: "/about#team" },
       { label: "Careers", href: "/careers" },
       { label: "Alumni", href: "/alumni" },
-      { label: "Join the alumni network", href: "/alumni#join" },
     ],
   },
   {
