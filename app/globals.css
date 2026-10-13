@@ -1,6 +1,122 @@
 @import "tailwindcss";
 
 /*
- * Clean slate: the new design system's tokens land here once its direction
- * is set. Until then pages render with browser defaults.
+ * Softcom design system — light first.
+ *
+ * Warm paper, near-black ink and one accent (Softcom blue) carry the whole
+ * site; cyan is the brand's second colour and appears only as a small signal
+ * on blue. Structure is drawn, not boxed: hairlines, crosshair marks and the
+ * 12-column shell. Dark mode redefines the same tokens.
  */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --color-paper: #f6f5f1;
+  --color-surface: #ffffff;
+  --color-ink: #0c0c0d;
+  --color-ink-soft: #55554f;
+  --color-ink-faint: #8d8c86;
+  --color-line: rgb(12 12 13 / 0.12);
+  --color-line-strong: rgb(12 12 13 / 0.24);
+  --color-accent: #004bff;
+  --color-accent-deep: #0039c2;
+  --color-on-accent: #ffffff;
+  --color-signal: #00ffff;
+
+  /* Display type: large, light, tight. */
+  --text-display: clamp(3rem, 7.2vw, 7.5rem);
+  --text-display--line-height: 0.94;
+  --text-display--letter-spacing: -0.045em;
+  --text-headline: clamp(2.25rem, 4.6vw, 4.25rem);
+  --text-headline--line-height: 1;
+  --text-headline--letter-spacing: -0.035em;
+  --text-title: clamp(1.5rem, 2.2vw, 2rem);
+  --text-title--line-height: 1.1;
+  --text-title--letter-spacing: -0.02em;
+  --text-lede: clamp(1.375rem, 2.6vw, 2.5rem);
+  --text-lede--line-height: 1.15;
+  --text-lede--letter-spacing: -0.025em;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: 0.08em;
+
+  --animate-marquee: marquee 48s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.dark {
+  --color-paper: #0e0e0f;
+  --color-surface: #18181a;
+  --color-ink: #f2f1ec;
+  --color-ink-soft: #a9a8a2;
+  --color-ink-faint: #74736e;
+  --color-line: rgb(242 241 236 / 0.12);
+  --color-line-strong: rgb(242 241 236 / 0.24);
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* The page shell: 40px edges on desktop, 16px on phones, 12 columns. */
+  .shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 90rem;
+    padding-inline: 1rem;
+
+    @media (width >= 48rem) {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* Mono uppercase label, the system's small voice. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    letter-spacing: var(--text-label--letter-spacing);
+    text-transform: uppercase;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
