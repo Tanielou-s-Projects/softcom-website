@@ -6,10 +6,7 @@ import "./globals.css"
 import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
 import { AnimatedFavicon } from "@/components/site/animated-favicon"
 import { ThemeProvider } from "@/components/theme-provider"
-import { VariantProvider } from "@/components/variants/variant-context"
-import { VariantSwitcher } from "@/components/variants/variant-switcher"
 import { SanityLive } from "@/sanity/lib/live"
-import { PLAYGROUND_ENABLED } from "@/lib/playground-access"
 import { cn } from "@/lib/utils"
 
 const spaceGroteskHeading = Space_Grotesk({
@@ -63,19 +60,13 @@ export default function RootLayout({
            */}
           <MotionConfig reducedMotion="user">
             {/*
-             * In-page design explorations (currently the hero circles'
-             * arrangement). Behind the playground gate the provider is
-             * absent, so every `useVariant` resolves to its production
-             * default and nothing extra is rendered.
+             * The design explorations are settled (dissolve hero, Pair
+             * circles, flat tags, no margins — the registry's defaults), so
+             * the picker and its provider are not mounted: every `useVariant`
+             * resolves to its default for everyone. Re-mount VariantProvider
+             * and VariantSwitcher here to explore again.
              */}
-            {PLAYGROUND_ENABLED ? (
-              <VariantProvider>
-                {children}
-                <VariantSwitcher />
-              </VariantProvider>
-            ) : (
-              children
-            )}
+            {children}
             <PixelPageTransition />
           </MotionConfig>
         </ThemeProvider>

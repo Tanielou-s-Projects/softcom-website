@@ -13,7 +13,6 @@ import {
   primaryPill,
 } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
-import { useVariant } from "@/components/variants/variant-context"
 import { createDitherField } from "@/components/motion/dither-field"
 import { HeroHeader } from "./hero-header"
 
@@ -130,59 +129,29 @@ function ScrambleStatement({
 }
 
 type Circle = { x: number; y: number; d: number }
-type Arrangement = { upper: Circle; lower: Circle }
-type ArrangementId = "diagonal" | "pair" | "dot"
 
 /**
  * Where the two circles start, in px for a viewport, as centres and
- * diameters. `upper` is the blue circle that grows into Progress for Society
- * (always toward the centre); `lower` is the photograph, which keeps a fixed
- * gap from it as it grows. Compared on the variant switcher.
+ * diameters: the wordmark's two dots at the scale of the screen. Equal
+ * circles side by side, edge to edge, starting under the headline and running
+ * off the bottom. `upper` is the blue circle that grows into Progress for
+ * Society (toward the centre); `lower` is the photograph, which keeps clear
+ * of it as it grows.
  */
-function arrangementOf(
-  id: ArrangementId,
+function circlesOf(
   w: number,
   h: number,
   mobile: boolean,
-  /** The headline's last line, for the full-stop arrangement. */
-  stop: { x: number; y: number; size: number } | null
-): Arrangement {
-  if (id === "pair") {
-    // The wordmark's two dots, at the scale of the screen: equal circles side
-    // by side, edge to edge, starting under the headline and running off the
-    // bottom of the screen.
-    const gap = mobile ? 8 : 16
-    const d = (w - gap) / 2
-    const under = (stop ? stop.y + stop.size * 0.3 : h * 0.3) + gap * 2
-    const cy = Math.max(h * 0.62, under + d / 2)
-    return {
-      lower: { x: d / 2, y: cy, d },
-      upper: { x: w - d / 2, y: cy, d },
-    }
-  }
-  if (id === "dot" && stop) {
-    // The blue circle is the headline's full stop.
-    const b = stop.size * 0.34
-    const d = mobile ? Math.min(w * 1.0, h * 0.56) : Math.min(w * 0.6, h * 0.92)
-    return {
-      upper: { x: stop.x + b / 2 + stop.size * 0.06, y: stop.y - b / 2, d: b },
-      lower: {
-        x: mobile ? w * 0.56 : w * 0.64,
-        y: mobile ? h * 0.66 : h * 0.68,
-        d,
-      },
-    }
-  }
-  // Diagonal: blue top right, the photograph off the bottom left.
-  const b = mobile ? Math.min(w * 0.43, h * 0.3) : Math.min(w * 0.34, h * 0.42)
-  const d = mobile ? Math.min(w * 1.05, h * 0.58) : w * 0.8
+  /** The bottom of the headline, in scene px. */
+  headlineBottom: number | null
+): { upper: Circle; lower: Circle } {
+  const gap = mobile ? 8 : 16
+  const d = (w - gap) / 2
+  const under = (headlineBottom ?? h * 0.3) + gap * 2
+  const cy = Math.max(h * 0.62, under + d / 2)
   return {
-    upper: { x: w * 0.77, y: h * 0.27, d: b },
-    lower: {
-      x: (mobile ? -w * 0.08 : 0) + d / 2,
-      y: h * (mobile ? 0.38 : 0.32) + d / 2,
-      d,
-    },
+    lower: { x: d / 2, y: cy, d },
+    upper: { x: w - d / 2, y: cy, d },
   }
 }
 
@@ -201,18 +170,6 @@ export function PortalHero({
   const missionCopyRef = useRef<HTMLDivElement>(null)
   const missionCtaRef = useRef<HTMLDivElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
-  const stopRef = useRef<HTMLSpanElement>(null)
-  const arrangement = useVariant("portal")
-  /*
-   * Read through a ref so a switch doesn't re-run the scene effect: its
-   * cleanup releases the dither's WebGL context, and a canvas whose context
-   * was released can't take a new one (it paints white).
-   */
-  const arrangementRef = useRef(arrangement)
-  useEffect(() => {
-    arrangementRef.current = arrangement
-    window.dispatchEvent(new Event("resize"))
-  }, [arrangement])
   useEffect(() => {
     const element = track.current
     if (!element) return
@@ -303,24 +260,15 @@ export function PortalHero({
         const mobile = window.matchMedia(MOBILE_QUERY).matches
         const headline = headlineRef.current
         const band = headline?.offsetParent as HTMLElement | null
-        // The full stop: the end of the headline's last line, in scene px.
-        const stopEl = stopRef.current
-        let stop: { x: number; y: number; size: number } | null = null
-        if (stopEl && band) {
-          const size = parseFloat(getComputedStyle(stopEl).fontSize)
-          stop = {
-            x: band.offsetLeft + stopEl.offsetLeft,
-            y: band.offsetTop + stopEl.offsetTop + stopEl.offsetHeight * 0.8,
-            size,
-          }
-        }
-        const arrangement = arrangementRef.current
-        const { upper, lower } = arrangementOf(
-          arrangement,
+        const headlineBottom =
+          headline && band
+            ? band.offsetTop + headline.offsetTop + headline.offsetHeight
+            : null
+        const { upper, lower } = circlesOf(
           width,
           height,
           mobile,
-          stop
+          headlineBottom
         )
         element.style.setProperty("--upper-x", `${upper.x}px`)
         element.style.setProperty("--upper-y", `${upper.y}px`)
@@ -340,25 +288,12 @@ export function PortalHero({
         const dy = lower.y - upper.y
         const length = Math.max(1, Math.hypot(dx, dy))
         const rest = length - upperRadius - lowerRadius
-        // Diagonal keeps its original rule (touching plus a gap); the others
-        // start where they were placed and close to that gap as they play.
+        // Starts where it was placed and closes to a fixed gap as it plays.
         const gap = mobile ? 12 : 24
         const separation =
-          growingRadius +
-          lowerRadius * scale +
-          (arrangement === "diagonal" ? gap : Math.max(gap, rest * (1 - p)))
+          growingRadius + lowerRadius * scale + Math.max(gap, rest * (1 - p))
         const x = ux + (dx / length) * separation
-        let y = uy + (dy / length) * separation
-        // The lower circle is sized by width, the headline partly by height,
-        // so on wide or short screens the circle rises into the headline.
-        // Push it clear at rest, easing back to its path as the scene plays.
-        // offset* metrics ignore the headline's own scroll transform.
-        if (headline && band && arrangement !== "dot") {
-          const headlineBottom =
-            band.offsetTop + headline.offsetTop + headline.offsetHeight
-          const circleTop = y - lowerRadius * scale
-          y += Math.max(0, headlineBottom + 24 - circleTop) * (1 - p)
-        }
+        const y = uy + (dy / length) * separation
         element.style.setProperty("--lower-x", `${x}px`)
         element.style.setProperty("--lower-y", `${y}px`)
         element.style.setProperty("--lower-visible", "visible")
@@ -395,10 +330,10 @@ export function PortalHero({
         ref={track}
         className={cn(
           dissolve ? "h-[560vh]" : "h-[200vh]",
-          // Circle sizes are written by the component per arrangement;
-          // these are the diagonal one's, for the first paint.
+          // Circle sizes are written by the component (circlesOf); these
+          // match them for the first paint.
           "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]",
-          "[--diameter:min(43vw,30vh)] [--lower-diameter:min(105vw,58vh)] md:[--diameter:min(34vw,42vh)] md:[--lower-diameter:80vw]"
+          "[--diameter:calc((100vw-8px)/2)] [--lower-diameter:calc((100vw-8px)/2)] md:[--diameter:calc((100vw-16px)/2)] md:[--lower-diameter:calc((100vw-16px)/2)]"
         )}
       >
         <section
@@ -433,16 +368,7 @@ export function PortalHero({
             >
               Technology for
               <br />
-              Organisations
-              {/* In the full-stop arrangement the blue circle is the stop. */}
-              <span
-                ref={stopRef}
-                className={cn(
-                  circles && arrangement === "dot" && "text-transparent"
-                )}
-              >
-                .
-              </span>
+              Organisations.
             </h1>
           </div>
           {/* Always dark: white type over a shaded photograph in either theme. */}
@@ -506,7 +432,7 @@ export function PortalHero({
           </figure>
           {circles && (
             <button
-              className="group absolute right-[5vw] bottom-22 z-8 flex cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-brand-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
+              className="group absolute bottom-22 left-1/2 z-8 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-brand-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
               aria-label="Scroll to the next section"
               onClick={() => {
                 const element = track.current

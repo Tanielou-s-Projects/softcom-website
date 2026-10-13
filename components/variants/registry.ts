@@ -14,14 +14,6 @@ export const VARIANTS = {
       { id: "grid", label: "Bordered grid" },
     ],
   },
-  portal: {
-    label: "Hero circles",
-    options: [
-      { id: "diagonal", label: "Diagonal" },
-      { id: "pair", label: "Pair" },
-      { id: "dot", label: "Full stop" },
-    ],
-  },
   tags: {
     label: "Sector tags",
     options: [
