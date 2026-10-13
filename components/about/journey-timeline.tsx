@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "@phosphor-icons/react"
 import { AnimatePresence, motion, useInView } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import { milestones, type Milestone } from "@/components/about/content"
 import { bodyText, Container, headingText } from "@/components/landing/section"
 
@@ -25,6 +26,14 @@ const YEAR_MAX = 2026
 /** 0–1 position of a year across the span; a range ("2010–2015") sits at its start. */
 const posOf = (year: string) =>
   (parseInt(year, 10) - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)
+/**
+ * Phones space the marks evenly instead: at ~340px a year is 18px wide, so
+ * 2015–2018 and 2025/2026 stacked on top of each other.
+ */
+const evenPos = (index: number) => index / (items.length - 1)
+
+/** How long the ruler takes to draw in on arrival, before it starts advancing. */
+const DRAW_S = 1.1
 
 /** Decorative background rhythm — a dense, low-contrast ruler behind the marks. */
 const MINOR_TICKS = 56
@@ -47,15 +56,32 @@ export function JourneyTimeline({
   const dragging = React.useRef(false)
   const wheelAt = React.useRef(0)
   const inView = useInView(rootRef, { amount: 0.4 })
+  /*
+   * Arrival is the whole ruler on screen, not a sliver of the section: the
+   * timeline draws in from 2007 then, and only then starts advancing — so a
+   * reader never lands on it halfway through.
+   */
+  const arrived = useInView(rulerRef, { once: true, amount: 1 })
+  const narrow = useMediaQuery("(max-width: 767.98px)")
+  const at = (i: number) => (narrow ? evenPos(i) : posOf(items[i].year))
 
   const current = items[active]
 
-  // Auto-advance while visible and untouched.
+  // Auto-advance while visible and untouched, once the draw-in has finished.
   React.useEffect(() => {
-    if (!inView || paused) return
-    const id = setInterval(() => setActive((a) => (a + 1) % items.length), 3800)
-    return () => clearInterval(id)
-  }, [inView, paused])
+    if (!arrived || !inView || paused) return
+    let id = 0
+    const start = window.setTimeout(() => {
+      id = window.setInterval(
+        () => setActive((a) => (a + 1) % items.length),
+        3800
+      )
+    }, DRAW_S * 1000)
+    return () => {
+      window.clearTimeout(start)
+      window.clearInterval(id)
+    }
+  }, [arrived, inView, paused])
 
   const clampGo = (dir: number) =>
     setActive((a) => (a + dir + items.length) % items.length)
@@ -68,8 +94,8 @@ export function JourneyTimeline({
     const x = Math.min(Math.max((clientX - r.left) / r.width, 0), 1)
     let best = 0
     let bestDist = Infinity
-    items.forEach((m, i) => {
-      const d = Math.abs(posOf(m.year) - x)
+    items.forEach((_, i) => {
+      const d = Math.abs(at(i) - x)
       if (d < bestDist) {
         bestDist = d
         best = i
@@ -160,20 +186,33 @@ export function JourneyTimeline({
           "focus-visible:ring-2 focus-visible:ring-brand-accent/50 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
         )}
       >
-        {/* Minor rhythm ticks. */}
-        <div className="pointer-events-none absolute inset-x-0 top-8 flex items-start justify-between">
+        {/* Minor rhythm ticks — drawn in left to right on arrival. */}
+        <motion.div
+          className="pointer-events-none absolute inset-x-0 top-8 flex items-start justify-between"
+          initial={{ clipPath: "inset(0 100% 0 0)" }}
+          animate={{
+            clipPath: arrived ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
+          }}
+          transition={{ duration: DRAW_S, ease: [0.22, 1, 0.36, 1] }}
+        >
           {Array.from({ length: MINOR_TICKS }).map((_, i) => (
             <span key={i} className="h-4 w-px bg-border/70" />
           ))}
-        </div>
+        </motion.div>
 
         {/* Baseline. */}
-        <div className="pointer-events-none absolute inset-x-0 top-8 h-px bg-border" />
+        <motion.div
+          className="pointer-events-none absolute inset-x-0 top-8 h-px origin-left bg-border"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: arrived ? 1 : 0 }}
+          transition={{ duration: DRAW_S, ease: [0.22, 1, 0.36, 1] }}
+        />
 
         {/* Sliding playhead. */}
         <motion.div
           className="pointer-events-none absolute top-0 -translate-x-1/2"
-          animate={{ left: `${posOf(current.year) * 100}%` }}
+          initial={{ opacity: 0 }}
+          animate={{ left: `${at(active) * 100}%`, opacity: arrived ? 1 : 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 30 }}
         >
           <span className="block size-2 -translate-x-1/2 translate-y-1 rounded-full bg-brand-accent shadow-[0_0_12px] shadow-brand-accent/60" />
@@ -184,10 +223,17 @@ export function JourneyTimeline({
           const isActive = i === active
           const isHover = i === hovered && !isActive
           return (
-            <div
+            <motion.div
               key={m.year}
               className="absolute top-0 flex -translate-x-1/2 flex-col items-center"
-              style={{ left: `${posOf(m.year) * 100}%` }}
+              style={{ left: `${at(i) * 100}%` }}
+              // Each mark lands as the drawn line reaches it.
+              initial={{ opacity: 0 }}
+              animate={{ opacity: arrived ? 1 : 0 }}
+              transition={{
+                duration: 0.3,
+                delay: arrived ? at(i) * DRAW_S : 0,
+              }}
             >
               <button
                 type="button"
@@ -211,22 +257,23 @@ export function JourneyTimeline({
                 />
               </button>
 
-              {/* Year label under every mark. */}
+              {/* Year label under every mark — only the active one on
+                  phones, where the labels can't all fit. */}
               <motion.span
                 animate={{
                   color: isActive
                     ? "var(--color-brand-accent)"
                     : "var(--color-muted-foreground)",
-                  opacity: isActive || isHover ? 1 : 0.7,
+                  opacity: isActive || isHover ? 1 : narrow ? 0 : 0.7,
                 }}
-                className="mt-1 font-mono text-xs tracking-wide"
+                className="mt-1 font-mono text-xs tracking-wide whitespace-nowrap"
               >
                 {m.year}
               </motion.span>
 
               {/* Hover preview bubble (non-active). */}
               <AnimatePresence>
-                {isHover && (
+                {isHover && !narrow && (
                   <motion.span
                     initial={{ opacity: 0, y: 6, scale: 0.96 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -238,7 +285,7 @@ export function JourneyTimeline({
                   </motion.span>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           )
         })}
       </div>
@@ -283,7 +330,7 @@ function SideYear({ m }: { m: Milestone }) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.3 }}
-        className="font-heading text-6xl leading-none text-foreground lg:text-8xl"
+        className="font-heading text-5xl leading-none text-foreground sm:text-6xl lg:text-8xl"
       >
         {m.year}
       </motion.p>
