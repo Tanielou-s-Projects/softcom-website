@@ -9,9 +9,13 @@ import { structureTool } from "sanity/structure"
 import { apiVersion, dataset, projectId } from "@/sanity/env"
 import { schema } from "@/sanity/schemaTypes"
 import { structure } from "@/sanity/structure"
+import { SoftcomIcon, theme } from "@/sanity/theme"
 
 export default defineConfig({
   basePath: "/studio",
+  title: "Softcom",
+  icon: SoftcomIcon,
+  theme,
   projectId,
   dataset,
   schema: {
