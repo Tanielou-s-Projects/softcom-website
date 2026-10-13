@@ -232,26 +232,6 @@ function SolutionAreas() {
               {paragraph}
             </p>
           ))}
-          <nav
-            aria-label="Solution areas"
-            className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-foreground"
-          >
-            {solutions.map((solution, index) => (
-              <span key={solution.id} className="flex items-center gap-3">
-                {index > 0 ? (
-                  <span aria-hidden className="text-muted-foreground">
-                    ·
-                  </span>
-                ) : null}
-                <Link
-                  href={`#${solution.id}`}
-                  className="underline-offset-4 hover:underline"
-                >
-                  {solution.title}
-                </Link>
-              </span>
-            ))}
-          </nav>
         </Reveal>
       </Container>
 
