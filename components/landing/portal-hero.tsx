@@ -13,6 +13,7 @@ import {
   primaryPill,
 } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
+import { useVariant } from "@/components/variants/variant-context"
 import { createDitherField } from "@/components/motion/dither-field"
 import { HeroHeader } from "./hero-header"
 
@@ -128,6 +129,65 @@ function ScrambleStatement({
   )
 }
 
+type Circle = { x: number; y: number; d: number }
+type Arrangement = { upper: Circle; lower: Circle }
+type ArrangementId = "diagonal" | "pair" | "dot"
+
+/**
+ * Where the two circles start, in px for a viewport, as centres and
+ * diameters. `upper` is the blue circle that grows into Progress for Society
+ * (always toward the centre); `lower` is the photograph, which keeps a fixed
+ * gap from it as it grows. Compared on the variant switcher.
+ */
+function arrangementOf(
+  id: ArrangementId,
+  w: number,
+  h: number,
+  mobile: boolean,
+  /** The headline's last line, for the full-stop arrangement. */
+  stop: { x: number; y: number; size: number } | null
+): Arrangement {
+  if (id === "pair") {
+    // Side by side on one row, like the two dots of the wordmark.
+    const d = mobile
+      ? Math.min(w * 0.62, h * 0.34)
+      : Math.min(w * 0.36, h * 0.56)
+    const b = d * 0.62
+    const cy = h * (mobile ? 0.6 : 0.64)
+    const gap = mobile ? 12 : 24
+    // The pair is centred as one group across the screen.
+    const left = (w - (d + gap + b)) / 2 + d / 2
+    return {
+      lower: { x: left, y: cy, d },
+      upper: { x: left + d / 2 + gap + b / 2, y: cy, d: b },
+    }
+  }
+  if (id === "dot" && stop) {
+    // The blue circle is the headline's full stop.
+    const b = stop.size * 0.34
+    const d = mobile ? Math.min(w * 1.0, h * 0.56) : Math.min(w * 0.6, h * 0.92)
+    return {
+      upper: { x: stop.x + b / 2 + stop.size * 0.06, y: stop.y - b / 2, d: b },
+      lower: {
+        x: mobile ? w * 0.56 : w * 0.64,
+        y: mobile ? h * 0.66 : h * 0.68,
+        d,
+      },
+    }
+  }
+  // Diagonal: blue top right, the photograph off the bottom left.
+  const b = mobile ? Math.min(w * 0.43, h * 0.3) : Math.min(w * 0.34, h * 0.42)
+  const d = mobile ? Math.min(w * 1.05, h * 0.58) : w * 0.8
+  return {
+    upper: { x: w * 0.77, y: h * 0.27, d: b },
+    lower: {
+      x: (mobile ? -w * 0.08 : 0) + d / 2,
+      y: h * (mobile ? 0.38 : 0.32) + d / 2,
+      d,
+    },
+  }
+}
+
 // Illustrative story using existing photography, not a customer case study.
 export function PortalHero({
   variant,
@@ -143,6 +203,18 @@ export function PortalHero({
   const missionCopyRef = useRef<HTMLDivElement>(null)
   const missionCtaRef = useRef<HTMLDivElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
+  const stopRef = useRef<HTMLSpanElement>(null)
+  const arrangement = useVariant("portal")
+  /*
+   * Read through a ref so a switch doesn't re-run the scene effect: its
+   * cleanup releases the dither's WebGL context, and a canvas whose context
+   * was released can't take a new one (it paints white).
+   */
+  const arrangementRef = useRef(arrangement)
+  useEffect(() => {
+    arrangementRef.current = arrangement
+    window.dispatchEvent(new Event("resize"))
+  }, [arrangement])
   useEffect(() => {
     const element = track.current
     if (!element) return
@@ -231,32 +303,59 @@ export function PortalHero({
         const width = element.clientWidth
         const height = window.innerHeight
         const mobile = window.matchMedia(MOBILE_QUERY).matches
-        const upperRadius =
-          Math.min(
-            width * (mobile ? 0.43 : 0.34),
-            height * (mobile ? 0.3 : 0.42)
-          ) / 2
-        const lowerRadius =
-          (mobile ? Math.min(width * 1.05, height * 0.58) : width * 0.8) / 2
+        const headline = headlineRef.current
+        const band = headline?.offsetParent as HTMLElement | null
+        // The full stop: the end of the headline's last line, in scene px.
+        const stopEl = stopRef.current
+        let stop: { x: number; y: number; size: number } | null = null
+        if (stopEl && band) {
+          const size = parseFloat(getComputedStyle(stopEl).fontSize)
+          stop = {
+            x: band.offsetLeft + stopEl.offsetLeft,
+            y: band.offsetTop + stopEl.offsetTop + stopEl.offsetHeight * 0.8,
+            size,
+          }
+        }
+        const arrangement = arrangementRef.current
+        const { upper, lower } = arrangementOf(
+          arrangement,
+          width,
+          height,
+          mobile,
+          stop
+        )
+        element.style.setProperty("--upper-x", `${upper.x}px`)
+        element.style.setProperty("--upper-y", `${upper.y}px`)
+        element.style.setProperty("--diameter", `${upper.d}px`)
+        element.style.setProperty("--lower-diameter", `${lower.d}px`)
+        const upperRadius = upper.d / 2
+        const lowerRadius = lower.d / 2
         const scale = 1 - p * 0.72
         const growingRadius =
           upperRadius + (Math.max(width, height) * 0.75 - upperRadius) * p
+        // The blue circle's centre travels to the middle of the screen.
+        const ux = upper.x + (width / 2 - upper.x) * p
+        const uy = upper.y + (height / 2 - upper.y) * p
         // Push along the line joining the initial centres. Centre distance
         // always equals both rendered radii plus a gap, even on reverse scroll.
-        const dx = (mobile ? -width * 0.08 : 0) + lowerRadius - width * 0.77
-        const dy = height * (mobile ? 0.38 : 0.32) + lowerRadius - height * 0.27
-        const length = Math.hypot(dx, dy)
+        const dx = lower.x - upper.x
+        const dy = lower.y - upper.y
+        const length = Math.max(1, Math.hypot(dx, dy))
+        const rest = length - upperRadius - lowerRadius
+        // Diagonal keeps its original rule (touching plus a gap); the others
+        // start where they were placed and close to that gap as they play.
+        const gap = mobile ? 12 : 24
         const separation =
-          growingRadius + lowerRadius * scale + (mobile ? 12 : 24)
-        const x = width * (0.77 - p * 0.27) + (dx / length) * separation
-        let y = height * (0.27 + p * 0.23) + (dy / length) * separation
+          growingRadius +
+          lowerRadius * scale +
+          (arrangement === "diagonal" ? gap : Math.max(gap, rest * (1 - p)))
+        const x = ux + (dx / length) * separation
+        let y = uy + (dy / length) * separation
         // The lower circle is sized by width, the headline partly by height,
         // so on wide or short screens the circle rises into the headline.
         // Push it clear at rest, easing back to its path as the scene plays.
         // offset* metrics ignore the headline's own scroll transform.
-        const headline = headlineRef.current
-        const band = headline?.offsetParent as HTMLElement | null
-        if (headline && band) {
+        if (headline && band && arrangement !== "dot") {
           const headlineBottom =
             band.offsetTop + headline.offsetTop + headline.offsetHeight
           const circleTop = y - lowerRadius * scale
@@ -298,7 +397,10 @@ export function PortalHero({
         ref={track}
         className={cn(
           dissolve ? "h-[560vh]" : "h-[200vh]",
-          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]"
+          // Circle sizes are written by the component per arrangement;
+          // these are the diagonal one's, for the first paint.
+          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]",
+          "[--diameter:min(43vw,30vh)] [--lower-diameter:min(105vw,58vh)] md:[--diameter:min(34vw,42vh)] md:[--lower-diameter:80vw]"
         )}
       >
         <section
@@ -306,7 +408,7 @@ export function PortalHero({
           className={cn(
             "sticky top-0 isolate h-screen overflow-hidden motion-reduce:relative motion-reduce:h-auto motion-reduce:min-h-screen",
             circles
-              ? "[--diameter:min(43vw,30vh)] [--hero-type-size:clamp(20px,5.3vw,38px)] [--lower-diameter:min(105vw,58vh)] md:[--diameter:min(34vw,42vh)] md:[--hero-type-size:clamp(28px,min(5.7vw,11vh),100px)] md:[--lower-diameter:80vw]"
+              ? "[--hero-type-size:clamp(20px,5.3vw,38px)] md:[--hero-type-size:clamp(28px,min(5.7vw,11vh),100px)]"
               : "border border-border"
           )}
         >
@@ -333,7 +435,16 @@ export function PortalHero({
             >
               Technology for
               <br />
-              Organisations.
+              Organisations
+              {/* In the full-stop arrangement the blue circle is the stop. */}
+              <span
+                ref={stopRef}
+                className={cn(
+                  circles && arrangement === "dot" && "text-transparent"
+                )}
+              >
+                .
+              </span>
             </h1>
           </div>
           {/* Always dark: white type over a shaded photograph in either theme. */}

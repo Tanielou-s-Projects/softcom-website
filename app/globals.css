@@ -371,11 +371,16 @@
     width: calc(100% - var(--split) + var(--split) * var(--p));
     height: calc(var(--row) + (100% - var(--row)) * var(--p));
   }
-  /* Circles: a true circle until its edge has passed beyond the viewport. */
+  /*
+   * Circles: a true circle until its edge has passed beyond the viewport. It
+   * starts where the arrangement puts it (--upper-x/y, written by the
+   * component; the fallbacks are the diagonal one) and travels to the centre.
+   */
   .softcom-portal-circle {
     clip-path: circle(
       calc(var(--diameter) / 2 + (75vmax - var(--diameter) / 2) * var(--p)) at
-        calc(77% - 27% * var(--p)) calc(27% + 23% * var(--p))
+        calc(var(--upper-x, 77%) + (50% - var(--upper-x, 77%)) * var(--p))
+        calc(var(--upper-y, 27%) + (50% - var(--upper-y, 27%)) * var(--p))
     );
   }
   /* Circles: centre is solved in JS against the growing circle's radius. */
