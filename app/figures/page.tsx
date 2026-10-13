@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { LightTableFigure } from "@/components/solutions/figures/light-table/figure"
 import { RailsFigure } from "@/components/solutions/figures/rails/figure"
 import { PLAYGROUND_ENABLED } from "@/lib/playground-access"
 
@@ -16,6 +17,7 @@ export default function Page() {
   return (
     <main className="mx-auto flex max-w-[880px] flex-col gap-10 px-6 py-24">
       <RailsFigure />
+      <LightTableFigure />
     </main>
   )
 }
