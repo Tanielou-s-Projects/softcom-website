@@ -206,3 +206,22 @@ export const deliveryClose = {
   text: "We stay accountable for what the initiative achieves, not only for what we build.",
   cta: { label: "Discuss an initiative", href: "/contact" },
 }
+
+/**
+ * Powering Initiatives' "What you can entrust to us", split into the stages
+ * the copy lists, so the page can set them one by one.
+ */
+export const entrust = {
+  heading: "What you can entrust to us",
+  items: [
+    "Initiative design",
+    "Participant recruitment",
+    "Technology deployment",
+    "Field operations",
+    "Training",
+    "Payment coordination",
+    "Results assessment",
+  ],
+  outro:
+    "Our involvement follows the initiative’s needs. We deliver directly, manage partners or combine both, with clear responsibility for execution and results.",
+}

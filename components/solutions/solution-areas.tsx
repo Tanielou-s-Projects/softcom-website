@@ -15,7 +15,7 @@ import {
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { FieldLineFigure } from "@/components/solutions/figures/field-line/figure"
 import { LightTableFigure } from "@/components/solutions/figures/light-table/figure"
-import { RailsFigure } from "@/components/solutions/figures/rails/figure"
+import { PlatformFigure } from "@/components/solutions/figures/platform/figure"
 import {
   deliveryClose,
   deliveryPhases,
@@ -97,7 +97,7 @@ function Cards({
 
 /** Each area's figure, full width in its own panel. */
 const FIGURES: Record<string, React.ReactNode> = {
-  "digital-infrastructure": <RailsFigure />,
+  "digital-infrastructure": <PlatformFigure />,
   "applied-intelligence": <LightTableFigure />,
   "powering-initiatives": <FieldLineFigure />,
 }
@@ -253,4 +253,4 @@ function SolutionAreas() {
   )
 }
 
-export { SolutionAreas, DeliveryPhases }
+export { SolutionAreas, DeliveryPhases, Eyebrow, Cards }
