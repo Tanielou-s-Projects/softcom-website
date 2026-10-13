@@ -53,3 +53,11 @@
   font-family: var(--anatomy-mono);
   letter-spacing: 0.08em;
 }
+
+/* The training booth's screen: a progress bar that fills as people pass. */
+.softcom-iso .iso-track {
+  fill: var(--anatomy-faint);
+}
+.softcom-iso .iso-progress {
+  fill: var(--anatomy-lit);
+}
