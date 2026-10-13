@@ -17,6 +17,11 @@ const PULSES = 3
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
 
+/** Clear space kept between the mark and the hero copy, in px. */
+const COPY_GAP = 32
+/** The share of its height every layout's mark stays within, top down. */
+const MARK_SHARE = 0.6
+
 type Disc = { x: number; y: number; r: number }
 /** A conduit between two discs, by index; `half` is half its thickness. */
 type Tube = { a: number; b: number; half: number }
@@ -136,6 +141,25 @@ function DitherMark({
     const still = document.createElement("canvas")
     const stillCtx = still.getContext("2d")
 
+    /*
+     * The hero's copy sits over the foot of the canvas. Each layout keeps its
+     * mark inside the top 60% of the height it is given, so when the copy
+     * rises into that (a short screen, a long title) the mark is laid out in
+     * a shorter height and shrinks to stay above it. With room to spare it
+     * draws exactly as designed.
+     */
+    const copy = canvas
+      .closest("section")
+      ?.querySelector<HTMLElement>("[data-hero-copy]")
+    const fitHeight = (h: number) => {
+      if (!copy) return h
+      const room =
+        copy.getBoundingClientRect().top -
+        canvas.getBoundingClientRect().top -
+        COPY_GAP
+      return Math.max(160, Math.min(h, room / MARK_SHARE))
+    }
+
     const sample = () => {
       const ratio = Math.min(window.devicePixelRatio || 1, 2)
       const w = canvas.clientWidth
@@ -147,7 +171,7 @@ function DitherMark({
       const rows = Math.ceil(h / CELL)
       if (!cols || !rows) return
 
-      const { discs, tubes } = LAYOUTS[layout](w, h, w < 768)
+      const { discs, tubes } = LAYOUTS[layout](w, fitHeight(h), w < 768)
       const left = Math.min(...discs.map((d) => d.x - d.r))
       const right = Math.max(...discs.map((d) => d.x + d.r))
       const segments = tubes.map((tube) => {
@@ -287,6 +311,7 @@ function DitherMark({
       paint(progress)
     })
     resize.observe(canvas)
+    if (copy) resize.observe(copy)
     return () => {
       resize.disconnect()
       sceneRef.current = null

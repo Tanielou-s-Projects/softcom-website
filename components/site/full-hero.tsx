@@ -45,33 +45,39 @@ function FullHero({
   className?: string
 }) {
   return (
-    <section
-      className={cn(
-        "dark relative isolate flex h-svh min-h-[640px] flex-col overflow-hidden bg-black text-foreground",
-        align === "top" ? "justify-between" : "justify-end",
-        className
-      )}
-    >
-      <div className="absolute inset-0 -z-10">{background}</div>
-      <Container
+    // The fade sits below the hero, not inside it, so the copy keeps its
+    // place at the foot of the screen.
+    <div className="flex flex-col">
+      <section
         className={cn(
-          "flex flex-col gap-10 lg:gap-14",
-          align === "top" ? "pt-32 lg:pt-36" : "pb-10 lg:pb-16"
+          "dark relative isolate flex h-svh min-h-[640px] flex-col overflow-hidden bg-black text-foreground",
+          align === "top" ? "justify-between" : "justify-end",
+          className
         )}
       >
-        <Reveal className="flex flex-col items-start gap-6">
-          <Badge variant="brand">{badge}</Badge>
-          <h1 className={cn(displayText, "max-w-[20ch] text-foreground")}>
-            {title}
-          </h1>
-          {lead ? (
-            <p className={cn(leadText, "max-w-[60ch] text-foreground/80")}>
-              {lead}
-            </p>
-          ) : null}
-        </Reveal>
-        {rail ? <Reveal delay={0.1}>{rail}</Reveal> : null}
-      </Container>
+        <div className="absolute inset-0 -z-10">{background}</div>
+        {/* `data-hero-copy`: the dither marks measure it to stay clear of it. */}
+        <Container
+          data-hero-copy=""
+          className={cn(
+            "flex flex-col gap-10 lg:gap-14",
+            align === "top" ? "pt-32 lg:pt-36" : "pb-10 lg:pb-16"
+          )}
+        >
+          <Reveal className="flex flex-col items-start gap-6">
+            <Badge variant="brand">{badge}</Badge>
+            <h1 className={cn(displayText, "max-w-[20ch] text-foreground")}>
+              {title}
+            </h1>
+            {lead ? (
+              <p className={cn(leadText, "max-w-[60ch] text-foreground/80")}>
+                {lead}
+              </p>
+            ) : null}
+          </Reveal>
+          {rail ? <Reveal delay={0.1}>{rail}</Reveal> : null}
+        </Container>
+      </section>
       {/*
        * The blend into the page: black at the hero's foot easing to the
        * page's own background, so the next section doesn't start on a hard
@@ -81,7 +87,7 @@ function FullHero({
         aria-hidden
         className="h-24 shrink-0 bg-linear-to-b from-black to-(--page-bg) lg:h-40"
       />
-    </section>
+    </div>
   )
 }
 
@@ -143,12 +149,7 @@ function HeroPhoto({
     <div
       className={cn(
         "absolute inset-x-0 top-0",
-        raised
-          ? "bottom-[50%] lg:bottom-[40%]"
-          : film === "top"
-            ? // Ends where the hero's blend begins, so the front row is whole.
-              "bottom-24 lg:bottom-40"
-            : "bottom-0"
+        raised ? "bottom-[50%] lg:bottom-[40%]" : "bottom-0"
       )}
     >
       <Image
