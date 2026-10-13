@@ -38,3 +38,4 @@ next-env.d.ts
 
 # sanity typegen (intermediate schema extract; types.ts is committed)
 /sanity/extract.json
+.vercel
