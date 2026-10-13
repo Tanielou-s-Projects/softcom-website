@@ -1,3 +1,5 @@
+import type * as React from "react"
+
 import { partners, type Partner } from "@/components/landing/content"
 import { cn } from "@/lib/utils"
 
@@ -41,45 +43,85 @@ function Logo({ partner }: { partner: Partner }) {
 }
 
 /**
- * The partner strip under "Who we work with": the logos run past in one
- * slow loop that pauses under the pointer. With reduced motion it is a still,
- * wrapped row. The list is rendered twice for a seamless loop; the copy is
- * hidden from assistive tech.
+ * One moving row. The list is laid down twice so the loop is seamless (the
+ * keyframes move it by half its width), and each copy holds the row's
+ * logos twice so a copy is always wider than the screen. Repeats are hidden
+ * from assistive tech.
+ */
+function Row({
+  items,
+  reverse = false,
+  seconds,
+}: {
+  items: Partner[]
+  reverse?: boolean
+  seconds: number
+}) {
+  const run = [...items, ...items]
+  return (
+    <div
+      className={cn(
+        "group relative overflow-hidden py-3",
+        // Fade the ends so logos arrive and leave rather than clip.
+        "[mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]",
+        "motion-reduce:[mask-image:none]"
+      )}
+    >
+      <div
+        className="flex w-max animate-[partner-marquee_var(--marquee-s)_linear_infinite] items-center group-hover:[animation-play-state:paused] motion-reduce:w-full motion-reduce:animate-none motion-reduce:justify-center"
+        style={
+          {
+            "--marquee-s": `${seconds}s`,
+            animationDirection: reverse ? "reverse" : "normal",
+          } as React.CSSProperties
+        }
+      >
+        {[0, 1].map((copy) => (
+          <ul
+            key={copy}
+            aria-hidden={copy === 1 || undefined}
+            className={cn(
+              "flex shrink-0 items-center gap-16 pr-16 lg:gap-24 lg:pr-24",
+              copy === 1 && "motion-reduce:hidden",
+              "motion-reduce:w-full motion-reduce:shrink motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-x-10 motion-reduce:gap-y-8 motion-reduce:lg:gap-x-14 motion-reduce:pr-0"
+            )}
+          >
+            {run.map((partner, index) => (
+              <li
+                key={`${partner.name}-${index}`}
+                aria-hidden={index >= items.length || undefined}
+                className={cn(
+                  "hover:text-foreground",
+                  index >= items.length && "motion-reduce:hidden"
+                )}
+              >
+                <Logo partner={partner} />
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/**
+ * The partner strip under "Who we work with": two rows of logos drifting in
+ * opposite directions at slightly different speeds, each pausing under the
+ * pointer. With reduced motion both rows stand still, wrapped and centred.
  */
 function PartnerLogos({ className }: { className?: string }) {
+  const half = Math.ceil(partners.length / 2)
   return (
     <section
       aria-label="Organisations we have worked with"
-      className={cn("flex flex-col gap-6", className)}
+      className={cn(
+        "flex flex-col gap-4 text-foreground/55 lg:gap-6",
+        className
+      )}
     >
-      <div
-        className={cn(
-          "group relative overflow-hidden py-3 text-foreground/55",
-          // Fade the ends so logos arrive and leave rather than clip.
-          "[mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]",
-          "motion-reduce:[mask-image:none]"
-        )}
-      >
-        <div className="flex w-max animate-[partner-marquee_60s_linear_infinite] items-center group-hover:[animation-play-state:paused] motion-reduce:w-full motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-y-8">
-          {[0, 1].map((copy) => (
-            <ul
-              key={copy}
-              aria-hidden={copy === 1 || undefined}
-              className={cn(
-                "flex shrink-0 items-center gap-16 pr-16 lg:gap-24 lg:pr-24",
-                copy === 1 && "motion-reduce:hidden",
-                "motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:pr-0"
-              )}
-            >
-              {partners.map((partner) => (
-                <li key={partner.name} className="hover:text-foreground">
-                  <Logo partner={partner} />
-                </li>
-              ))}
-            </ul>
-          ))}
-        </div>
-      </div>
+      <Row items={partners.slice(0, half)} seconds={55} />
+      <Row items={partners.slice(half)} seconds={65} reverse />
     </section>
   )
 }
