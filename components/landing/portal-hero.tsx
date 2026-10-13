@@ -325,19 +325,14 @@ export function PortalHero({
               className={cn(
                 "font-heading font-normal tracking-[-0.055em]",
                 // Size before leading: tailwind-merge drops a leading-* that a later text-* follows.
-                /*
-                 * One line from md up, as the client asked: sized so the whole
-                 * line ends short of the blue circle (~55vw against its ~62vw).
-                 * Phones keep the two-line break.
-                 */
                 circles
-                  ? "text-(length:--hero-type-size) md:text-[clamp(28px,min(4.1vw,8vh),72px)] md:whitespace-nowrap"
+                  ? "text-(length:--hero-type-size)"
                   : "text-[clamp(20px,5.3vw,38px)] md:text-[clamp(30px,min(6.6vw,12vh),116px)]",
                 "leading-[1.04]"
               )}
             >
               Technology for
-              <br className={circles ? "md:hidden" : undefined} />{" "}
+              <br />
               Organisations.
             </h1>
           </div>
