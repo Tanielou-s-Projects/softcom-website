@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 
 import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 import { ContactDetails } from "@/components/contact/contact-details"
 import { ContactForm } from "@/components/contact/contact-form"
 import { contactIntro } from "@/components/contact/content"
@@ -34,23 +35,17 @@ export default function Page() {
       <Container className="flex flex-1 flex-col gap-16 pt-8 pb-6 lg:flex-row lg:items-start lg:gap-16">
         <div className="flex min-w-0 flex-1 flex-col gap-16 lg:sticky lg:top-6">
           {/*
-           * 68px, a shade above the 64px display size the rest of the site uses
-           * — the design sets this one line larger, on its own tight leading.
+           * The shared hero anatomy — badge, headline, lead — in its short
+           * form: the form has to stay above the fold, so no full-height frame.
+           * The column is sticky, so the reveal sits on its child, never the
+           * column itself.
            */}
-          {/* The column is sticky, so the reveals sit on its children, never the column itself. */}
-          <Reveal asChild>
-            <h1
-              className={cn(
-                displayText,
-                "leading-[0.804] text-foreground lg:text-[4.25rem]"
-              )}
-            >
+          <Reveal className="flex flex-col items-start gap-6">
+            <Badge variant="brand">Contact</Badge>
+            <h1 className={cn(displayText, "text-foreground")}>
               Let&apos;s talk.
             </h1>
-          </Reveal>
-
-          <Reveal asChild delay={0.1}>
-            <p className={cn(leadText, "leading-[1.6] text-foreground")}>
+            <p className={cn(leadText, "max-w-[60ch] text-foreground/80")}>
               {contactIntro}
             </p>
           </Reveal>

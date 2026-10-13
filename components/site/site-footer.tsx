@@ -5,7 +5,7 @@ import {
   footerNav,
   footerSocial,
 } from "@/components/landing/content"
-import { contactDetails, phoneHref } from "@/components/contact/content"
+import { contactDetails } from "@/components/contact/content"
 import { DitherWordmark } from "@/components/site/dither-wordmark"
 import { ThemeSwitcher } from "@/components/site/theme-switcher"
 
@@ -41,9 +41,6 @@ function SiteFooter() {
               className="w-fit hover:text-brand-accent"
             >
               {contactDetails.email}
-            </a>
-            <a href={phoneHref} className="w-fit hover:text-brand-accent">
-              {contactDetails.phone}
             </a>
           </div>
           <p className="text-sm leading-6 text-neutral-400">

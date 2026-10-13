@@ -17,7 +17,7 @@ export const VARIANTS = {
   tags: {
     label: "Sector tags",
     options: [
-      { id: "pill", label: "Pill" },
+      { id: "flat", label: "Flat tag" },
       { id: "index", label: "Index list" },
       { id: "inline", label: "Inline run" },
     ],

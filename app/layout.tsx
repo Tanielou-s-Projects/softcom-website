@@ -60,11 +60,11 @@ export default function RootLayout({
            */}
           <MotionConfig reducedMotion="user">
             {/*
-             * The design explorations are settled (dissolve hero, pill tags,
-             * no margins — the registry's defaults), so the picker and its
-             * provider are no longer mounted: every `useVariant` resolves to
-             * its default for everyone. Re-mount VariantProvider and
-             * VariantSwitcher here to explore again.
+             * The design explorations are settled (dissolve hero, Pair
+             * circles, flat tags, no margins — the registry's defaults), so
+             * the picker and its provider are not mounted: every `useVariant`
+             * resolves to its default for everyone. Re-mount VariantProvider
+             * and VariantSwitcher here to explore again.
              */}
             {children}
             <PixelPageTransition />

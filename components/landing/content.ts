@@ -53,16 +53,6 @@ export const sectors: Sector[] = [
     silhouette: "/landing/sector-enablers-silhouette.svg",
     tone: "neutral",
   },
-  {
-    id: "partners",
-    title: "Technology\nPartners",
-    description:
-      "We collaborate with technology companies whose platforms and solutions can serve organisations in our markets. Together, we explore opportunities and bring the technical expertise, local understanding and implementation capability needed to put those solutions to work.",
-    // The two partner platforms the deck names; extend as partnerships are confirmed.
-    tags: ["Kitsoft", "RTGS.global"],
-    silhouette: "/landing/sector-partners-silhouette.svg",
-    tone: "cyan",
-  },
 ]
 
 export type Capability = {
@@ -207,9 +197,9 @@ export const perspectives: Perspective[] = [
  *
  * The two caret items open dropdowns. Figma draws the carets but not the panels,
  * so their contents are grouped from the footer's IA — which lines up with the
- * Sanity document types (`leader`, `alumnus`, `role`, `caseStudy`). Each panel
- * repeats its own section as the first entry, because a menu trigger doesn't
- * navigate and the overview page would otherwise be unreachable from the header.
+ * Sanity document types (`leader`, `alumnus`, `role`, `caseStudy`). Clicking a
+ * caret item's label goes to its overview page; each panel still repeats that
+ * page as its first entry for keyboard users, whose Enter opens the panel.
  */
 export type HeaderNavItem = {
   label: string
@@ -241,15 +231,18 @@ export const headerNav: HeaderNavItem[] = [
   { label: "Contact", href: "/contact" },
 ]
 
+/*
+ * Columns and order as the client laid them out in the October 2026 feedback.
+ * Products lists Softcom's own four; the partner platforms (Liquio,
+ * RTGS.global) live on the Enterprise Products page.
+ */
 export const footerNav = [
   {
     heading: "Company",
     links: [
       { label: "About", href: "/about" },
-      { label: "Leadership", href: "/about#team" },
       { label: "Careers", href: "/careers" },
       { label: "Alumni", href: "/alumni" },
-      { label: "Join the alumni network", href: "/alumni#join" },
     ],
   },
   {
@@ -261,15 +254,12 @@ export const footerNav = [
     ],
   },
   {
-    // The footer is the site's full menu, so the products are listed by name.
     heading: "Products",
     links: [
-      { label: "Sentinel", href: "/enterprise-products#sentinel" },
-      { label: "Reckon", href: "/enterprise-products#reckon" },
-      { label: "Useforms", href: "/enterprise-products#useforms" },
       { label: "Lift", href: "/enterprise-products#lift" },
-      { label: "Liquio", href: "/enterprise-products#liquio" },
-      { label: "RTGS.global", href: "/enterprise-products#rtgs-global" },
+      { label: "Reckon", href: "/enterprise-products#reckon" },
+      { label: "Sentinel", href: "/enterprise-products#sentinel" },
+      { label: "UseForms", href: "/enterprise-products#useforms" },
     ],
   },
   {

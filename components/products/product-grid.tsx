@@ -1,11 +1,15 @@
 /* eslint-disable @next/next/no-img-element -- local SVG wordmark, intentionally not run through next/image */
 
+import Link from "next/link"
+
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   bodyText,
   cardHeadingText,
   Container,
   leadText,
+  primaryPill,
 } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import {
@@ -15,8 +19,24 @@ import {
   type Product,
 } from "@/components/products/content"
 import { DitherPanel } from "@/components/motion/dither-panel"
-import { ProductOverlay } from "@/components/products/product-overlay"
 import { SectionMark } from "@/components/products/section-mark"
+
+/** The way into a product's own page. */
+function ExploreLink({
+  product,
+  className,
+}: {
+  product: Product
+  className?: string
+}) {
+  return (
+    <Button asChild size="lg" className={cn(primaryPill, className)}>
+      <Link href={`/enterprise-products/${product.id}`}>
+        Explore {product.name}
+      </Link>
+    </Button>
+  )
+}
 
 /**
  * One product: a header strip over a dithered panel, or — for a partner
@@ -65,14 +85,18 @@ function ProductCard({ product }: { product: Product }) {
             />
           )}
 
-          <ProductOverlay product={product} />
+          <ExploreLink
+            product={product}
+            className="absolute right-3 bottom-3"
+          />
         </div>
       ) : (
-        <p
-          className={cn(bodyText, "px-6 pb-8 text-foreground lg:max-w-[600px]")}
-        >
-          {product.description}
-        </p>
+        <div className="flex flex-col items-start gap-6 px-6 pb-6">
+          <p className={cn(bodyText, "text-foreground lg:max-w-[600px]")}>
+            {product.description}
+          </p>
+          <ExploreLink product={product} />
+        </div>
       )}
     </article>
   )

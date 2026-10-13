@@ -22,19 +22,36 @@ const MOBILE_QUERY = "(max-width: 767.98px)"
 /*
  * The `dissolve` variant is one pinned scene, as fractions of its scroll
  * track: the circles play out, blue rises over them in the shared dither, the
- * statement decodes out of the blue, holds, and decodes back in; then the
- * same blue drains away to reveal the mission photograph and its copy. The
- * blue that arrived is the blue that leaves — there is no section edge.
+ * statement decodes out of the blue and holds; then the same blue drains away
+ * — taking the statement with it — to reveal the mission photograph and its
+ * copy. The blue that arrived is the blue that leaves — there is no section
+ * edge.
  */
 const PHASE = {
   circles: 0.26,
   dither: [0.28, 0.42],
   text: [0.4, 0.53],
   actions: [0.52, 0.56],
-  out: [0.62, 0.68],
+  /** Where the arrow rests on the statement, before the drain. */
+  hold: 0.62,
   drain: [0.68, 0.82],
+  /**
+   * The statement's exit, inside the drain: it fades while the draining
+   * front (top first) crosses the middle of the screen where it sits, so the
+   * dither reads as carrying it away. No exit of its own.
+   */
+  statementOut: [0.7, 0.75],
   mission: [0.79, 0.88],
   missionCta: [0.87, 0.92],
+} as const
+
+/**
+ * Where the scroll arrow stops, as fractions of the scene's scroll track: each
+ * scene's resting points, in order. Past the last, it leaves the scene.
+ */
+const SCROLL_STOPS = {
+  dissolve: [PHASE.circles, PHASE.hold, PHASE.missionCta[1]],
+  circles: [0.88],
 } as const
 
 /** Pixel glyphs for the decode — the same visual vocabulary as the dither. */
@@ -111,6 +128,33 @@ function ScrambleStatement({
   )
 }
 
+type Circle = { x: number; y: number; d: number }
+
+/**
+ * Where the two circles start, in px for a viewport, as centres and
+ * diameters: the wordmark's two dots at the scale of the screen. Equal
+ * circles side by side, edge to edge, starting under the headline and running
+ * off the bottom. `upper` is the blue circle that grows into Progress for
+ * Society (toward the centre); `lower` is the photograph, which keeps clear
+ * of it as it grows.
+ */
+function circlesOf(
+  w: number,
+  h: number,
+  mobile: boolean,
+  /** The bottom of the headline, in scene px. */
+  headlineBottom: number | null
+): { upper: Circle; lower: Circle } {
+  const gap = mobile ? 8 : 16
+  const d = (w - gap) / 2
+  const under = (headlineBottom ?? h * 0.3) + gap * 2
+  const cy = Math.max(h * 0.62, under + d / 2)
+  return {
+    lower: { x: d / 2, y: cy, d },
+    upper: { x: w - d / 2, y: cy, d },
+  }
+}
+
 // Illustrative story using existing photography, not a customer case study.
 export function PortalHero({
   variant,
@@ -178,9 +222,11 @@ export function PortalHero({
         } else if (fallbackRef.current) {
           fallbackRef.current.style.opacity = String(d)
         }
-        // In, hold, then back out the way it came — glyph by glyph.
-        const out = segment(raw, PHASE.out)
-        decode(reduce ? 1 : segment(raw, PHASE.text) * (1 - out))
+        // Decodes in and holds; the drain carries it out (see PHASE).
+        const out = reduce ? 0 : ease(segment(raw, PHASE.statementOut))
+        decode(reduce ? 1 : segment(raw, PHASE.text))
+        if (statementRef.current)
+          statementRef.current.style.opacity = String(1 - out)
         const actions = actionsRef.current
         if (actions) {
           const a = reduce ? 1 : ease(segment(raw, PHASE.actions)) * (1 - out)
@@ -212,37 +258,42 @@ export function PortalHero({
         const width = element.clientWidth
         const height = window.innerHeight
         const mobile = window.matchMedia(MOBILE_QUERY).matches
-        const upperRadius =
-          Math.min(
-            width * (mobile ? 0.43 : 0.34),
-            height * (mobile ? 0.3 : 0.42)
-          ) / 2
-        const lowerRadius =
-          (mobile ? Math.min(width * 1.05, height * 0.58) : width * 0.8) / 2
+        const headline = headlineRef.current
+        const band = headline?.offsetParent as HTMLElement | null
+        const headlineBottom =
+          headline && band
+            ? band.offsetTop + headline.offsetTop + headline.offsetHeight
+            : null
+        const { upper, lower } = circlesOf(
+          width,
+          height,
+          mobile,
+          headlineBottom
+        )
+        element.style.setProperty("--upper-x", `${upper.x}px`)
+        element.style.setProperty("--upper-y", `${upper.y}px`)
+        element.style.setProperty("--diameter", `${upper.d}px`)
+        element.style.setProperty("--lower-diameter", `${lower.d}px`)
+        const upperRadius = upper.d / 2
+        const lowerRadius = lower.d / 2
         const scale = 1 - p * 0.72
         const growingRadius =
           upperRadius + (Math.max(width, height) * 0.75 - upperRadius) * p
+        // The blue circle's centre travels to the middle of the screen.
+        const ux = upper.x + (width / 2 - upper.x) * p
+        const uy = upper.y + (height / 2 - upper.y) * p
         // Push along the line joining the initial centres. Centre distance
         // always equals both rendered radii plus a gap, even on reverse scroll.
-        const dx = (mobile ? -width * 0.08 : 0) + lowerRadius - width * 0.77
-        const dy = height * (mobile ? 0.38 : 0.32) + lowerRadius - height * 0.27
-        const length = Math.hypot(dx, dy)
+        const dx = lower.x - upper.x
+        const dy = lower.y - upper.y
+        const length = Math.max(1, Math.hypot(dx, dy))
+        const rest = length - upperRadius - lowerRadius
+        // Starts where it was placed and closes to a fixed gap as it plays.
+        const gap = mobile ? 12 : 24
         const separation =
-          growingRadius + lowerRadius * scale + (mobile ? 12 : 24)
-        const x = width * (0.77 - p * 0.27) + (dx / length) * separation
-        let y = height * (0.27 + p * 0.23) + (dy / length) * separation
-        // The lower circle is sized by width, the headline partly by height,
-        // so on wide or short screens the circle rises into the headline.
-        // Push it clear at rest, easing back to its path as the scene plays.
-        // offset* metrics ignore the headline's own scroll transform.
-        const headline = headlineRef.current
-        const band = headline?.offsetParent as HTMLElement | null
-        if (headline && band) {
-          const headlineBottom =
-            band.offsetTop + headline.offsetTop + headline.offsetHeight
-          const circleTop = y - lowerRadius * scale
-          y += Math.max(0, headlineBottom + 24 - circleTop) * (1 - p)
-        }
+          growingRadius + lowerRadius * scale + Math.max(gap, rest * (1 - p))
+        const x = ux + (dx / length) * separation
+        const y = uy + (dy / length) * separation
         element.style.setProperty("--lower-x", `${x}px`)
         element.style.setProperty("--lower-y", `${y}px`)
         element.style.setProperty("--lower-visible", "visible")
@@ -279,7 +330,10 @@ export function PortalHero({
         ref={track}
         className={cn(
           dissolve ? "h-[560vh]" : "h-[200vh]",
-          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]"
+          // Circle sizes are written by the component (circlesOf); these
+          // match them for the first paint.
+          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]",
+          "[--diameter:calc((100vw-8px)/2)] [--lower-diameter:calc((100vw-8px)/2)] md:[--diameter:calc((100vw-16px)/2)] md:[--lower-diameter:calc((100vw-16px)/2)]"
         )}
       >
         <section
@@ -287,7 +341,7 @@ export function PortalHero({
           className={cn(
             "sticky top-0 isolate h-screen overflow-hidden motion-reduce:relative motion-reduce:h-auto motion-reduce:min-h-screen",
             circles
-              ? "[--diameter:min(43vw,30vh)] [--hero-type-size:clamp(20px,5.3vw,38px)] [--lower-diameter:min(105vw,58vh)] md:[--diameter:min(34vw,42vh)] md:[--hero-type-size:clamp(28px,min(5.7vw,11vh),100px)] md:[--lower-diameter:80vw]"
+              ? "[--hero-type-size:clamp(20px,5.3vw,38px)] md:[--hero-type-size:clamp(28px,min(5.7vw,11vh),100px)]"
               : "border border-border"
           )}
         >
@@ -343,7 +397,7 @@ export function PortalHero({
             <h2
               id="progress-title"
               className={cn(
-                "softcom-portal-arrival relative z-1 p-3.5 font-heading font-normal motion-reduce:transform-none motion-reduce:opacity-100 md:p-6",
+                "softcom-portal-arrival relative z-1 p-3.5 text-center font-heading font-normal motion-reduce:transform-none motion-reduce:opacity-100 md:p-6",
                 circles
                   ? "text-(length:--hero-type-size) leading-[1.04] tracking-[-0.055em]"
                   : "text-[clamp(22px,12cqw,84px)] leading-[1.02] tracking-[-0.05em] md:text-[clamp(24px,10cqw,144px)]"
@@ -378,8 +432,8 @@ export function PortalHero({
           </figure>
           {circles && (
             <button
-              className="absolute right-[5vw] bottom-22 z-5 grid h-18 w-14 cursor-pointer place-items-center rounded-full text-brand-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
-              aria-label="Scroll to Progress for Society"
+              className="group absolute bottom-22 left-1/2 z-8 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-brand-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
+              aria-label="Scroll to the next section"
               onClick={() => {
                 const element = track.current
                 if (!element) return
@@ -387,21 +441,34 @@ export function PortalHero({
                   "(prefers-reduced-motion: reduce)"
                 ).matches
                 const top = window.scrollY + element.getBoundingClientRect().top
+                const range = element.offsetHeight - window.innerHeight
+                const progress = (window.scrollY - top) / range
+                /*
+                 * Section by section: each press goes to the next resting
+                 * point of the pinned scene, and past the last one to the
+                 * section below. It used to stop after the first.
+                 */
+                const next = SCROLL_STOPS[
+                  dissolve ? "dissolve" : "circles"
+                ].find((stop) => stop > progress + 0.01)
                 window.scrollTo({
                   top:
-                    top +
-                    (reduce
-                      ? element.offsetHeight
-                      : (element.offsetHeight - window.innerHeight) *
-                        (dissolve ? PHASE.circles : 0.88)),
+                    next === undefined || reduce
+                      ? top + element.offsetHeight
+                      : top + range * next,
                   behavior: reduce ? "instant" : "smooth",
                 })
               }}
             >
-              <PixelArrowDown
-                cascade
-                className="softcom-pixel-cascade size-12"
-              />
+              <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
+                Scroll
+              </span>
+              <span className="softcom-nudge group-hover:[animation-play-state:paused]">
+                <PixelArrowDown
+                  cascade
+                  className="softcom-pixel-cascade size-12"
+                />
+              </span>
             </button>
           )}
           {dissolve && (
@@ -446,14 +513,14 @@ export function PortalHero({
                       "max-w-[760px] leading-[1.1] text-foreground"
                     )}
                   >
-                    We believe stronger organisations are the foundation of a
-                    more prosperous society.
+                    {/* Trimmed from the deck's "We believe stronger organisations
+                        are the foundation of a more prosperous society." */}
+                    Stronger organisations build a more prosperous society.
                   </h2>
                   <p className={cn(leadText, "max-w-[576px] text-neutral-200")}>
-                    We build technology and capabilities that strengthen those
-                    organisations, helping them operate better, make informed
-                    decisions and create possibilities for the people who depend
-                    on them.
+                    We build the technology and capabilities that help them work
+                    better, decide better and serve the people who depend on
+                    them.
                   </p>
                 </div>
                 <div

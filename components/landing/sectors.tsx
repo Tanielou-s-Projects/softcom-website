@@ -1,11 +1,7 @@
-import Link from "next/link"
-
-import { Button } from "@/components/ui/button"
 import {
   bodyText,
   Container,
   headingText,
-  primaryPill,
 } from "@/components/landing/section"
 import { sectors } from "@/components/landing/content"
 import { SectorRow } from "@/components/landing/sector-row"
@@ -34,14 +30,6 @@ function Sectors() {
        * render as plain blocks until then.
        */}
       <SectorRow sectors={sectors} />
-
-      <Reveal asChild>
-        <div>
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href="/contact">Explore working with Softcom</Link>
-          </Button>
-        </div>
-      </Reveal>
     </Container>
   )
 }

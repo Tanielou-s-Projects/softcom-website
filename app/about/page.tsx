@@ -13,6 +13,7 @@ import {
   Bleed,
   bodyText,
   Container,
+  ghostPill,
   headingText,
   primaryPill,
 } from "@/components/landing/section"
@@ -20,7 +21,7 @@ import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { Team } from "@/components/landing/team"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
-import { SiteHeader } from "@/components/site/site-header"
+import { HeroHeader } from "@/components/landing/hero-header"
 
 export const metadata: Metadata = {
   title: "About",
@@ -36,10 +37,11 @@ export default function Page() {
   return (
     <div className="relative flex min-h-svh w-full flex-col">
       <BlueprintGrid />
-      <SiteHeader />
+      {/* Floats over the full-height hero rather than taking a band above it. */}
+      <HeroHeader />
 
       <div className="flex flex-col gap-60">
-        {/* Hero — Apollo-style statement over a circular team-photo band. */}
+        {/* Hero — the shared frame, over the circular team-photo band. */}
         <AboutHero />
 
         {/* Our Story */}
@@ -48,12 +50,6 @@ export default function Page() {
             <h2 className={cn(headingText, "max-w-[24ch] text-foreground")}>
               {story.heading}
             </h2>
-            <Link
-              href={story.cta.href}
-              className="text-sm underline underline-offset-4"
-            >
-              {story.cta.label}
-            </Link>
             <div className="flex max-w-[75ch] flex-col gap-4">
               {story.paragraphs.map((paragraph) => (
                 <p
@@ -116,16 +112,21 @@ export default function Page() {
               sense of ownership. Work alongside exceptional peers whose
               expertise complements yours and expands what you can achieve.
             </p>
-            <Button asChild size="lg" className={primaryPill}>
-              <Link href="/careers">Explore careers at Softcom</Link>
-            </Button>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button asChild size="lg" className={primaryPill}>
+                <Link href="/careers">Explore careers at Softcom</Link>
+              </Button>
+              <Button asChild size="lg" variant="ghost" className={ghostPill}>
+                <Link href="/alumni">Explore our alumni community</Link>
+              </Button>
+            </div>
           </Reveal>
         </Container>
 
         {/* Latest news — V7-style list. */}
         <News />
 
-        <Bleed className="flex flex-col gap-2.5 py-6">
+        <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
           <ClosingCta />
           <SiteFooter />
         </Bleed>
