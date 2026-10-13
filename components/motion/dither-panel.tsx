@@ -8,6 +8,8 @@ import { paintGlyphs } from "@/components/motion/dither-glyphs"
 import { cn } from "@/lib/utils"
 
 const BLUE = "#004bff"
+/** The grayscale body: the same weave without the brand colour. */
+const GREY = "#262626"
 const RESOLVE_MS = 900
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3)
@@ -31,6 +33,7 @@ function DitherPanel({
   level = 0.8,
   progress,
   seed = 0,
+  tone = "brand",
   className,
 }: {
   /** Still mode: how far the blue rises when it resolves, 0–1. */
@@ -38,6 +41,8 @@ function DitherPanel({
   /** Controlled mode: the progress to draw, 0–1. */
   progress?: number
   seed?: number
+  /** `mono` swaps blue and cyan for greys, for plates where the copy leads. */
+  tone?: "brand" | "mono"
   className?: string
 }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
@@ -83,11 +88,12 @@ function DitherPanel({
       shownRef.current = value
       // The front's cyan is themed (see the canvas class), read per paint.
       const front = getComputedStyle(canvas).color
+      const body = tone === "mono" ? GREY : BLUE
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       for (const cell of cells) {
         const state = cellState(value, cell.f, cell.t)
         if (state === "rest") continue
-        ctx.fillStyle = state === "front" ? front : BLUE
+        ctx.fillStyle = state === "front" ? front : body
         ctx.fillRect(cell.x, cell.y, size, size)
       }
       // The tech layer: data glyphs in the front.
@@ -119,7 +125,7 @@ function DitherPanel({
       theme.disconnect()
       paintRef.current = () => {}
     }
-  }, [seed])
+  }, [seed, tone])
 
   // Controlled: draw what we're given.
   React.useEffect(() => {
@@ -148,7 +154,9 @@ function DitherPanel({
       aria-hidden
       // Pure cyan barely shows on light plates; the ramp's 600 holds there.
       className={cn(
-        "block size-full text-brand-cyan-600 dark:text-brand-cyan",
+        tone === "mono"
+          ? "block size-full text-neutral-500"
+          : "block size-full text-brand-cyan-600 dark:text-brand-cyan",
         className
       )}
     />
