@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 import { SoftcomWordmark } from "@/components/site/softcom-wordmark"
 import { NavPlate } from "@/components/site/nav-plate"
@@ -137,6 +138,7 @@ function useScrolledAway(onScrollDown: () => void) {
  * width morph needs — from clipping the dropdown.
  */
 function SiteHeader() {
+  const router = useRouter()
   const [open, setOpen] = React.useState(false)
   /*
    * The dropdown is controlled so collapsing the pill can close it too —
@@ -266,7 +268,22 @@ function SiteHeader() {
                 {headerNav.map((item) =>
                   item.submenu ? (
                     <NavigationMenuItem key={item.href}>
-                      <NavigationMenuTrigger className={pillItem}>
+                      {/*
+                       * The label is also the section's link: hover still
+                       * opens the panel, a click goes to the page. Keyboard
+                       * activation (detail 0) keeps Radix's toggle, so the
+                       * panel stays reachable without a pointer.
+                       */}
+                      <NavigationMenuTrigger
+                        className={pillItem}
+                        onClick={(event) => {
+                          if (event.detail === 0) return
+                          // Skips Radix's own toggle, so no panel flashes open.
+                          event.preventDefault()
+                          close()
+                          router.push(item.href)
+                        }}
+                      >
                         {item.label}
                       </NavigationMenuTrigger>
                       <NavigationMenuContent className="w-full md:w-full">

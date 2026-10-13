@@ -197,9 +197,9 @@ export const perspectives: Perspective[] = [
  *
  * The two caret items open dropdowns. Figma draws the carets but not the panels,
  * so their contents are grouped from the footer's IA — which lines up with the
- * Sanity document types (`leader`, `alumnus`, `role`, `caseStudy`). Each panel
- * repeats its own section as the first entry, because a menu trigger doesn't
- * navigate and the overview page would otherwise be unreachable from the header.
+ * Sanity document types (`leader`, `alumnus`, `role`, `caseStudy`). Clicking a
+ * caret item's label goes to its overview page; each panel still repeats that
+ * page as its first entry for keyboard users, whose Enter opens the panel.
  */
 export type HeaderNavItem = {
   label: string
@@ -254,15 +254,12 @@ export const footerNav = [
     ],
   },
   {
-    // The footer is the site's full menu, so the products are listed by name.
     heading: "Products",
     links: [
-      { label: "Sentinel", href: "/enterprise-products#sentinel" },
-      { label: "Reckon", href: "/enterprise-products#reckon" },
-      { label: "Useforms", href: "/enterprise-products#useforms" },
       { label: "Lift", href: "/enterprise-products#lift" },
-      { label: "Liquio", href: "/enterprise-products#liquio" },
-      { label: "RTGS.global", href: "/enterprise-products#rtgs-global" },
+      { label: "Reckon", href: "/enterprise-products#reckon" },
+      { label: "Sentinel", href: "/enterprise-products#sentinel" },
+      { label: "UseForms", href: "/enterprise-products#useforms" },
     ],
   },
   {
