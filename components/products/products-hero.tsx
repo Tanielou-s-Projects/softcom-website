@@ -15,6 +15,7 @@ import { FullHero, HeroRail } from "@/components/site/full-hero"
 function ProductsHero() {
   return (
     <FullHero
+      art="band"
       background={<DitherMark layout="products" />}
       badge="Products"
       title={productsIntro.title}
