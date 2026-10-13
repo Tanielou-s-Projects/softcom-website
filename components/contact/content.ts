@@ -15,3 +15,35 @@ export const contactDetails = {
 
 export const contactIntro =
   "Whether you have a specific project in mind or just want to explore how Softcom can help, we are always open to a conversation."
+
+/**
+ * Every line of copy on the Contact page, as Sanity's `contactPage`
+ * singleton mirrors it. Edited in the Studio; these are the defaults any
+ * field left empty falls back to.
+ */
+export const contactPage = {
+  hero: {
+    badge: "Contact",
+    title: "Let’s talk.",
+    intro: contactIntro,
+  },
+  form: {
+    heading: "Send us a Message",
+    nameLabel: "Name",
+    namePlaceholder: "Full Name",
+    emailLabel: "Email",
+    emailPlaceholder: "your@email.com",
+    phoneLabel: "Phone",
+    phonePlaceholder: "+234 800 000 0000",
+    companyLabel: "Company",
+    companyPlaceholder: "Organisation Name",
+    messageLabel: "Message",
+    messagePlaceholder: "Your message…",
+    submit: "Send Message",
+  },
+  details: {
+    heading: "Get In Touch",
+  },
+}
+
+export type ContactPage = typeof contactPage

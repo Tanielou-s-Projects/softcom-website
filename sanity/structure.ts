@@ -1,6 +1,7 @@
 import {
   CaseIcon,
   CogIcon,
+  DocumentsIcon,
   PackageIcon,
   DocumentTextIcon,
   FolderIcon,
@@ -8,6 +9,8 @@ import {
   UsersIcon,
 } from "@sanity/icons"
 import type { StructureResolver } from "sanity/structure"
+
+import { PAGES } from "@/sanity/schemaTypes/pages"
 
 /**
  * Desk structure — grouped into Content, People, and Careers
@@ -17,6 +20,26 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title("Softcom")
     .items([
+      // Every page's copy, one document each, opened directly.
+      S.listItem()
+        .title("Pages")
+        .icon(DocumentsIcon)
+        .child(
+          S.list()
+            .title("Pages")
+            .items(
+              PAGES.map((page) =>
+                S.listItem()
+                  .title(page.title ?? page.name)
+                  .id(page.name)
+                  .icon(page.icon)
+                  .child(
+                    S.document().schemaType(page.name).documentId(page.name)
+                  )
+              )
+            )
+        ),
+      S.divider(),
       S.listItem()
         .title("Content")
         .icon(FolderIcon)

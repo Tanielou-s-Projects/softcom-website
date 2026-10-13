@@ -4,17 +4,20 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { ContactDetails } from "@/components/contact/contact-details"
 import { ContactForm } from "@/components/contact/contact-form"
-import { contactIntro } from "@/components/contact/content"
+import { contactPage } from "@/components/contact/content"
 import { Container, displayText, leadText } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { SiteHeader } from "@/components/site/site-header"
+import { getPageContent } from "@/sanity/lib/page-content"
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: contactIntro,
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getPageContent("contactPage", contactPage)
+  return { title: "Contact", description: copy.hero.intro }
 }
 
-export default function Page() {
+export default async function Page() {
+  const copy = await getPageContent("contactPage", contactPage)
+
   /*
    * The one page that closes on itself: the design gives it neither the shared
    * CTA panel nor the footer, because the whole page is the call to action.
@@ -41,22 +44,22 @@ export default function Page() {
            * column itself.
            */}
           <Reveal className="flex flex-col items-start gap-6">
-            <Badge variant="brand">Contact</Badge>
+            <Badge variant="brand">{copy.hero.badge}</Badge>
             <h1 className={cn(displayText, "text-foreground")}>
-              Let&apos;s talk.
+              {copy.hero.title}
             </h1>
             <p className={cn(leadText, "max-w-[60ch] text-foreground/80")}>
-              {contactIntro}
+              {copy.hero.intro}
             </p>
           </Reveal>
         </div>
 
         <div className="flex flex-col gap-6 lg:w-[68%] lg:shrink-0">
           <Reveal delay={0.1}>
-            <ContactForm />
+            <ContactForm copy={copy.form} />
           </Reveal>
           <Reveal delay={0.15}>
-            <ContactDetails />
+            <ContactDetails heading={copy.details.heading} />
           </Reveal>
         </div>
       </Container>

@@ -8,6 +8,7 @@ import { structureTool } from "sanity/structure"
 
 import { apiVersion, dataset, projectId } from "@/sanity/env"
 import { schema } from "@/sanity/schemaTypes"
+import { SINGLETONS } from "@/sanity/schemaTypes/pages"
 import { structure } from "@/sanity/structure"
 import { SoftcomIcon, theme } from "@/sanity/theme"
 
@@ -20,13 +21,13 @@ export default defineConfig({
   dataset,
   schema: {
     ...schema,
-    // Site settings is a singleton: no "new document" for it anywhere.
+    // Pages and site settings are singletons: no "new document" for them.
     templates: (templates) =>
-      templates.filter(({ schemaType }) => schemaType !== "siteSettings"),
+      templates.filter(({ schemaType }) => !SINGLETONS.has(schemaType)),
   },
   document: {
     actions: (actions, { schemaType }) =>
-      schemaType === "siteSettings"
+      SINGLETONS.has(schemaType)
         ? actions.filter(
             ({ action }) =>
               action &&

@@ -5,6 +5,7 @@ import { blockContent } from "./blockContent"
 import { caseStudy } from "./caseStudy"
 import { insight } from "./insight"
 import { leader } from "./leader"
+import { PAGES } from "./pages"
 import { product, productFigure, productSection } from "./product"
 import { role } from "./role"
 import { siteSettings } from "./siteSettings"
@@ -19,6 +20,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     alumnus,
     product,
     siteSettings,
+    ...PAGES,
     // Objects
     blockContent,
     productFigure,
