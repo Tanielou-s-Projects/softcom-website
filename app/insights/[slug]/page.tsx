@@ -1,23 +1,23 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { articles, getArticle } from "@/components/insights/content"
 import { InsightArticle } from "@/components/insights/insight-article"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { Bleed } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { SiteHeader } from "@/components/site/site-header"
+import { getInsight, getInsightSlugs } from "@/sanity/lib/data"
 
 type Props = { params: Promise<{ slug: string }> }
 
-export function generateStaticParams() {
-  return articles.map((article) => ({ slug: article.slug }))
+export async function generateStaticParams() {
+  return getInsightSlugs()
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const article = getArticle(slug)
+  const article = await getInsight(slug)
 
   if (!article) return {}
 
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { slug } = await params
-  const article = getArticle(slug)
+  const article = await getInsight(slug)
 
   if (!article) notFound()
 

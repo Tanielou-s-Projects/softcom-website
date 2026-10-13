@@ -41,7 +41,7 @@ function ProductFigureSlot({
   number: number
 }) {
   const fig = `Fig ${String(number).padStart(2, "0")}`
-  const Figure = FIGURES[slug]?.[figure.key]
+  const Figure = FIGURES[figure.source ?? slug]?.[figure.key]
 
   if (figure.image) {
     // A screenshot from the deck, as-is, in the diagrams' frame.
@@ -99,7 +99,7 @@ function hasFigure(slug: string, figure: ProductFigure) {
   return (
     PLAYGROUND_ENABLED ||
     Boolean(figure.image) ||
-    Boolean(FIGURES[slug]?.[figure.key])
+    Boolean(FIGURES[figure.source ?? slug]?.[figure.key])
   )
 }
 

@@ -4,7 +4,7 @@ import Image from "next/image"
 import { motion } from "motion/react"
 
 import { Container, headingText } from "@/components/landing/section"
-import { portraits, type Portrait } from "@/components/landing/content"
+import type { Portrait } from "@/components/landing/content"
 import { Stats } from "@/components/landing/stats"
 import { cn } from "@/lib/utils"
 import { ColorReveal } from "@/components/motion/color-reveal"
@@ -55,7 +55,7 @@ function PortraitCell({ image, name, role }: Portrait) {
  * on hover, kept visually separate from the impact numbers below. `id="team"` is
  * the anchor the header's "Leadership" link and the closing CTAs point at.
  */
-function Team() {
+function Team({ portraits }: { portraits: Portrait[] }) {
   return (
     <section id="team" className="flex scroll-mt-24 flex-col gap-16">
       <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">

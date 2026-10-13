@@ -12,9 +12,9 @@ import {
 import { InsightCard } from "@/components/insights/insight-card"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import {
-  insights,
   insightsIntro,
   topics,
+  type Insight,
   type Topic,
 } from "@/components/insights/content"
 
@@ -81,7 +81,7 @@ function TopicFilter({
  * fill the grid — that way narrowing to a topic still reads as a page rather
  * than leaving a featured card that contradicts the active filter.
  */
-function InsightList() {
+function InsightList({ insights }: { insights: Insight[] }) {
   const [filter, setFilter] = React.useState<Filter>("All")
 
   const filtered =

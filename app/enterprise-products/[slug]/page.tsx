@@ -4,8 +4,6 @@ import { notFound } from "next/navigation"
 import { LineDitherDefs } from "@/components/iso/line-dither"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { Bleed } from "@/components/landing/section"
-import { partnerPlatforms, products } from "@/components/products/content"
-import { productPageOf, productPages } from "@/components/products/pages"
 import {
   ProductBody,
   ProductCta,
@@ -13,34 +11,27 @@ import {
 } from "@/components/products/product-page"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
+import { getProductPage, getProductSlugs } from "@/sanity/lib/data"
 
 type Props = { params: Promise<{ slug: string }> }
 
-const ALL = [...products, ...partnerPlatforms]
-
-export function generateStaticParams() {
-  return productPages.map((page) => ({ slug: page.slug }))
+export async function generateStaticParams() {
+  return getProductSlugs()
 }
-
-export const dynamicParams = false
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const page = productPageOf(slug)
-  const product = ALL.find((item) => item.id === slug)
-  if (!page || !product) return {}
-  return { title: product.name, description: page.lead[0] }
+  const result = await getProductPage(slug)
+  if (!result) return {}
+  return { title: result.name, description: result.page.lead[0] }
 }
 
 export default async function Page({ params }: Props) {
   const { slug } = await params
-  const page = productPageOf(slug)
-  const index = ALL.findIndex((item) => item.id === slug)
-  if (!page || index < 0) notFound()
+  const result = await getProductPage(slug)
+  if (!result) notFound()
 
-  const product = ALL[index]
-  // Partner platforms carry no seed of their own; carry on from the last one.
-  const seed = product.dither ?? index + 1
+  const { name, seed, page } = result
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
@@ -49,7 +40,7 @@ export default async function Page({ params }: Props) {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <ProductHero page={page} name={product.name} seed={seed} />
+      <ProductHero page={page} name={name} seed={seed} />
       <ProductBody page={page} />
 
       {/*

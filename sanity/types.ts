@@ -15,11 +15,64 @@
 export declare const internalGroqTypeReferenceTo: unique symbol
 
 // Source: sanity/extract.json
+export type ProductSection = {
+  _type: "productSection"
+  heading?: string
+  body?: Array<string>
+  cards?: Array<{
+    label?: string
+    description?: string
+    _key: string
+  }>
+  figures?: Array<
+    {
+      _key: string
+    } & ProductFigure
+  >
+  note?: string
+}
+
 export type SanityImageAssetReference = {
   _ref: string
   _type: "reference"
   _weak?: boolean
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset"
+}
+
+export type ProductFigure = {
+  _type: "productFigure"
+  diagram?:
+    | "sentinel/connections"
+    | "sentinel/records-to-intelligence"
+    | "sentinel/records"
+    | "sentinel/visible"
+    | "reckon/declared-owed"
+    | "reckon/three-records"
+    | "reckon/chart-of-accounts"
+    | "reckon/exception"
+    | "reckon/years"
+    | "reckon/judgement"
+    | "reckon/traced"
+    | "reckon/engine"
+    | "lift/tiers"
+    | "lift/modules"
+    | "lift/trusted"
+    | "lift/gate"
+    | "lift/payout"
+    | "lift/initiatives"
+    | "liquio/foundation"
+    | "liquio/service"
+    | "rtgs-global/network"
+    | "rtgs-global/fx"
+  image?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: "image"
+  }
+  title?: string
+  caption?: string
 }
 
 export type BlockContent = Array<
@@ -54,6 +107,92 @@ export type BlockContent = Array<
     }
 >
 
+export type SiteSettings = {
+  _id: string
+  _type: "siteSettings"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  organisation?: string
+  email?: string
+  address?: Array<string>
+  social?: Array<{
+    label?: string
+    url?: string
+    _key: string
+  }>
+}
+
+export type Product = {
+  _id: string
+  _type: "product"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: string
+  slug?: Slug
+  kind?: "softcom" | "partner"
+  order?: number
+  tagline?: string
+  description?: string
+  ditherSeed?: number
+  wordmark?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: "image"
+  }
+  eyebrow?: string
+  title?: string
+  lead?: Array<string>
+  primary?: {
+    label?: string
+    href?: string
+  }
+  heroFigure?: ProductFigure
+  sections?: Array<
+    {
+      _key: string
+    } & ProductSection
+  >
+  audience?: {
+    heading?: string
+    body?: Array<string>
+    note?: string
+  }
+  close?: {
+    heading?: string
+    text?: string
+    cta?: {
+      label?: string
+      href?: string
+    }
+  }
+}
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop"
+  top?: number
+  bottom?: number
+  left?: number
+  right?: number
+}
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot"
+  x?: number
+  y?: number
+  height?: number
+  width?: number
+}
+
+export type Slug = {
+  _type: "slug"
+  current?: string
+  source?: string
+}
+
 export type Alumnus = {
   _id: string
   _type: "alumnus"
@@ -74,22 +213,6 @@ export type Alumnus = {
   }
   quote?: string
   featured?: boolean
-}
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop"
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
-}
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot"
-  x?: number
-  y?: number
-  height?: number
-  width?: number
 }
 
 export type Leader = {
@@ -130,12 +253,6 @@ export type Role = {
   description?: BlockContent
 }
 
-export type Slug = {
-  _type: "slug"
-  current?: string
-  source?: string
-}
-
 export type CaseStudy = {
   _id: string
   _type: "caseStudy"
@@ -157,7 +274,7 @@ export type CaseStudy = {
   featured?: boolean
   metric?: string
   metricLabel?: string
-  challenge?: BlockContent
+  challenge?: string
   solution?: BlockContent
   outcomes?: Array<string>
   coverImage?: {
@@ -298,14 +415,18 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
+  | ProductSection
   | SanityImageAssetReference
+  | ProductFigure
   | BlockContent
-  | Alumnus
+  | SiteSettings
+  | Product
   | SanityImageCrop
   | SanityImageHotspot
+  | Slug
+  | Alumnus
   | Leader
   | Role
-  | Slug
   | CaseStudy
   | Insight
   | SanityImagePaletteSwatch
@@ -316,3 +437,299 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint
+
+// Source: sanity/lib/queries.ts
+// Variable: SETTINGS_QUERY
+// Query: *[_id == "siteSettings"][0]{  organisation,  email,  address,  social[]{ label, url }}
+export type SETTINGS_QUERY_RESULT =
+  | {
+      organisation: null
+      email: null
+      address: null
+      social: null
+    }
+  | {
+      organisation: string | null
+      email: string | null
+      address: Array<string> | null
+      social: Array<{
+        label: string | null
+        url: string | null
+      }> | null
+    }
+  | null
+
+// Source: sanity/lib/queries.ts
+// Variable: INSIGHTS_QUERY
+// Query: *[  _type == "insight" && defined(slug.current)] | order(featured desc, publishedAt desc){  _id,  title,  "slug": slug.current,  category,  excerpt,  publishedAt,  coverImage{  "url": asset->url,  "width": asset->metadata.dimensions.width,  "height": asset->metadata.dimensions.height,  "lqip": asset->metadata.lqip,  alt,  hotspot}}
+export type INSIGHTS_QUERY_RESULT = Array<{
+  _id: string
+  title: string | null
+  slug: string | null
+  category:
+    | "data"
+    | "digital-strategy"
+    | "government-tech"
+    | "leadership"
+    | "strategy"
+    | null
+  excerpt: string | null
+  publishedAt: string | null
+  coverImage: {
+    url: string | null
+    width: number | null
+    height: number | null
+    lqip: string | null
+    alt: string | null
+    hotspot: SanityImageHotspot | null
+  } | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: INSIGHT_QUERY
+// Query: *[  _type == "insight" && slug.current == $slug][0]{  _id,  title,  "slug": slug.current,  category,  excerpt,  author,  publishedAt,  coverImage{  "url": asset->url,  "width": asset->metadata.dimensions.width,  "height": asset->metadata.dimensions.height,  "lqip": asset->metadata.lqip,  alt,  hotspot},  body}
+export type INSIGHT_QUERY_RESULT = {
+  _id: string
+  title: string | null
+  slug: string | null
+  category:
+    | "data"
+    | "digital-strategy"
+    | "government-tech"
+    | "leadership"
+    | "strategy"
+    | null
+  excerpt: string | null
+  author: string | null
+  publishedAt: string | null
+  coverImage: {
+    url: string | null
+    width: number | null
+    height: number | null
+    lqip: string | null
+    alt: string | null
+    hotspot: SanityImageHotspot | null
+  } | null
+  body: BlockContent | null
+} | null
+
+// Source: sanity/lib/queries.ts
+// Variable: INSIGHT_SLUGS_QUERY
+// Query: *[  _type == "insight" && defined(slug.current)]{ "slug": slug.current }
+export type INSIGHT_SLUGS_QUERY_RESULT = Array<{
+  slug: string | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: CASE_STUDIES_QUERY
+// Query: *[  _type == "caseStudy" && defined(slug.current)] | order(featured desc, publishedAt desc){  _id,  title,  "slug": slug.current,  client,  sector,  metric,  metricLabel,  challenge}
+export type CASE_STUDIES_QUERY_RESULT = Array<{
+  _id: string
+  title: string | null
+  slug: string | null
+  client: string | null
+  sector:
+    | "agriculture"
+    | "education"
+    | "financial-inclusion"
+    | "fmcg"
+    | "government"
+    | "health"
+    | "other"
+    | "telecoms"
+    | null
+  metric: string | null
+  metricLabel: string | null
+  challenge: string | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: ROLES_QUERY
+// Query: *[  _type == "role" && active == true] | order(title asc){  _id,  title,  "slug": slug.current,  department,  location,  type,  applyLink,  applyEmail}
+export type ROLES_QUERY_RESULT = Array<{
+  _id: string
+  title: string | null
+  slug: string | null
+  department: string | null
+  location: string | null
+  type: "contract" | "full-time" | "internship" | "part-time" | null
+  applyLink: string | null
+  applyEmail: string | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: LEADERS_QUERY
+// Query: *[_type == "leader"] | order(order asc){  _id,  name,  role,  photo{  "url": asset->url,  "width": asset->metadata.dimensions.width,  "height": asset->metadata.dimensions.height,  "lqip": asset->metadata.lqip,  alt,  hotspot}}
+export type LEADERS_QUERY_RESULT = Array<{
+  _id: string
+  name: string | null
+  role: string | null
+  photo: {
+    url: string | null
+    width: number | null
+    height: number | null
+    lqip: string | null
+    alt: string | null
+    hotspot: SanityImageHotspot | null
+  } | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: PRODUCTS_QUERY
+// Query: *[  _type == "product" && defined(slug.current)] | order(order asc){  _id,  name,  "slug": slug.current,  kind,  tagline,  description,  ditherSeed,  wordmark{  "url": asset->url,  "width": asset->metadata.dimensions.width,  "height": asset->metadata.dimensions.height,  "lqip": asset->metadata.lqip,  alt,  hotspot}}
+export type PRODUCTS_QUERY_RESULT = Array<{
+  _id: string
+  name: string | null
+  slug: string | null
+  kind: "partner" | "softcom" | null
+  tagline: string | null
+  description: string | null
+  ditherSeed: number | null
+  wordmark: {
+    url: string | null
+    width: number | null
+    height: number | null
+    lqip: string | null
+    alt: null
+    hotspot: SanityImageHotspot | null
+  } | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: PRODUCT_QUERY
+// Query: *[  _type == "product" && slug.current == $slug][0]{  _id,  name,  "slug": slug.current,  kind,  tagline,  description,  ditherSeed,  eyebrow,  title,  lead,  primary,  heroFigure{  diagram,  title,  caption,  image{  "url": asset->url,  "width": asset->metadata.dimensions.width,  "height": asset->metadata.dimensions.height,  "lqip": asset->metadata.lqip,  alt,  hotspot}},  sections[]{    _key,    heading,    body,    cards[]{ label, description },    figures[]{  diagram,  title,  caption,  image{  "url": asset->url,  "width": asset->metadata.dimensions.width,  "height": asset->metadata.dimensions.height,  "lqip": asset->metadata.lqip,  alt,  hotspot}},    note  },  audience,  close}
+export type PRODUCT_QUERY_RESULT = {
+  _id: string
+  name: string | null
+  slug: string | null
+  kind: "partner" | "softcom" | null
+  tagline: string | null
+  description: string | null
+  ditherSeed: number | null
+  eyebrow: string | null
+  title: string | null
+  lead: Array<string> | null
+  primary: {
+    label?: string
+    href?: string
+  } | null
+  heroFigure: {
+    diagram:
+      | "lift/gate"
+      | "lift/initiatives"
+      | "lift/modules"
+      | "lift/payout"
+      | "lift/tiers"
+      | "lift/trusted"
+      | "liquio/foundation"
+      | "liquio/service"
+      | "reckon/chart-of-accounts"
+      | "reckon/declared-owed"
+      | "reckon/engine"
+      | "reckon/exception"
+      | "reckon/judgement"
+      | "reckon/three-records"
+      | "reckon/traced"
+      | "reckon/years"
+      | "rtgs-global/fx"
+      | "rtgs-global/network"
+      | "sentinel/connections"
+      | "sentinel/records-to-intelligence"
+      | "sentinel/records"
+      | "sentinel/visible"
+      | null
+    title: string | null
+    caption: string | null
+    image: {
+      url: string | null
+      width: number | null
+      height: number | null
+      lqip: string | null
+      alt: null
+      hotspot: SanityImageHotspot | null
+    } | null
+  } | null
+  sections: Array<{
+    _key: string
+    heading: string | null
+    body: Array<string> | null
+    cards: Array<{
+      label: string | null
+      description: string | null
+    }> | null
+    figures: Array<{
+      diagram:
+        | "lift/gate"
+        | "lift/initiatives"
+        | "lift/modules"
+        | "lift/payout"
+        | "lift/tiers"
+        | "lift/trusted"
+        | "liquio/foundation"
+        | "liquio/service"
+        | "reckon/chart-of-accounts"
+        | "reckon/declared-owed"
+        | "reckon/engine"
+        | "reckon/exception"
+        | "reckon/judgement"
+        | "reckon/three-records"
+        | "reckon/traced"
+        | "reckon/years"
+        | "rtgs-global/fx"
+        | "rtgs-global/network"
+        | "sentinel/connections"
+        | "sentinel/records-to-intelligence"
+        | "sentinel/records"
+        | "sentinel/visible"
+        | null
+      title: string | null
+      caption: string | null
+      image: {
+        url: string | null
+        width: number | null
+        height: number | null
+        lqip: string | null
+        alt: null
+        hotspot: SanityImageHotspot | null
+      } | null
+    }> | null
+    note: string | null
+  }> | null
+  audience: {
+    heading?: string
+    body?: Array<string>
+    note?: string
+  } | null
+  close: {
+    heading?: string
+    text?: string
+    cta?: {
+      label?: string
+      href?: string
+    }
+  } | null
+} | null
+
+// Source: sanity/lib/queries.ts
+// Variable: PRODUCT_SLUGS_QUERY
+// Query: *[  _type == "product" && defined(slug.current)]{ "slug": slug.current }
+export type PRODUCT_SLUGS_QUERY_RESULT = Array<{
+  slug: string | null
+}>
+
+// Query TypeMap
+import "@sanity/client"
+declare module "@sanity/client" {
+  interface SanityQueries {
+    '*[_id == "siteSettings"][0]{\n  organisation,\n  email,\n  address,\n  social[]{ label, url }\n}': SETTINGS_QUERY_RESULT
+    '*[\n  _type == "insight" && defined(slug.current)\n] | order(featured desc, publishedAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  category,\n  excerpt,\n  publishedAt,\n  coverImage{\n  "url": asset->url,\n  "width": asset->metadata.dimensions.width,\n  "height": asset->metadata.dimensions.height,\n  "lqip": asset->metadata.lqip,\n  alt,\n  hotspot\n}\n}': INSIGHTS_QUERY_RESULT
+    '*[\n  _type == "insight" && slug.current == $slug\n][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  category,\n  excerpt,\n  author,\n  publishedAt,\n  coverImage{\n  "url": asset->url,\n  "width": asset->metadata.dimensions.width,\n  "height": asset->metadata.dimensions.height,\n  "lqip": asset->metadata.lqip,\n  alt,\n  hotspot\n},\n  body\n}': INSIGHT_QUERY_RESULT
+    '*[\n  _type == "insight" && defined(slug.current)\n]{ "slug": slug.current }': INSIGHT_SLUGS_QUERY_RESULT
+    '*[\n  _type == "caseStudy" && defined(slug.current)\n] | order(featured desc, publishedAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  client,\n  sector,\n  metric,\n  metricLabel,\n  challenge\n}': CASE_STUDIES_QUERY_RESULT
+    '*[\n  _type == "role" && active == true\n] | order(title asc){\n  _id,\n  title,\n  "slug": slug.current,\n  department,\n  location,\n  type,\n  applyLink,\n  applyEmail\n}': ROLES_QUERY_RESULT
+    '*[_type == "leader"] | order(order asc){\n  _id,\n  name,\n  role,\n  photo{\n  "url": asset->url,\n  "width": asset->metadata.dimensions.width,\n  "height": asset->metadata.dimensions.height,\n  "lqip": asset->metadata.lqip,\n  alt,\n  hotspot\n}\n}': LEADERS_QUERY_RESULT
+    '*[\n  _type == "product" && defined(slug.current)\n] | order(order asc){\n  _id,\n  name,\n  "slug": slug.current,\n  kind,\n  tagline,\n  description,\n  ditherSeed,\n  wordmark{\n  "url": asset->url,\n  "width": asset->metadata.dimensions.width,\n  "height": asset->metadata.dimensions.height,\n  "lqip": asset->metadata.lqip,\n  alt,\n  hotspot\n}\n}': PRODUCTS_QUERY_RESULT
+    '*[\n  _type == "product" && slug.current == $slug\n][0]{\n  _id,\n  name,\n  "slug": slug.current,\n  kind,\n  tagline,\n  description,\n  ditherSeed,\n  eyebrow,\n  title,\n  lead,\n  primary,\n  heroFigure{\n  diagram,\n  title,\n  caption,\n  image{\n  "url": asset->url,\n  "width": asset->metadata.dimensions.width,\n  "height": asset->metadata.dimensions.height,\n  "lqip": asset->metadata.lqip,\n  alt,\n  hotspot\n}\n},\n  sections[]{\n    _key,\n    heading,\n    body,\n    cards[]{ label, description },\n    figures[]{\n  diagram,\n  title,\n  caption,\n  image{\n  "url": asset->url,\n  "width": asset->metadata.dimensions.width,\n  "height": asset->metadata.dimensions.height,\n  "lqip": asset->metadata.lqip,\n  alt,\n  hotspot\n}\n},\n    note\n  },\n  audience,\n  close\n}': PRODUCT_QUERY_RESULT
+    '*[\n  _type == "product" && defined(slug.current)\n]{ "slug": slug.current }': PRODUCT_SLUGS_QUERY_RESULT
+  }
+}

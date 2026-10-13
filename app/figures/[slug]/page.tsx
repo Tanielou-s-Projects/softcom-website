@@ -3,7 +3,8 @@ import { notFound } from "next/navigation"
 
 import { LineDitherDefs } from "@/components/iso/line-dither"
 import { ProductFigureSlot } from "@/components/products/figures"
-import { figuresOf, productPageOf } from "@/components/products/pages"
+import { figuresOf } from "@/components/products/pages"
+import { getProductPage } from "@/sanity/lib/data"
 import { PLAYGROUND_ENABLED } from "@/lib/playground-access"
 
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export default async function Page({
 }) {
   if (!PLAYGROUND_ENABLED) notFound()
   const { slug } = await params
-  const page = productPageOf(slug)
+  const page = (await getProductPage(slug))?.page
   if (!page) notFound()
 
   const figures = [

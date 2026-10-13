@@ -10,7 +10,6 @@ import {
   Container,
 } from "@/components/landing/section"
 import {
-  caseStudies,
   sectors,
   type CaseStudy,
   type Sector,
@@ -96,7 +95,7 @@ function CaseStudyPanel({
  * state, and a row of pills that does nothing when clicked is worse than none.
  * On desktop it is sticky, so it follows the reader down the list.
  */
-function CaseStudyList() {
+function CaseStudyList({ caseStudies }: { caseStudies: CaseStudy[] }) {
   const [filter, setFilter] = React.useState<Filter>("All")
   const listRef = React.useRef<HTMLDivElement>(null)
 

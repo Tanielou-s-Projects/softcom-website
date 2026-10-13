@@ -22,6 +22,7 @@ import { Team } from "@/components/landing/team"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { HeroHeader } from "@/components/landing/hero-header"
+import { getLeaders } from "@/sanity/lib/data"
 
 export const metadata: Metadata = {
   title: "About",
@@ -33,7 +34,9 @@ export const metadata: Metadata = {
  * to the hero because it lives outside that wrapper, and the team's impact
  * numbers stay close to the portraits via the Team component's own internal gap.
  */
-export default function Page() {
+export default async function Page() {
+  const leaders = await getLeaders()
+
   return (
     <div className="relative flex min-h-svh w-full flex-col">
       <BlueprintGrid />
@@ -99,7 +102,7 @@ export default function Page() {
         </Container>
 
         {/* The people and the impact numbers. */}
-        <Team />
+        <Team portraits={leaders} />
 
         {/* Build with us — careers. */}
         <Container>

@@ -5,7 +5,9 @@ import { blockContent } from "./blockContent"
 import { caseStudy } from "./caseStudy"
 import { insight } from "./insight"
 import { leader } from "./leader"
+import { product, productFigure, productSection } from "./product"
 import { role } from "./role"
+import { siteSettings } from "./siteSettings"
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -15,7 +17,11 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     role,
     leader,
     alumnus,
+    product,
+    siteSettings,
     // Objects
     blockContent,
+    productFigure,
+    productSection,
   ],
 }

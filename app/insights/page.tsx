@@ -7,6 +7,7 @@ import { insightsIntro } from "@/components/insights/content"
 import { InsightList } from "@/components/insights/insight-list"
 import { InsightsHero } from "@/components/insights/insights-hero"
 import { SiteFooter } from "@/components/site/site-footer"
+import { getInsights } from "@/sanity/lib/data"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
 
 export const metadata: Metadata = {
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
   description: insightsIntro,
 }
 
-export default function Page() {
+export default async function Page() {
+  const insights = await getInsights()
+
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
       <BlueprintGrid />
@@ -22,7 +25,7 @@ export default function Page() {
       <HeroHeader />
 
       <InsightsHero />
-      <InsightList />
+      <InsightList insights={insights} />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves

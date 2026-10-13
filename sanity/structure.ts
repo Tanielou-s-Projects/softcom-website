@@ -1,5 +1,7 @@
 import {
   CaseIcon,
+  CogIcon,
+  PackageIcon,
   DocumentTextIcon,
   FolderIcon,
   UserIcon,
@@ -28,6 +30,9 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem("caseStudy")
                 .title("Case Studies")
                 .icon(CaseIcon),
+              S.documentTypeListItem("product")
+                .title("Products")
+                .icon(PackageIcon),
             ])
         ),
       S.listItem()
@@ -45,4 +50,13 @@ export const structure: StructureResolver = (S) =>
         ),
       S.divider(),
       S.documentTypeListItem("role").title("Careers").icon(CaseIcon),
+      S.divider(),
+      // One document, opened directly rather than listed.
+      S.listItem()
+        .title("Site settings")
+        .id("siteSettings")
+        .icon(CogIcon)
+        .child(
+          S.document().schemaType("siteSettings").documentId("siteSettings")
+        ),
     ])
