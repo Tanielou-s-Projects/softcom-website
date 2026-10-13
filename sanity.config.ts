@@ -14,7 +14,22 @@ export default defineConfig({
   basePath: "/studio",
   projectId,
   dataset,
-  schema,
+  schema: {
+    ...schema,
+    // Site settings is a singleton: no "new document" for it anywhere.
+    templates: (templates) =>
+      templates.filter(({ schemaType }) => schemaType !== "siteSettings"),
+  },
+  document: {
+    actions: (actions, { schemaType }) =>
+      schemaType === "siteSettings"
+        ? actions.filter(
+            ({ action }) =>
+              action &&
+              ["publish", "discardChanges", "restore"].includes(action)
+          )
+        : actions,
+  },
   plugins: [
     structureTool({ structure }),
     // Vision lets you query your content with GROQ from inside the Studio.

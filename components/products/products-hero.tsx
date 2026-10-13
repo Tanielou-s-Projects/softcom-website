@@ -1,20 +1,17 @@
 import Link from "next/link"
 
 import { DitherMark } from "@/components/motion/dither-mark"
-import {
-  partnerPlatforms,
-  products,
-  productsIntro,
-} from "@/components/products/content"
+import { productsIntro, type Product } from "@/components/products/content"
 import { FullHero, HeroRail } from "@/components/site/full-hero"
 
 /**
  * Four discs on one conduit for Softcom's own products, the claim, and every
  * product — own and partner — in the rail, each linking to its entry.
  */
-function ProductsHero() {
+function ProductsHero({ products }: { products: Product[] }) {
   return (
     <FullHero
+      art="band"
       background={<DitherMark layout="products" />}
       badge="Products"
       title={productsIntro.title}
@@ -25,7 +22,7 @@ function ProductsHero() {
           label="Products"
           className="grid-cols-2 sm:grid-flow-row sm:grid-cols-3 lg:grid-flow-col lg:grid-cols-none"
         >
-          {[...products, ...partnerPlatforms].map((product) => (
+          {products.map((product) => (
             <Link
               key={product.id}
               href={`#${product.id}`}

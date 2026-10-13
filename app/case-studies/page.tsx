@@ -7,6 +7,7 @@ import { HeroHeader } from "@/components/landing/hero-header"
 import { Bleed } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
+import { getCaseStudies } from "@/sanity/lib/data"
 
 export const metadata: Metadata = {
   title: "Case Studies",
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
     "A portfolio of real engagements — spanning government, financial services, consumer goods, and agriculture — each delivering measurable, lasting outcomes.",
 }
 
-export default function Page() {
+export default async function Page() {
+  const caseStudies = await getCaseStudies()
+
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
       <BlueprintGrid />
@@ -22,7 +25,7 @@ export default function Page() {
       <HeroHeader />
 
       <CaseStudiesHero />
-      <CaseStudyList />
+      <CaseStudyList caseStudies={caseStudies} />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves

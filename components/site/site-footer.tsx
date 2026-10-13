@@ -5,7 +5,7 @@ import {
   footerNav,
   footerSocial,
 } from "@/components/landing/content"
-import { contactDetails } from "@/components/contact/content"
+import { getProducts, getSettings } from "@/sanity/lib/data"
 import { DitherWordmark } from "@/components/site/dither-wordmark"
 import { ThemeSwitcher } from "@/components/site/theme-switcher"
 
@@ -22,10 +22,33 @@ import { ThemeSwitcher } from "@/components/site/theme-switcher"
  * local `dark` class, so every role used inside resolves to its dark value
  * even while the page is light.
  */
-function SiteFooter() {
+async function SiteFooter() {
+  const [contactDetails, products] = await Promise.all([
+    getSettings(),
+    getProducts(),
+  ])
   const year = new Date().getFullYear()
-  const bottomLinks = [...footerLegal, ...footerSocial].filter(
+  const social = contactDetails.social.length
+    ? contactDetails.social
+    : footerSocial
+  const bottomLinks = [...footerLegal, ...social].filter(
     (link): link is { label: string; href: string } => Boolean(link.href)
+  )
+  // The Products column lists Softcom's own products, from Sanity.
+  const nav = footerNav.map((group) =>
+    group.heading === "Products" && products.length
+      ? {
+          ...group,
+          // By name, the order the client set for this column.
+          links: products
+            .filter((product) => product.kind === "softcom")
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((product) => ({
+              label: product.name,
+              href: `/enterprise-products/${product.id}`,
+            })),
+        }
+      : group
   )
 
   return (
@@ -57,7 +80,7 @@ function SiteFooter() {
           aria-label="Footer"
           className="grid grid-cols-2 gap-x-10 gap-y-10 text-sm leading-6 font-medium sm:grid-cols-4 lg:gap-x-16"
         >
-          {footerNav.map((group) => (
+          {nav.map((group) => (
             <div
               key={group.heading}
               className="flex flex-col items-start gap-4"

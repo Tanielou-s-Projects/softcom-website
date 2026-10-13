@@ -72,7 +72,11 @@ export const caseStudy = defineType({
     defineField({
       name: "challenge",
       title: "The Challenge",
-      type: "blockContent",
+      description:
+        "The situation before the work, in a short paragraph — it is the text on the case study's card.",
+      type: "text",
+      rows: 5,
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "solution",

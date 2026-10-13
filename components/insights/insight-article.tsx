@@ -1,9 +1,16 @@
 import Image from "next/image"
+import {
+  PortableText,
+  type PortableTextBlock,
+  type PortableTextComponents,
+} from "next-sanity"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Container, displayText, leadText } from "@/components/landing/section"
-import { formatInsightDate, type Article } from "@/components/insights/content"
+import { formatInsightDate } from "@/components/insights/content"
+import { urlFor } from "@/sanity/lib/image"
+import type { InsightArticle as Article } from "@/sanity/lib/data"
 import { Reveal } from "@/components/motion/reveal"
 import { ColorReveal } from "@/components/motion/color-reveal"
 
@@ -37,6 +44,82 @@ function ParagraphRail({ count }: { count: number }) {
     </div>
   )
 }
+
+const body = cn(leadText, "leading-[1.6]")
+
+/**
+ * The article body as the Studio writes it: paragraphs in the lead size the
+ * design sets, headings in the display face, lists, quotes, links and inline
+ * images.
+ */
+const components: PortableTextComponents = {
+  block: {
+    normal: ({ children }) => <p className={body}>{children}</p>,
+    h2: ({ children }) => (
+      <h2 className="pt-6 font-heading text-3xl leading-[1.15] tracking-tight text-foreground lg:text-4xl">
+        {children}
+      </h2>
+    ),
+    h3: ({ children }) => (
+      <h3 className="pt-4 font-heading text-2xl leading-[1.2] text-foreground">
+        {children}
+      </h3>
+    ),
+    h4: ({ children }) => (
+      <h4 className="font-heading text-xl text-foreground">{children}</h4>
+    ),
+    blockquote: ({ children }) => (
+      <blockquote
+        className={cn(body, "border-l-2 border-brand-accent pl-6 italic")}
+      >
+        {children}
+      </blockquote>
+    ),
+  },
+  list: {
+    bullet: ({ children }) => (
+      <ul className={cn(body, "list-disc space-y-2 pl-6")}>{children}</ul>
+    ),
+    number: ({ children }) => (
+      <ol className={cn(body, "list-decimal space-y-2 pl-6")}>{children}</ol>
+    ),
+  },
+  marks: {
+    link: ({ value, children }) => (
+      <a
+        href={value?.href}
+        target={value?.blank ? "_blank" : undefined}
+        rel={value?.blank ? "noreferrer" : undefined}
+        className="text-brand-accent underline underline-offset-4"
+      >
+        {children}
+      </a>
+    ),
+  },
+  types: {
+    image: ({ value }) =>
+      value?.asset ? (
+        <figure className="flex flex-col gap-3">
+          <Image
+            src={urlFor(value).width(1600).fit("max").auto("format").url()}
+            alt={value.alt ?? ""}
+            width={1600}
+            height={900}
+            className="h-auto w-full rounded-2xl"
+          />
+          {value.caption ? (
+            <figcaption className="text-sm text-muted-foreground">
+              {value.caption}
+            </figcaption>
+          ) : null}
+        </figure>
+      ) : null,
+  },
+}
+
+/** Paragraph-level blocks: one rule each on the rail. */
+const paragraphsIn = (blocks: PortableTextBlock[]) =>
+  blocks.filter((block) => block._type === "block").length
 
 /** A single insight, in full. */
 function InsightArticle({ article }: { article: Article }) {
@@ -90,14 +173,10 @@ function InsightArticle({ article }: { article: Article }) {
       </div>
 
       <div className="flex gap-8 lg:gap-32">
-        <ParagraphRail count={article.paragraphs.length} />
+        <ParagraphRail count={paragraphsIn(article.body)} />
 
         <div className="flex min-w-0 flex-1 flex-col gap-8">
-          {article.paragraphs.map((paragraph) => (
-            <p key={paragraph} className={cn(leadText, "leading-[1.6]")}>
-              {paragraph}
-            </p>
-          ))}
+          <PortableText value={article.body} components={components} />
         </div>
       </div>
 

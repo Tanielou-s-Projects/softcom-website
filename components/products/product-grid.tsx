@@ -12,12 +12,7 @@ import {
   primaryPill,
 } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
-import {
-  partnerPlatforms,
-  partnersIntro,
-  products,
-  type Product,
-} from "@/components/products/content"
+import { partnersIntro, type Product } from "@/components/products/content"
 import { DitherPanel } from "@/components/motion/dither-panel"
 import { SectionMark } from "@/components/products/section-mark"
 
@@ -143,7 +138,13 @@ function ProductSection({
 }
 
 /** Softcom's own products, then the partner platforms it implements. */
-function ProductGrid() {
+function ProductGrid({
+  products,
+  partnerPlatforms,
+}: {
+  products: Product[]
+  partnerPlatforms: Product[]
+}) {
   return (
     <>
       <ProductSection title="Softcom Products" accent="cyan" items={products} />

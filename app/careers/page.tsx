@@ -17,14 +17,17 @@ import { Reveal } from "@/components/motion/reveal"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
 import { SiteFooter } from "@/components/site/site-footer"
+import { getRoles } from "@/sanity/lib/data"
 
 export const metadata: Metadata = {
   title: "Careers",
   description: careers.paragraphs[0],
 }
 
-/** Careers — the invitation, the work, and the roles (none listed yet). */
-export default function Page() {
+/** Careers — the invitation, the work, and the open roles from Sanity. */
+export default async function Page() {
+  const roles = await getRoles()
+
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-background">
       {/* Floats over the full-height hero rather than taking a band above it. */}
@@ -79,12 +82,50 @@ export default function Page() {
           <h2 className={cn(headingText, "text-foreground")}>
             {careers.roles.heading}
           </h2>
-          <p className={cn(bodyText, "max-w-[60ch] text-muted-foreground")}>
-            {careers.roles.empty}
-          </p>
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href={careers.roles.cta.href}>{careers.roles.cta.label}</Link>
-          </Button>
+          {roles.length ? (
+            <ul className="flex w-full flex-col">
+              {roles.map((role) => (
+                <li
+                  key={role.id}
+                  className="flex flex-col gap-4 border-t border-border py-6 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="flex flex-col gap-1">
+                    <span className="font-heading text-2xl text-foreground">
+                      {role.title}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {[role.department, role.location, role.type]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </span>
+                  </div>
+                  {role.apply ? (
+                    <Button asChild size="lg" className={primaryPill}>
+                      <a
+                        href={role.apply}
+                        {...(role.apply.startsWith("http")
+                          ? { target: "_blank", rel: "noreferrer" }
+                          : {})}
+                      >
+                        Apply
+                      </a>
+                    </Button>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <>
+              <p className={cn(bodyText, "max-w-[60ch] text-muted-foreground")}>
+                {careers.roles.empty}
+              </p>
+              <Button asChild size="lg" className={primaryPill}>
+                <Link href={careers.roles.cta.href}>
+                  {careers.roles.cta.label}
+                </Link>
+              </Button>
+            </>
+          )}
         </Reveal>
       </Container>
 

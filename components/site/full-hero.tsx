@@ -14,8 +14,7 @@ import { cn } from "@/lib/utils"
  * - **Frame.** Full height, always dark, the nav pill floating over the top
  *   band (pair with `HeroHeader`).
  * - **Anatomy.** Bottom-left on the content column, in this order: page badge,
- *   headline, an optional one-line lead, an optional rail. The artwork has
- *   its own band above the copy (below it with `align="top"`), never behind.
+ *   headline, an optional one-line lead, an optional rail.
  * - **Background.** Dither for the pages about what Softcom does (Solutions,
  *   Products, Insights); a photograph, under `HeroPhoto`'s standard film, for
  *   the pages about people and proof (About, Careers, Alumni, Case Studies).
@@ -27,9 +26,10 @@ function FullHero({
   lead,
   rail,
   align = "bottom",
+  art = "behind",
   className,
 }: {
-  /** Fills the artwork's band. */
+  /** Fills the section. */
   background: React.ReactNode
   /** The page's name, as a brand badge. */
   badge: string
@@ -38,33 +38,43 @@ function FullHero({
   /** A ruled row under the copy — wrap its items in `HeroRail`. */
   rail?: React.ReactNode
   /**
-   * Where the copy sits. `top` puts it above the artwork, for a photo whose
-   * subject fills the foot of the frame (a group shot). Pair it with
-   * `HeroPhoto film="top"`.
+   * Where the copy sits. `top` is for a photo whose subject fills the foot
+   * of the frame (a group shot): the copy takes the sky, the people stay
+   * clear. Pair it with `HeroPhoto film="top"`.
    */
   align?: "bottom" | "top"
+  /**
+   * `band` gives the artwork its own area above the copy instead of filling
+   * the hero behind it — for the dither marks (Solutions, Products,
+   * Insights), which are illustrations the copy must never cover. Photos
+   * stay `behind`, under their film.
+   */
+  art?: "behind" | "band"
   className?: string
 }) {
-  const art = (
-    // The artwork's own band: it takes whatever height the copy leaves, so
-    // the text never sits on a photo or a dither mark, at any screen height.
-    <div className="relative min-h-[45svh] flex-1 overflow-hidden">
-      <div className="absolute inset-0">{background}</div>
-    </div>
-  )
-
   return (
     <section
       className={cn(
-        "dark relative isolate flex min-h-svh flex-col bg-black text-foreground",
+        "dark relative isolate flex flex-col overflow-hidden bg-black text-foreground",
+        // A band hero grows past the screen rather than squeezing its art.
+        art === "band" ? "min-h-svh" : "h-svh min-h-[640px]",
+        align === "top" ? "justify-between" : "justify-end",
         className
       )}
     >
-      {align === "bottom" ? art : null}
+      {art === "band" ? (
+        // Takes whatever height the copy leaves, at least 45% of the screen.
+        <div className="relative min-h-[45svh] flex-1 overflow-hidden">
+          <div className="absolute inset-0">{background}</div>
+        </div>
+      ) : (
+        <div className="absolute inset-0 -z-10">{background}</div>
+      )}
       <Container
         className={cn(
           "flex flex-col gap-10 lg:gap-14",
-          align === "top" ? "pt-32 pb-10 lg:pt-36" : "pt-8 pb-10 lg:pb-16"
+          align === "top" ? "pt-32 lg:pt-36" : "pb-10 lg:pb-16",
+          art === "band" && "pt-8"
         )}
       >
         <Reveal className="flex flex-col items-start gap-6">
@@ -80,7 +90,6 @@ function FullHero({
         </Reveal>
         {rail ? <Reveal delay={0.1}>{rail}</Reveal> : null}
       </Container>
-      {align === "top" ? art : null}
       {/*
        * The blend into the page: black at the hero's foot easing to the
        * page's own background, so the next section doesn't start on a hard
@@ -123,25 +132,43 @@ function HeroRail({
 }
 
 /**
- * A hero photograph, filling the artwork's band. The film only softens the
- * edges: the top under the floating nav, and whichever edge meets the copy,
- * which fades to the hero's black so the band ends without a seam.
+ * A hero photograph under the standard film: light at the top so the picture
+ * reads, deepening behind the copy at the bottom and toward the left, where
+ * the copy sits. One film for every photo hero, so the type always lands the
+ * same way.
  */
 function HeroPhoto({
   src,
   alt = "",
   position = "50% 50%",
+  raised = false,
   film = "bottom",
 }: {
   src: string
   alt?: string
-  /** CSS object-position, to keep the subject in the band. */
+  /** CSS object-position, to keep faces clear of the copy. */
   position?: string
-  /** Which edge meets the copy: the bottom (default) or, with `top`, both. */
+  /**
+   * For a photo whose subject stands at the bottom of the frame (a group
+   * shot): the picture fills only the upper part of the hero and fades out
+   * above the copy, so the copy never sits on faces.
+   */
+  raised?: boolean
+  /** Which end the film deepens toward: under bottom copy, or top copy. */
   film?: "bottom" | "top"
 }) {
   return (
-    <div className="absolute inset-0">
+    <div
+      className={cn(
+        "absolute inset-x-0 top-0",
+        raised
+          ? "bottom-[50%] lg:bottom-[40%]"
+          : film === "top"
+            ? // Ends where the hero's blend begins, so the front row is whole.
+              "bottom-24 lg:bottom-40"
+            : "bottom-0"
+      )}
+    >
       <Image
         src={src}
         alt={alt}
@@ -154,14 +181,25 @@ function HeroPhoto({
       <div
         aria-hidden
         className={cn(
-          "absolute inset-x-0 top-0 bg-linear-to-b to-transparent",
-          film === "top" ? "h-1/4 from-black" : "h-1/4 from-black/50"
+          "absolute inset-0 bg-linear-to-b",
+          film === "top"
+            ? "from-black/90 via-black/60 via-40% to-transparent to-70%"
+            : raised
+              ? "from-black/20 via-transparent via-70% to-black"
+              : "from-black/20 via-black/40 to-black/90"
         )}
       />
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 h-1/4 bg-linear-to-t from-black to-transparent"
+        className="absolute inset-0 bg-linear-to-r from-black/60 via-black/20 to-transparent"
       />
+      {film === "top" ? (
+        // Only the last strip fades, into the hero's blend: faces stay bright.
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-linear-to-t from-black to-transparent to-20%"
+        />
+      ) : null}
     </div>
   )
 }

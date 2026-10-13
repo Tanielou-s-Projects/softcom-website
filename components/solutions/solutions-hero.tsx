@@ -11,6 +11,7 @@ import { solutions } from "@/components/solutions/content"
 function SolutionsHero() {
   return (
     <FullHero
+      art="band"
       background={<DitherMark layout="conduit" />}
       badge="Solutions"
       title="Technology and expertise for your most important work."

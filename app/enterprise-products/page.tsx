@@ -8,21 +8,26 @@ import { ProductGrid } from "@/components/products/product-grid"
 import { ProductsHero } from "@/components/products/products-hero"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
+import { getProducts } from "@/sanity/lib/data"
 
 export const metadata: Metadata = {
   title: productsIntro.title,
   description: productsIntro.lead,
 }
 
-export default function Page() {
+export default async function Page() {
+  const all = await getProducts()
+  const products = all.filter((product) => product.kind === "softcom")
+  const partners = all.filter((product) => product.kind === "partner")
+
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-32">
       <BlueprintGrid />
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <ProductsHero />
-      <ProductGrid />
+      <ProductsHero products={all} />
+      <ProductGrid products={products} partnerPlatforms={partners} />
 
       {/*
        * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves

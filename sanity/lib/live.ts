@@ -1,14 +1,31 @@
-// Live Content API — real-time content + automatic Visual Editing.
-// https://github.com/sanity-io/next-sanity#live-content-api
-import { defineLive } from "next-sanity/live"
+import type { QueryParams } from "next-sanity"
 
 import { client } from "@/sanity/lib/client"
 
-const token = process.env.SANITY_API_READ_TOKEN
+/*
+ * How the site reads Sanity. Every fetch is cached under the document types
+ * it depends on, refreshes on its own within a minute, and refreshes at once
+ * when the Studio publishes: a Sanity webhook calls `/api/revalidate`, which
+ * marks the published type's tag stale (see that route).
+ *
+ * Not `defineLive`: next-sanity 13's Live Content API is built for Cache
+ * Components (`'use cache'`), which this app doesn't enable.
+ */
 
-export const { sanityFetch, SanityLive } = defineLive({
-  client,
-  // Tokens are only required to read drafts/preview. Published content works without them.
-  serverToken: token,
-  browserToken: token,
-})
+/** Seconds before a cached query is refetched, webhook or not. */
+const REVALIDATE = 60
+
+export async function sanityFetch<const QueryString extends string>({
+  query,
+  params = {},
+  tags,
+}: {
+  query: QueryString
+  params?: QueryParams
+  /** The document types the result depends on, e.g. `["insight"]`. */
+  tags: string[]
+}) {
+  return client.fetch(query, params, {
+    next: { revalidate: REVALIDATE, tags },
+  })
+}

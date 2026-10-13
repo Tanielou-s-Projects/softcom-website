@@ -15,6 +15,8 @@ export type ProductCard = { label: string; description: string }
 export type ProductFigure = {
   /** Looked up in the product's figure registry. */
   key: string
+  /** Whose registry, when not the page's own product (Sanity can borrow). */
+  source?: string
   /** The deck's caption title, e.g. "Declared against owed." */
   title: string
   caption?: string

@@ -6,7 +6,6 @@ import "./globals.css"
 import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
 import { AnimatedFavicon } from "@/components/site/animated-favicon"
 import { ThemeProvider } from "@/components/theme-provider"
-import { SanityLive } from "@/sanity/lib/live"
 import { cn } from "@/lib/utils"
 
 const spaceGroteskHeading = Space_Grotesk({
@@ -70,7 +69,6 @@ export default function RootLayout({
             <PixelPageTransition />
           </MotionConfig>
         </ThemeProvider>
-        <SanityLive />
         <AnimatedFavicon />
       </body>
     </html>

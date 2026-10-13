@@ -5,7 +5,7 @@ import {
 
 import { cn } from "@/lib/utils"
 import { panelHeadingText } from "@/components/landing/section"
-import { contactDetails } from "@/components/contact/content"
+import { getSettings } from "@/sanity/lib/data"
 
 /** Icon and text, on the design's 24px / 16px gutter. */
 function DetailRow({
@@ -26,7 +26,8 @@ function DetailRow({
 }
 
 /** The address and email, beside a "Get In Touch" heading. */
-function ContactDetails() {
+async function ContactDetails() {
+  const contactDetails = await getSettings()
   return (
     <div className="flex flex-col gap-8 overflow-clip rounded-3xl bg-background p-8 lg:flex-row lg:items-start lg:justify-between lg:p-[47px]">
       <h2 className={cn(panelHeadingText, "max-w-[142px] text-foreground")}>
