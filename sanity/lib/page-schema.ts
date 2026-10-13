@@ -125,21 +125,25 @@ function fieldOf(
   return defineField({ ...base, type: "string" })
 }
 
+/** A page singleton, before it is generated into a schema type. */
+export type PageDefinition = {
+  /** Also the document's fixed `_id` and its cache tag. */
+  name: string
+  title: string
+  icon?: ComponentType
+  /** The page's copy object in code: the form's shape and its fallbacks. */
+  defaults: Record<string, unknown>
+  /** Help text by field path, e.g. `{ "hero.title": "Keep it short" }`. */
+  notes?: Record<string, string>
+}
+
 export function pageSingleton({
   name,
   title,
   icon,
   defaults,
   notes,
-}: {
-  /** Also the document's fixed `_id`. */
-  name: string
-  title: string
-  icon?: ComponentType
-  defaults: Record<string, unknown>
-  /** Help text by field path, e.g. `{ "hero.title": "Keep it short" }`. */
-  notes?: Record<string, string>
-}) {
+}: PageDefinition) {
   const sections = Object.keys(defaults)
   return defineType({
     name,
