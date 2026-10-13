@@ -73,15 +73,28 @@ function ContactForm() {
         </Field>
       </div>
 
-      <Field id="contact-company" label="Company">
-        <Input
-          id="contact-company"
-          name="company"
-          autoComplete="organization"
-          placeholder="Organisation Name"
-          className={field}
-        />
-      </Field>
+      <div className="flex flex-col gap-8 sm:flex-row">
+        <Field id="contact-phone" label="Phone">
+          <Input
+            id="contact-phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            placeholder="+234 800 000 0000"
+            className={field}
+          />
+        </Field>
+
+        <Field id="contact-company" label="Company">
+          <Input
+            id="contact-company"
+            name="company"
+            autoComplete="organization"
+            placeholder="Organisation Name"
+            className={field}
+          />
+        </Field>
+      </div>
 
       <Field id="contact-message" label="Message">
         <Textarea

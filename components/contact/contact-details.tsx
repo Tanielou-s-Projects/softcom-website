@@ -1,12 +1,11 @@
 import {
   BuildingOfficeIcon,
   EnvelopeSimpleIcon,
-  PhoneIcon,
 } from "@phosphor-icons/react/dist/ssr"
 
 import { cn } from "@/lib/utils"
 import { panelHeadingText } from "@/components/landing/section"
-import { contactDetails, phoneHref } from "@/components/contact/content"
+import { contactDetails } from "@/components/contact/content"
 
 /** Icon and text, on the design's 24px / 16px gutter. */
 function DetailRow({
@@ -26,7 +25,7 @@ function DetailRow({
   )
 }
 
-/** The address, email and phone, beside a "Get In Touch" heading. */
+/** The address and email, beside a "Get In Touch" heading. */
 function ContactDetails() {
   return (
     <div className="flex flex-col gap-8 overflow-clip rounded-3xl bg-background p-8 lg:flex-row lg:items-start lg:justify-between lg:p-[47px]">
@@ -53,12 +52,6 @@ function ContactDetails() {
               className="hover:text-brand-cyan"
             >
               {contactDetails.email}
-            </a>
-          </DetailRow>
-
-          <DetailRow icon={PhoneIcon}>
-            <a href={phoneHref} className="hover:text-brand-cyan">
-              {contactDetails.phone}
             </a>
           </DetailRow>
         </div>
