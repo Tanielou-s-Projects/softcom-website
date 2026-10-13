@@ -3,21 +3,20 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { careers } from "@/components/about/content"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
   Bleed,
   bodyText,
   Container,
-  displayText,
   headingText,
   leadText,
   primaryPill,
 } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
+import { HeroHeader } from "@/components/landing/hero-header"
+import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
 import { SiteFooter } from "@/components/site/site-footer"
-import { SiteHeader } from "@/components/site/site-header"
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -28,20 +27,35 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-background">
-      <SiteHeader />
+      {/* Floats over the full-height hero rather than taking a band above it. */}
+      <HeroHeader />
 
-      <Container className="flex flex-col items-start gap-6 py-12">
-        <Badge variant="brand">{careers.eyebrow}</Badge>
-        <h1 className={cn(displayText, "max-w-[16ch] text-foreground")}>
-          {careers.title}
-        </h1>
-        {careers.paragraphs.map((paragraph) => (
-          <p
-            key={paragraph}
-            className={cn(leadText, "max-w-[75ch] text-muted-foreground")}
-          >
-            {paragraph}
-          </p>
+      <FullHero
+        background={
+          <HeroPhoto src="/images/team-code-review.jpg" position="50% 35%" />
+        }
+        badge={careers.eyebrow}
+        title={careers.title}
+        lead={careers.paragraphs[0]}
+        rail={
+          <HeroRail>
+            <div>
+              <Button asChild size="lg" className={primaryPill}>
+                <Link href="#roles">See open roles</Link>
+              </Button>
+            </div>
+          </HeroRail>
+        }
+      />
+
+      {/* The rest of the invitation, out of the hero so it stays one line. */}
+      <Container className="flex flex-col gap-4 py-12">
+        {careers.paragraphs.slice(1).map((paragraph) => (
+          <Reveal key={paragraph}>
+            <p className={cn(leadText, "max-w-[75ch] text-muted-foreground")}>
+              {paragraph}
+            </p>
+          </Reveal>
         ))}
       </Container>
 

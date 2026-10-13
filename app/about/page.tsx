@@ -20,7 +20,7 @@ import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { Team } from "@/components/landing/team"
 import { SiteFooter } from "@/components/site/site-footer"
 import { BlueprintGrid } from "@/components/site/blueprint-grid"
-import { SiteHeader } from "@/components/site/site-header"
+import { HeroHeader } from "@/components/landing/hero-header"
 
 export const metadata: Metadata = {
   title: "About",
@@ -36,10 +36,11 @@ export default function Page() {
   return (
     <div className="relative flex min-h-svh w-full flex-col">
       <BlueprintGrid />
-      <SiteHeader />
+      {/* Floats over the full-height hero rather than taking a band above it. */}
+      <HeroHeader />
 
       <div className="flex flex-col gap-60">
-        {/* Hero — Apollo-style statement over a circular team-photo band. */}
+        {/* Hero — the shared frame, over the circular team-photo band. */}
         <AboutHero />
 
         {/* Our Story */}
