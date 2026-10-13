@@ -148,18 +148,16 @@ function arrangementOf(
   stop: { x: number; y: number; size: number } | null
 ): Arrangement {
   if (id === "pair") {
-    // Side by side on one row, like the two dots of the wordmark.
-    const d = mobile
-      ? Math.min(w * 0.62, h * 0.34)
-      : Math.min(w * 0.36, h * 0.56)
-    const b = d * 0.62
-    const cy = h * (mobile ? 0.6 : 0.64)
-    const gap = mobile ? 12 : 24
-    // The pair is centred as one group across the screen.
-    const left = (w - (d + gap + b)) / 2 + d / 2
+    // The wordmark's two dots, at the scale of the screen: equal circles side
+    // by side, edge to edge, starting under the headline and running off the
+    // bottom of the screen.
+    const gap = mobile ? 8 : 16
+    const d = (w - gap) / 2
+    const under = (stop ? stop.y + stop.size * 0.3 : h * 0.3) + gap * 2
+    const cy = Math.max(h * 0.62, under + d / 2)
     return {
-      lower: { x: left, y: cy, d },
-      upper: { x: left + d / 2 + gap + b / 2, y: cy, d: b },
+      lower: { x: d / 2, y: cy, d },
+      upper: { x: w - d / 2, y: cy, d },
     }
   }
   if (id === "dot" && stop) {
