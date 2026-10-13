@@ -66,3 +66,40 @@
 .softcom-iso .iso-plate .iso-svg {
   max-width: 920px;
 }
+
+/*
+ * Dithered shading (dither-defs.tsx): faces are dot densities in the site's
+ * ordered dither instead of flat greys; the bench is brand blue, the part to
+ * watch is cyan. The paper fill under each face keeps hiding what's behind.
+ */
+.iso.softcom-dither {
+  --dither-ink: #6b6b6b;
+  --dither-top: #8a8a8a;
+  --dither-base: var(--color-brand-blue);
+  --dither-lit: var(--color-brand-cyan);
+}
+.softcom-dither .iso-shade[data-shade="0"] {
+  fill: url(#sd-shade-0);
+}
+.softcom-dither .iso-shade[data-shade="1"] {
+  fill: url(#sd-shade-1);
+}
+.softcom-dither .iso-shade[data-shade="2"] {
+  fill: url(#sd-shade-2);
+}
+.softcom-dither .iso-shade[data-shade="3"] {
+  fill: url(#sd-shade-3);
+}
+.softcom-dither .iso-top {
+  fill: url(#sd-top);
+}
+.softcom-dither .iso-base > .iso-shade,
+.softcom-dither .iso-base > .iso-top {
+  fill: url(#sd-base);
+}
+.softcom-dither .iso-solid[data-lit] > .iso-shade {
+  fill: url(#sd-lit);
+}
+.softcom-dither .iso-solid[data-lit] > .iso-top {
+  fill: url(#sd-lit-top);
+}

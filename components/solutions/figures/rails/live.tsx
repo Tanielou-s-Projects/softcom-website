@@ -2,6 +2,7 @@
 
 import * as React from "react"
 
+import { DitherDefs } from "@/components/iso/dither-defs"
 import { IsoFigure } from "@/components/iso/react/draw"
 import {
   useInView,
@@ -124,6 +125,7 @@ export function RailsLive({
       onPointerLeave={() => setPaused(false)}
     >
       <IsoFigure width={WIDTH} height={HEIGHT} label={label}>
+        <DitherDefs />
         {base}
         {trackArt}
         {tray}

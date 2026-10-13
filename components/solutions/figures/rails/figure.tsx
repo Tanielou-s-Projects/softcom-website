@@ -35,7 +35,12 @@ const BASE = (
         ))}
       </g>
     ))}
-    <Solid paths={BASE_ART.slab} tone="mid" crease="faint" />
+    <Solid
+      paths={BASE_ART.slab}
+      tone="mid"
+      crease="faint"
+      className="iso-base"
+    />
     <Line d={BASE_ART.groove} tone="lo" />
     <Line d={BASE_ART.screwRings} tone="lo" />
     <Dots points={BASE_ART.screws} size={0.5} tone="mid" />
@@ -186,7 +191,7 @@ const LABEL =
 /** Fig 01 · Digital Infrastructure: shared rails. */
 export function RailsFigure() {
   return (
-    <div className="iso softcom-iso">
+    <div className="iso softcom-iso softcom-dither">
       <Plate
         fig="Fig 01"
         title="Shared rails"
