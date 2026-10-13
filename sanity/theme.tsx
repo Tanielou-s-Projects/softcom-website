@@ -39,26 +39,7 @@ const props = {
   "--font-family-monospace": "var(--font-mono), ui-monospace, monospace",
 }
 
-const legacy = buildLegacyTheme(props)
-
-/*
- * Headings in the site's display face, Space Grotesk; body, labels and UI in
- * Montserrat; code in Geist Mono. Sizes stay Sanity's own, so dense lists
- * and forms keep their rhythm.
- */
-export const theme = {
-  ...legacy,
-  fonts: {
-    ...legacy.fonts,
-    heading: {
-      ...legacy.fonts.heading,
-      family: "var(--font-heading), 'Space Grotesk', ui-sans-serif, sans-serif",
-    },
-    label: { ...legacy.fonts.label, family: props["--font-family-base"] },
-    text: { ...legacy.fonts.text, family: props["--font-family-base"] },
-    code: { ...legacy.fonts.code, family: props["--font-family-monospace"] },
-  },
-}
+export const theme = buildLegacyTheme(props)
 
 /** The workspace icon: the wordmark's two dots, cyan then blue. */
 export function SoftcomIcon() {
