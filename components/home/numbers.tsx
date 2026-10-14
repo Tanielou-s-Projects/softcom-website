@@ -1,11 +1,15 @@
+import { DitherReveal } from "@/components/motion/dither-reveal"
 import { ButtonLink } from "@/components/ui/button"
 import { withYears, type HomePage } from "@/content/home/page-copy"
 
-/* The proof: four figures on the accent, the only full-colour block. */
+/*
+ * The proof: four figures on the accent, the only full-colour block. The blue
+ * arrives in the site's dither as the block scrolls in.
+ */
 export function Numbers({ copy }: { copy: HomePage["numbers"] }) {
   return (
     <section className="shell mt-32 md:mt-48">
-      <div className="rounded-xl bg-accent p-6 text-on-accent md:p-10">
+      <DitherReveal className="rounded-xl p-6 text-on-accent md:p-10">
         <dl className="grid grid-cols-2 md:grid-cols-4">
           {copy.items.map((item) => (
             <div
@@ -27,7 +31,7 @@ export function Numbers({ copy }: { copy: HomePage["numbers"] }) {
             {copy.secondaryCta.label}
           </ButtonLink>
         </div>
-      </div>
+      </DitherReveal>
     </section>
   )
 }

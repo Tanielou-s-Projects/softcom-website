@@ -1,12 +1,13 @@
 import Link from "next/link"
 
-import { Wordmark } from "@/components/site/wordmark"
+import { DitherWordmark } from "@/components/motion/dither-wordmark"
 import type { Navigation } from "@/content/site/chrome-copy"
 import type { SiteSettings } from "@/sanity/lib/data"
 
 /*
  * The footer is the one ink plate on a paper site: link columns on a
- * hairline grid, then the wordmark set at full shell width as the sign-off.
+ * hairline grid, then the wordmark at full shell width as the sign-off, drawn
+ * in the site's dither and resolving in the first time it is seen.
  */
 export function SiteFooter({
   footer,
@@ -60,7 +61,11 @@ export function SiteFooter({
           ))}
         </div>
 
-        <Wordmark className="mt-24 w-full md:mt-32" />
+        <DitherWordmark
+          src="/brand/softcom-wordmark.svg"
+          alt="Softcom"
+          className="mt-24 text-ink/25 md:mt-32"
+        />
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-line py-6 text-sm text-ink-faint">
           <p>

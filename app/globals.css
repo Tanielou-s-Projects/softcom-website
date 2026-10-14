@@ -5,8 +5,9 @@
  *
  * Warm paper, near-black ink and one accent (Softcom blue) carry the whole
  * site; cyan is the brand's second colour and appears only as a small signal
- * on blue. Structure is drawn, not boxed: hairlines, crosshair marks and the
- * 12-column shell. Dark mode redefines the same tokens.
+ * on blue, and as the front edge of the dither (lib/dither.ts). Structure is
+ * drawn, not boxed: hairlines, crosshair marks and the 12-column shell. Dark
+ * mode redefines the same tokens.
  */
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -26,6 +27,8 @@
   --color-accent-deep: #0039c2;
   --color-on-accent: #ffffff;
   --color-signal: #00ffff;
+  /* Cyan deep enough to read on paper (pure cyan is ~1.3:1 there). */
+  --color-signal-deep: oklch(0.577 0.093 194.8);
 
   /* Display type: large, light, tight. */
   --text-display: clamp(3rem, 7.2vw, 7.5rem);

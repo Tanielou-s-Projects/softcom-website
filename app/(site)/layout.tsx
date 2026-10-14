@@ -1,3 +1,4 @@
+import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
 import { getNavigation } from "@/content/site/get-navigation"
@@ -19,6 +20,7 @@ export default async function SiteLayout({
       <SiteHeader header={navigation.header} />
       <main>{children}</main>
       <SiteFooter footer={navigation.footer} settings={settings} />
+      <PixelPageTransition />
     </>
   )
 }

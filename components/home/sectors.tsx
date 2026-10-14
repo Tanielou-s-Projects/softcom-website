@@ -1,11 +1,13 @@
 import Image from "next/image"
 
+import { SectorMark } from "@/components/home/sector-mark"
 import { SectionHeading } from "@/components/ui/section-heading"
+import { sectors } from "@/content/home/content"
 import type { HomePage } from "@/content/home/page-copy"
 
 /*
- * Who Softcom works with: three sectors side by side on surface cards, then
- * the organisations as a slow, greyscale marquee.
+ * Who Softcom works with: three sectors side by side on surface cards, each
+ * with its dot-matrix mark, then the organisations as a slow marquee.
  */
 export function Sectors({
   copy,
@@ -19,12 +21,21 @@ export function Sectors({
       <div className="shell">
         <SectionHeading heading={copy.heading} intro={copy.intro} />
         <ul className="mt-12 grid gap-2 md:mt-20 md:grid-cols-3">
-          {copy.sectors.map((sector) => (
+          {copy.sectors.map((sector, i) => (
             <li
               key={sector.title}
               className="flex flex-col rounded-xl bg-surface p-6 md:min-h-[26rem] md:p-8"
             >
-              <h3 className="text-title whitespace-pre-line">{sector.title}</h3>
+              <div className="flex items-start justify-between gap-6">
+                <h3 className="text-title whitespace-pre-line">
+                  {sector.title}
+                </h3>
+                <SectorMark
+                  src={sector.silhouette}
+                  tone={sectors[i]?.tone ?? "neutral"}
+                  className="w-20 shrink-0 md:w-24"
+                />
+              </div>
               <p className="mt-auto pt-10 text-ink-soft md:pt-16">
                 {sector.description}
               </p>
