@@ -1,6 +1,7 @@
 import Link from "next/link"
 
 import { DitherWordmark } from "@/components/motion/dither-wordmark"
+import { ScrambleLink } from "@/components/motion/scramble-link"
 import { ThemeToggle } from "@/components/site/theme-toggle"
 import type { Navigation } from "@/content/site/chrome-copy"
 import type { SiteSettings } from "@/sanity/lib/data"
@@ -50,12 +51,12 @@ export function SiteFooter({
               <ul className="mt-4 space-y-2">
                 {column.links.map((link) => (
                   <li key={link.href}>
-                    <Link
+                    <ScrambleLink
                       href={link.href}
                       className="text-ink-soft transition-colors hover:text-ink"
                     >
                       {link.label}
-                    </Link>
+                    </ScrambleLink>
                   </li>
                 ))}
               </ul>

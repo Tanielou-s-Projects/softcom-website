@@ -15,7 +15,9 @@ import {
 /*
  * The one section reveal: content fades and rises into place the first time
  * it scrolls into view. With `stagger`, the direct children arrive one after
- * another (grids, lists); without, the block arrives as one.
+ * another (grids, lists); without, the block arrives as one. `immediate`
+ * plays on mount instead — for hero content that is on screen from the start
+ * (it may sit below the scroll trigger line and would otherwise never fire).
  */
 export function Reveal({
   as: Tag = "div",
@@ -24,6 +26,7 @@ export function Reveal({
   stagger = false,
   y = 24,
   delay = 0,
+  immediate = false,
 }: {
   as?: "div" | "section" | "ul" | "ol" | "dl"
   className?: string
@@ -31,6 +34,7 @@ export function Reveal({
   stagger?: boolean
   y?: number
   delay?: number
+  immediate?: boolean
 }) {
   const ref = React.useRef<HTMLElement>(null)
 
@@ -46,7 +50,9 @@ export function Reveal({
         ease: EASE.out,
         stagger: stagger ? STAGGER.item : 0,
         delay,
-        scrollTrigger: { trigger: el, start: REVEAL_START, once: true },
+        scrollTrigger: immediate
+          ? undefined
+          : { trigger: el, start: REVEAL_START, once: true },
       })
     },
     { scope: ref }

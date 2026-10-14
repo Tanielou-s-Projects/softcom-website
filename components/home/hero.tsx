@@ -44,7 +44,11 @@ export function Hero({ copy }: { copy: HomePage["hero"] }) {
             {copy.progressFirstLine} {copy.progressSecondLine}
           </span>
         </LineReveal>
-        <Reveal delay={0.7} className="mt-10 flex flex-wrap gap-2 md:mt-14">
+        <Reveal
+          immediate
+          delay={0.7}
+          className="mt-10 flex flex-wrap gap-2 md:mt-14"
+        >
           <ButtonLink href={copy.primaryCta.href} tone="accent">
             {copy.primaryCta.label}
           </ButtonLink>

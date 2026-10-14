@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { sendContact, type ContactState } from "@/app/contact/actions"
-import { Arrow } from "@/components/ui/arrow"
+import { Button } from "@/components/ui/button"
 import type { ContactPage } from "@/content/contact/content"
 import { cn } from "@/lib/utils"
 
@@ -214,14 +214,9 @@ export function ContactForm({ copy }: { copy: ContactPage["form"] }) {
       </div>
 
       <div className="mt-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <button
-          type="submit"
-          disabled={pending}
-          className="group inline-flex h-12 cursor-pointer items-center gap-3 self-start rounded-full bg-accent pr-5 pl-6 text-[0.9375rem] font-medium tracking-[-0.01em] whitespace-nowrap text-on-accent transition-colors duration-200 hover:bg-accent-deep disabled:cursor-wait disabled:opacity-70"
-        >
+        <Button type="submit" disabled={pending} className="self-start">
           {pending ? copy.sending : copy.submit}
-          <Arrow className="transition-transform duration-200 group-hover:translate-x-0.5" />
-        </button>
+        </Button>
         {/* A send that failed outright, rather than on one field. */}
         <p
           role="alert"

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { Arrow } from "@/components/ui/arrow"
+import { Button } from "@/components/ui/button"
 import { Crosshairs } from "@/components/ui/crosshairs"
 import type { AlumniPage } from "@/content/about/page-copy"
 import { LineReveal } from "@/components/motion/line-reveal"
@@ -162,13 +162,9 @@ export function AlumniForm({ copy }: { copy: AlumniPage["form"] }) {
               </label>
             </div>
 
-            <button
-              type="submit"
-              className="group inline-flex h-12 items-center gap-3 justify-self-start rounded-full bg-accent pr-5 pl-6 text-[0.9375rem] font-medium tracking-[-0.01em] whitespace-nowrap text-on-accent transition-colors duration-200 hover:bg-accent-deep"
-            >
+            <Button type="submit" className="justify-self-start">
               {copy.submit}
-              <Arrow className="transition-transform duration-200 group-hover:translate-x-0.5" />
-            </button>
+            </Button>
           </form>
         </Reveal>
       </div>

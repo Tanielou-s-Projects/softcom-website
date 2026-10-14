@@ -54,9 +54,16 @@ export function SiteHeader({ header }: { header: HeaderCopy }) {
           {contact && (
             <Link
               href={contact.href}
-              className="ml-3 flex h-10 items-center rounded-full bg-accent px-5 text-[0.9375rem] font-medium text-on-accent transition-colors hover:bg-accent-deep"
+              className="group relative isolate ml-3 flex h-10 items-center overflow-hidden rounded-full bg-accent px-5 text-[0.9375rem] font-medium text-on-accent transition-colors duration-300 ease-expo-out hover:text-paper"
             >
-              {contact.label}
+              {/* The same rotated fill as ButtonLink. */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 -z-10 translate-y-[200%] scale-[1.8] rotate-[15deg] rounded-lg bg-ink transition-transform duration-500 ease-expo-out group-hover:translate-y-0 group-hover:rotate-[8deg] group-hover:duration-1000"
+              />
+              <span className="transition-transform duration-300 ease-expo-out group-hover:-translate-y-px">
+                {contact.label}
+              </span>
             </Link>
           )}
         </nav>

@@ -45,7 +45,7 @@ export function PageHero({
         className="shell grid gap-8 md:grid-cols-12 md:gap-x-6"
       >
         <div className="md:col-span-8">
-          <Reveal>
+          <Reveal immediate>
             <p className="label text-ink-soft">{label}</p>
           </Reveal>
           <LineReveal

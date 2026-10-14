@@ -2,6 +2,7 @@
 
 import gsap from "gsap"
 import { CustomEase } from "gsap/CustomEase"
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { SplitText } from "gsap/SplitText"
 import { useGSAP } from "@gsap/react"
@@ -16,7 +17,13 @@ import { useGSAP } from "@gsap/react"
  * out-curve for reveals and an expo in-out for anything that travels.
  */
 
-gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase, useGSAP)
+gsap.registerPlugin(
+  ScrollTrigger,
+  SplitText,
+  CustomEase,
+  ScrambleTextPlugin,
+  useGSAP
+)
 // Phones resize the viewport as their toolbars show and hide; that shouldn't
 // re-measure every trigger mid-scroll.
 ScrollTrigger.config({ ignoreMobileResize: true })
