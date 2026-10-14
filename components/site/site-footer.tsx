@@ -1,11 +1,13 @@
 import Link from "next/link"
 
 import { DitherWordmark } from "@/components/motion/dither-wordmark"
+import { ThemeToggle } from "@/components/site/theme-toggle"
 import type { Navigation } from "@/content/site/chrome-copy"
 import type { SiteSettings } from "@/sanity/lib/data"
 
 /*
- * The footer is the one ink plate on a paper site: link columns on a
+ * The footer is the one ink plate on a paper site (on a dark page it lifts
+ * onto the surface tone, so the page still visibly ends): link columns on a
  * hairline grid, then the wordmark at full shell width as the sign-off, drawn
  * in the site's dither and resolving in the first time it is seen.
  */
@@ -21,7 +23,7 @@ export function SiteFooter({
   )
 
   return (
-    <footer className="dark mt-32 bg-paper text-ink md:mt-48">
+    <footer className="dark mt-32 bg-paper text-ink md:mt-48 [html.dark_&]:bg-surface">
       <div className="shell pt-16 md:pt-24">
         <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-12">
           <div className="col-span-2 md:col-span-4">
@@ -71,17 +73,20 @@ export function SiteFooter({
           <p>
             © {new Date().getFullYear()} {footer.copyright}
           </p>
-          {legal.length > 0 && (
-            <ul className="flex gap-6">
-              {legal.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="hover:text-ink">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="flex items-center gap-6">
+            {legal.length > 0 && (
+              <ul className="flex gap-6">
+                {legal.map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className="hover:text-ink">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </footer>
