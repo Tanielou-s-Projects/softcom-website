@@ -1,12 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { useReducedMotion } from "motion/react"
 
 import {
   createDitherField,
   type DitherField,
 } from "@/components/motion/dither-field"
+import { prefersReducedMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 /** Where the resolve starts and ends, as the block's top in viewport heights. */
@@ -29,22 +29,28 @@ export function DitherReveal({
   className?: string
   children: React.ReactNode
 }) {
-  const reduceMotion = useReducedMotion()
   const rootRef = React.useRef<HTMLDivElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const contentRef = React.useRef<HTMLDivElement>(null)
-  const [webgl, setWebgl] = React.useState(true)
+  /*
+   * The server can't know about WebGL or reduced motion, so both renders start
+   * as the animated version and the effect falls back to plain blue after
+   * mount — the markup always matches at hydration.
+   */
+  const [animated, setAnimated] = React.useState(true)
 
   React.useEffect(() => {
     const root = rootRef.current
     const canvas = canvasRef.current
     const content = contentRef.current
-    if (!root || !canvas || !content || reduceMotion) return
+    if (!root || !canvas || !content) return
 
-    let field: DitherField | null = createDitherField(canvas)
+    let field: DitherField | null = prefersReducedMotion()
+      ? null
+      : createDitherField(canvas)
     if (!field) {
-      // No WebGL: the solid-blue fallback takes over.
-      setWebgl(false)
+      // Reduced motion or no WebGL: the solid-blue fallback takes over.
+      setAnimated(false)
       return
     }
 
@@ -76,9 +82,7 @@ export function DitherReveal({
       field?.dispose()
       field = null
     }
-  }, [reduceMotion])
-
-  const animated = webgl && !reduceMotion
+  }, [])
 
   return (
     <div

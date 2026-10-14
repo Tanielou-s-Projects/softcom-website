@@ -24,12 +24,14 @@ type Tag = "h1" | "h2" | "h3" | "p" | "div" | "span"
  */
 export function LineReveal({
   as: Tag = "div",
+  id,
   className,
   children,
   delay = 0,
   immediate = false,
 }: {
   as?: Tag
+  id?: string
   className?: string
   children: React.ReactNode
   delay?: number
@@ -65,7 +67,7 @@ export function LineReveal({
   )
 
   return (
-    <Tag ref={ref as React.Ref<never>} className={className}>
+    <Tag ref={ref as React.Ref<never>} id={id} className={className}>
       {children}
     </Tag>
   )

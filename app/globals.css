@@ -29,6 +29,8 @@
   --color-signal: #00ffff;
   /* Cyan deep enough to read on paper (pure cyan is ~1.3:1 there). */
   --color-signal-deep: oklch(0.577 0.093 194.8);
+  /* Form errors only. */
+  --color-danger: #c62f1e;
 
   /* Display type: large, light, tight. */
   --text-display: clamp(3rem, 7.2vw, 7.5rem);
