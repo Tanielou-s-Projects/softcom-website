@@ -111,11 +111,12 @@ export function Reveal({
               },
               0
             )
-            .from(
+            .fromTo(
               items,
+              { autoAlpha: 0, x: -10 },
               {
-                autoAlpha: 0,
-                x: -10,
+                autoAlpha: 1,
+                x: 0,
                 duration: 0.45,
                 ease: "power3.out",
                 stagger: STAGGER.item,

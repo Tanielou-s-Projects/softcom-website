@@ -1,10 +1,12 @@
+import { CountUp } from "@/components/motion/count-up"
 import { DitherReveal } from "@/components/motion/dither-reveal"
 import { ButtonLink } from "@/components/ui/button"
 import { withYears, type HomePage } from "@/content/home/page-copy"
 
 /*
  * The proof: four figures on the accent, the only full-colour block. The blue
- * arrives in the site's dither as the block scrolls in.
+ * arrives in the site's dither as the block scrolls in, and the figures count
+ * up as it settles.
  */
 export function Numbers({ copy }: { copy: HomePage["numbers"] }) {
   return (
@@ -18,7 +20,7 @@ export function Numbers({ copy }: { copy: HomePage["numbers"] }) {
             >
               <dt className="label text-signal">{item.label}</dt>
               <dd className="text-display font-light">
-                {withYears(item.value)}
+                <CountUp value={withYears(item.value)} />
               </dd>
             </div>
           ))}
