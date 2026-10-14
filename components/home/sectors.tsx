@@ -4,6 +4,7 @@ import { SectorMark } from "@/components/home/sector-mark"
 import { SectionHeading } from "@/components/ui/section-heading"
 import { sectors } from "@/content/home/content"
 import type { HomePage } from "@/content/home/page-copy"
+import { Reveal } from "@/components/motion/reveal"
 
 /*
  * Who Softcom works with: three sectors side by side on surface cards, each
@@ -20,7 +21,11 @@ export function Sectors({
     <section className="mt-32 md:mt-48">
       <div className="shell">
         <SectionHeading heading={copy.heading} intro={copy.intro} />
-        <ul className="mt-12 grid gap-2 md:mt-20 md:grid-cols-3">
+        <Reveal
+          as="ul"
+          stagger
+          className="mt-12 grid gap-2 md:mt-20 md:grid-cols-3"
+        >
           {copy.sectors.map((sector, i) => (
             <li
               key={sector.title}
@@ -51,7 +56,7 @@ export function Sectors({
               </ul>
             </li>
           ))}
-        </ul>
+        </Reveal>
       </div>
 
       <div className="mt-20 md:mt-28">

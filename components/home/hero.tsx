@@ -2,6 +2,8 @@ import { ImagePlaceholder } from "@/components/ui/image-placeholder"
 
 import { ButtonLink } from "@/components/ui/button"
 import type { HomePage } from "@/content/home/page-copy"
+import { LineReveal } from "@/components/motion/line-reveal"
+import { Reveal } from "@/components/motion/reveal"
 
 /*
  * The headline set large across the lower left of a full-height stage, under
@@ -29,22 +31,27 @@ export function Hero({ copy }: { copy: HomePage["hero"] }) {
       </div>
 
       <div className="shell relative pb-10 md:pb-14">
-        <h1 className="text-display font-light">
+        <LineReveal
+          as="h1"
+          immediate
+          delay={0.2}
+          className="text-display font-light"
+        >
           <span className="block">
             {copy.headlineFirstLine} {copy.headlineSecondLine}
           </span>
           <span className="block text-ink-faint">
             {copy.progressFirstLine} {copy.progressSecondLine}
           </span>
-        </h1>
-        <div className="mt-10 flex flex-wrap gap-2 md:mt-14">
+        </LineReveal>
+        <Reveal delay={0.7} className="mt-10 flex flex-wrap gap-2 md:mt-14">
           <ButtonLink href={copy.primaryCta.href} tone="accent">
             {copy.primaryCta.label}
           </ButtonLink>
           <ButtonLink href={copy.secondaryCta.href} tone="outline">
             {copy.secondaryCta.label}
           </ButtonLink>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

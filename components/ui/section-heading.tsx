@@ -1,4 +1,6 @@
 import { cn } from "@/lib/utils"
+import { LineReveal } from "@/components/motion/line-reveal"
+import { Reveal } from "@/components/motion/reveal"
 
 /*
  * A section's opening: a mono label above a light headline, with an optional
@@ -24,12 +26,14 @@ export function SectionHeading({
     >
       <div className="md:col-span-7">
         {label && <p className="label mb-5 text-ink-soft">{label}</p>}
-        <h2 className="text-headline font-normal text-balance">{heading}</h2>
+        <LineReveal as="h2" className="text-headline font-normal text-balance">
+          {heading}
+        </LineReveal>
       </div>
       {intro && (
-        <p className="max-w-md text-ink-soft md:col-span-4 md:col-start-9">
-          {intro}
-        </p>
+        <Reveal className="max-w-md text-ink-soft md:col-span-4 md:col-start-9">
+          <p>{intro}</p>
+        </Reveal>
       )}
     </div>
   )

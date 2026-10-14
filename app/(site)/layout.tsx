@@ -1,4 +1,5 @@
 import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
+import { SmoothScroll } from "@/components/motion/smooth-scroll"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
 import { getNavigation } from "@/content/site/get-navigation"
@@ -21,6 +22,7 @@ export default async function SiteLayout({
       <main>{children}</main>
       <SiteFooter footer={navigation.footer} settings={settings} />
       <PixelPageTransition />
+      <SmoothScroll />
     </>
   )
 }

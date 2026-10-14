@@ -114,6 +114,16 @@
   }
 }
 
+/*
+ * LineReveal's masks (SplitText adds `-mask` to the lines class). Display
+ * type sits on a tight line-height, so each mask reaches a little below its
+ * line to keep descenders whole while it rises.
+ */
+.split-line-mask {
+  padding-bottom: 0.22em;
+  margin-bottom: -0.22em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

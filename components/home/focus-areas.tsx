@@ -3,13 +3,18 @@ import { ImagePlaceholder } from "@/components/ui/image-placeholder"
 import { SectionHeading } from "@/components/ui/section-heading"
 import { capabilities } from "@/content/home/content"
 import type { HomePage } from "@/content/home/page-copy"
+import { Reveal } from "@/components/motion/reveal"
 
 /* Three focus areas as numbered columns on a hairline grid. */
 export function FocusAreas({ copy }: { copy: HomePage["focusAreas"] }) {
   return (
     <section className="shell mt-32 md:mt-48">
       <SectionHeading heading={copy.heading} intro={copy.intro} />
-      <ol className="mt-12 grid border-t border-line md:-mx-6 md:mt-20 md:grid-cols-3 md:border-t-0">
+      <Reveal
+        as="ol"
+        stagger
+        className="mt-12 grid border-t border-line md:-mx-6 md:mt-20 md:grid-cols-3 md:border-t-0"
+      >
         {copy.areas.map((area, i) => (
           <li
             key={area.title}
@@ -35,7 +40,7 @@ export function FocusAreas({ copy }: { copy: HomePage["focusAreas"] }) {
             </ArrowLink>
           </li>
         ))}
-      </ol>
+      </Reveal>
     </section>
   )
 }

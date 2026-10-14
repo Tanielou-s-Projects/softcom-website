@@ -4,13 +4,14 @@ import { Arrow } from "@/components/ui/arrow"
 import { ButtonLink } from "@/components/ui/button"
 import { SectionHeading } from "@/components/ui/section-heading"
 import type { HomePage } from "@/content/home/page-copy"
+import { Reveal } from "@/components/motion/reveal"
 
 /* Perspectives as an index: one ruled row each, the whole row a link. */
 export function OurThinking({ copy }: { copy: HomePage["ourThinking"] }) {
   return (
     <section className="shell mt-32 md:mt-48">
       <SectionHeading heading={copy.heading} intro={copy.intro} />
-      <ul className="mt-12 border-b border-line md:mt-20">
+      <Reveal as="ul" stagger className="mt-12 border-b border-line md:mt-20">
         {copy.perspectives.map((item, i) => (
           <li key={item.title} className="border-t border-line">
             <Link
@@ -31,7 +32,7 @@ export function OurThinking({ copy }: { copy: HomePage["ourThinking"] }) {
             </Link>
           </li>
         ))}
-      </ul>
+      </Reveal>
       <ButtonLink href={copy.cta.href} tone="outline" className="mt-10">
         {copy.cta.label}
       </ButtonLink>
