@@ -11,7 +11,11 @@ export function OurThinking({ copy }: { copy: HomePage["ourThinking"] }) {
   return (
     <section className="shell mt-32 md:mt-48">
       <SectionHeading heading={copy.heading} intro={copy.intro} />
-      <Reveal as="ul" stagger className="mt-12 border-b border-line md:mt-20">
+      <Reveal
+        as="ul"
+        stagger="rows"
+        className="mt-12 border-b border-line md:mt-20"
+      >
         {copy.perspectives.map((item, i) => (
           <li key={item.title} className="border-t border-line">
             <Link

@@ -51,7 +51,7 @@ export function ProductSection({
       {section.cards && (
         <Reveal
           as="ol"
-          stagger
+          stagger="cards"
           className="mt-12 grid border-t border-line md:mt-16 md:grid-cols-3 md:border-t-0"
         >
           {section.cards.map((card, i) => (
@@ -71,7 +71,7 @@ export function ProductSection({
 
       {figures.length > 0 && (
         <Reveal
-          stagger
+          stagger="cards"
           className="mt-12 grid gap-x-6 gap-y-12 md:mt-16 md:grid-cols-2"
         >
           {figures.map((figure, i) => (

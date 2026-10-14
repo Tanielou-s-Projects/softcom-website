@@ -14,7 +14,10 @@ export function CaseStudiesClose({ copy }: { copy: Cta }) {
   return (
     <section className="shell mt-32 md:mt-48">
       <div className="relative isolate flex min-h-[32rem] flex-col justify-end overflow-hidden rounded-xl p-6 md:min-h-[40rem] md:p-10">
-        <ImagePlaceholder className="absolute inset-0 -z-10 items-start pt-24" />
+        <ImagePlaceholder
+          reveal={false}
+          className="absolute inset-0 -z-10 items-start pt-24"
+        />
         <LineReveal as="h2" className="max-w-4xl text-display font-light">
           {copy.heading}
         </LineReveal>

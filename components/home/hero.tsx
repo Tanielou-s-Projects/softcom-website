@@ -14,6 +14,7 @@ export function Hero({ copy }: { copy: HomePage["hero"] }) {
   return (
     <section className="relative isolate flex min-h-svh flex-col justify-end overflow-hidden">
       <ImagePlaceholder
+        reveal={false}
         label={copy.portalImageAlt}
         className="absolute inset-0 -z-10 items-start pt-[30svh] ring-0"
       />

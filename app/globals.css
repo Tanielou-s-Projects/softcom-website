@@ -122,6 +122,26 @@
 }
 
 /*
+ * Reveal's "rows" mode: each row's top border becomes a hairline that draws
+ * across from the left as GSAP moves --rule from 0 to 1. Without JS (or under
+ * reduced motion) --rule stays unset and the line is simply there.
+ */
+[data-reveal="rows"] > * {
+  position: relative;
+  border-top-color: transparent;
+}
+[data-reveal="rows"] > *::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: -1px;
+  height: 1px;
+  background: var(--color-line);
+  transform: scaleX(var(--rule, 1));
+  transform-origin: left;
+}
+
+/*
  * LineReveal's masks (SplitText adds `-mask` to the lines class). Display
  * type sits on a tight line-height, so each mask reaches a little below its
  * line to keep descenders whole while it rises.

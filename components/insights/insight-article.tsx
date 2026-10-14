@@ -175,7 +175,11 @@ export function KeepReading({
             <Arrow className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
-        <Reveal as="ul" stagger className="mt-12 border-b border-line md:mt-16">
+        <Reveal
+          as="ul"
+          stagger="rows"
+          className="mt-12 border-b border-line md:mt-16"
+        >
           {next.map((insight) => (
             <li key={insight.id} className="border-t border-line">
               <Link

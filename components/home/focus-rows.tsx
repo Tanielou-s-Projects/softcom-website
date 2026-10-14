@@ -191,7 +191,7 @@ export function FocusRows({ rows }: { rows: FocusRow[] }) {
                 data-focus-media
                 className="absolute inset-0 overflow-hidden max-lg:rounded-lg"
               >
-                <ImagePlaceholder className="ring-0" />
+                <ImagePlaceholder reveal={false} className="ring-0" />
               </div>
             </div>
 

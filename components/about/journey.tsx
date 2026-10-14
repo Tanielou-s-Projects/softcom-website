@@ -36,7 +36,7 @@ export function Journey({ copy }: { copy: AboutPage["journey"] }) {
 
         <Reveal
           as="ol"
-          stagger
+          stagger="rows"
           className="relative border-b border-line md:col-span-8"
         >
           {copy.items.map((item) => (

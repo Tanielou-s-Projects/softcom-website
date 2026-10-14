@@ -23,7 +23,7 @@ export function Sectors({
         <SectionHeading heading={copy.heading} intro={copy.intro} />
         <Reveal
           as="ul"
-          stagger
+          stagger="cards"
           className="mt-12 grid gap-2 md:mt-20 md:grid-cols-3"
         >
           {copy.sectors.map((sector, i) => (

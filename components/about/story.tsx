@@ -51,7 +51,7 @@ export function Story({
       </div>
       {slots.length > 0 && (
         <Reveal
-          stagger
+          stagger="cards"
           className="shell mt-16 grid grid-cols-2 gap-3 md:mt-24 md:grid-cols-12 md:gap-6"
         >
           {slots.map((_, i) => (

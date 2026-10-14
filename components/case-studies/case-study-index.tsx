@@ -83,7 +83,11 @@ export function CaseStudyIndex({
             {pad(shown.length)} / {pad(caseStudies.length)}
           </p>
         </Reveal>
-        <Reveal as="ol" stagger className="mt-10 border-t border-line md:mt-12">
+        <Reveal
+          as="ol"
+          stagger="rows"
+          className="mt-10 border-t border-line md:mt-12"
+        >
           {shown.map((study, i) => (
             <li
               key={study.id}

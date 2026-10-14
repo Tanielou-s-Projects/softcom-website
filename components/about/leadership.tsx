@@ -22,7 +22,7 @@ export function Leadership({
       <SectionHeading label="Leadership" heading={copy.heading} />
       <Reveal
         as="ul"
-        stagger
+        stagger="cards"
         className="mt-12 grid grid-cols-2 gap-x-3 gap-y-10 md:mt-20 md:gap-x-6 md:gap-y-12 lg:grid-cols-3"
       >
         {people.map((person, i) => (

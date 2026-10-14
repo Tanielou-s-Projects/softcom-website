@@ -45,7 +45,7 @@ export function Roles({
         {roles.length ? (
           <Reveal
             as="ul"
-            stagger
+            stagger="rows"
             className="mt-12 border-b border-line md:mt-20"
           >
             {roles.map((role) => {

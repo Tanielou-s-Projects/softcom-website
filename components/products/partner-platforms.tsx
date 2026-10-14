@@ -33,7 +33,7 @@ export function PartnerPlatforms({
         />
         <Reveal
           as="ol"
-          stagger
+          stagger="cards"
           className="mt-12 grid border-t border-line md:-mx-6 md:mt-20 md:grid-cols-2 md:border-t-0"
         >
           {partners.map((partner, i) => (

@@ -28,7 +28,7 @@ export function MoreProducts({
           All products
         </Link>
       </div>
-      <Reveal as="ul" stagger className="mt-6 border-b border-line">
+      <Reveal as="ul" stagger="rows" className="mt-6 border-b border-line">
         {products.map((product, i) => (
           <li key={product.id} className="border-t border-line">
             <Link

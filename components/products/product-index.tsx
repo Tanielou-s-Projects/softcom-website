@@ -27,7 +27,11 @@ export function ProductIndex({
         label={`${pad(products.length)} products`}
         heading={copy.softcom.title}
       />
-      <Reveal as="ol" stagger className="mt-12 border-b border-line md:mt-20">
+      <Reveal
+        as="ol"
+        stagger="rows"
+        className="mt-12 border-b border-line md:mt-20"
+      >
         {products.map((product, i) => (
           <li
             key={product.id}

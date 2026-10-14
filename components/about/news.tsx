@@ -15,7 +15,11 @@ export function News({ copy }: { copy: AboutPage["news"] }) {
         heading={copy.heading}
         intro={copy.lead}
       />
-      <Reveal as="ul" stagger className="mt-12 border-b border-line md:mt-20">
+      <Reveal
+        as="ul"
+        stagger="rows"
+        className="mt-12 border-b border-line md:mt-20"
+      >
         {copy.items.map((item) => (
           <li key={item.slug} className="border-t border-line">
             <Link

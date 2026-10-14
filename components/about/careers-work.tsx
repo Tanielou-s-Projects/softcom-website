@@ -15,7 +15,7 @@ export function CareersWork({ copy }: { copy: CareersPage["work"] }) {
         >
           {copy.heading}
         </LineReveal>
-        <Reveal stagger className="md:col-span-5 md:col-start-8">
+        <Reveal stagger="cards" className="md:col-span-5 md:col-start-8">
           {copy.paragraphs.map((p, i) => (
             <p
               key={p}

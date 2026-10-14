@@ -10,7 +10,7 @@ export function Principles({ copy }: { copy: AboutPage["values"] }) {
       <SectionHeading label={principles.eyebrow} heading={copy.heading} />
       <Reveal
         as="ol"
-        stagger
+        stagger="cards"
         className="mt-12 grid border-t border-line md:mt-20 md:grid-cols-2"
       >
         {copy.items.map((item, i) => (

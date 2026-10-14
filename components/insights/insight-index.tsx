@@ -112,7 +112,7 @@ export function InsightIndex({
             </h2>
             <Reveal
               as="ul"
-              stagger
+              stagger="cards"
               className="mt-10 grid gap-x-6 gap-y-16 md:mt-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-y-20"
             >
               {withHoles(latest).map((insight, i) =>

@@ -132,7 +132,7 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
   return (
     <>
       <SubHeading heading={copy.listHeading} intro={copy.listIntro} />
-      <Reveal as="ol" stagger className="mt-10 border-t border-line">
+      <Reveal as="ol" stagger="rows" className="mt-10 border-t border-line">
         {copy.steps.map((step, i) => (
           <li
             key={step.label}
@@ -153,7 +153,7 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
       </Reveal>
 
       <Reveal
-        stagger
+        stagger="cards"
         className="mt-20 grid border-t border-line md:mt-24 md:grid-cols-2"
       >
         {modes.map((mode) => (
@@ -189,7 +189,7 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
           </p>
         ))}
       </Reveal>
-      <Reveal stagger className="mt-10 border-t border-line">
+      <Reveal stagger="rows" className="mt-10 border-t border-line">
         {copy.kinds.map((kind, i) => (
           <details
             key={kind.label}
@@ -250,7 +250,7 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
       <SubHeading heading={copy.entrustHeading} intro={copy.entrustText} />
       <Reveal
         as="ol"
-        stagger
+        stagger="cards"
         className="mt-10 grid grid-cols-2 border-t border-l border-line md:grid-cols-4"
       >
         {copy.entrustItems.map((item, i) => (

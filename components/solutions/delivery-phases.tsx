@@ -25,7 +25,7 @@ export function DeliveryPhases({
         <SectionHeading label={copy.phasesBadge} heading={copy.phasesHeading} />
         <Reveal
           as="ol"
-          stagger
+          stagger="cards"
           className="mt-12 grid gap-2 md:mt-20 md:grid-cols-4 md:items-start"
         >
           {copy.phases.map((phase, i) => (
