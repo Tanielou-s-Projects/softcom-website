@@ -54,6 +54,21 @@ export const REDUCE = "(prefers-reduced-motion: reduce)"
 /** Where in-view reveals fire: the element's top passing 85% of the viewport. */
 export const REVEAL_START = "top 85%"
 
+/*
+ * The page's Lenis instance (set by SmoothScroll; null on touch devices and
+ * under reduced motion), so an intro can hold the page still while it plays.
+ */
+export const smoothScroll: { lenis: { stop(): void; start(): void } | null } = {
+  lenis: null,
+}
+
+export function lockScroll(on: boolean) {
+  if (on) smoothScroll.lenis?.stop()
+  else smoothScroll.lenis?.start()
+  // Also covers touch devices, where Lenis is off.
+  document.documentElement.style.overflow = on ? "hidden" : ""
+}
+
 export const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches

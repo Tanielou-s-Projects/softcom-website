@@ -18,7 +18,7 @@ export function SiteHeader({ header }: { header: HeaderCopy }) {
   const contact = header.items.find((item) => item.href === CONTACT_HREF)
 
   return (
-    <HeaderShell className="fixed inset-x-0 top-0 z-50 px-2 pt-2 md:px-5 md:pt-5">
+    <HeaderShell className="fixed inset-x-0 top-0 z-50 px-2 pt-2 md:px-5 md:pt-5 [html[data-intro=pending]_&]:-translate-y-[150%]">
       <div className="mx-auto flex h-14 max-w-[88.75rem] items-center justify-between rounded-[0.625rem] bg-surface/95 pr-2 pl-5 text-ink shadow-[0_1px_0_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.18)] backdrop-blur-md">
         <Link href="/" aria-label="Softcom home">
           <Wordmark className="h-5" />

@@ -19,7 +19,10 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero copy={copy.hero} />
+      <Hero
+        copy={copy.hero}
+        chips={[copy.numbers.items[0], copy.numbers.items[3]].filter(Boolean)}
+      />
       <Statement copy={copy.hero} />
       <Mission copy={copy.mission} />
       <FocusAreas copy={copy.focusAreas} />
