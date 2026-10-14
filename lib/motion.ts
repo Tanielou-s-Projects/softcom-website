@@ -17,6 +17,9 @@ import { useGSAP } from "@gsap/react"
  */
 
 gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase, useGSAP)
+// Phones resize the viewport as their toolbars show and hide; that shouldn't
+// re-measure every trigger mid-scroll.
+ScrollTrigger.config({ ignoreMobileResize: true })
 
 export const EASE = {
   /** Reveals: lines rising, cards arriving. */
@@ -35,6 +38,11 @@ export const STAGGER = {
   line: 0.15,
   item: 0.08,
 } as const
+
+/** Breakpoints for gsap.matchMedia: the fixed-layer effects are desktop only. */
+export const DESKTOP = "(min-width: 1024px)"
+export const MOBILE = "(max-width: 1023px)"
+export const REDUCE = "(prefers-reduced-motion: reduce)"
 
 /** Where in-view reveals fire: the element's top passing 85% of the viewport. */
 export const REVEAL_START = "top 85%"
