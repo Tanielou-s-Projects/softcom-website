@@ -38,7 +38,7 @@ export function MoreProducts({
               <span className="label text-ink-faint md:col-span-1">
                 {pad(i + 1)}
               </span>
-              <span className="text-title transition-colors group-hover:text-accent md:col-span-4">
+              <span className="text-title transition-colors group-hover:text-accent-ink md:col-span-4">
                 <span className="sr-only">{explore} </span>
                 {product.name}
               </span>

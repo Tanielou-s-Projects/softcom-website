@@ -75,7 +75,7 @@ export const capabilities: Capability[] = [
       "We build the digital rails that enable people and organisations to access services, connect and transact. These systems provide a common foundation through which many participants can operate, repeatedly and at scale.",
       "We do this with our own technology, partner platforms and custom-built systems. Where the infrastructure already exists globally, we are the partner that makes it work locally.",
     ],
-    image: "/images/filling-station.jpg",
+    image: "/images/filling-station-2026.jpg",
     chipClassName: "bg-brand-blue text-brand-cyan",
   },
   {
@@ -86,7 +86,7 @@ export const capabilities: Capability[] = [
       "Our intelligence systems connect fragmented information and help organisations examine it in depth. Across documents, records and datasets, including market data, our technology helps people investigate activity, understand relationships, track changes and identify what needs attention.",
       "We shape the intelligence around the questions people need to answer and the decisions they need to make.",
     ],
-    image: "/images/intelligence-ops-room.jpg",
+    image: "/images/intelligence-ops-room-2026.jpg",
     chipClassName: "bg-brand-cyan text-brand-blue",
   },
   {
@@ -97,7 +97,7 @@ export const capabilities: Capability[] = [
       "We bring technology, people and processes together to deliver complex initiatives. We design how an initiative will operate, put the required systems in place and coordinate the activities needed to reach its intended beneficiaries.",
       "We stay accountable for what the initiative achieves, not only for what we build.",
     ],
-    image: "/images/field-enrolment.jpg",
+    image: "/images/field-enrolment-2026.jpg",
     chipClassName: "bg-background text-foreground",
   },
 ]

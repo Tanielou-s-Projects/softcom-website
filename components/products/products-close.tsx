@@ -33,7 +33,7 @@ export function ProductsClose({
             </LineReveal>
           </div>
           <div className="flex flex-col justify-end md:col-span-4">
-            {text && <p className="text-lg text-white/80">{text}</p>}
+            {text && <p className="text-lg text-white">{text}</p>}
             <div className="mt-8 flex flex-wrap gap-2">
               <ButtonLink href={cta.href} tone="light">
                 {cta.label}

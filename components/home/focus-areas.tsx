@@ -14,6 +14,7 @@ export function FocusAreas({ copy }: { copy: HomePage["focusAreas"] }) {
         rows={copy.areas.map((area, i) => ({
           title: area.title,
           paragraphs: area.paragraphs,
+          image: area.image,
           href: `/solutions#${capabilities[i]?.id ?? ""}`,
           linkLabel: `${copy.linkPrefix} ${area.title}`,
         }))}

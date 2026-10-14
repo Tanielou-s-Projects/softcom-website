@@ -54,7 +54,10 @@ export default async function AboutPage() {
       <Leadership copy={copy.leadership} people={people} />
       <JoinBand copy={copy.careers} />
       <News copy={copy.news} />
-      <ClosingCta copy={navigation.closingCtas.home} />
+      <ClosingCta
+        copy={navigation.closingCtas.home}
+        image={navigation.closingCtas.image}
+      />
     </>
   )
 }

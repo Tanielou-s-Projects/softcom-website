@@ -161,7 +161,7 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
             key={mode.label}
             className="border-b border-line py-8 md:border-b-0 md:border-l md:px-6 md:first:border-l-0 md:first:pl-0"
           >
-            <p className="label text-accent">{mode.label}</p>
+            <p className="label text-accent-ink">{mode.label}</p>
             <h3 className="mt-4 text-title">{mode.title}</h3>
             <p className="mt-6 text-ink-soft">{mode.text}</p>
           </div>

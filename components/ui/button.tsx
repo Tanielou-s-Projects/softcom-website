@@ -18,9 +18,9 @@ const button = cva(
         ink: "bg-ink text-paper hover:text-on-accent",
         outline:
           "border border-line-strong text-ink hover:border-ink hover:text-paper",
-        /* For use over photography and the accent block. */
-        light: "bg-white text-ink hover:text-white",
-        glass: "bg-white/15 text-white backdrop-blur-md hover:text-ink",
+        /* Over photography and the accent block: fixed colours, never themed. */
+        light: "bg-white text-[#0c0c0d] hover:text-white",
+        glass: "bg-white/15 text-white backdrop-blur-md hover:text-[#0c0c0d]",
       },
     },
     defaultVariants: { tone: "accent" },

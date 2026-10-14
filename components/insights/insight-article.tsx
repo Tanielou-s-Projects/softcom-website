@@ -44,7 +44,7 @@ export function InsightArticle({
   const meta = [
     {
       key: "topic",
-      node: <span className="text-accent">{article.topic}</span>,
+      node: <span className="text-accent-ink">{article.topic}</span>,
     },
     {
       key: "date",
@@ -190,9 +190,9 @@ export function KeepReading({
                   <time dateTime={insight.date}>
                     {formatInsightDate(insight.date)}
                   </time>
-                  <span className="text-accent">{insight.topic}</span>
+                  <span className="text-accent-ink">{insight.topic}</span>
                 </p>
-                <h3 className="text-title text-pretty transition-colors group-hover:text-accent md:col-span-5">
+                <h3 className="text-title text-pretty transition-colors group-hover:text-accent-ink md:col-span-5">
                   {insight.title}
                 </h3>
                 <p className="line-clamp-3 text-ink-soft md:col-span-3">

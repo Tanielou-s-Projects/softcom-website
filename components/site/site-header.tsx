@@ -86,7 +86,7 @@ export function SiteHeader({ header }: { header: HeaderCopy }) {
                     href={item.href}
                     className={cn(
                       "block px-3 py-3 text-xl tracking-[-0.02em]",
-                      item.href === CONTACT_HREF && "text-accent"
+                      item.href === CONTACT_HREF && "text-accent-ink"
                     )}
                   >
                     {item.label}

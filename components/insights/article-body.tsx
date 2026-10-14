@@ -61,7 +61,7 @@ const components: PortableTextComponents = {
         href={value?.href}
         target={value?.blank ? "_blank" : undefined}
         rel={value?.blank ? "noreferrer" : undefined}
-        className="text-accent underline decoration-accent/35 underline-offset-4 transition-colors hover:decoration-accent"
+        className="text-accent-ink underline decoration-accent/35 underline-offset-4 transition-colors hover:decoration-accent"
       >
         {children}
       </a>

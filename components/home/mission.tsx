@@ -22,7 +22,11 @@ export function Mission({ copy }: { copy: HomePage["mission"] }) {
         </div>
       </div>
       <div className="relative aspect-[4/5] overflow-hidden rounded-xl md:col-span-7 md:aspect-[7/6]">
-        <ImagePlaceholder label={copy.imageAlt} />
+        <ImagePlaceholder
+          src={copy.image}
+          label={copy.imageAlt}
+          sizes="(min-width: 768px) 58vw, 100vw"
+        />
       </div>
     </section>
   )

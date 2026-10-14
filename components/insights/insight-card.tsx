@@ -39,13 +39,13 @@ export function InsightCard({
 
       <div className={cn("grid gap-4", featured && "md:col-span-5 md:gap-6")}>
         <p className="label flex flex-wrap gap-x-3 gap-y-1 text-ink-faint">
-          <span className="text-accent">{insight.topic}</span>
+          <span className="text-accent-ink">{insight.topic}</span>
           <span aria-hidden="true">/</span>
           <time dateTime={insight.date}>{formatInsightDate(insight.date)}</time>
         </p>
         <h3
           className={cn(
-            "text-title text-pretty transition-colors group-hover:text-accent",
+            "text-title text-pretty transition-colors group-hover:text-accent-ink",
             featured && "md:text-lede"
           )}
         >

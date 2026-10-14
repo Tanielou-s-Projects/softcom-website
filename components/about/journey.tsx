@@ -53,7 +53,7 @@ export function Journey({ copy }: { copy: AboutPage["journey"] }) {
                 aria-hidden="true"
                 className="absolute top-10 -left-[3px] size-[7px] rounded-full bg-accent md:top-[3.25rem] md:hidden"
               />
-              <p className="text-title font-light text-accent tabular-nums md:col-span-2">
+              <p className="text-title font-light text-accent-ink tabular-nums md:col-span-2">
                 {item.year}
               </p>
               <div className="md:col-span-6">

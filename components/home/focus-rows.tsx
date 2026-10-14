@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 export type FocusRow = {
   title: string
   paragraphs: string[]
+  image?: string
   href: string
   linkLabel: string
 }
@@ -191,7 +192,12 @@ export function FocusRows({ rows }: { rows: FocusRow[] }) {
                 data-focus-media
                 className="absolute inset-0 overflow-hidden max-lg:rounded-lg"
               >
-                <ImagePlaceholder reveal={false} className="ring-0" />
+                <ImagePlaceholder
+                  src={row.image}
+                  reveal={false}
+                  sizes="(min-width: 1024px) 28vw, 100vw"
+                  className="ring-0"
+                />
               </div>
             </div>
 

@@ -37,7 +37,7 @@ export function DeliveryPhases({
               )}
             >
               <div className="flex items-center justify-between">
-                <span className="label text-accent">{phase.step}</span>
+                <span className="label text-accent-ink">{phase.step}</span>
                 <span aria-hidden="true" className="flex gap-1">
                   {copy.phases.map((_, j) => (
                     <span

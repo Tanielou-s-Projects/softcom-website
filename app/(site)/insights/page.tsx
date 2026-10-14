@@ -29,7 +29,10 @@ export default async function InsightsPage() {
         intro={copy.intro.text}
       />
       <InsightIndex insights={insights} copy={copy} />
-      <ClosingCta copy={navigation.closingCtas.home} />
+      <ClosingCta
+        copy={navigation.closingCtas.home}
+        image={navigation.closingCtas.image}
+      />
     </>
   )
 }

@@ -142,7 +142,7 @@ export const solutions: Solution[] = [
     },
     image: {
       // Placeholder until Fig 02 is drawn; the rig wasn't Softcom's work.
-      src: "/images/intelligence-ops-room.jpg",
+      src: "/images/intelligence-ops-room-2026.jpg",
       width: 1152,
       height: 2048,
     },

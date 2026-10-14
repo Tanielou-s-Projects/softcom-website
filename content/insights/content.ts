@@ -64,7 +64,7 @@ export const insights: Insight[] = [
     id: "latest-1",
     topic: "Data",
     ...placeholder,
-    cover: "/images/intelligence-ops-room.jpg",
+    cover: "/images/intelligence-ops-room-2026.jpg",
   },
   {
     id: "latest-2",
@@ -82,7 +82,7 @@ export const insights: Insight[] = [
     id: "latest-4",
     topic: "Strategy",
     ...placeholder,
-    cover: "/images/lagos-dusk.jpg",
+    cover: "/images/lagos-dusk-2026.jpg",
   },
 ]
 

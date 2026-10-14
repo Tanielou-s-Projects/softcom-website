@@ -25,7 +25,7 @@ export function OurThinking({ copy }: { copy: HomePage["ourThinking"] }) {
               <p className="label pt-2 text-ink-faint md:col-span-3">
                 {String(i + 1).padStart(2, "0")}
               </p>
-              <h3 className="text-title transition-colors group-hover:text-accent md:col-span-5">
+              <h3 className="text-title transition-colors group-hover:text-accent-ink md:col-span-5">
                 {item.title}
               </h3>
               <p className="text-ink-soft md:col-span-3">{item.summary}</p>

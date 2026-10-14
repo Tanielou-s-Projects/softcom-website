@@ -56,7 +56,7 @@ const vars = ([t, r, b, l]: number[]) => ({
  * cursor. The window is CSS variables (insets plus a pointer offset), so the
  * clip and the lines can never disagree.
  */
-export function ClosingCta({ copy }: { copy: Cta }) {
+export function ClosingCta({ copy, image }: { copy: Cta; image?: string }) {
   const root = React.useRef<HTMLElement>(null)
 
   useGSAP(
@@ -167,6 +167,8 @@ export function ClosingCta({ copy }: { copy: Cta }) {
           className="relative isolate h-[30rem] overflow-hidden [--mx:0px] [--my:0px] [--wb:65.8%] [--wl:42.67%] [--wr:9.57%] [--wt:7.5%] lg:h-auto"
         >
           <ImagePlaceholder
+            src={image}
+            sizes="(min-width: 1024px) 45vw, 100vw"
             reveal={false}
             className="absolute inset-0 ring-0"
           />

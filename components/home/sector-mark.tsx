@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 
 const TONE: Record<Sector["tone"], string> = {
   cyan: "text-signal-deep dark:text-signal",
-  blue: "text-accent",
+  blue: "text-accent-ink",
   neutral: "text-ink",
 }
 

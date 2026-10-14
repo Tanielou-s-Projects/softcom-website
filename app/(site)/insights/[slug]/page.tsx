@@ -44,7 +44,10 @@ export default async function InsightPage({ params }: Props) {
         heading={copy.headings.latest.replace(/\n/g, " ")}
         indexLabel={copy.hero.badge}
       />
-      <ClosingCta copy={navigation.closingCtas.home} />
+      <ClosingCta
+        copy={navigation.closingCtas.home}
+        image={navigation.closingCtas.image}
+      />
     </>
   )
 }

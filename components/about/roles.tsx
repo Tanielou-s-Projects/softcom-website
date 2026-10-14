@@ -52,7 +52,7 @@ export function Roles({
               const row = (
                 <>
                   <div className="md:col-span-6">
-                    <h3 className="text-title transition-colors group-hover:text-accent">
+                    <h3 className="text-title transition-colors group-hover:text-accent-ink">
                       {role.title}
                     </h3>
                     {role.department && (

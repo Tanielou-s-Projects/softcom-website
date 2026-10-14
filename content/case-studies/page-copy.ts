@@ -14,7 +14,7 @@ export const caseStudiesPage = {
     badge: "Case Studies",
     title: "Real engagements. Measurable outcomes.",
     lead: "A portfolio of real engagements — spanning government, financial services, consumer goods, and agriculture — each delivering measurable, lasting outcomes.",
-    image: "/images/pos-agent.jpg",
+    image: "/images/pos-agent-2026.jpg",
   },
   filter: {
     allLabel: "All",

@@ -29,7 +29,7 @@ export function News({ copy }: { copy: AboutPage["news"] }) {
               <p className="label pt-2 text-ink-faint md:col-span-3">
                 {item.date}
               </p>
-              <h3 className="text-title text-pretty transition-colors group-hover:text-accent md:col-span-6">
+              <h3 className="text-title text-pretty transition-colors group-hover:text-accent-ink md:col-span-6">
                 {item.title}
               </h3>
               <p className="md:col-span-2 md:pt-1">

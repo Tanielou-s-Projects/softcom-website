@@ -31,7 +31,7 @@ export const navigation = {
     })),
   },
   closingCtas: {
-    image: "/images/market-aerial.jpg",
+    image: "/images/market-aerial-2026.jpg",
     home: {
       heading: "Proud partner of potential.",
       lead: "What can we achieve together?",

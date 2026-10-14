@@ -13,7 +13,7 @@ export function ProductTag({
       className={cn(
         "label inline-flex h-6 items-center rounded-full border px-2.5",
         kind === "softcom"
-          ? "border-accent/40 text-accent"
+          ? "border-accent/40 text-accent-ink"
           : "border-line-strong text-ink-soft",
         className
       )}

@@ -1,14 +1,16 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 
 import { gsap, REDUCE, useGSAP } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 /*
- * Stands in for every image while the site is rebuilt from scratch: a
- * hairline frame with a picture icon at its centre. Fills its parent, so it
- * takes whatever size and shape the layout gives the image slot.
+ * Every image slot on the site. Given a `src` it shows that photograph,
+ * cropped to cover; without one it stands in with a hairline frame and a
+ * picture icon. Either way it fills its parent, taking whatever size and
+ * shape the layout gives the slot.
  *
  * It enters the way Daylight's images do (§2.7): the frame opens from a 20%
  * inset as its contents settle from 1.8× scale, 1.5s expo-out, the first time
@@ -16,14 +18,21 @@ import { cn } from "@/lib/utils"
  * them itself.
  */
 export function ImagePlaceholder({
+  src,
   label,
   className,
   reveal = true,
+  priority = false,
+  sizes = "100vw",
 }: {
-  /** What the image will show, for screen readers. */
+  /** The photograph; omit to show the placeholder. */
+  src?: string
+  /** What the image shows, for screen readers. */
   label?: string
   className?: string
   reveal?: boolean
+  priority?: boolean
+  sizes?: string
 }) {
   const ref = React.useRef<HTMLDivElement>(null)
 
@@ -56,6 +65,23 @@ export function ImagePlaceholder({
     },
     { scope: ref, dependencies: [reveal] }
   )
+
+  if (src)
+    return (
+      <div
+        ref={ref}
+        className={cn("relative size-full overflow-hidden", className)}
+      >
+        <Image
+          src={src}
+          alt={label ?? ""}
+          fill
+          priority={priority}
+          sizes={sizes}
+          className="object-cover"
+        />
+      </div>
+    )
 
   return (
     <div

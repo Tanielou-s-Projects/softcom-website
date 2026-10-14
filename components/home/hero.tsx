@@ -261,11 +261,19 @@ export function Hero({
         className={`absolute inset-0 -z-10 will-change-transform ${pending.photo}`}
       >
         <ImagePlaceholder
+          src={copy.portalImage}
+          priority
           reveal={false}
           label={copy.portalImageAlt}
           className="ring-0 max-lg:[&>svg]:hidden"
         />
       </div>
+
+      {/* Shade under the copy so white type holds over any photograph. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(0_0_0/0.65),rgb(0_0_0/0.15)_60%,rgb(0_0_0/0.25))] lg:bg-[linear-gradient(to_right,rgb(0_0_0/0.62),rgb(0_0_0/0.2)_55%,rgb(0_0_0/0.1))]"
+      />
 
       {/* The window of blue: clipped by the shared insets. */}
       <div
@@ -291,10 +299,10 @@ export function Hero({
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-[1]"
       >
-        <div className="absolute inset-x-0 top-[var(--wt)] h-px -translate-y-px bg-line-strong" />
-        <div className="absolute inset-x-0 bottom-[var(--wb)] h-px translate-y-px bg-line-strong" />
-        <div className="absolute inset-y-0 left-[var(--wl)] w-px -translate-x-px bg-line-strong" />
-        <div className="absolute inset-y-0 right-[var(--wr)] w-px translate-x-px bg-line-strong" />
+        <div className="absolute inset-x-0 top-[var(--wt)] h-px -translate-y-px bg-white/35" />
+        <div className="absolute inset-x-0 bottom-[var(--wb)] h-px translate-y-px bg-white/35" />
+        <div className="absolute inset-y-0 left-[var(--wl)] w-px -translate-x-px bg-white/35" />
+        <div className="absolute inset-y-0 right-[var(--wr)] w-px translate-x-px bg-white/35" />
       </div>
 
       {/* Data chips pinned above the window's top-left and below its bottom-right. */}
@@ -303,10 +311,10 @@ export function Hero({
           <p className="overflow-hidden">
             <span
               data-hero-chip
-              className={`label inline-block text-ink-soft ${pending.hidden}`}
+              className={`label inline-block text-white/75 ${pending.hidden}`}
             >
               {chips[0].label}{" "}
-              <span className="text-ink">{withYears(chips[0].value)}</span>
+              <span className="text-white">{withYears(chips[0].value)}</span>
             </span>
           </p>
         </div>
@@ -316,10 +324,10 @@ export function Hero({
           <p className="overflow-hidden">
             <span
               data-hero-chip
-              className={`label inline-block text-ink-soft ${pending.hidden}`}
+              className={`label inline-block text-white/75 ${pending.hidden}`}
             >
               {chips[1].label}{" "}
-              <span className="text-ink">{withYears(chips[1].value)}</span>
+              <span className="text-white">{withYears(chips[1].value)}</span>
             </span>
           </p>
         </div>
@@ -327,11 +335,11 @@ export function Hero({
 
       <div className="shell relative z-[3] flex h-full flex-col justify-end pb-10 md:pb-14 lg:justify-center lg:pb-0">
         <div data-hero-text className={`lg:max-w-[58%] ${pending.hidden}`}>
-          <h1 className="text-display font-light">
+          <h1 className="text-display font-light text-white">
             <span className="block">
               {copy.headlineFirstLine} {copy.headlineSecondLine}
             </span>
-            <span className="block text-ink-faint">
+            <span className="block text-white/60">
               {copy.progressFirstLine} {copy.progressSecondLine}
             </span>
           </h1>
@@ -339,7 +347,7 @@ export function Hero({
             <ButtonLink href={copy.primaryCta.href} tone="accent">
               {copy.primaryCta.label}
             </ButtonLink>
-            <ButtonLink href={copy.secondaryCta.href} tone="outline">
+            <ButtonLink href={copy.secondaryCta.href} tone="glass">
               {copy.secondaryCta.label}
             </ButtonLink>
           </div>

@@ -21,7 +21,7 @@ export function ContactDetails({
           <dd>
             <a
               href={`mailto:${settings.email}`}
-              className="text-title break-all transition-colors hover:text-accent"
+              className="text-title break-all transition-colors hover:text-accent-ink"
             >
               {settings.email}
             </a>

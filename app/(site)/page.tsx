@@ -30,7 +30,10 @@ export default async function HomePage() {
       <Numbers copy={copy.numbers} />
       <Approach copy={copy.approach} />
       <OurThinking copy={copy.ourThinking} />
-      <ClosingCta copy={navigation.closingCtas.home} />
+      <ClosingCta
+        copy={navigation.closingCtas.home}
+        image={navigation.closingCtas.image}
+      />
     </>
   )
 }

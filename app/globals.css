@@ -20,11 +20,14 @@
   --color-surface: #ffffff;
   --color-ink: #0c0c0d;
   --color-ink-soft: #55554f;
-  --color-ink-faint: #8d8c86;
+  --color-ink-faint: #6c6b66;
   --color-line: rgb(12 12 13 / 0.12);
   --color-line-strong: rgb(12 12 13 / 0.24);
   --color-accent: #004bff;
   --color-accent-deep: #0039c2;
+  /* Accent as text on the page: Softcom blue in light, lifted in dark so it
+     still reads on near-black. Fills keep --color-accent. */
+  --color-accent-ink: #004bff;
   --color-on-accent: #ffffff;
   --color-signal: #00ffff;
   /* Cyan deep enough to read on paper (pure cyan is ~1.3:1 there). */
@@ -68,7 +71,8 @@
   --color-surface: #18181a;
   --color-ink: #f2f1ec;
   --color-ink-soft: #a9a8a2;
-  --color-ink-faint: #74736e;
+  --color-ink-faint: #8a8984;
+  --color-accent-ink: #7196ff;
   --color-line: rgb(242 241 236 / 0.12);
   --color-line-strong: rgb(242 241 236 / 0.24);
 }

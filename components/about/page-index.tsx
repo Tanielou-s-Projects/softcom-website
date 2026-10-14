@@ -16,7 +16,7 @@ export function PageIndex({
           <li key={item.href} className="border-b border-line">
             <a
               href={item.href}
-              className="group flex items-baseline gap-4 py-2.5 transition-colors hover:text-accent"
+              className="group flex items-baseline gap-4 py-2.5 transition-colors hover:text-accent-ink"
             >
               <span className="label text-ink-faint">
                 {String(i + 1).padStart(2, "0")}

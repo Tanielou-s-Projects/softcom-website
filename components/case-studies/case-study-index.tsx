@@ -113,7 +113,7 @@ export function CaseStudyIndex({
               <p className="text-ink-soft md:col-span-4">{study.challenge}</p>
               {study.stat.value && (
                 <div className="md:col-span-2 md:text-right">
-                  <p className="text-headline font-light text-accent">
+                  <p className="text-headline font-light text-accent-ink">
                     {study.stat.value}
                   </p>
                   <p className="label mt-3 text-ink-soft">{study.stat.label}</p>

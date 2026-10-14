@@ -27,7 +27,7 @@ export const homePage = {
     progressImage: "/images/market-payment.jpg",
     progressImageAlt:
       "A market trader at her stall confirming a payment on her phone",
-    portalImage: "/images/pos-agent.jpg",
+    portalImage: "/images/pos-agent-2026.jpg",
     portalImageAlt:
       "A mobile-money agent handing cash to a customer under a blue umbrella",
     scrollLabel: "Scroll",
@@ -41,7 +41,7 @@ export const homePage = {
     missionHeading: "Stronger organisations build a more prosperous society.",
     missionText:
       "We build the technology and capabilities that help them work better, decide better and serve the people who depend on them.",
-    missionImage: "/images/lagos-dusk.jpg",
+    missionImage: "/images/lagos-dusk-2026.jpg",
     missionImageAlt: "Lagos at dusk across the lagoon, a fisherman in a canoe",
     missionCta: { label: "Our story", href: "/about" },
   },
@@ -49,7 +49,7 @@ export const homePage = {
     heading: "We exist to create lasting impact.",
     intro:
       "We believe stronger organisations are the foundation of a more prosperous society.",
-    image: "/images/lagos-dusk.jpg",
+    image: "/images/lagos-dusk-2026.jpg",
     imageAlt: "Lagos at dusk across the lagoon, a fisherman in a canoe",
     body: "We build technology and capabilities that strengthen those organisations, helping them operate better, make informed decisions and create possibilities for the people who depend on them.",
     cta: { label: "Our story", href: "/about" },

@@ -17,7 +17,7 @@ export function Statement({ copy }: { copy: HomePage["hero"] }) {
         textClassName="text-lede text-pretty md:col-span-9"
       >
         {copy.statementBefore}
-        <span className="text-accent">
+        <span className="text-accent-ink">
           {withYears(copy.statementHighlight)}
         </span>
         {copy.statementAfter}
