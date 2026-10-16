@@ -76,7 +76,7 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
 
       <Container className="flex flex-col gap-6">
         <Reveal className="flex max-w-[60ch] flex-col gap-4">
-          <h3 className="font-heading text-2xl leading-[1.15] text-ink lg:text-[2rem]">
+          <h3 className="font-heading text-2xl leading-[1.15] font-light text-ink lg:text-[2rem]">
             {copy.listHeading}
           </h3>
           <p className={cn("text-body", "text-ink-soft")}>{copy.listIntro}</p>
@@ -98,7 +98,7 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
 
       <Container>
         <Reveal>
-          <p className="mx-auto max-w-[30ch] text-center font-heading text-2xl leading-[1.2] text-ink lg:text-[2.25rem]">
+          <p className="mx-auto max-w-[30ch] text-center font-heading text-2xl leading-[1.2] font-light text-ink lg:text-[2.25rem]">
             {copy.outro}
           </p>
         </Reveal>
@@ -203,7 +203,7 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
               <span className="font-mono text-xs text-ink-soft tabular-nums">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-heading text-2xl leading-[1.15] text-ink">
+              <h3 className="font-heading text-2xl leading-[1.15] font-light text-ink">
                 {kind.label}
               </h3>
               <p className="text-base leading-[1.6] text-ink-soft">
@@ -234,7 +234,7 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
                       <span className="font-mono text-xs text-ink-soft tabular-nums">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="font-heading text-2xl leading-[1.15] text-ink">
+                      <span className="font-heading text-2xl leading-[1.15] font-light text-ink">
                         {item}
                       </span>
                     </div>
@@ -280,7 +280,7 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
       <Container className="grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
         <div>
           <Reveal className="flex flex-col gap-6 lg:sticky lg:top-32">
-            <h3 className="font-heading text-2xl leading-[1.15] text-ink lg:text-[2rem]">
+            <h3 className="font-heading text-2xl leading-[1.15] font-light text-ink lg:text-[2rem]">
               {copy.entrustHeading}
             </h3>
             <p className={cn("text-body", "text-ink-soft")}>
@@ -295,7 +295,7 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
                 <span className="w-8 font-mono text-sm text-ink-soft tabular-nums">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className="font-heading text-3xl leading-[1.1] tracking-tight text-ink transition-colors group-hover:text-accent-ink lg:text-5xl">
+                <span className="font-heading text-3xl leading-[1.1] font-light tracking-tight text-ink transition-colors group-hover:text-accent-ink lg:text-5xl">
                   {item}
                 </span>
               </div>
@@ -315,7 +315,7 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
             </header>
             <Timeline phases={copy.phases} />
             <div className="flex flex-col items-start gap-6 border-t border-ink/20 pt-8 lg:flex-row lg:items-center lg:justify-between">
-              <p className="max-w-[40ch] font-heading text-2xl leading-[1.25] text-ink">
+              <p className="max-w-[40ch] font-heading text-2xl leading-[1.25] font-light text-ink">
                 {copy.closeText}
               </p>
               <Button asChild size="lg" className={primaryPill}>
@@ -338,7 +338,7 @@ function SolutionsStory({ copy }: { copy: SolutionsPage }) {
         <ScrollWords
           paragraphs={copy.intro.paragraphs}
           className="max-w-[1040px]"
-          paragraphClassName="font-heading text-3xl leading-[1.15] tracking-tight text-ink lg:text-5xl"
+          paragraphClassName="font-heading font-light text-3xl leading-[1.15] tracking-tight text-ink lg:text-5xl"
         />
       </Container>
       <Infrastructure copy={copy.infrastructure} />

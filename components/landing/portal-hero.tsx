@@ -56,7 +56,7 @@ const segment = (raw: number, [from, to]: readonly [number, number]) =>
 const ease = (t: number) => t * t * (3 - 2 * t)
 
 const statementClass =
-  "max-w-[1140px] font-heading text-[clamp(26px,3.6vw,58px)] leading-[1.25] tracking-[-0.035em]"
+  "max-w-[1140px] font-heading font-light text-[clamp(26px,3.6vw,58px)] leading-[1.25] tracking-[-0.035em]"
 
 type HeroCopy = HomePage["hero"]
 type Run = { text: string; accent: boolean }

@@ -85,7 +85,7 @@ export default async function Page() {
                   className="flex flex-col gap-4 border-t border-line py-6 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="flex flex-col gap-1">
-                    <span className="font-heading text-2xl text-ink">
+                    <span className="font-heading text-2xl font-light text-ink">
                       {role.title}
                     </span>
                     <span className="text-sm text-ink-soft">

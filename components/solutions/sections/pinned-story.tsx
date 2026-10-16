@@ -84,7 +84,7 @@ function PinnedStory({
                 <span className="h-px w-8 bg-line" />
                 {step.label}
               </span>
-              <h3 className="font-heading text-3xl leading-[1.1] tracking-tight text-ink lg:text-[2.5rem]">
+              <h3 className="font-heading text-3xl leading-[1.1] font-light tracking-tight text-ink lg:text-[2.5rem]">
                 {step.title}
               </h3>
               <p className="max-w-[44ch] text-base leading-[1.6] text-ink-soft lg:text-lg">

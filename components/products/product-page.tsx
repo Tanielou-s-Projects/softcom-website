@@ -84,7 +84,7 @@ function HeadingPlate({
       <header className="grid gap-6 rounded-3xl bg-surface p-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:p-10">
         <div className="flex flex-col items-start gap-4">
           <Eyebrow>{label}</Eyebrow>
-          <h2 className="font-heading text-2xl leading-[1.15] text-ink lg:text-[32px]">
+          <h2 className="font-heading text-2xl leading-[1.15] font-light text-ink lg:text-[32px]">
             {heading}
           </h2>
         </div>

@@ -92,12 +92,14 @@
 
 /*
  * The type scale. Each step carries its size per breakpoint, leading and
- * tracking; a `leading-*` or `tracking-*` class beside it still wins, because
- * both read through Tailwind's --tw-leading / --tw-tracking. Registered with
- * tailwind-merge in lib/utils.ts so cn() treats them as font sizes.
+ * tracking; the headings are set light, as in the rebuild. A `leading-*`,
+ * `tracking-*` or `font-*` weight class beside a step still wins, because
+ * each reads through Tailwind's --tw-* variable. Registered with
+ * tailwind-merge in lib/utils.ts so cn() treats the steps as font sizes.
  */
 @utility text-display {
   font-family: var(--font-heading);
+  font-weight: var(--tw-font-weight, 300);
   font-size: 2.75rem;
   line-height: var(--tw-leading, 1);
   letter-spacing: var(--tw-tracking, -0.012em);
@@ -110,6 +112,7 @@
 }
 @utility text-headline {
   font-family: var(--font-heading);
+  font-weight: var(--tw-font-weight, 300);
   font-size: 1.875rem;
   line-height: var(--tw-leading, 1.026);
   letter-spacing: var(--tw-tracking, -0.025em);
@@ -122,6 +125,7 @@
 }
 @utility text-title {
   font-family: var(--font-heading);
+  font-weight: var(--tw-font-weight, 300);
   font-size: 1.5rem;
   line-height: var(--tw-leading, 1.026);
   letter-spacing: var(--tw-tracking, normal);

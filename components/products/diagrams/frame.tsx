@@ -46,7 +46,7 @@ export function DiagramFrame({
         <span className="font-mono text-xs tracking-[0.14em] text-ink-soft uppercase">
           {eyebrow}
         </span>
-        <h3 className="font-heading text-2xl leading-[1.15] tracking-tight text-ink lg:text-[2rem]">
+        <h3 className="font-heading text-2xl leading-[1.15] font-light tracking-tight text-ink lg:text-[2rem]">
           {title}
         </h3>
         {subtitle ? (

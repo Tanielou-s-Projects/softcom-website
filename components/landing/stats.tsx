@@ -42,7 +42,7 @@ function Stats({
       >
         {items.map((stat) => (
           <RevealItem key={stat.label} className="flex flex-col gap-2">
-            <dd className="font-heading text-5xl leading-[0.9] text-ink lg:text-7xl">
+            <dd className="font-heading text-5xl leading-[0.9] font-light text-ink lg:text-7xl">
               {withYears(stat.value)}
             </dd>
             <dt className={cn("text-body", "text-ink-soft")}>{stat.label}</dt>

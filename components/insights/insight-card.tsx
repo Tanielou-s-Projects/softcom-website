@@ -60,7 +60,7 @@ function InsightCard({
         >
           <h3
             className={cn(
-              "font-heading text-2xl leading-[1.2] text-ink transition-colors group-hover:text-accent-ink",
+              "font-heading text-2xl leading-[1.2] font-light text-ink transition-colors group-hover:text-accent-ink",
               featured && "lg:min-w-0 lg:flex-1"
             )}
           >

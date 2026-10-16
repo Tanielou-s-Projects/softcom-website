@@ -332,7 +332,7 @@ function SideYear({ m }: { m: Milestone }) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.3 }}
-        className="font-heading text-5xl leading-none text-ink sm:text-6xl lg:text-8xl"
+        className="font-heading text-5xl leading-none font-light text-ink sm:text-6xl lg:text-8xl"
       >
         {m.year}
       </motion.p>
@@ -351,7 +351,9 @@ function SideText({ m }: { m: Milestone }) {
         transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
         className="flex max-w-[52ch] flex-col gap-3"
       >
-        <h3 className="font-heading text-2xl text-ink">{m.headline}</h3>
+        <h3 className="font-heading text-2xl font-light text-ink">
+          {m.headline}
+        </h3>
         <p className={cn("text-body", "text-ink-soft")}>{m.description}</p>
       </motion.div>
     </AnimatePresence>
@@ -381,10 +383,12 @@ function BelowReveal({ m }: { m: Milestone }) {
           className="flex max-w-[70ch] flex-col gap-3"
         >
           <div className="flex items-baseline gap-3">
-            <span className="font-heading text-3xl text-accent-ink">
+            <span className="font-heading text-3xl font-light text-accent-ink">
               {m.year}
             </span>
-            <h3 className="font-heading text-2xl text-ink">{m.headline}</h3>
+            <h3 className="font-heading text-2xl font-light text-ink">
+              {m.headline}
+            </h3>
           </div>
           <p className={cn("text-body", "text-ink-soft")}>{m.description}</p>
         </motion.div>
@@ -408,7 +412,9 @@ function CardReveal({ m }: { m: Milestone }) {
           <span className="font-mono text-xs tracking-widest text-accent-ink uppercase">
             {m.year}
           </span>
-          <h3 className="font-heading text-3xl text-ink">{m.headline}</h3>
+          <h3 className="font-heading text-3xl font-light text-ink">
+            {m.headline}
+          </h3>
           <p className={cn("text-body", "text-ink-soft")}>{m.description}</p>
         </motion.div>
       </AnimatePresence>

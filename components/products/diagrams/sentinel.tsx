@@ -152,13 +152,15 @@ export function SentinelConnections({ fig }: { fig: string }) {
         <aside className="flex flex-col gap-6 border-line lg:border-l lg:pl-10">
           <div className="flex flex-col gap-4">
             <Caps>Selected path</Caps>
-            <p className="font-heading text-2xl text-ink">A → B → C → A</p>
+            <p className="font-heading text-2xl font-light text-ink">
+              A → B → C → A
+            </p>
             <p className="text-base text-ink">
               Three linked transfers over two days.
             </p>
           </div>
           <div className="flex flex-col gap-1 border-t border-line pt-6">
-            <p className="font-heading text-4xl text-accent-ink tabular-nums lg:text-5xl">
+            <p className="font-heading text-4xl font-light text-accent-ink tabular-nums lg:text-5xl">
               ₦11.6M
             </p>
             <p className="text-sm text-ink-soft">returned to account A01</p>
@@ -461,7 +463,7 @@ export function SentinelVisible({ fig }: { fig: string }) {
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="flex flex-col gap-2">
               <Caps>Account A01</Caps>
-              <span className="font-heading text-2xl text-ink">
+              <span className="font-heading text-2xl font-light text-ink">
                 Money in and out
               </span>
             </div>
@@ -522,7 +524,7 @@ export function SentinelVisible({ fig }: { fig: string }) {
         <div className="flex flex-col gap-6 rounded-2xl bg-accent-ink/10 p-6 lg:p-10">
           <div className="flex flex-col gap-3">
             <Caps className="text-accent-ink">Pattern for review</Caps>
-            <span className="font-heading text-3xl text-ink">
+            <span className="font-heading text-3xl font-light text-ink">
               Circular flow
             </span>
             <span className="font-heading text-lg text-ink">

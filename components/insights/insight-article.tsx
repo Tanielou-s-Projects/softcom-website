@@ -56,12 +56,12 @@ const components: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p className={body}>{children}</p>,
     h2: ({ children }) => (
-      <h2 className="pt-6 font-heading text-3xl leading-[1.15] tracking-tight text-ink lg:text-4xl">
+      <h2 className="pt-6 font-heading text-3xl leading-[1.15] font-light tracking-tight text-ink lg:text-4xl">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="pt-4 font-heading text-2xl leading-[1.2] text-ink">
+      <h3 className="pt-4 font-heading text-2xl leading-[1.2] font-light text-ink">
         {children}
       </h3>
     ),

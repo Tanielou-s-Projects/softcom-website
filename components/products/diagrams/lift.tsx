@@ -414,7 +414,7 @@ export function LiftGate({ fig }: { fig: string }) {
         <DiagramCard className="flex flex-col">
           <div className="flex flex-col gap-2 border-b border-line p-6">
             <Caps>Grant · Open</Caps>
-            <span className="font-heading text-2xl text-ink">
+            <span className="font-heading text-2xl font-light text-ink">
               SME Growth Fund
             </span>
             <span className="font-mono text-xs text-ink-soft">

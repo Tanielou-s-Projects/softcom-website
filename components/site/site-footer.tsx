@@ -56,7 +56,7 @@ async function SiteFooter() {
           <p className="text-sm leading-6 font-medium text-ink-soft">
             {footer.contactLabel}
           </p>
-          <div className="flex flex-col gap-1 font-heading text-2xl leading-[1.15] text-ink lg:text-[1.75rem]">
+          <div className="flex flex-col gap-1 font-heading text-2xl leading-[1.15] font-light text-ink lg:text-[1.75rem]">
             <a
               href={`mailto:${contactDetails.email}`}
               className="w-fit hover:text-accent-ink"
