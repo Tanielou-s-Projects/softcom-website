@@ -92,10 +92,31 @@ export const homePage = {
     primaryCta: { label: "Explore working with Softcom", href: "/contact" },
     secondaryCta: { label: "View case studies", href: "/case-studies" },
   },
-  approach: {
-    heading: "Technology to make it happen. Expertise to make it work.",
-    lead: "Our engineers consider the organisation’s existing systems, operating conditions and future requirements. These inform what to build, what to integrate and how the different parts should work together.",
-    body: "Putting technology to work requires clear responsibilities, prepared teams and processes that support its use. Depending on the engagement, our involvement can extend to change management, ongoing operations and impact assessment.",
+  /*
+   * Technology, Expertise and People merged into one sequence (client, 13 Oct
+   * 2026). Placeholder copy — the first two beats are the former Approach
+   * section's, the third the former "people behind the work" — until Toyosi
+   * sends the new text, which goes straight into the Studio.
+   */
+  howWeWork: {
+    heading: "How we work",
+    beats: [
+      {
+        label: "Technology",
+        title: "Technology to make it happen.",
+        text: "Our engineers consider the organisation’s existing systems, operating conditions and future requirements. These inform what to build, what to integrate and how the different parts should work together.",
+      },
+      {
+        label: "Expertise",
+        title: "Expertise to make it work.",
+        text: "Putting technology to work requires clear responsibilities, prepared teams and processes that support its use. Depending on the engagement, our involvement can extend to change management, ongoing operations and impact assessment.",
+      },
+      {
+        label: "People",
+        title: "People behind the work.",
+        text: "Softcom’s experience lives in its people: the knowledge they have developed, the challenges they have worked through and the standards they bring to each engagement.",
+      },
+    ],
     cta: { label: "Discuss what you want to achieve", href: "/contact" },
   },
   ourThinking: {

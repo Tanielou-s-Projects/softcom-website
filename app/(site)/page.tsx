@@ -1,7 +1,7 @@
-import { Approach } from "@/components/landing/approach"
 import { Capabilities } from "@/components/landing/capabilities"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { Hero } from "@/components/landing/hero"
+import { HowWeWork } from "@/components/landing/how-we-work"
 import { Insights } from "@/components/landing/insights"
 import { Sectors } from "@/components/landing/sectors"
 import { Stats } from "@/components/landing/stats"
@@ -46,7 +46,7 @@ export default async function Page() {
         </Stats>
       </Section>
       <Section>
-        <Approach copy={copy.approach} />
+        <HowWeWork copy={copy.howWeWork} />
       </Section>
       <Section>
         <Insights copy={copy.ourThinking} insights={insights.slice(0, 2)} />

@@ -604,10 +604,15 @@ export type HomePage = {
       href?: string
     }
   }
-  approach?: {
+  howWeWork?: {
     heading?: string
-    lead?: string
-    body?: string
+    beats?: Array<{
+      label?: string
+      title?: string
+      text?: string
+      _type: "beatsItem"
+      _key: string
+    }>
     cta?: {
       label?: string
       href?: string
