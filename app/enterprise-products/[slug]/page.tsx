@@ -10,7 +10,6 @@ import {
   ProductHero,
 } from "@/components/products/product-page"
 import { SiteFooter } from "@/components/site/site-footer"
-import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { productsPage } from "@/components/products/page-copy"
 import { getProductPage, getProductSlugs } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -40,7 +39,6 @@ export default async function Page({ params }: Props) {
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
-      <BlueprintGrid />
       <LineDitherDefs />
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />

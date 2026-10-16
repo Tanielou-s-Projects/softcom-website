@@ -9,7 +9,6 @@ import { InsightsHero } from "@/components/insights/insights-hero"
 import { SiteFooter } from "@/components/site/site-footer"
 import { getInsights } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
-import { BlueprintGrid } from "@/components/site/blueprint-grid"
 
 export async function generateMetadata(): Promise<Metadata> {
   const copy = await getPageContent("insightsPage", insightsPage)
@@ -24,7 +23,6 @@ export default async function Page() {
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
-      <BlueprintGrid />
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 

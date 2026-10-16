@@ -5,7 +5,6 @@ import { InsightArticle } from "@/components/insights/insight-article"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { Bleed } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
-import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { SiteHeader } from "@/components/site/site-header"
 import { getInsight, getInsightSlugs } from "@/sanity/lib/data"
 
@@ -32,7 +31,6 @@ export default async function Page({ params }: Props) {
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
-      <BlueprintGrid />
       <SiteHeader />
 
       <InsightArticle article={article} />

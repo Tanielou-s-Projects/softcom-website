@@ -6,7 +6,6 @@ import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { Bleed } from "@/components/landing/section"
 import { SiteFooter } from "@/components/site/site-footer"
-import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { caseStudiesPage } from "@/components/case-studies/page-copy"
 import { getCaseStudies } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -24,7 +23,6 @@ export default async function Page() {
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
-      <BlueprintGrid />
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 

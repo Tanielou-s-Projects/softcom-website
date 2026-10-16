@@ -1,7 +1,6 @@
 import * as React from "react"
 import Image from "next/image"
 
-import { PLAYGROUND_ENABLED } from "@/lib/playground-access"
 import type { ProductFigure } from "@/components/products/pages"
 import { DiagramFrame } from "@/components/products/diagrams/frame"
 import type { FigureMap } from "@/components/products/figures/types"
@@ -11,6 +10,9 @@ import { RECKON_FIGURES } from "@/components/products/figures/reckon"
 import { RTGS_FIGURES } from "@/components/products/figures/rtgs-global"
 import { SENTINEL_FIGURES } from "@/components/products/figures/sentinel"
 import { USEFORMS_FIGURES } from "@/components/products/figures/useforms"
+
+/* Undrawn figures show a "to draw" card in development and nothing in production. */
+const SHOW_PLACEHOLDERS = process.env.NODE_ENV !== "production"
 
 /**
  * The line figures that stand in for the copy deck's diagrams, by product
@@ -65,7 +67,7 @@ function ProductFigureSlot({
     )
   }
   if (Figure) return <Figure fig={fig} />
-  if (!PLAYGROUND_ENABLED) return null
+  if (!SHOW_PLACEHOLDERS) return null
 
   return (
     <div className="flex aspect-[16/9] flex-col items-center justify-center gap-2 rounded-3xl border border-dashed border-border p-6 text-center">
@@ -97,7 +99,7 @@ const NAMES: Record<string, string> = {
 /** Whether a figure will render at all, so its section can skip the slot. */
 function hasFigure(slug: string, figure: ProductFigure) {
   return (
-    PLAYGROUND_ENABLED ||
+    SHOW_PLACEHOLDERS ||
     Boolean(figure.image) ||
     Boolean(FIGURES[figure.source ?? slug]?.[figure.key])
   )

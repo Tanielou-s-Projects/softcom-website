@@ -7,7 +7,6 @@ import { SolutionsStory } from "@/components/solutions/solutions-story"
 import { SolutionsCta } from "@/components/solutions/solutions-cta"
 import { SolutionsHero } from "@/components/solutions/solutions-hero"
 import { SiteFooter } from "@/components/site/site-footer"
-import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { solutionsPage } from "@/components/solutions/page-copy"
 import { getPageContent } from "@/sanity/lib/page-content"
 
@@ -21,7 +20,6 @@ export default async function Page() {
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-2.5">
-      <BlueprintGrid />
       <LineDitherDefs />
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />

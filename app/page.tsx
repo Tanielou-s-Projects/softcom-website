@@ -5,14 +5,12 @@ import { Capabilities } from "@/components/landing/capabilities"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { Hero } from "@/components/landing/hero"
 import { Insights } from "@/components/landing/insights"
-import { Mission } from "@/components/landing/mission"
 import { Sectors } from "@/components/landing/sectors"
 import { Stats } from "@/components/landing/stats"
 import { Bleed, ghostPill, primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { Button } from "@/components/ui/button"
 import { SiteFooter } from "@/components/site/site-footer"
-import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { homePage } from "@/components/landing/home-copy"
 import { getPageContent } from "@/sanity/lib/page-content"
 
@@ -26,10 +24,7 @@ export default async function Page() {
      * is the same 144px / 256px.
      */
     <div className="relative flex min-h-svh w-full flex-col gap-36 lg:gap-64">
-      <BlueprintGrid />
-
       <Hero copy={copy.hero} />
-      <Mission copy={copy.mission} />
       <Capabilities copy={copy.focusAreas} />
       <Sectors copy={copy.whoWeWorkWith} partners={copy.partners} />
       {/*

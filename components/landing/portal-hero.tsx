@@ -20,7 +20,7 @@ import { HeroHeader } from "./hero-header"
 const MOBILE_QUERY = "(max-width: 767.98px)"
 
 /*
- * The `dissolve` variant is one pinned scene, as fractions of its scroll
+ * The hero is one pinned scene, as fractions of its scroll
  * track: the circles play out, blue rises over them in the shared dither, the
  * statement decodes out of the blue and holds; then the same blue drains away
  * — taking the statement with it — to reveal the mission photograph and its
@@ -49,10 +49,7 @@ const PHASE = {
  * Where the scroll arrow stops, as fractions of the scene's scroll track: each
  * scene's resting points, in order. Past the last, it leaves the scene.
  */
-const SCROLL_STOPS = {
-  dissolve: [PHASE.circles, PHASE.hold, PHASE.missionCta[1]],
-  circles: [0.88],
-} as const
+const SCROLL_STOPS = [PHASE.circles, PHASE.hold, PHASE.missionCta[1]]
 
 /** Pixel glyphs for the decode — the same visual vocabulary as the dither. */
 const GLYPHS = "▖▗▘▝▚▞▙▟"
@@ -156,13 +153,7 @@ function circlesOf(
 }
 
 // Illustrative story using existing photography, not a customer case study.
-export function PortalHero({
-  variant,
-  copy,
-}: {
-  variant: "grid" | "circles" | "dissolve"
-  copy: HeroCopy
-}) {
+export function PortalHero({ copy }: { copy: HeroCopy }) {
   const statement = statementOf(copy)
   const track = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -177,9 +168,8 @@ export function PortalHero({
     const element = track.current
     if (!element) return
     const media = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const dissolving = variant === "dissolve"
     const canvas = canvasRef.current
-    const dither = dissolving && canvas ? createDitherField(canvas) : null
+    const dither = canvas ? createDitherField(canvas) : null
     const chars = [
       ...(statementRef.current?.querySelectorAll<HTMLElement>("[data-ch]") ??
         []),
@@ -209,98 +199,88 @@ export function PortalHero({
           -element.getBoundingClientRect().top / Math.max(1, distance)
         )
       )
-      const t = Math.min(1, raw / (dissolving ? PHASE.circles : 0.88))
+      const t = Math.min(1, raw / PHASE.circles)
       const p = media.matches ? 0 : t * t * (3 - 2 * t)
-      if (dissolving) {
-        const reduce = media.matches
-        const drain = ease(segment(raw, PHASE.drain))
-        const d = reduce
-          ? 0
-          : raw < PHASE.drain[0]
-            ? ease(segment(raw, PHASE.dither))
-            : 1 - drain
-        if (dither) {
-          dither.resize()
-          dither.draw(d)
-        } else if (fallbackRef.current) {
-          fallbackRef.current.style.opacity = String(d)
-        }
-        // Decodes in and holds; the drain carries it out (see PHASE).
-        const out = reduce ? 0 : ease(segment(raw, PHASE.statementOut))
-        decode(reduce ? 1 : segment(raw, PHASE.text))
-        if (statementRef.current)
-          statementRef.current.style.opacity = String(1 - out)
-        const actions = actionsRef.current
-        if (actions) {
-          const a = reduce ? 1 : ease(segment(raw, PHASE.actions)) * (1 - out)
-          actions.style.opacity = String(a)
-          actions.style.transform = `translateY(${(1 - a) * 16}px)`
-          actions.inert = a < 0.5
-        }
-        // The mission layer waits under the blue until the blue is whole.
-        const mission = missionRef.current
-        if (mission && !reduce)
-          mission.style.visibility =
-            raw >= PHASE.dither[1] ? "visible" : "hidden"
-        const reveal = (node: HTMLElement | null, value: number) => {
-          if (!node) return
-          node.style.opacity = String(value)
-          node.style.transform = `translateY(${(1 - value) * 24}px)`
-          node.inert = value < 0.5
-        }
-        reveal(
-          missionCopyRef.current,
-          reduce ? 1 : ease(segment(raw, PHASE.mission))
-        )
-        reveal(
-          missionCtaRef.current,
-          reduce ? 1 : ease(segment(raw, PHASE.missionCta))
-        )
+      const reduce = media.matches
+      const drain = ease(segment(raw, PHASE.drain))
+      const d = reduce
+        ? 0
+        : raw < PHASE.drain[0]
+          ? ease(segment(raw, PHASE.dither))
+          : 1 - drain
+      if (dither) {
+        dither.resize()
+        dither.draw(d)
+      } else if (fallbackRef.current) {
+        fallbackRef.current.style.opacity = String(d)
       }
-      if (variant !== "grid") {
-        const width = element.clientWidth
-        const height = window.innerHeight
-        const mobile = window.matchMedia(MOBILE_QUERY).matches
-        const headline = headlineRef.current
-        const band = headline?.offsetParent as HTMLElement | null
-        const headlineBottom =
-          headline && band
-            ? band.offsetTop + headline.offsetTop + headline.offsetHeight
-            : null
-        const { upper, lower } = circlesOf(
-          width,
-          height,
-          mobile,
-          headlineBottom
-        )
-        element.style.setProperty("--upper-x", `${upper.x}px`)
-        element.style.setProperty("--upper-y", `${upper.y}px`)
-        element.style.setProperty("--diameter", `${upper.d}px`)
-        element.style.setProperty("--lower-diameter", `${lower.d}px`)
-        const upperRadius = upper.d / 2
-        const lowerRadius = lower.d / 2
-        const scale = 1 - p * 0.72
-        const growingRadius =
-          upperRadius + (Math.max(width, height) * 0.75 - upperRadius) * p
-        // The blue circle's centre travels to the middle of the screen.
-        const ux = upper.x + (width / 2 - upper.x) * p
-        const uy = upper.y + (height / 2 - upper.y) * p
-        // Push along the line joining the initial centres. Centre distance
-        // always equals both rendered radii plus a gap, even on reverse scroll.
-        const dx = lower.x - upper.x
-        const dy = lower.y - upper.y
-        const length = Math.max(1, Math.hypot(dx, dy))
-        const rest = length - upperRadius - lowerRadius
-        // Starts where it was placed and closes to a fixed gap as it plays.
-        const gap = mobile ? 12 : 24
-        const separation =
-          growingRadius + lowerRadius * scale + Math.max(gap, rest * (1 - p))
-        const x = ux + (dx / length) * separation
-        const y = uy + (dy / length) * separation
-        element.style.setProperty("--lower-x", `${x}px`)
-        element.style.setProperty("--lower-y", `${y}px`)
-        element.style.setProperty("--lower-visible", "visible")
+      // Decodes in and holds; the drain carries it out (see PHASE).
+      const out = reduce ? 0 : ease(segment(raw, PHASE.statementOut))
+      decode(reduce ? 1 : segment(raw, PHASE.text))
+      if (statementRef.current)
+        statementRef.current.style.opacity = String(1 - out)
+      const actions = actionsRef.current
+      if (actions) {
+        const a = reduce ? 1 : ease(segment(raw, PHASE.actions)) * (1 - out)
+        actions.style.opacity = String(a)
+        actions.style.transform = `translateY(${(1 - a) * 16}px)`
+        actions.inert = a < 0.5
       }
+      // The mission layer waits under the blue until the blue is whole.
+      const mission = missionRef.current
+      if (mission && !reduce)
+        mission.style.visibility = raw >= PHASE.dither[1] ? "visible" : "hidden"
+      const reveal = (node: HTMLElement | null, value: number) => {
+        if (!node) return
+        node.style.opacity = String(value)
+        node.style.transform = `translateY(${(1 - value) * 24}px)`
+        node.inert = value < 0.5
+      }
+      reveal(
+        missionCopyRef.current,
+        reduce ? 1 : ease(segment(raw, PHASE.mission))
+      )
+      reveal(
+        missionCtaRef.current,
+        reduce ? 1 : ease(segment(raw, PHASE.missionCta))
+      )
+      const width = element.clientWidth
+      const height = window.innerHeight
+      const mobile = window.matchMedia(MOBILE_QUERY).matches
+      const headline = headlineRef.current
+      const band = headline?.offsetParent as HTMLElement | null
+      const headlineBottom =
+        headline && band
+          ? band.offsetTop + headline.offsetTop + headline.offsetHeight
+          : null
+      const { upper, lower } = circlesOf(width, height, mobile, headlineBottom)
+      element.style.setProperty("--upper-x", `${upper.x}px`)
+      element.style.setProperty("--upper-y", `${upper.y}px`)
+      element.style.setProperty("--diameter", `${upper.d}px`)
+      element.style.setProperty("--lower-diameter", `${lower.d}px`)
+      const upperRadius = upper.d / 2
+      const lowerRadius = lower.d / 2
+      const scale = 1 - p * 0.72
+      const growingRadius =
+        upperRadius + (Math.max(width, height) * 0.75 - upperRadius) * p
+      // The blue circle's centre travels to the middle of the screen.
+      const ux = upper.x + (width / 2 - upper.x) * p
+      const uy = upper.y + (height / 2 - upper.y) * p
+      // Push along the line joining the initial centres. Centre distance
+      // always equals both rendered radii plus a gap, even on reverse scroll.
+      const dx = lower.x - upper.x
+      const dy = lower.y - upper.y
+      const length = Math.max(1, Math.hypot(dx, dy))
+      const rest = length - upperRadius - lowerRadius
+      // Starts where it was placed and closes to a fixed gap as it plays.
+      const gap = mobile ? 12 : 24
+      const separation =
+        growingRadius + lowerRadius * scale + Math.max(gap, rest * (1 - p))
+      const x = ux + (dx / length) * separation
+      const y = uy + (dy / length) * separation
+      element.style.setProperty("--lower-x", `${x}px`)
+      element.style.setProperty("--lower-y", `${y}px`)
+      element.style.setProperty("--lower-visible", "visible")
       element.style.setProperty("--p", String(p))
       element.style.setProperty("--exit", String(Math.max(0, 1 - p * 3)))
       element.style.setProperty(
@@ -322,17 +302,14 @@ export function PortalHero({
       media.removeEventListener("change", schedule)
       dither?.dispose()
     }
-  }, [variant])
-  // `dissolve` is the circles composition with a longer, dithered ending.
-  const circles = variant !== "grid"
-  const dissolve = variant === "dissolve"
+  }, [])
   return (
     <div className="bg-background text-foreground">
       <HeroHeader />
       <div
         ref={track}
         className={cn(
-          dissolve ? "h-[560vh]" : "h-[200vh]",
+          "h-[560vh]",
           // Circle sizes are written by the component (circlesOf); these
           // match them for the first paint.
           "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]",
@@ -343,18 +320,14 @@ export function PortalHero({
           aria-labelledby="story-title"
           className={cn(
             "sticky top-0 isolate h-screen overflow-hidden motion-reduce:relative motion-reduce:h-auto motion-reduce:min-h-screen",
-            circles
-              ? "[--hero-type-size:clamp(20px,5.3vw,38px)] md:[--hero-type-size:clamp(28px,min(5.7vw,11vh),100px)]"
-              : "border border-border"
+            "[--hero-type-size:clamp(20px,5.3vw,38px)] md:[--hero-type-size:clamp(28px,min(5.7vw,11vh),100px)]"
           )}
         >
           <div
             className={cn(
               "softcom-portal-exit-up absolute top-0 left-0 flex",
               "motion-reduce:relative motion-reduce:m-0 motion-reduce:h-auto motion-reduce:min-h-[40vh] motion-reduce:w-full motion-reduce:transform-none motion-reduce:px-[5vw] motion-reduce:pt-20 motion-reduce:pb-10 motion-reduce:opacity-100 motion-reduce:md:mt-0 motion-reduce:md:px-[5vw] motion-reduce:md:pt-20 motion-reduce:md:pb-10",
-              circles
-                ? "h-[45%] w-[62%] items-start px-3.5 pt-24 pb-5 md:px-[3.2vw] md:pb-8"
-                : "h-(--row) w-(--split) items-end border-r border-b border-border px-3.5 py-5 md:px-[3.2vw] md:py-8"
+              "h-[45%] w-[62%] items-start px-3.5 pt-24 pb-5 md:px-[3.2vw] md:pb-8"
             )}
           >
             <h1
@@ -363,9 +336,7 @@ export function PortalHero({
               className={cn(
                 "font-heading font-normal tracking-[-0.055em]",
                 // Size before leading: tailwind-merge drops a leading-* that a later text-* follows.
-                circles
-                  ? "text-(length:--hero-type-size)"
-                  : "text-[clamp(20px,5.3vw,38px)] md:text-[clamp(30px,min(6.6vw,12vh),116px)]",
+                "text-(length:--hero-type-size)",
                 "leading-[1.04]"
               )}
             >
@@ -380,9 +351,7 @@ export function PortalHero({
             className={cn(
               "dark @container absolute top-0 z-4 flex items-center justify-center overflow-hidden text-foreground",
               "motion-reduce:relative motion-reduce:inset-auto motion-reduce:h-[60vh] motion-reduce:w-full motion-reduce:[clip-path:none]",
-              circles
-                ? "softcom-portal-circle inset-0 size-full bg-brand-blue"
-                : "softcom-portal-panel border-b border-l border-border bg-neutral-900"
+              "softcom-portal-circle inset-0 size-full bg-brand-blue"
             )}
           >
             <Image
@@ -393,7 +362,7 @@ export function PortalHero({
               sizes="100vw"
               className={cn(
                 "object-cover object-[center_48%]",
-                circles && "softcom-portal-photo-in motion-reduce:opacity-100"
+                "softcom-portal-photo-in motion-reduce:opacity-100"
               )}
             />
             <div className="softcom-portal-shade absolute inset-0 bg-[color-mix(in_oklab,var(--color-brand-blue-950),black_60%)] motion-reduce:opacity-65" />
@@ -401,9 +370,7 @@ export function PortalHero({
               id="progress-title"
               className={cn(
                 "softcom-portal-arrival relative z-1 p-3.5 text-center font-heading font-normal motion-reduce:transform-none motion-reduce:opacity-100 md:p-6",
-                circles
-                  ? "text-(length:--hero-type-size) leading-[1.04] tracking-[-0.055em]"
-                  : "text-[clamp(22px,12cqw,84px)] leading-[1.02] tracking-[-0.05em] md:text-[clamp(24px,10cqw,144px)]"
+                "text-(length:--hero-type-size) leading-[1.04] tracking-[-0.055em]"
               )}
             >
               {copy.progressFirstLine}
@@ -414,9 +381,7 @@ export function PortalHero({
           <figure
             className={cn(
               "absolute z-3 overflow-hidden motion-reduce:hidden",
-              circles
-                ? "softcom-portal-orbit rounded-full"
-                : "softcom-portal-exit-left top-(--row) left-0 h-[calc(100%-var(--row))] w-(--split) border-t border-r border-border bg-neutral-900"
+              "softcom-portal-orbit rounded-full"
             )}
           >
             <Image
@@ -429,167 +394,134 @@ export function PortalHero({
             />
             {/* A layer over the photo rather than a background behind it, so
                 no cyan fringe shows at the circle's antialiased edge. */}
-            {circles && (
-              <div className="softcom-portal-tint-in absolute inset-0 bg-brand-cyan" />
-            )}
+            <div className="softcom-portal-tint-in absolute inset-0 bg-brand-cyan" />
           </figure>
-          {circles && (
-            <button
-              className="group absolute bottom-22 left-1/2 z-8 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-brand-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
-              aria-label="Scroll to the next section"
-              onClick={() => {
-                const element = track.current
-                if (!element) return
-                const reduce = window.matchMedia(
-                  "(prefers-reduced-motion: reduce)"
-                ).matches
-                const top = window.scrollY + element.getBoundingClientRect().top
-                const range = element.offsetHeight - window.innerHeight
-                const progress = (window.scrollY - top) / range
-                /*
-                 * Section by section: each press goes to the next resting
-                 * point of the pinned scene, and past the last one to the
-                 * section below. It used to stop after the first.
-                 */
-                const next = SCROLL_STOPS[
-                  dissolve ? "dissolve" : "circles"
-                ].find((stop) => stop > progress + 0.01)
-                window.scrollTo({
-                  top:
-                    next === undefined || reduce
-                      ? top + element.offsetHeight
-                      : top + range * next,
-                  behavior: reduce ? "instant" : "smooth",
-                })
-              }}
+          <button
+            className="group absolute bottom-22 left-1/2 z-8 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-brand-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
+            aria-label="Scroll to the next section"
+            onClick={() => {
+              const element = track.current
+              if (!element) return
+              const reduce = window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+              ).matches
+              const top = window.scrollY + element.getBoundingClientRect().top
+              const range = element.offsetHeight - window.innerHeight
+              const progress = (window.scrollY - top) / range
+              /*
+               * Section by section: each press goes to the next resting
+               * point of the pinned scene, and past the last one to the
+               * section below. It used to stop after the first.
+               */
+              const next = SCROLL_STOPS.find((stop) => stop > progress + 0.01)
+              window.scrollTo({
+                top:
+                  next === undefined || reduce
+                    ? top + element.offsetHeight
+                    : top + range * next,
+                behavior: reduce ? "instant" : "smooth",
+              })
+            }}
+          >
+            <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
+              {copy.scrollLabel}
+            </span>
+            <span className="softcom-nudge group-hover:[animation-play-state:paused]">
+              <PixelArrowDown
+                cascade
+                className="softcom-pixel-cascade size-12"
+              />
+            </span>
+          </button>
+          <>
+            {/*
+             * Mission, inside the scene: under the canvas, hidden until the
+             * blue is whole, then uncovered as the blue drains (top first,
+             * the shared field run backwards). Reduced motion: in flow.
+             */}
+            <div
+              ref={missionRef}
+              aria-label="Our mission"
+              role="group"
+              className="dark invisible absolute inset-0 z-5 flex flex-col items-center justify-center gap-10 px-6 text-center text-foreground motion-reduce:visible motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:py-24"
             >
-              <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
-                {copy.scrollLabel}
-              </span>
-              <span className="softcom-nudge group-hover:[animation-play-state:paused]">
-                <PixelArrowDown
-                  cascade
-                  className="softcom-pixel-cascade size-12"
-                />
-              </span>
-            </button>
-          )}
-          {dissolve && (
-            <>
-              {/*
-               * Mission, inside the scene: under the canvas, hidden until the
-               * blue is whole, then uncovered as the blue drains (top first,
-               * the shared field run backwards). Reduced motion: in flow.
-               */}
+              <Image
+                src={copy.missionImage}
+                alt={copy.missionImageAlt}
+                fill
+                sizes="100vw"
+                className="-z-10 object-cover object-bottom"
+              />
+              <div aria-hidden className="absolute inset-0 -z-10 bg-black/64" />
               <div
-                ref={missionRef}
-                aria-label="Our mission"
-                role="group"
-                className="dark invisible absolute inset-0 z-5 flex flex-col items-center justify-center gap-10 px-6 text-center text-foreground motion-reduce:visible motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:py-24"
+                ref={missionCopyRef}
+                className="flex flex-col items-center gap-10 opacity-0 motion-reduce:opacity-100"
               >
-                <Image
-                  src={copy.missionImage}
-                  alt={copy.missionImageAlt}
-                  fill
-                  sizes="100vw"
-                  className="-z-10 object-cover object-bottom"
+                {/* eslint-disable-next-line @next/next/no-img-element -- local SVG dot */}
+                <img
+                  src="/brand/accent-dot.svg"
+                  alt=""
+                  width={26}
+                  height={26}
+                  className="size-[26px]"
                 />
-                <div
-                  aria-hidden
-                  className="absolute inset-0 -z-10 bg-black/64"
-                />
-                <div
-                  ref={missionCopyRef}
-                  className="flex flex-col items-center gap-10 opacity-0 motion-reduce:opacity-100"
+                <h2
+                  className={cn(
+                    headingText,
+                    "max-w-[760px] leading-[1.1] text-foreground"
+                  )}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element -- local SVG dot */}
-                  <img
-                    src="/brand/accent-dot.svg"
-                    alt=""
-                    width={26}
-                    height={26}
-                    className="size-[26px]"
-                  />
-                  <h2
-                    className={cn(
-                      headingText,
-                      "max-w-[760px] leading-[1.1] text-foreground"
-                    )}
-                  >
-                    {/* Trimmed from the deck's "We believe stronger organisations
+                  {/* Trimmed from the deck's "We believe stronger organisations
                         are the foundation of a more prosperous society." */}
-                    {copy.missionHeading}
-                  </h2>
-                  <p className={cn(leadText, "max-w-[576px] text-neutral-200")}>
-                    {copy.missionText}
-                  </p>
-                </div>
-                <div
-                  ref={missionCtaRef}
-                  className="opacity-0 motion-reduce:opacity-100"
-                >
-                  <Button asChild size="lg" className={primaryPill}>
-                    <Link href={copy.missionCta.href}>
-                      {copy.missionCta.label}
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-              {/* Where WebGL is unavailable, the dither falls back to a fade. */}
-              <div
-                ref={fallbackRef}
-                aria-hidden
-                className="pointer-events-none absolute inset-0 z-6 bg-brand-blue opacity-0 motion-reduce:hidden"
-              />
-              <canvas
-                ref={canvasRef}
-                aria-hidden
-                className="pointer-events-none absolute inset-0 z-6 size-full motion-reduce:hidden"
-              />
-              {/* The statement lives inside the scene: it is the dither's end
-                  state, so there is no section edge to cross. */}
-              <div
-                aria-label="About Softcom"
-                role="group"
-                className="dark pointer-events-none absolute inset-0 z-7 flex flex-col items-start justify-center gap-10 px-6 pt-24 pb-12 text-foreground motion-reduce:pointer-events-auto motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:bg-brand-blue motion-reduce:py-16 md:px-[7vw]"
-              >
-                <p className="sr-only">
-                  {statement.map((run) => run.text).join("")}
+                  {copy.missionHeading}
+                </h2>
+                <p className={cn(leadText, "max-w-[576px] text-neutral-200")}>
+                  {copy.missionText}
                 </p>
-                <ScrambleStatement ref={statementRef} runs={statement} />
-                <div
-                  ref={actionsRef}
-                  className="pointer-events-auto flex flex-wrap items-center gap-2 opacity-0 motion-reduce:opacity-100"
-                >
-                  <StatementActions copy={copy} />
-                </div>
               </div>
-            </>
-          )}
+              <div
+                ref={missionCtaRef}
+                className="opacity-0 motion-reduce:opacity-100"
+              >
+                <Button asChild size="lg" className={primaryPill}>
+                  <Link href={copy.missionCta.href}>
+                    {copy.missionCta.label}
+                  </Link>
+                </Button>
+              </div>
+            </div>
+            {/* Where WebGL is unavailable, the dither falls back to a fade. */}
+            <div
+              ref={fallbackRef}
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-6 bg-brand-blue opacity-0 motion-reduce:hidden"
+            />
+            <canvas
+              ref={canvasRef}
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-6 size-full motion-reduce:hidden"
+            />
+            {/* The statement lives inside the scene: it is the dither's end
+                  state, so there is no section edge to cross. */}
+            <div
+              aria-label="About Softcom"
+              role="group"
+              className="dark pointer-events-none absolute inset-0 z-7 flex flex-col items-start justify-center gap-10 px-6 pt-24 pb-12 text-foreground motion-reduce:pointer-events-auto motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:bg-brand-blue motion-reduce:py-16 md:px-[7vw]"
+            >
+              <p className="sr-only">
+                {statement.map((run) => run.text).join("")}
+              </p>
+              <ScrambleStatement ref={statementRef} runs={statement} />
+              <div
+                ref={actionsRef}
+                className="pointer-events-auto flex flex-wrap items-center gap-2 opacity-0 motion-reduce:opacity-100"
+              >
+                <StatementActions copy={copy} />
+              </div>
+            </div>
+          </>
         </section>
       </div>
-      {/* Brand blue in both themes; `dark` resolves the pills and accent. */}
-      {!dissolve && (
-        <section
-          aria-label="About Softcom"
-          className="dark flex min-h-[90vh] flex-col items-start justify-center gap-10 bg-brand-blue px-6 py-16 text-foreground md:px-[7vw] md:py-25"
-        >
-          <p className={statementClass}>
-            {statement.map((run) =>
-              run.accent ? (
-                <span key={run.text} className="text-brand-accent">
-                  {run.text}
-                </span>
-              ) : (
-                run.text
-              )
-            )}
-          </p>
-          <div className="flex flex-wrap items-center gap-2">
-            <StatementActions copy={copy} />
-          </div>
-        </section>
-      )}
     </div>
   )
 }

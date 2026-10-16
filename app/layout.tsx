@@ -62,13 +62,6 @@ export default async function RootLayout({
            * still animates — without SSR/client branches that break hydration.
            */}
           <MotionConfig reducedMotion="user">
-            {/*
-             * The design explorations are settled (dissolve hero, Pair
-             * circles, flat tags, no margins — the registry's defaults), so
-             * the picker and its provider are not mounted: every `useVariant`
-             * resolves to its default for everyone. Re-mount VariantProvider
-             * and VariantSwitcher here to explore again.
-             */}
             <ChromeProvider header={header}>{children}</ChromeProvider>
             <PixelPageTransition />
           </MotionConfig>

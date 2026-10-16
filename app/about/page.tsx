@@ -19,7 +19,6 @@ import {
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { Team } from "@/components/landing/team"
 import { SiteFooter } from "@/components/site/site-footer"
-import { BlueprintGrid } from "@/components/site/blueprint-grid"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { getLeaders } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -42,7 +41,6 @@ export default async function Page() {
 
   return (
     <div className="relative flex min-h-svh w-full flex-col">
-      <BlueprintGrid />
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 

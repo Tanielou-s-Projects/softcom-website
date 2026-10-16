@@ -24,12 +24,6 @@
    and emits exactly the stops we touch, so there is no bloat and no risk of
    drifting from Tailwind's own palette.
 
-   Caveat for the playground: a step referenced only from JS (an inline
-   `style={{ background: "var(--color-neutral-300)" }}`) is invisible to that
-   scan and would resolve to nothing. Any step the tweak panel offers must also
-   appear as a literal utility class in source — which is why the Colors section
-   renders each ramp with real `bg-*` classes.
-
    Only the brand ramps are ours to define. They live in `@theme` (not
    `@theme inline`) because the values are literal and theme-independent, and
    because that is what generates `bg-brand-blue-700` and friends.
@@ -131,8 +125,7 @@
 
   --radius: 0.625rem;
 
-  /* Tier 3 · component knobs. Live-editable from the playground's Component
-       tab. Button, badge and input keep the radius they shipped with; card is
+  /* Tier 3 · component knobs. Button, badge and input keep the radius they shipped with; card is
        deliberately moved off shadcn's 18px onto the 26px step, because every
        panel in the Figma file is a 24px card and 4xl is the nearest step. */
   --button-radius: calc(var(--radius) * 2.6);
@@ -180,7 +173,7 @@
 
 /* ─── Tailwind bindings ───────────────────────────────────────────────────
    `inline` so each utility resolves the role at use time, which is what lets
-   the same class react to `.dark` and to the playground's live overrides. */
+   the same class react to `.dark`. */
 @theme inline {
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
@@ -227,78 +220,6 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/*
- * Hero entrance, from the Figma motion tracks on node 210:44.
- * The two brand circles start overlapped at the capsule's midpoint and separate
- * to its endpoints while the gradient bar draws itself between them.
- *
- * Base styles below are the *resting* state, so `prefers-reduced-motion` simply
- * skips the animation and lands on the finished composition.
- */
-/*
- * The 75% stop is the design's, not a rounding: Figma's tracks run
- * `times: [0, 0.75, 1]` over a 2s cohort, so the mark draws for 1.5s and then
- * rests, fully formed, for 0.5s before the cycle repeats. Holding that beat is
- * what keeps a looping hero from reading as a GIF.
- *
- * Easing lives on the keyframes rather than the shorthand because the two
- * segments differ — easeInOut across the draw, linear through the hold.
- */
-@keyframes softcom-capsule-draw {
-  0% {
-    stroke-dasharray: 0 1;
-    stroke-dashoffset: -0.5;
-    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-  }
-  75% {
-    stroke-dasharray: 1 1;
-    stroke-dashoffset: 0;
-    animation-timing-function: linear;
-  }
-  100% {
-    stroke-dasharray: 1 1;
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes softcom-blob-separate {
-  0% {
-    transform: translate(var(--blob-from-x), var(--blob-from-y));
-    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-  }
-  75% {
-    transform: translate(0, 0);
-    animation-timing-function: linear;
-  }
-  100% {
-    transform: translate(0, 0);
-  }
-}
-
-/*
- * After the entrance the mark settles into a slow idle: the circles breathe
- * and the bar's intensity drifts. Long period, tiny amplitude — enough that the
- * hero is alive on a second look, never enough to read as a loop. `scale` is a
- * separate property from the entrance's `transform`, so the two never fight.
- */
-@keyframes softcom-blob-breathe {
-  from {
-    scale: 1;
-  }
-  to {
-    scale: 1.035;
-  }
-}
-
-@keyframes softcom-capsule-drift {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0.86;
-  }
-}
-
 /* The hero's scroll cue assembling pixel by pixel, stepped like the page transition. */
 @keyframes softcom-nudge {
   0%,
@@ -324,52 +245,15 @@
 
 @layer components {
   /*
-   * One 2s entrance, played once (Figma's cohort on node 210:40 looped, which
-   * the client found played-out on a second viewing). The circles and the bar
-   * share a duration so they stay in step — one gesture, not three animations.
-   * The idle starts as the entrance lands and alternates from then on.
-   */
-  .softcom-hero-capsule {
-    stroke-dasharray: 1 1;
-    stroke-dashoffset: 0;
-    animation:
-      softcom-capsule-draw 2s linear 1 forwards,
-      softcom-capsule-drift 9s ease-in-out 2s infinite alternate;
-  }
-  .softcom-hero-blob {
-    animation:
-      softcom-blob-separate 2s linear 1 forwards,
-      softcom-blob-breathe 7s ease-in-out 2s infinite alternate;
-    /* Composited, so the circles cost nothing to move. */
-    will-change: transform, scale;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .softcom-hero-capsule,
-    .softcom-hero-blob {
-      animation: none;
-    }
-  }
-
-  /*
    * Portal hero (portal-hero.tsx). Only the scroll-driven geometry lives here:
-   * the component writes --p (eased progress), --exit, --arrival and, for the
-   * circles variant, --lower-x/--lower-y on the track each frame. Layout and
+   * the component writes --p (eased progress), --exit, --arrival and
+   * --lower-x/--lower-y on the track each frame. Layout and
    * colour are utilities on the elements, and their `motion-reduce:` variants
    * win over these because utilities sit in a later layer.
    */
   .softcom-portal-exit-up {
     transform: translateY(calc(var(--p) * -110%));
     opacity: var(--exit);
-  }
-  .softcom-portal-exit-left {
-    transform: translate(calc(var(--p) * -110%), calc(var(--p) * -60%));
-  }
-  /* Grid: the top-right panel grows left and down until it fills the scene. */
-  .softcom-portal-panel {
-    left: calc(var(--split) * (1 - var(--p)));
-    width: calc(100% - var(--split) + var(--split) * var(--p));
-    height: calc(var(--row) + (100% - var(--row)) * var(--p));
   }
   /*
    * Circles: a true circle until its edge has passed beyond the viewport. It
@@ -431,143 +315,6 @@
     .softcom-nudge {
       animation: none;
     }
-  }
-
-  /*
-   * Blueprint rails — the drafting-grid texture in the side margins, only
-   * where the 1336px content column leaves real room (>=1440px viewports).
-   * Fixed to the viewport at z -10: the page's full-bleed plates paint over
-   * it, the open margins beside `Container` sections let it show. That is
-   * also why the marketing pages' wrappers must NOT repaint `bg-background`
-   * (the body already does) — an opaque positioned wrapper would sit above
-   * the negative z-index and swallow the rails.
-   */
-  .softcom-blueprint {
-    --blueprint-line: color-mix(in oklch, var(--foreground) 7%, transparent);
-    --blueprint-tick: color-mix(in oklch, var(--foreground) 16%, transparent);
-    position: fixed;
-    inset: 0;
-    z-index: -10;
-    display: none;
-    pointer-events: none;
-  }
-  @media (min-width: 1440px) {
-    .softcom-blueprint {
-      display: block;
-    }
-  }
-
-  .softcom-blueprint-rail {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: calc((100% - 1336px) / 2);
-    /* ruled lines / ruler ticks / dashed plumb line / the column edge */
-    background-image:
-      repeating-linear-gradient(
-        to bottom,
-        var(--blueprint-line) 0 1px,
-        transparent 1px 160px
-      ),
-      repeating-linear-gradient(
-        to bottom,
-        var(--blueprint-tick) 0 1px,
-        transparent 1px 32px
-      ),
-      repeating-linear-gradient(
-        to bottom,
-        var(--blueprint-line) 0 5px,
-        transparent 5px 12px
-      ),
-      linear-gradient(var(--blueprint-line), var(--blueprint-line));
-    background-size:
-      100% 100%,
-      12px 100%,
-      1px 100%,
-      1px 100%;
-    background-repeat: no-repeat;
-  }
-  .softcom-blueprint-rail[data-side="left"] {
-    left: 0;
-    background-position:
-      0 0,
-      left top,
-      31px top,
-      right top;
-  }
-  .softcom-blueprint-rail[data-side="right"] {
-    right: 0;
-    background-position:
-      0 0,
-      right top,
-      calc(100% - 31px) top,
-      left top;
-  }
-
-  /* The '+' registration marks, straddling the column edge every 160px. */
-  .softcom-blueprint-rail::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 17px;
-    background-color: var(--blueprint-tick);
-    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='17' height='160'><path d='M8.5 76v8M4.5 80h8' stroke='black' stroke-width='1'/></svg>");
-    mask-repeat: repeat-y;
-    mask-size: 17px 160px;
-    mask-position: 0 -80px;
-  }
-  .softcom-blueprint-rail[data-side="left"]::after {
-    right: -8.5px;
-  }
-  .softcom-blueprint-rail[data-side="right"]::after {
-    left: -8.5px;
-  }
-
-  /*
-   * `labelled`: the same rails, twice the weight, plus a running mono label
-   * set vertically along the plumb line — deliberate, not leftover.
-   */
-  .softcom-blueprint[data-style="labelled"] {
-    --blueprint-line: color-mix(in oklch, var(--foreground) 14%, transparent);
-    --blueprint-tick: color-mix(in oklch, var(--foreground) 30%, transparent);
-  }
-  .softcom-blueprint[data-style="labelled"] .softcom-blueprint-rail::before {
-    content: attr(data-label);
-    position: absolute;
-    top: 96px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    line-height: 1;
-    white-space: nowrap;
-    color: var(--blueprint-tick);
-    writing-mode: vertical-rl;
-  }
-  .softcom-blueprint[data-style="labelled"]
-    .softcom-blueprint-rail[data-side="left"]::before {
-    left: 40px;
-  }
-  .softcom-blueprint[data-style="labelled"]
-    .softcom-blueprint-rail[data-side="right"]::before {
-    right: 40px;
-    transform: rotate(180deg);
-  }
-
-  /* `dither`: no lines — the rail hosts a shader canvas, kept very quiet. */
-  .softcom-blueprint[data-style="dither"] .softcom-blueprint-rail {
-    background: none;
-    opacity: 0.28;
-    mask-image: linear-gradient(
-      to bottom,
-      transparent,
-      black 12%,
-      black 88%,
-      transparent
-    );
-  }
-  .softcom-blueprint[data-style="dither"] .softcom-blueprint-rail::after {
-    content: none;
   }
 }
 

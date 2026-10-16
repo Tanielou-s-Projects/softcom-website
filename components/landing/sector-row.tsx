@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge"
 import { DotMatrix } from "@/components/landing/dot-matrix"
 import { bodyText, cardHeadingText } from "@/components/landing/section"
 import type { Sector } from "@/components/landing/content"
-import { useVariant } from "@/components/variants/variant-context"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 
@@ -20,63 +19,20 @@ const TONE: Record<Sector["tone"], string> = {
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
-type TagsVariant = "flat" | "index" | "inline"
-
-/**
- * Three treatments for the sector labels, chosen on the switcher. `flat` is
- * the shipped Badge squared off — the client asked for rectangular tags over
- * pills; `index` and `inline` set them in mono caps so they read as a spec
- * sheet rather than a keyword cloud.
- */
-function SectorTags({
-  tags,
-  variant,
-  contrast,
-}: {
-  tags: string[]
-  variant: TagsVariant
-  contrast: boolean
-}) {
-  if (variant === "flat") {
-    return (
-      <div className="flex flex-wrap items-start gap-2">
-        {tags.map((tag) => (
-          <Badge
-            key={tag}
-            variant={contrast ? "contrast" : "default"}
-            className="rounded-sm"
-          >
-            {tag}
-          </Badge>
-        ))}
-      </div>
-    )
-  }
-
-  if (variant === "inline") {
-    return (
-      <p className="font-mono text-xs leading-6 tracking-wide text-muted-foreground uppercase">
-        {tags.map((tag, i) => (
-          <React.Fragment key={tag}>
-            {i > 0 && <span className="mx-2 text-foreground/30">/</span>}
-            {tag}
-          </React.Fragment>
-        ))}
-      </p>
-    )
-  }
-
+/** Sector labels as squared-off badges — the client asked for rectangular tags over pills. */
+function SectorTags({ tags, contrast }: { tags: string[]; contrast: boolean }) {
   return (
-    <ol className="flex flex-col gap-1.5 font-mono text-xs leading-5 tracking-wide text-muted-foreground uppercase">
-      {tags.map((tag, i) => (
-        <li key={tag} className="flex gap-3">
-          <span className="w-5 shrink-0 text-foreground/40 tabular-nums">
-            {String(i + 1).padStart(2, "0")}
-          </span>
+    <div className="flex flex-wrap items-start gap-2">
+      {tags.map((tag) => (
+        <Badge
+          key={tag}
+          variant={contrast ? "contrast" : "default"}
+          className="rounded-sm"
+        >
           {tag}
-        </li>
+        </Badge>
       ))}
-    </ol>
+    </div>
   )
 }
 
@@ -87,7 +43,6 @@ function SectorCard({
   hovered,
   onHover,
   coarse,
-  tags,
 }: {
   sector: Sector
   index: number
@@ -95,7 +50,6 @@ function SectorCard({
   hovered: number | null
   onHover: (i: number | null) => void
   coarse: boolean
-  tags: TagsVariant
 }) {
   const ref = React.useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.45 })
@@ -203,11 +157,7 @@ function SectorCard({
           >
             <div className="min-h-0 overflow-hidden">
               <div className="pt-8">
-                <SectorTags
-                  tags={sector.tags}
-                  variant={tags}
-                  contrast={contrast}
-                />
+                <SectorTags tags={sector.tags} contrast={contrast} />
               </div>
             </div>
           </div>
@@ -219,13 +169,11 @@ function SectorCard({
 
 /**
  * The sector cards as one interactive row. Owns the hover state so a
- * card's growth and its siblings' shrink are one gesture, and reads the tag
- * treatment from the variant switcher.
+ * card's growth and its siblings' shrink are one gesture.
  */
 function SectorRow({ sectors }: { sectors: Sector[] }) {
   const [hovered, setHovered] = React.useState<number | null>(null)
   const coarse = useMediaQuery("(hover: none)")
-  const tags = useVariant("tags")
 
   return (
     <div className="flex flex-col items-stretch gap-6 lg:flex-row lg:gap-0">
@@ -238,7 +186,6 @@ function SectorRow({ sectors }: { sectors: Sector[] }) {
           hovered={hovered}
           onHover={setHovered}
           coarse={coarse}
-          tags={tags}
         />
       ))}
     </div>
