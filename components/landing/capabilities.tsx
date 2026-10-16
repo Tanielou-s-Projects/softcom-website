@@ -19,8 +19,8 @@ import {
   primaryPill,
 } from "@/components/landing/section"
 import { Button } from "@/components/ui/button"
-import { capabilities } from "@/components/landing/content"
-import type { HomePage } from "@/components/landing/home-copy"
+import { capabilities } from "@/content/home/content"
+import type { HomePage } from "@/content/home/page-copy"
 import { Reveal } from "@/components/motion/reveal"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"

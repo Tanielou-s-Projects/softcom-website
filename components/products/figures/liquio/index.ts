@@ -4,7 +4,7 @@ import {
   LiquioService,
 } from "@/components/products/diagrams/liquio"
 
-/** liquio's figures, by the `figure.key` in pages.ts: the deck's diagrams. */
+/** liquio's figures, by the `figure.key` in content/products/pages.ts: the deck's diagrams. */
 export const LIQUIO_FIGURES: FigureMap = {
   foundation: LiquioFoundation,
   service: LiquioService,

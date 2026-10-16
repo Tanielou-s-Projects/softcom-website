@@ -1,7 +1,7 @@
 import type * as React from "react"
 
-import type { Partner } from "@/components/landing/content"
-import type { HomePage } from "@/components/landing/home-copy"
+import type { Partner } from "@/content/home/content"
+import type { HomePage } from "@/content/home/page-copy"
 import { cn } from "@/lib/utils"
 
 /** Area every logo is given, so wide and square marks weigh the same. */

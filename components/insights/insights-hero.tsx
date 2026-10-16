@@ -1,6 +1,6 @@
 import { DitherMark } from "@/components/motion/dither-mark"
 import { FullHero } from "@/components/site/full-hero"
-import type { InsightsPage } from "@/components/insights/page-copy"
+import type { InsightsPage } from "@/content/insights/page-copy"
 
 /**
  * Discs of different weight, loosely joined — ideas connecting — and the

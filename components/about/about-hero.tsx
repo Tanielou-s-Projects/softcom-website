@@ -5,7 +5,7 @@ import Image from "next/image"
 import { Image as ImageIcon } from "@phosphor-icons/react"
 import { motion, useScroll, useSpring, useTransform } from "motion/react"
 
-import type { AboutPage } from "@/components/about/page-copy"
+import type { AboutPage } from "@/content/about/page-copy"
 import { ColorReveal } from "@/components/motion/color-reveal"
 import { FullHero } from "@/components/site/full-hero"
 

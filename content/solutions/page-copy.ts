@@ -4,7 +4,7 @@ import {
   entrust,
   solutions,
   solutionsIntro,
-} from "@/components/solutions/content"
+} from "@/content/solutions/content"
 
 /*
  * Every line of copy on the Solutions page, as Sanity's `solutionsPage`

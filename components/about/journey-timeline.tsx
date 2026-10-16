@@ -6,7 +6,7 @@ import { AnimatePresence, motion, useInView } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
-import { milestones, type Milestone } from "@/components/about/content"
+import { milestones, type Milestone } from "@/content/about/content"
 import { bodyText, Container, headingText } from "@/components/landing/section"
 
 /**

@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
 
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
-import { stats, type Stat } from "@/components/landing/content"
-import { withYears } from "@/components/landing/home-copy"
+import { stats, type Stat } from "@/content/home/content"
+import { withYears } from "@/content/home/page-copy"
 import { bodyText, Container, headingText } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
 

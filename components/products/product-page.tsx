@@ -20,7 +20,7 @@ import {
   figuresOf,
   type ProductPage,
   type ProductSection,
-} from "@/components/products/pages"
+} from "@/content/products/pages"
 
 /*
  * A product's inner page, on the same rhythm as Solutions (Palantir's

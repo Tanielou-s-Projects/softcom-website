@@ -5,7 +5,7 @@ import { headingText, primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
 import { cn } from "@/lib/utils"
-import type { SolutionsPage } from "@/components/solutions/page-copy"
+import type { SolutionsPage } from "@/content/solutions/page-copy"
 
 /**
  * The Solutions page's closing call to action.

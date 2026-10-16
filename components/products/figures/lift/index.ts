@@ -8,7 +8,7 @@ import {
   LiftTrusted,
 } from "@/components/products/diagrams/lift"
 
-/** lift's figures, by the `figure.key` in pages.ts: the deck's diagrams. */
+/** lift's figures, by the `figure.key` in content/products/pages.ts: the deck's diagrams. */
 export const LIFT_FIGURES: FigureMap = {
   tiers: LiftTiers,
   modules: LiftModules,

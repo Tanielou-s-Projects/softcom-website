@@ -23,7 +23,7 @@ import {
   solutionsIntro,
   type Solution,
   type SolutionFeature,
-} from "@/components/solutions/content"
+} from "@/content/solutions/content"
 
 /*
  * The Solutions body, on the rhythm of Palantir's Ontology page (a client

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import { alumniPage } from "@/components/about/page-copy"
+import { alumniPage } from "@/content/about/page-copy"
 import { AlumniForm } from "@/components/about/alumni-form"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"

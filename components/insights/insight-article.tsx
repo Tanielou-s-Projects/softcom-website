@@ -8,7 +8,7 @@ import {
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Container, displayText, leadText } from "@/components/landing/section"
-import { formatInsightDate } from "@/components/insights/content"
+import { formatInsightDate } from "@/content/insights/content"
 import { urlFor } from "@/sanity/lib/image"
 import type { InsightArticle as Article } from "@/sanity/lib/data"
 import { Reveal } from "@/components/motion/reveal"

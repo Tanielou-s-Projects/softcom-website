@@ -1,7 +1,7 @@
 import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
 import { AnimatedFavicon } from "@/components/site/animated-favicon"
 import { ChromeProvider } from "@/components/site/chrome-context"
-import { getNavigation } from "@/components/site/get-navigation"
+import { getNavigation } from "@/content/site/get-navigation"
 
 /* The public site's chrome. The Studio sits outside this group. */
 export default async function SiteLayout({

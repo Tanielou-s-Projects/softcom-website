@@ -1,4 +1,4 @@
-import { navigation } from "@/components/site/chrome-copy"
+import { navigation } from "@/content/site/chrome-copy"
 import { getPageContent } from "@/sanity/lib/page-content"
 
 /**

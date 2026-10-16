@@ -1,6 +1,6 @@
 import { HomeIcon } from "@sanity/icons"
 
-import { homePage } from "@/components/landing/home-copy"
+import { homePage } from "@/content/home/page-copy"
 import type { PageDefinition } from "@/sanity/lib/page-schema"
 
 /** Home page singletons (see sanity/schemaTypes/pages.ts). */

@@ -9,7 +9,7 @@ import {
 } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
-import type { HomePage } from "@/components/landing/home-copy"
+import type { HomePage } from "@/content/home/page-copy"
 
 /** How Softcom works: the technology, then the expertise that puts it to use. */
 function Approach({ copy }: { copy: HomePage["approach"] }) {

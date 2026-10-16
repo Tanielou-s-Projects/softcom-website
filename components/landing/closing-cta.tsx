@@ -10,7 +10,7 @@ import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
 import { cn } from "@/lib/utils"
 
-import { getNavigation } from "@/components/site/get-navigation"
+import { getNavigation } from "@/content/site/get-navigation"
 
 /*
  * The closing call to action. Three variants share one photographic plate:

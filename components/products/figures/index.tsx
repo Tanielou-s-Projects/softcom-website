@@ -1,7 +1,7 @@
 import * as React from "react"
 import Image from "next/image"
 
-import type { ProductFigure } from "@/components/products/pages"
+import type { ProductFigure } from "@/content/products/pages"
 import { DiagramFrame } from "@/components/products/diagrams/frame"
 import type { FigureMap } from "@/components/products/figures/types"
 import { LIFT_FIGURES } from "@/components/products/figures/lift"
@@ -16,7 +16,7 @@ const SHOW_PLACEHOLDERS = process.env.NODE_ENV !== "production"
 
 /**
  * The line figures that stand in for the copy deck's diagrams, by product
- * slug, then by the figure's `key` in `pages.ts`. Each takes its figure number
+ * slug, then by the figure's `key` in `content/products/pages.ts`. Each takes its figure number
  * so the plates count up down the page.
  */
 const FIGURES: Record<string, FigureMap> = {

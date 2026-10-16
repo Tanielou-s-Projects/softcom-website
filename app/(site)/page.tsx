@@ -11,7 +11,7 @@ import { ghostPill, primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { Button } from "@/components/ui/button"
 import { PageEnd } from "@/components/site/page-end"
-import { homePage } from "@/components/landing/home-copy"
+import { homePage } from "@/content/home/page-copy"
 import { getPageContent } from "@/sanity/lib/page-content"
 
 export default async function Page() {

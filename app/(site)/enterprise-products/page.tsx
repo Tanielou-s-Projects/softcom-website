@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
-import { productsPage } from "@/components/products/page-copy"
+import { productsPage } from "@/content/products/page-copy"
 import { ProductGrid } from "@/components/products/product-grid"
 import { ProductsHero } from "@/components/products/products-hero"
 import { PageEnd } from "@/components/site/page-end"

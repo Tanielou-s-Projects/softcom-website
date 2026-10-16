@@ -2,8 +2,8 @@ import Link from "next/link"
 
 import { DitherMark } from "@/components/motion/dither-mark"
 import { FullHero, HeroRail } from "@/components/site/full-hero"
-import { solutions } from "@/components/solutions/content"
-import type { SolutionsPage } from "@/components/solutions/page-copy"
+import { solutions } from "@/content/solutions/content"
+import type { SolutionsPage } from "@/content/solutions/page-copy"
 
 /** The three areas' titles, as the page's copy names them. */
 const AREA_TITLES = (copy: SolutionsPage) => [

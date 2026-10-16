@@ -9,8 +9,8 @@ import {
   cardHeadingText,
   Container,
 } from "@/components/landing/section"
-import type { CaseStudy } from "@/components/case-studies/content"
-import type { CaseStudiesPage } from "@/components/case-studies/page-copy"
+import type { CaseStudy } from "@/content/case-studies/content"
+import type { CaseStudiesPage } from "@/content/case-studies/page-copy"
 import { Reveal } from "@/components/motion/reveal"
 
 /** A sector name, or `null` for every sector. */

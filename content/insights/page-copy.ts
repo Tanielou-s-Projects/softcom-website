@@ -1,4 +1,4 @@
-import { insightsIntro, topics } from "@/components/insights/content"
+import { insightsIntro, topics } from "@/content/insights/content"
 
 /*
  * Every line of copy on the Insights index, as Sanity's `insightsPage`

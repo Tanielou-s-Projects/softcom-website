@@ -6,7 +6,7 @@ import { SolutionsStory } from "@/components/solutions/solutions-story"
 import { SolutionsCta } from "@/components/solutions/solutions-cta"
 import { SolutionsHero } from "@/components/solutions/solutions-hero"
 import { PageEnd } from "@/components/site/page-end"
-import { solutionsPage } from "@/components/solutions/page-copy"
+import { solutionsPage } from "@/content/solutions/page-copy"
 import { getPageContent } from "@/sanity/lib/page-content"
 
 export async function generateMetadata(): Promise<Metadata> {

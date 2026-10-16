@@ -4,7 +4,7 @@ import Image from "next/image"
 import { motion } from "motion/react"
 
 import { Container, headingText } from "@/components/landing/section"
-import type { Portrait } from "@/components/landing/content"
+import type { Portrait } from "@/content/home/content"
 import { Stats } from "@/components/landing/stats"
 import { cn } from "@/lib/utils"
 import { ColorReveal } from "@/components/motion/color-reveal"

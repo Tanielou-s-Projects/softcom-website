@@ -14,8 +14,8 @@ import {
   news,
   principles,
   story,
-} from "@/components/about/content"
-import { values } from "@/components/landing/content"
+} from "@/content/about/content"
+import { values } from "@/content/home/content"
 
 export const aboutPage = {
   hero: {

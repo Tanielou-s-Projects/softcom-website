@@ -6,7 +6,7 @@ import {
   SentinelVisible,
 } from "@/components/products/diagrams/sentinel"
 
-/** Sentinel's figures, by the `figure.key` in pages.ts: the deck's diagrams. */
+/** Sentinel's figures, by the `figure.key` in content/products/pages.ts: the deck's diagrams. */
 export const SENTINEL_FIGURES: FigureMap = {
   connections: SentinelConnections,
   "records-to-intelligence": SentinelRecordsToIntelligence,

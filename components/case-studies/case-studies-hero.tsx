@@ -1,6 +1,6 @@
-import { stats } from "@/components/landing/content"
+import { stats } from "@/content/home/content"
 import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
-import type { CaseStudiesPage } from "@/components/case-studies/page-copy"
+import type { CaseStudiesPage } from "@/content/case-studies/page-copy"
 
 /**
  * An engagement in the field, the claim, and the impact numbers carrying the

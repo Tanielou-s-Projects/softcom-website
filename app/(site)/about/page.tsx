@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import { aboutPage } from "@/components/about/page-copy"
+import { aboutPage } from "@/content/about/page-copy"
 import { AboutHero } from "@/components/about/about-hero"
 import { JourneyTimeline } from "@/components/about/journey-timeline"
 import { News } from "@/components/about/news"

@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import type { AboutPage } from "@/components/about/page-copy"
+import type { AboutPage } from "@/content/about/page-copy"
 import { Container, headingText } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"

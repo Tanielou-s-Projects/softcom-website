@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import { formatInsightDate, type Insight } from "@/components/insights/content"
+import { formatInsightDate, type Insight } from "@/content/insights/content"
 import { ColorReveal } from "@/components/motion/color-reveal"
 
 /**

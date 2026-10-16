@@ -1,8 +1,8 @@
 import Link from "next/link"
 
 import { DitherMark } from "@/components/motion/dither-mark"
-import type { Product } from "@/components/products/content"
-import type { ProductsPage } from "@/components/products/page-copy"
+import type { Product } from "@/content/products/content"
+import type { ProductsPage } from "@/content/products/page-copy"
 import { FullHero, HeroRail } from "@/components/site/full-hero"
 
 /**

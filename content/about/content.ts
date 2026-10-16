@@ -4,7 +4,7 @@
  * the two disagree on dates or figures, the deck is the client's latest word.
  */
 
-import { TENURE_TITLE, YEARS_ACTIVE } from "@/components/landing/content"
+import { TENURE_TITLE, YEARS_ACTIVE } from "@/content/home/content"
 
 export const aboutHero = {
   eyebrow: "About Softcom",

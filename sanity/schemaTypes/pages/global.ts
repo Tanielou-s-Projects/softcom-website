@@ -1,6 +1,6 @@
 import { MenuIcon } from "@sanity/icons"
 
-import { navigation } from "@/components/site/chrome-copy"
+import { navigation } from "@/content/site/chrome-copy"
 import type { PageDefinition } from "@/sanity/lib/page-schema"
 
 /** Global page singletons (see sanity/schemaTypes/pages.ts). */

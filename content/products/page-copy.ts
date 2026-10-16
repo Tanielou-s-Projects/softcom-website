@@ -1,4 +1,4 @@
-import { partnersIntro, productsIntro } from "@/components/products/content"
+import { partnersIntro, productsIntro } from "@/content/products/content"
 
 /*
  * The copy around the products on Enterprise Products, and the fixed labels

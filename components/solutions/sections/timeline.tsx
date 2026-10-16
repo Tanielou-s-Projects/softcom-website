@@ -3,7 +3,7 @@
 import * as React from "react"
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react"
 
-import type { DeliveryPhase } from "@/components/solutions/content"
+import type { DeliveryPhase } from "@/content/solutions/content"
 
 function Phase({
   phase,

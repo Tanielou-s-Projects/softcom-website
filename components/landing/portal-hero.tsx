@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useEffect, useRef } from "react"
 import { PixelArrowDown } from "@/components/ui/pixel-arrow-down"
 import { Button } from "@/components/ui/button"
-import { withYears, type HomePage } from "@/components/landing/home-copy"
+import { withYears, type HomePage } from "@/content/home/page-copy"
 import {
   ghostPill,
   headingText,

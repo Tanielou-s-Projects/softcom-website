@@ -10,7 +10,7 @@ import {
   ReckonYears,
 } from "@/components/products/diagrams/reckon"
 
-/** reckon's figures, by the `figure.key` in pages.ts: the deck's diagrams. */
+/** reckon's figures, by the `figure.key` in content/products/pages.ts: the deck's diagrams. */
 export const RECKON_FIGURES: FigureMap = {
   "declared-owed": ReckonDeclaredOwed,
   "three-records": ReckonThreeRecords,

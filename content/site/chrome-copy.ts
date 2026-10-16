@@ -1,4 +1,4 @@
-import { footerLegal, footerNav, headerNav } from "@/components/landing/content"
+import { footerLegal, footerNav, headerNav } from "@/content/home/content"
 
 /**
  * The site's chrome as Sanity's `navigation` singleton mirrors it: the

@@ -12,8 +12,8 @@ import {
   primaryPill,
 } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
-import type { Product } from "@/components/products/content"
-import type { ProductsPage } from "@/components/products/page-copy"
+import type { Product } from "@/content/products/content"
+import type { ProductsPage } from "@/content/products/page-copy"
 import { DitherPanel } from "@/components/motion/dither-panel"
 import { SectionMark } from "@/components/products/section-mark"
 

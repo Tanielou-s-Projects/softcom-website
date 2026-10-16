@@ -5,7 +5,7 @@ import { CaseStudyList } from "@/components/case-studies/case-study-list"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { PageEnd } from "@/components/site/page-end"
-import { caseStudiesPage } from "@/components/case-studies/page-copy"
+import { caseStudiesPage } from "@/content/case-studies/page-copy"
 import { getCaseStudies } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
 

@@ -1,6 +1,6 @@
 import { bodyText, Container, headingText } from "@/components/landing/section"
-import { sectors, type Sector } from "@/components/landing/content"
-import type { HomePage } from "@/components/landing/home-copy"
+import { sectors, type Sector } from "@/content/home/content"
+import type { HomePage } from "@/content/home/page-copy"
 import { PartnerLogos } from "@/components/landing/partner-logos"
 import { SectorRow } from "@/components/landing/sector-row"
 import { Reveal } from "@/components/motion/reveal"

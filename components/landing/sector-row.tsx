@@ -6,7 +6,7 @@ import { motion, useInView } from "motion/react"
 import { Badge } from "@/components/ui/badge"
 import { DotMatrix } from "@/components/landing/dot-matrix"
 import { bodyText, cardHeadingText } from "@/components/landing/section"
-import type { Sector } from "@/components/landing/content"
+import type { Sector } from "@/content/home/content"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 

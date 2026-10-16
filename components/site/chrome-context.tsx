@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { navigation, type HeaderCopy } from "@/components/site/chrome-copy"
+import { navigation, type HeaderCopy } from "@/content/site/chrome-copy"
 
 /*
  * The header menu's copy, handed down from the root layout (which reads it

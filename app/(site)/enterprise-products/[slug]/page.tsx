@@ -9,7 +9,7 @@ import {
   ProductHero,
 } from "@/components/products/product-page"
 import { PageEnd } from "@/components/site/page-end"
-import { productsPage } from "@/components/products/page-copy"
+import { productsPage } from "@/content/products/page-copy"
 import { getProductPage, getProductSlugs } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
 

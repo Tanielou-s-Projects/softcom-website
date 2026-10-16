@@ -7,7 +7,7 @@ import {
   headingText,
   primaryPill,
 } from "@/components/landing/section"
-import type { HomePage } from "@/components/landing/home-copy"
+import type { HomePage } from "@/content/home/page-copy"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 

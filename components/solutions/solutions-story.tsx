@@ -22,8 +22,8 @@ import {
 import { PinnedStory } from "@/components/solutions/sections/pinned-story"
 import { ScrollRail } from "@/components/solutions/sections/scroll-rail"
 import { Timeline } from "@/components/solutions/sections/timeline"
-import { solutions } from "@/components/solutions/content"
-import type { SolutionsPage } from "@/components/solutions/page-copy"
+import { solutions } from "@/content/solutions/content"
+import type { SolutionsPage } from "@/content/solutions/page-copy"
 
 /*
  * The Solutions body as a landing page: each area opens on its own number

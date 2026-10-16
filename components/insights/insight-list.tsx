@@ -11,8 +11,8 @@ import {
 } from "@/components/landing/section"
 import { InsightCard } from "@/components/insights/insight-card"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
-import type { Insight } from "@/components/insights/content"
-import type { InsightsPage } from "@/components/insights/page-copy"
+import type { Insight } from "@/content/insights/content"
+import type { InsightsPage } from "@/content/insights/page-copy"
 
 /** A topic name, or `null` for every topic. */
 type Filter = string | null

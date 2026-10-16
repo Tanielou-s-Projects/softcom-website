@@ -2,7 +2,7 @@ import Image from "next/image"
 
 import { cn } from "@/lib/utils"
 import { ColorReveal } from "@/components/motion/color-reveal"
-import { getNavigation } from "@/components/site/get-navigation"
+import { getNavigation } from "@/content/site/get-navigation"
 
 /**
  * The photographic plate every page closes on: the same darkened image, the

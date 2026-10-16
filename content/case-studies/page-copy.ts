@@ -1,4 +1,4 @@
-import { sectors } from "@/components/case-studies/content"
+import { sectors } from "@/content/case-studies/content"
 
 /*
  * Every line of copy on Case Studies, as Sanity's `caseStudiesPage`

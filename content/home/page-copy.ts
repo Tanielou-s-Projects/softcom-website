@@ -16,7 +16,7 @@ import {
   sectors,
   stats,
   YEARS_ACTIVE,
-} from "@/components/landing/content"
+} from "@/content/home/content"
 
 export const homePage = {
   hero: {
