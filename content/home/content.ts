@@ -167,28 +167,6 @@ export const portraits: Portrait[] = [
 ]
 
 /**
- * "Our thinking" on the homepage. Perspectives, not dated news: the deck gives
- * each a title and a one-line summary. They link to the Insights index until
- * the articles themselves are written.
- */
-export type Perspective = { title: string; summary: string; href: string }
-
-export const perspectives: Perspective[] = [
-  {
-    title: "Start with the service, then design the system",
-    summary:
-      "Useful technology begins with a clear understanding of the work it needs to support. A perspective on connecting systems, responsibilities and the experience of the people using them.",
-    href: "/insights",
-  },
-  {
-    title: "A useful dashboard starts with a decision",
-    summary:
-      "Information becomes valuable when someone can act on it. Why the purpose of a dashboard should shape its measures, its design and its place in an organisation’s work.",
-    href: "/insights",
-  },
-]
-
-/**
  * The links revealed inside the header's expanding pill (Figma 278:52).
  *
  * The two caret items open dropdowns. Figma draws the carets but not the panels,

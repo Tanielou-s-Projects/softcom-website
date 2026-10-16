@@ -10,10 +10,14 @@ import { ButtonLink, ArrowLink } from "@/components/ui/button"
 import { PageEnd } from "@/components/site/page-end"
 import { Section } from "@/components/site/section"
 import { homePage } from "@/content/home/page-copy"
+import { getInsights } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
 
 export default async function Page() {
-  const copy = await getPageContent("homePage", homePage)
+  const [copy, insights] = await Promise.all([
+    getPageContent("homePage", homePage),
+    getInsights(),
+  ])
 
   return (
     /* The gap is the only space between sections (globals.css, --section). */
@@ -45,7 +49,7 @@ export default async function Page() {
         <Approach copy={copy.approach} />
       </Section>
       <Section>
-        <Insights copy={copy.ourThinking} />
+        <Insights copy={copy.ourThinking} insights={insights.slice(0, 2)} />
       </Section>
 
       <PageEnd>

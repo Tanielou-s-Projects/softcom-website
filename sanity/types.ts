@@ -620,14 +620,6 @@ export type HomePage = {
       label?: string
       href?: string
     }
-    readLabel?: string
-    perspectives?: Array<{
-      title?: string
-      summary?: string
-      href?: string
-      _type: "perspectivesItem"
-      _key: string
-    }>
   }
 }
 

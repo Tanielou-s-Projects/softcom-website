@@ -12,7 +12,6 @@
 import {
   capabilities,
   partners,
-  perspectives,
   sectors,
   stats,
   YEARS_ACTIVE,
@@ -104,12 +103,6 @@ export const homePage = {
     intro:
       "Perspectives on technology, organisations and the decisions that shape what comes next.",
     cta: { label: "Explore our thinking", href: "/insights" },
-    readLabel: "Read perspective",
-    perspectives: perspectives.map(({ title, summary, href }) => ({
-      title,
-      summary,
-      href,
-    })),
   },
 }
 
