@@ -79,13 +79,18 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
       // Track height scales with the slide count so scrub speed stays constant.
       className="relative flex flex-col gap-10 lg:gap-16 lg:motion-safe:h-[260vh]"
     >
-      <div className="flex flex-col gap-10 lg:gap-16 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:justify-center lg:motion-safe:overflow-hidden">
+      <div className="flex flex-col gap-10 lg:gap-16 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:justify-center lg:motion-safe:overflow-hidden short:lg:gap-8">
         <Reveal asChild>
           <Container className="flex flex-col items-center gap-8 pt-6 text-center lg:gap-10">
             <h2 className={cn("text-headline", "max-w-[533px] text-ink")}>
               {copy.heading}
             </h2>
-            <p className={cn("text-lede", "max-w-[576px] text-ink-soft")}>
+            <p
+              className={cn(
+                "text-lede",
+                "max-w-[576px] text-ink-soft short:lg:hidden"
+              )}
+            >
               {copy.intro}
             </p>
           </Container>
@@ -112,7 +117,7 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
                * minimum: the slide grows to its copy rather than clipping it,
                * whatever the screen's size or resolution.
                */
-              className="dark relative flex min-h-[min(560px,80svh)] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 lg:min-h-[min(760px,70svh)] lg:p-6"
+              className="dark relative flex min-h-[min(560px,80svh)] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 lg:min-h-[min(760px,70svh)] lg:p-6 short:lg:min-h-0"
             >
               <ColorReveal>
                 <Image
@@ -141,8 +146,15 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
                 </h3>
                 {/* Body size, not the larger lg body: two paragraphs share the slide. */}
                 <div className="flex flex-col gap-3 text-base leading-[1.6] lg:max-w-[600px]">
-                  {capability.paragraphs.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
+                  {capability.paragraphs.map((paragraph, i) => (
+                    // On a short screen only the first paragraph, so the
+                    // slide fits without clipping its button.
+                    <p
+                      key={paragraph}
+                      className={i > 0 ? "short:hidden" : undefined}
+                    >
+                      {paragraph}
+                    </p>
                   ))}
                 </div>
                 <ButtonLink

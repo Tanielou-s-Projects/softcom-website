@@ -25,6 +25,9 @@
  */
 @custom-variant light (&:is(.light *));
 
+/* Short screens (a laptop at 720–900px tall): pinned scenes trim to fit. */
+@custom-variant short (@media (max-height: 919px));
+
 @theme {
   /* Fixed in both themes. */
   --color-accent: #004bff;
