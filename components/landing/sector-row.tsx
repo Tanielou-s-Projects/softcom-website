@@ -4,7 +4,7 @@ import * as React from "react"
 import { motion, useInView } from "motion/react"
 
 import { Badge } from "@/components/ui/badge"
-import { DotMatrix } from "@/components/landing/dot-matrix"
+import { DotMatrix } from "@/components/motion/dot-matrix"
 import { bodyText, cardHeadingText } from "@/components/landing/section"
 import type { Sector } from "@/content/home/content"
 import { useMediaQuery } from "@/hooks/use-media-query"

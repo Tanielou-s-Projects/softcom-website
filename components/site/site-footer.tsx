@@ -3,7 +3,7 @@ import Link from "next/link"
 import { footerSocial } from "@/content/home/content"
 import { getNavigation } from "@/content/site/get-navigation"
 import { getProducts, getSettings } from "@/sanity/lib/data"
-import { DitherWordmark } from "@/components/site/dither-wordmark"
+import { DitherWordmark } from "@/components/motion/dither-wordmark"
 import { ThemeSwitcher } from "@/components/site/theme-switcher"
 
 /**
