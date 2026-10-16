@@ -213,7 +213,7 @@ function SiteHeader() {
     <header
       data-hidden={hidden || undefined}
       className={cn(
-        "pointer-events-none sticky top-0 z-40 flex justify-center px-6 pt-4 lg:px-7",
+        "pointer-events-none sticky top-0 z-50 flex justify-center px-6 pt-4 lg:px-7",
         "transition-[translate,opacity] duration-300 ease-out motion-reduce:transition-none",
         "data-hidden:-translate-y-[calc(100%+1rem)] data-hidden:opacity-0"
       )}
