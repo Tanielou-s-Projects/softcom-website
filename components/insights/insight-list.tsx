@@ -37,11 +37,12 @@ function TopicFilter({
   ]
 
   return (
-    <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-[29%]">
+    /* In the flow, above the list, so no card can run under it. */
+    <div>
       <div
         role="group"
         aria-label="Filter insights by topic"
-        className="flex flex-wrap items-center gap-3 lg:sticky lg:top-6 lg:justify-end lg:pt-6"
+        className="flex flex-wrap items-center gap-3"
       >
         {/*
          * `badgeVariants` on real buttons rather than `<Badge>` — Badge renders
@@ -97,18 +98,15 @@ function InsightList({
 
   return (
     <Container className="relative flex flex-col gap-16 pt-16">
-      <TopicFilter
-        filter={filter}
-        onFilterChange={setFilter}
-        copy={copy.filter}
-      />
-
-      <Reveal className="flex flex-col gap-6">
-        <p className={cn("text-lede", "max-w-[629px] leading-[1.6]")}>
-          {copy.intro.text}
-        </p>
+      {/* The intro is the page hero's; here, just the filter over a rule. */}
+      <div className="flex flex-col gap-6">
+        <TopicFilter
+          filter={filter}
+          onFilterChange={setFilter}
+          copy={copy.filter}
+        />
         <div aria-hidden className="h-px w-full bg-line" />
-      </Reveal>
+      </div>
 
       {featured && (
         <Reveal as="section" className="flex max-w-[921px] flex-col gap-12">

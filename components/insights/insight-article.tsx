@@ -6,44 +6,13 @@ import {
 } from "next-sanity"
 
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
 import { Container } from "@/components/landing/section"
 import { formatInsightDate } from "@/content/insights/content"
 import { urlFor } from "@/sanity/lib/image"
 import type { InsightArticle as Article } from "@/sanity/lib/data"
-import { Reveal } from "@/components/motion/reveal"
+import { PageHero } from "@/components/site/page-hero"
+import { ReadingProgress } from "@/components/insights/reading-progress"
 import { ColorReveal } from "@/components/motion/color-reveal"
-
-/**
- * The rail beside the body: one rule per paragraph, the first one longer and
- * brighter. Pinned, so it tracks alongside the copy.
- *
- * Reproduced from the design's geometry rather than shipped as its exported SVG,
- * for two reasons: the export hardcodes five rules where the article has however
- * many paragraphs it has, and it bakes in dark-mode strokes that would vanish on
- * a light background.
- *
- * The highlight is fixed on the first rule. Driving it from scroll position is
- * scroll-linked motion, which is deferred with the rest of the animation work.
- */
-function ParagraphRail({ count }: { count: number }) {
-  return (
-    <div
-      aria-hidden
-      className="hidden shrink-0 flex-col gap-3 lg:sticky lg:top-24 lg:flex lg:w-[71px]"
-    >
-      {Array.from({ length: count }, (_, index) => (
-        <span
-          key={index}
-          className={cn(
-            "h-0.5 rounded-full",
-            index === 0 ? "w-[68px] bg-ink-soft" : "w-[51px] bg-line"
-          )}
-        />
-      ))}
-    </div>
-  )
-}
 
 const body = cn("text-lede", "leading-[1.6]")
 
@@ -117,69 +86,63 @@ const components: PortableTextComponents = {
   },
 }
 
-/** Paragraph-level blocks: one rule each on the rail. */
-const paragraphsIn = (blocks: PortableTextBlock[]) =>
-  blocks.filter((block) => block._type === "block").length
+/** Reading time at about 220 words a minute, never under a minute. */
+const minutesFor = (blocks: PortableTextBlock[]) => {
+  const words = blocks
+    .flatMap((block) =>
+      block._type === "block" && Array.isArray(block.children)
+        ? block.children.map((child) =>
+            typeof child.text === "string" ? child.text : ""
+          )
+        : []
+    )
+    .join(" ")
+    .split(/\s+/)
+    .filter(Boolean).length
+  return Math.max(1, Math.round(words / 220))
+}
 
-/** A single insight, in full. */
-function InsightArticle({ article }: { article: Article }) {
+/** A single insight, in full: the shared page hero, its cover, then the body. */
+function InsightArticle({
+  article,
+  indexLabel,
+}: {
+  article: Article
+  /** What the index is called, for the way back. */
+  indexLabel: string
+}) {
   return (
-    <Container className="flex flex-col gap-16 pt-8">
-      {/* Header/meta only — per-paragraph reveals on long-form reading are hostile. */}
-      <Reveal asChild>
-        <header className="flex flex-col gap-16 lg:flex-row lg:items-start">
-          <div className="flex min-w-0 flex-1 flex-col gap-16">
-            <span
-              aria-hidden
-              className="size-[26px] shrink-0 rounded-full bg-accent"
+    <>
+      <PageHero
+        label={`${article.topic} · ${formatInsightDate(article.date)}`}
+        heading={article.title}
+        intro={article.dek}
+      />
+      <Container className="mt-16 flex flex-col gap-16 md:mt-24">
+        <div className="relative h-[min(280px,40svh)] w-full overflow-clip rounded-2xl bg-neutral-900 sm:h-[min(400px,50svh)] lg:h-[min(577px,65svh)]">
+          <ColorReveal>
+            <Image
+              src={article.cover}
+              alt=""
+              fill
+              sizes="100vw"
+              priority
+              className="object-cover object-left"
             />
-            <h1 className={cn("text-display", "text-ink")}>{article.title}</h1>
-          </div>
-
-          <div className="flex flex-col gap-16 lg:w-[49%] lg:shrink-0">
-            <div className="flex items-center gap-6">
-              <Badge>{article.topic}</Badge>
-              <time
-                dateTime={article.date}
-                className="font-heading text-xs leading-[1.2] text-ink-soft"
-              >
-                {formatInsightDate(article.date)}
-              </time>
-            </div>
-
-            {/*
-             * The article's own standfirst. Figma prints the site-wide Insights
-             * blurb in this slot — a copy-paste from the index — which would put
-             * identical text at the top of every article.
-             */}
-            <p className={cn("text-lede", "leading-[1.6]")}>{article.dek}</p>
-          </div>
-        </header>
-      </Reveal>
-
-      <div className="relative h-[min(280px,40svh)] w-full overflow-clip rounded-2xl bg-neutral-900 sm:h-[min(400px,50svh)] lg:h-[min(577px,65svh)]">
-        <ColorReveal>
-          <Image
-            src={article.cover}
-            alt=""
-            fill
-            sizes="100vw"
-            priority
-            className="object-cover object-left"
-          />
-        </ColorReveal>
-      </div>
-
-      <div className="flex gap-8 lg:gap-32">
-        <ParagraphRail count={paragraphsIn(article.body)} />
-
-        <div className="flex min-w-0 flex-1 flex-col gap-8">
-          <PortableText value={article.body} components={components} />
+          </ColorReveal>
         </div>
-      </div>
 
-      <div aria-hidden className="h-px w-full bg-line" />
-    </Container>
+        <ReadingProgress
+          backHref="/insights"
+          backLabel={indexLabel}
+          minutes={minutesFor(article.body)}
+        >
+          <PortableText value={article.body} components={components} />
+        </ReadingProgress>
+
+        <div aria-hidden className="h-px w-full bg-line" />
+      </Container>
+    </>
   )
 }
 
