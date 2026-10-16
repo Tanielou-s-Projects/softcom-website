@@ -17,6 +17,8 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { useHeaderCopy } from "@/components/site/chrome-context"
+import { MobileMenu } from "@/components/site/mobile-menu"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 
 /**
@@ -141,6 +143,9 @@ function SiteHeader() {
   const router = useRouter()
   const copy = useHeaderCopy()
   const [open, setOpen] = React.useState(false)
+  // Phones get the sheet: the capsule can't widen past their edge.
+  const mobile = useMediaQuery("(max-width: 767.98px)")
+  const expanded = open && !mobile
   /*
    * The dropdown is controlled so collapsing the pill can close it too —
    * otherwise a panel can be left hanging under a pill that is shrinking.
@@ -173,7 +178,7 @@ function SiteHeader() {
    * also fires pointerenter, and opening on it would fight the toggle.
    */
   const onPointerEnter = (event: React.PointerEvent) => {
-    if (event.pointerType === "touch") return
+    if (event.pointerType === "touch" || mobile) return
     window.clearTimeout(closeTimer.current)
     setOpen(true)
   }
@@ -251,7 +256,7 @@ function SiteHeader() {
             id="site-menu"
             className={cn(
               "relative flex h-10 items-center justify-between overflow-hidden px-1 transition-[width] duration-300 ease-out motion-reduce:transition-none",
-              open ? "w-[432px]" : peek ? "w-28" : "w-14"
+              expanded ? "w-[432px]" : peek ? "w-28" : "w-14"
             )}
           >
             <button
@@ -259,12 +264,12 @@ function SiteHeader() {
               aria-label="Open menu"
               aria-expanded={open}
               aria-controls="site-menu"
-              tabIndex={open ? -1 : 0}
+              tabIndex={expanded ? -1 : 0}
               onClick={() => setOpen(true)}
               className="size-6 shrink-0 rounded-full bg-signal outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50"
             />
 
-            {open ? (
+            {expanded ? (
               <NavigationMenuList className="gap-[22px]">
                 {copy.items.map((rawItem) => {
                   // Drop half-filled dropdown entries rather than render
@@ -355,7 +360,7 @@ function SiteHeader() {
               type="button"
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
-              aria-controls="site-menu"
+              aria-controls={mobile ? "mobile-menu" : "site-menu"}
               onClick={() => (open ? close() : setOpen(true))}
               className="grid size-6 shrink-0 place-items-center rounded-full bg-accent outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50"
             >
@@ -377,6 +382,7 @@ function SiteHeader() {
           </div>
         </div>
       </NavigationMenu>
+      <MobileMenu open={open && mobile} items={copy.items} onClose={close} />
     </header>
   )
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageEnd } from "@/components/site/page-end"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -19,8 +20,7 @@ export default async function Page() {
   const copy = await getPageContent("contactPage", contactPage)
 
   /*
-   * The one page that closes on itself: the design gives it neither the shared
-   * CTA panel nor the footer, because the whole page is the call to action.
+   * The page is its own call to action, so it ends on the footer alone.
    *
    * It follows the theme like every other page. On wide screens the two
    * cards stack as the page scrolls: each pins under the header and the next
@@ -62,6 +62,7 @@ export default async function Page() {
           </div>
         </div>
       </Container>
+      <PageEnd className="mt-section" />
     </div>
   )
 }
