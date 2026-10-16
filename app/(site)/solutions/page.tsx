@@ -6,6 +6,7 @@ import { SolutionsStory } from "@/components/solutions/solutions-story"
 import { SolutionsCta } from "@/components/solutions/solutions-cta"
 import { SolutionsHero } from "@/components/solutions/solutions-hero"
 import { PageEnd } from "@/components/site/page-end"
+import { Section } from "@/components/site/section"
 import { solutionsPage } from "@/content/solutions/page-copy"
 import { getPageContent } from "@/sanity/lib/page-content"
 
@@ -18,13 +19,15 @@ export default async function Page() {
   const copy = await getPageContent("solutionsPage", solutionsPage)
 
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-2.5">
+    <div className="relative flex min-h-svh w-full flex-col gap-section">
       <LineDitherDefs />
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
       <SolutionsHero copy={copy} />
-      <SolutionsStory copy={copy} />
+      <Section>
+        <SolutionsStory copy={copy} />
+      </Section>
 
       <PageEnd>
         <SolutionsCta copy={copy.close} />

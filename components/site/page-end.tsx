@@ -15,9 +15,7 @@ function PageEnd({
   children?: React.ReactNode
 }) {
   return (
-    <Bleed
-      className={cn("mt-40 flex flex-col gap-2.5 py-6 lg:mt-64", className)}
-    >
+    <Bleed className={cn("flex flex-col gap-2.5 py-6", className)}>
       {children}
       <SiteFooter />
     </Bleed>

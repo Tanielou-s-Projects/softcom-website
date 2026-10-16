@@ -63,7 +63,7 @@ function Team({
   heading?: string
 }) {
   return (
-    <section id="team" className="flex scroll-mt-24 flex-col gap-16">
+    <div id="team" className="flex scroll-mt-24 flex-col gap-16">
       <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">
         <h2 className={cn("text-headline", "text-ink")}>{heading}</h2>
 
@@ -76,7 +76,7 @@ function Team({
 
       {/* Impact numbers — separated from the portraits. */}
       <Stats />
-    </section>
+    </div>
   )
 }
 

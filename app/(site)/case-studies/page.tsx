@@ -5,6 +5,7 @@ import { CaseStudyList } from "@/components/case-studies/case-study-list"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { PageEnd } from "@/components/site/page-end"
+import { Section } from "@/components/site/section"
 import { caseStudiesPage } from "@/content/case-studies/page-copy"
 import { getCaseStudies } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -21,12 +22,14 @@ export default async function Page() {
   ])
 
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-2.5">
+    <div className="relative flex min-h-svh w-full flex-col gap-section">
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
       <CaseStudiesHero copy={copy.hero} />
-      <CaseStudyList caseStudies={caseStudies} copy={copy} />
+      <Section>
+        <CaseStudyList caseStudies={caseStudies} copy={copy} />
+      </Section>
 
       <PageEnd>
         <ClosingCta variant="build" />

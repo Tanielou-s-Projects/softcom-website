@@ -6,6 +6,7 @@ import { insightsPage } from "@/content/insights/page-copy"
 import { InsightList } from "@/components/insights/insight-list"
 import { InsightsHero } from "@/components/insights/insights-hero"
 import { PageEnd } from "@/components/site/page-end"
+import { Section } from "@/components/site/section"
 import { getInsights } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
 
@@ -21,12 +22,14 @@ export default async function Page() {
   ])
 
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-2.5">
+    <div className="relative flex min-h-svh w-full flex-col gap-section">
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
       <InsightsHero copy={copy.hero} />
-      <InsightList insights={insights} copy={copy} />
+      <Section>
+        <InsightList insights={insights} copy={copy} />
+      </Section>
 
       <PageEnd>
         <ClosingCta variant="build" />

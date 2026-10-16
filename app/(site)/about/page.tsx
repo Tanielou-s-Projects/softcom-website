@@ -12,6 +12,7 @@ import { Container, ghostPill, primaryPill } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { Team } from "@/components/landing/team"
 import { PageEnd } from "@/components/site/page-end"
+import { Section } from "@/components/site/section"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { getLeaders } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -22,9 +23,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /**
- * About. Sections sit 240px apart (the `gap-60` wrapper); the header stays tight
- * to the hero because it lives outside that wrapper, and the team's impact
- * numbers stay close to the portraits via the Team component's own internal gap.
+ * About. Sections sit one `gap-section` apart; the header floats over the hero
+ * because it lives outside that column.
  */
 export default async function Page() {
   const [leaders, copy] = await Promise.all([
@@ -37,90 +37,105 @@ export default async function Page() {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <div className="flex flex-col gap-60">
+      <div className="flex flex-col gap-section">
         {/* Hero — the shared frame, over the circular team-photo band. */}
         <AboutHero copy={copy.hero} />
 
-        {/* Our Story */}
-        <Container className="flex flex-col gap-6">
-          <Reveal className="flex flex-col gap-6">
-            <h2 className={cn("text-headline", "max-w-[24ch] text-ink")}>
-              {copy.story.heading}
-            </h2>
-            <div className="flex max-w-[75ch] flex-col gap-4">
-              {copy.story.paragraphs.map((paragraph) => (
-                <p key={paragraph} className={cn("text-body", "text-ink-soft")}>
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </Reveal>
-        </Container>
-
-        {/* Our Journey — the V7-style ruler timeline (renders its own header). */}
-        <Container>
-          <JourneyTimeline reveal="side" copy={copy.journey} />
-        </Container>
-
-        {/* What guides our work — the same four values as the homepage. */}
-        <Container className="flex flex-col gap-8">
-          <Reveal asChild>
-            <h2 className={cn("text-headline", "text-ink")}>
-              {copy.values.heading}
-            </h2>
-          </Reveal>
-          <RevealStagger as="ol" className="flex flex-col gap-6">
-            {copy.values.items.map((value, index) => (
-              <RevealItem
-                as="li"
-                key={value.title}
-                className="grid gap-2 border-t border-line pt-6 sm:grid-cols-[4rem_1fr] sm:gap-8"
-              >
-                <p className="font-mono text-sm text-ink-soft">
-                  {String(index + 1).padStart(2, "0")}
-                </p>
-                <div className="flex max-w-[70ch] flex-col gap-2">
-                  <h3 className="font-heading text-xl text-ink">
-                    {value.title}
-                  </h3>
-                  <p className={cn("text-body", "text-ink-soft")}>
-                    {value.description}
+        <Section>
+          {/* Our Story */}
+          <Container className="flex flex-col gap-6">
+            <Reveal className="flex flex-col gap-6">
+              <h2 className={cn("text-headline", "max-w-[24ch] text-ink")}>
+                {copy.story.heading}
+              </h2>
+              <div className="flex max-w-[75ch] flex-col gap-4">
+                {copy.story.paragraphs.map((paragraph) => (
+                  <p
+                    key={paragraph}
+                    className={cn("text-body", "text-ink-soft")}
+                  >
+                    {paragraph}
                   </p>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealStagger>
-        </Container>
+                ))}
+              </div>
+            </Reveal>
+          </Container>
+        </Section>
 
-        {/* The people and the impact numbers. */}
-        <Team portraits={leaders} heading={copy.leadership.heading} />
+        <Section>
+          {/* Our Journey — the V7-style ruler timeline (renders its own header). */}
+          <Container>
+            <JourneyTimeline reveal="side" copy={copy.journey} />
+          </Container>
+        </Section>
 
-        {/* Build with us — careers. */}
-        <Container>
-          <Reveal className="flex flex-col items-start gap-6 lg:max-w-[684px]">
-            <h2 className={cn("text-headline", "text-ink")}>
-              {copy.careers.heading}
-            </h2>
-            <p className={cn("text-body", "text-ink-soft")}>
-              {copy.careers.body}
-            </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <Button asChild size="lg" className={primaryPill}>
-                <Link href={copy.careers.primaryHref}>
-                  {copy.careers.primaryLabel}
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="ghost" className={ghostPill}>
-                <Link href={copy.careers.secondaryHref}>
-                  {copy.careers.secondaryLabel}
-                </Link>
-              </Button>
-            </div>
-          </Reveal>
-        </Container>
+        <Section>
+          {/* What guides our work — the same four values as the homepage. */}
+          <Container className="flex flex-col gap-8">
+            <Reveal asChild>
+              <h2 className={cn("text-headline", "text-ink")}>
+                {copy.values.heading}
+              </h2>
+            </Reveal>
+            <RevealStagger as="ol" className="flex flex-col gap-6">
+              {copy.values.items.map((value, index) => (
+                <RevealItem
+                  as="li"
+                  key={value.title}
+                  className="grid gap-2 border-t border-line pt-6 sm:grid-cols-[4rem_1fr] sm:gap-8"
+                >
+                  <p className="font-mono text-sm text-ink-soft">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <div className="flex max-w-[70ch] flex-col gap-2">
+                    <h3 className="font-heading text-xl text-ink">
+                      {value.title}
+                    </h3>
+                    <p className={cn("text-body", "text-ink-soft")}>
+                      {value.description}
+                    </p>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealStagger>
+          </Container>
+        </Section>
 
-        {/* Latest news — V7-style list. */}
-        <News copy={copy.news} />
+        <Section>
+          {/* The people and the impact numbers. */}
+          <Team portraits={leaders} heading={copy.leadership.heading} />
+        </Section>
+
+        <Section>
+          {/* Build with us — careers. */}
+          <Container>
+            <Reveal className="flex flex-col items-start gap-6 lg:max-w-[684px]">
+              <h2 className={cn("text-headline", "text-ink")}>
+                {copy.careers.heading}
+              </h2>
+              <p className={cn("text-body", "text-ink-soft")}>
+                {copy.careers.body}
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <Button asChild size="lg" className={primaryPill}>
+                  <Link href={copy.careers.primaryHref}>
+                    {copy.careers.primaryLabel}
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="ghost" className={ghostPill}>
+                  <Link href={copy.careers.secondaryHref}>
+                    {copy.careers.secondaryLabel}
+                  </Link>
+                </Button>
+              </div>
+            </Reveal>
+          </Container>
+        </Section>
+
+        <Section>
+          {/* Latest news — V7-style list. */}
+          <News copy={copy.news} />
+        </Section>
 
         <PageEnd>
           <ClosingCta />

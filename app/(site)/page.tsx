@@ -11,6 +11,7 @@ import { ghostPill, primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { Button } from "@/components/ui/button"
 import { PageEnd } from "@/components/site/page-end"
+import { Section } from "@/components/site/section"
 import { homePage } from "@/content/home/page-copy"
 import { getPageContent } from "@/sanity/lib/page-content"
 
@@ -18,37 +19,43 @@ export default async function Page() {
   const copy = await getPageContent("homePage", homePage)
 
   return (
-    /*
-     * One spacing rhythm: the gap is the only space between sections — the
-     * sections carry no vertical padding of their own — so every visible gap
-     * is the same 144px / 256px.
-     */
-    <div className="relative flex min-h-svh w-full flex-col gap-36 lg:gap-64">
+    /* The gap is the only space between sections (globals.css, --section). */
+    <div className="relative flex min-h-svh w-full flex-col gap-section">
       <Hero copy={copy.hero} />
-      <Capabilities copy={copy.focusAreas} />
-      <Sectors copy={copy.whoWeWorkWith} partners={copy.partners} />
+      <Section>
+        <Capabilities copy={copy.focusAreas} />
+      </Section>
+      <Section>
+        <Sectors copy={copy.whoWeWorkWith} partners={copy.partners} />
+      </Section>
       {/*
        * No heading: the 19-year tile already says it. The sectors' call to
        * action moved here, so it lands after the proof rather than the pitch.
        */}
-      <Stats items={copy.numbers.items}>
-        <Reveal className="flex flex-wrap items-center gap-2">
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href={copy.numbers.primaryCta.href}>
-              {copy.numbers.primaryCta.label}
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="ghost" className={ghostPill}>
-            <Link href={copy.numbers.secondaryCta.href}>
-              {copy.numbers.secondaryCta.label}
-            </Link>
-          </Button>
-        </Reveal>
-      </Stats>
-      <Approach copy={copy.approach} />
-      <Insights copy={copy.ourThinking} />
+      <Section>
+        <Stats items={copy.numbers.items}>
+          <Reveal className="flex flex-wrap items-center gap-2">
+            <Button asChild size="lg" className={primaryPill}>
+              <Link href={copy.numbers.primaryCta.href}>
+                {copy.numbers.primaryCta.label}
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="ghost" className={ghostPill}>
+              <Link href={copy.numbers.secondaryCta.href}>
+                {copy.numbers.secondaryCta.label}
+              </Link>
+            </Button>
+          </Reveal>
+        </Stats>
+      </Section>
+      <Section>
+        <Approach copy={copy.approach} />
+      </Section>
+      <Section>
+        <Insights copy={copy.ourThinking} />
+      </Section>
 
-      <PageEnd className="mt-16 lg:mt-24">
+      <PageEnd>
         <ClosingCta />
       </PageEnd>
     </div>

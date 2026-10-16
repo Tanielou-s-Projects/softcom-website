@@ -29,10 +29,12 @@ export default async function Page({ params }: Props) {
   if (!article) notFound()
 
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-2.5">
-      <SiteHeader />
-
-      <InsightArticle article={article} />
+    <div className="relative flex min-h-svh w-full flex-col gap-section">
+      {/* The header sits in the flow here, so it stays with the article. */}
+      <div className="flex flex-col gap-2.5">
+        <SiteHeader />
+        <InsightArticle article={article} />
+      </div>
 
       <PageEnd>
         <ClosingCta variant="build" />

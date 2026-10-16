@@ -9,6 +9,7 @@ import {
   ProductHero,
 } from "@/components/products/product-page"
 import { PageEnd } from "@/components/site/page-end"
+import { Section } from "@/components/site/section"
 import { productsPage } from "@/content/products/page-copy"
 import { getProductPage, getProductSlugs } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -37,7 +38,7 @@ export default async function Page({ params }: Props) {
   const { name, seed, page } = result
 
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-2.5">
+    <div className="relative flex min-h-svh w-full flex-col gap-section">
       <LineDitherDefs />
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
@@ -48,7 +49,9 @@ export default async function Page({ params }: Props) {
         seed={seed}
         explore={copy.labels.explore}
       />
-      <ProductBody page={page} audienceLabel={copy.labels.audience} />
+      <Section>
+        <ProductBody page={page} audienceLabel={copy.labels.audience} />
+      </Section>
 
       <PageEnd>
         <ProductCta page={page} />

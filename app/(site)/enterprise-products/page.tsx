@@ -6,6 +6,7 @@ import { productsPage } from "@/content/products/page-copy"
 import { ProductGrid } from "@/components/products/product-grid"
 import { ProductsHero } from "@/components/products/products-hero"
 import { PageEnd } from "@/components/site/page-end"
+import { Section } from "@/components/site/section"
 import { getProducts } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
 
@@ -23,16 +24,18 @@ export default async function Page() {
   const partners = all.filter((product) => product.kind === "partner")
 
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-32">
+    <div className="relative flex min-h-svh w-full flex-col gap-section">
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
       <ProductsHero products={all} copy={copy.hero} />
-      <ProductGrid
-        products={products}
-        partnerPlatforms={partners}
-        copy={copy}
-      />
+      <Section>
+        <ProductGrid
+          products={products}
+          partnerPlatforms={partners}
+          copy={copy}
+        />
+      </Section>
 
       <PageEnd>
         <ClosingCta variant="products" />

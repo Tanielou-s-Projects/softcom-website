@@ -52,6 +52,9 @@
 
 /* `inline`: these resolve where they are used, after next/font and :root set them. */
 @theme inline {
+  --spacing-section: var(--section);
+  --spacing-section-tight: var(--section-tight);
+
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
 
@@ -82,12 +85,24 @@
 }
 
 :root {
+  /* Section rhythm, as in the rebuild: `gap-section` between sections,
+     `gap-section-tight` between a section and a close follow-on. */
+  --section: 8rem;
+  --section-tight: 4rem;
+
   --radius: 0.625rem;
 
   /* Component knobs: button, badge and input keep the radius they shipped with. */
   --button-radius: calc(var(--radius) * 2.6);
   --badge-radius: 9999px;
   --input-radius: calc(var(--radius) * 2.6);
+}
+
+@media (width >= 48rem) {
+  :root {
+    --section: 12rem;
+    --section-tight: 6rem;
+  }
 }
 
 /*
@@ -97,6 +112,26 @@
  * each reads through Tailwind's --tw-* variable. Registered with
  * tailwind-merge in lib/utils.ts so cn() treats the steps as font sizes.
  */
+/* The page shell: 1440px wide at most, 16px edges on phones, 40px from md. */
+@utility shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 90rem;
+  padding-inline: 1rem;
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Mono uppercase label, the system's small voice. */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 @utility text-display {
   font-family: var(--font-heading);
   font-weight: var(--tw-font-weight, 300);
