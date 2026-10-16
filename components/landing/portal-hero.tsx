@@ -8,6 +8,7 @@ import { withYears, type HomePage } from "@/content/home/page-copy"
 import { cn } from "@/lib/utils"
 import { createDitherField } from "@/components/motion/dither-field"
 import { DitherMark } from "@/components/motion/dither-mark"
+import { lockScroll } from "@/lib/smooth-scroll"
 import { HeroHeader } from "./hero-header"
 
 /*
@@ -229,7 +230,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
     if (root.dataset.intro === "pending") {
       sessionStorage.setItem(INTRO_KEY, "1")
       intro = 1
-      root.style.overflow = "hidden"
+      lockScroll(true)
       const start = performance.now()
       const tick = (now: number) => {
         const t = Math.min(1, (now - start) / INTRO_MS)
@@ -238,7 +239,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
         // The solid cover hands over to the field on its first frame.
         delete root.dataset.intro
         if (t < 1) introFrame = requestAnimationFrame(tick)
-        else root.style.overflow = ""
+        else lockScroll(false)
       }
       introFrame = requestAnimationFrame(tick)
     }
@@ -249,7 +250,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
     return () => {
       cancelAnimationFrame(frame)
       cancelAnimationFrame(introFrame)
-      root.style.overflow = ""
+      lockScroll(false)
       window.removeEventListener("scroll", schedule)
       window.removeEventListener("resize", schedule)
       media.removeEventListener("change", schedule)

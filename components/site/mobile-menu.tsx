@@ -6,6 +6,7 @@ import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
 
 import { ButtonLink } from "@/components/ui/button"
+import { lockScroll } from "@/lib/smooth-scroll"
 import type { HeaderCopy } from "@/content/site/chrome-copy"
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -36,15 +37,13 @@ function MobileMenu({
 
   React.useEffect(() => {
     if (!open) return
-    const root = document.documentElement
-    const previous = root.style.overflow
-    root.style.overflow = "hidden"
+    lockScroll(true)
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose()
     }
     window.addEventListener("keydown", onKeyDown)
     return () => {
-      root.style.overflow = previous
+      lockScroll(false)
       window.removeEventListener("keydown", onKeyDown)
     }
   }, [open, onClose])
@@ -58,6 +57,8 @@ function MobileMenu({
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
+          // Its own scroll, outside the smooth scroller.
+          data-lenis-prevent=""
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

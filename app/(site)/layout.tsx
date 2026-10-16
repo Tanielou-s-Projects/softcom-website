@@ -1,5 +1,5 @@
-import { PageBackground } from "@/components/motion/page-background"
 import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
+import { SmoothScroll } from "@/components/motion/smooth-scroll"
 import { AnimatedFavicon } from "@/components/site/animated-favicon"
 import { ChromeProvider } from "@/components/site/chrome-context"
 import { getNavigation } from "@/content/site/get-navigation"
@@ -16,8 +16,8 @@ export default async function SiteLayout({
   return (
     <>
       <ChromeProvider header={header}>{children}</ChromeProvider>
-      <PageBackground />
       <PixelPageTransition />
+      <SmoothScroll />
       <AnimatedFavicon />
     </>
   )
