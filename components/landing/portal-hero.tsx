@@ -2,13 +2,13 @@
 
 import Image from "next/image"
 import { useEffect, useRef } from "react"
-import { PixelArrowDown } from "@/components/ui/pixel-arrow-down"
+import { Arrow } from "@/components/ui/arrow"
 import { ButtonLink, ArrowLink } from "@/components/ui/button"
 import { withYears, type HomePage } from "@/content/home/page-copy"
 import { cn } from "@/lib/utils"
 import { createDitherField } from "@/components/motion/dither-field"
 import { DitherMark } from "@/components/motion/dither-mark"
-import { lockScroll } from "@/lib/smooth-scroll"
+import { lockScroll, smoothScroll } from "@/lib/smooth-scroll"
 import { HeroHeader } from "./hero-header"
 
 /*
@@ -257,6 +257,30 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
       dither?.dispose()
     }
   }, [])
+  const scrollOn = () => {
+    const element = track.current
+    if (!element) return
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const top = window.scrollY + element.getBoundingClientRect().top
+    const range = element.offsetHeight - window.innerHeight
+    const progress = (window.scrollY - top) / range
+    /*
+     * Section by section: each press goes to the next resting
+     * point of the pinned scene, and past the last one to the
+     * section below. It used to stop after the first.
+     */
+    const next = SCROLL_STOPS.find((stop) => stop > progress + 0.01)
+    const target =
+      next === undefined || reduce
+        ? top + element.offsetHeight
+        : top + range * next
+    // Through the smooth scroller when it is on, so the glide matches.
+    if (smoothScroll.lenis)
+      smoothScroll.lenis.scrollTo(target, { duration: 1.6 })
+    else
+      window.scrollTo({ top: target, behavior: reduce ? "instant" : "smooth" })
+  }
+
   return (
     <div className="bg-paper text-ink">
       <script dangerouslySetInnerHTML={{ __html: PENDING_SCRIPT }} />
@@ -275,7 +299,10 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
             <div aria-hidden className="absolute inset-x-0 top-0 bottom-0">
               <DitherMark layout="conduit" />
             </div>
-            <div data-hero-copy="" className="relative shell pb-24 md:pb-28">
+            <div
+              data-hero-copy=""
+              className="relative shell flex items-end justify-between gap-8 pb-24 md:pb-28"
+            >
               <h1 id="story-title" className="text-display">
                 {/* One sentence per line, as the brand line is written. */}
                 <span className="block">
@@ -285,45 +312,19 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
                   {copy.progressFirstLine} {copy.progressSecondLine}
                 </span>
               </h1>
+              {/* The scroll cue: one small arrow beside the headline. */}
+              <button
+                type="button"
+                aria-label={copy.scrollLabel}
+                onClick={scrollOn}
+                className="mb-3 shrink-0 cursor-pointer rounded-full p-2 text-ink-soft transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink motion-reduce:hidden"
+              >
+                <span className="softcom-nudge">
+                  <Arrow className="size-5 rotate-90" />
+                </span>
+              </button>
             </div>
           </section>
-          <button
-            className="group absolute bottom-22 left-1/2 z-8 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-accent-ink transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
-            aria-label="Scroll to the next section"
-            onClick={() => {
-              const element = track.current
-              if (!element) return
-              const reduce = window.matchMedia(
-                "(prefers-reduced-motion: reduce)"
-              ).matches
-              const top = window.scrollY + element.getBoundingClientRect().top
-              const range = element.offsetHeight - window.innerHeight
-              const progress = (window.scrollY - top) / range
-              /*
-               * Section by section: each press goes to the next resting
-               * point of the pinned scene, and past the last one to the
-               * section below. It used to stop after the first.
-               */
-              const next = SCROLL_STOPS.find((stop) => stop > progress + 0.01)
-              window.scrollTo({
-                top:
-                  next === undefined || reduce
-                    ? top + element.offsetHeight
-                    : top + range * next,
-                behavior: reduce ? "instant" : "smooth",
-              })
-            }}
-          >
-            <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
-              {copy.scrollLabel}
-            </span>
-            <span className="softcom-nudge group-hover:[animation-play-state:paused]">
-              <PixelArrowDown
-                cascade
-                className="softcom-pixel-cascade size-12"
-              />
-            </span>
-          </button>
           <>
             {/*
              * Mission, inside the scene: under the canvas, hidden until the
