@@ -3,13 +3,12 @@ import { notFound } from "next/navigation"
 
 import { LineDitherDefs } from "@/components/iso/line-dither"
 import { HeroHeader } from "@/components/landing/hero-header"
-import { Bleed } from "@/components/landing/section"
 import {
   ProductBody,
   ProductCta,
   ProductHero,
 } from "@/components/products/product-page"
-import { SiteFooter } from "@/components/site/site-footer"
+import { PageEnd } from "@/components/site/page-end"
 import { productsPage } from "@/components/products/page-copy"
 import { getProductPage, getProductSlugs } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -51,14 +50,9 @@ export default async function Page({ params }: Props) {
       />
       <ProductBody page={page} audienceLabel={copy.labels.audience} />
 
-      {/*
-       * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
-       * against it — the footer then scrolls up over the pinned panel.
-       */}
-      <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
+      <PageEnd>
         <ProductCta page={page} />
-        <SiteFooter />
-      </Bleed>
+      </PageEnd>
     </div>
   )
 }

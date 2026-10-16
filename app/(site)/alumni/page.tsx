@@ -6,13 +6,8 @@ import { alumniPage } from "@/components/about/page-copy"
 import { AlumniForm } from "@/components/about/alumni-form"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
-import {
-  Bleed,
-  Container,
-  leadText,
-  primaryPill,
-} from "@/components/landing/section"
-import { SiteFooter } from "@/components/site/site-footer"
+import { Container, leadText, primaryPill } from "@/components/landing/section"
+import { PageEnd } from "@/components/site/page-end"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -70,10 +65,9 @@ export default async function Page() {
         <AlumniForm copy={copy.form} />
       </Container>
 
-      <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
+      <PageEnd>
         <ClosingCta />
-        <SiteFooter />
-      </Bleed>
+      </PageEnd>
     </div>
   )
 }

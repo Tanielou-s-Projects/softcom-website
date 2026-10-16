@@ -3,8 +3,7 @@ import { notFound } from "next/navigation"
 
 import { InsightArticle } from "@/components/insights/insight-article"
 import { ClosingCta } from "@/components/landing/closing-cta"
-import { Bleed } from "@/components/landing/section"
-import { SiteFooter } from "@/components/site/site-footer"
+import { PageEnd } from "@/components/site/page-end"
 import { SiteHeader } from "@/components/site/site-header"
 import { getInsight, getInsightSlugs } from "@/sanity/lib/data"
 
@@ -35,14 +34,9 @@ export default async function Page({ params }: Props) {
 
       <InsightArticle article={article} />
 
-      {/*
-       * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
-       * against it — the footer then scrolls up over the pinned panel.
-       */}
-      <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
+      <PageEnd>
         <ClosingCta variant="build" />
-        <SiteFooter />
-      </Bleed>
+      </PageEnd>
     </div>
   )
 }

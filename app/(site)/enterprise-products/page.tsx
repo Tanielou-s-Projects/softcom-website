@@ -2,11 +2,10 @@ import type { Metadata } from "next"
 
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
-import { Bleed } from "@/components/landing/section"
 import { productsPage } from "@/components/products/page-copy"
 import { ProductGrid } from "@/components/products/product-grid"
 import { ProductsHero } from "@/components/products/products-hero"
-import { SiteFooter } from "@/components/site/site-footer"
+import { PageEnd } from "@/components/site/page-end"
 import { getProducts } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
 
@@ -35,14 +34,9 @@ export default async function Page() {
         copy={copy}
       />
 
-      {/*
-       * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
-       * against it — the footer then scrolls up over the pinned panel.
-       */}
-      <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
+      <PageEnd>
         <ClosingCta variant="products" />
-        <SiteFooter />
-      </Bleed>
+      </PageEnd>
     </div>
   )
 }

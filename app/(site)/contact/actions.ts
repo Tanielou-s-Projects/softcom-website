@@ -89,12 +89,10 @@ async function email(message: {
   const key = process.env.RESEND_API_KEY
   if (!key) return false
 
-  const settings = await client
-    .withConfig({ useCdn: false })
-    .fetch<{
-      email?: string
-      notifyEmail?: string
-    } | null>(`*[_id == "siteSettings"][0]{ email, notifyEmail }`)
+  const settings = await client.withConfig({ useCdn: false }).fetch<{
+    email?: string
+    notifyEmail?: string
+  } | null>(`*[_id == "siteSettings"][0]{ email, notifyEmail }`)
   const to = settings?.notifyEmail || settings?.email
   if (!to) return false
 

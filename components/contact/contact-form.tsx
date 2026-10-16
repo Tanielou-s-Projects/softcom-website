@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { panelHeadingText, primaryPill } from "@/components/landing/section"
 import type { ContactPage } from "@/components/contact/content"
-import { sendContact, type ContactState } from "@/app/contact/actions"
+import { sendContact, type ContactState } from "@/app/(site)/contact/actions"
 
 /** The design's 48px pill fields, on the project's own field styling. */
 const field = "h-12 rounded-full px-4"

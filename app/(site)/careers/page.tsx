@@ -6,7 +6,6 @@ import { careersPage } from "@/components/about/page-copy"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
-  Bleed,
   bodyText,
   Container,
   headingText,
@@ -16,7 +15,7 @@ import {
 import { Reveal } from "@/components/motion/reveal"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
-import { SiteFooter } from "@/components/site/site-footer"
+import { PageEnd } from "@/components/site/page-end"
 import { getRoles } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
 
@@ -129,10 +128,9 @@ export default async function Page() {
         </Reveal>
       </Container>
 
-      <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
+      <PageEnd>
         <ClosingCta />
-        <SiteFooter />
-      </Bleed>
+      </PageEnd>
     </div>
   )
 }

@@ -9,7 +9,6 @@ import { News } from "@/components/about/news"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import {
-  Bleed,
   bodyText,
   Container,
   ghostPill,
@@ -18,7 +17,7 @@ import {
 } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { Team } from "@/components/landing/team"
-import { SiteFooter } from "@/components/site/site-footer"
+import { PageEnd } from "@/components/site/page-end"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { getLeaders } from "@/sanity/lib/data"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -132,10 +131,9 @@ export default async function Page() {
         {/* Latest news — V7-style list. */}
         <News copy={copy.news} />
 
-        <Bleed className="mt-40 flex flex-col gap-2.5 py-6 lg:mt-64">
+        <PageEnd>
           <ClosingCta />
-          <SiteFooter />
-        </Bleed>
+        </PageEnd>
       </div>
     </div>
   )

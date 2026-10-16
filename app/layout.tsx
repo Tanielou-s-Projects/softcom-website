@@ -3,10 +3,6 @@ import { Geist_Mono, Montserrat, Space_Grotesk } from "next/font/google"
 import { MotionConfig } from "motion/react"
 
 import "./globals.css"
-import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
-import { AnimatedFavicon } from "@/components/site/animated-favicon"
-import { ChromeProvider } from "@/components/site/chrome-context"
-import { getNavigation } from "@/components/site/get-navigation"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 
@@ -34,13 +30,11 @@ export const metadata: Metadata = {
     "Softcom builds the systems that help organisations operate, grow, and better serve the people who depend on them.",
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // The header menu, from Sanity, for every page's SiteHeader.
-  const { header } = await getNavigation()
   return (
     <html
       lang="en"
@@ -61,12 +55,8 @@ export default async function RootLayout({
            * motion component in one place — transforms are stripped, opacity
            * still animates — without SSR/client branches that break hydration.
            */}
-          <MotionConfig reducedMotion="user">
-            <ChromeProvider header={header}>{children}</ChromeProvider>
-            <PixelPageTransition />
-          </MotionConfig>
+          <MotionConfig reducedMotion="user">{children}</MotionConfig>
         </ThemeProvider>
-        <AnimatedFavicon />
       </body>
     </html>
   )

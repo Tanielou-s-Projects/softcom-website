@@ -7,10 +7,10 @@ import { Hero } from "@/components/landing/hero"
 import { Insights } from "@/components/landing/insights"
 import { Sectors } from "@/components/landing/sectors"
 import { Stats } from "@/components/landing/stats"
-import { Bleed, ghostPill, primaryPill } from "@/components/landing/section"
+import { ghostPill, primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { Button } from "@/components/ui/button"
-import { SiteFooter } from "@/components/site/site-footer"
+import { PageEnd } from "@/components/site/page-end"
 import { homePage } from "@/components/landing/home-copy"
 import { getPageContent } from "@/sanity/lib/page-content"
 
@@ -48,14 +48,9 @@ export default async function Page() {
       <Approach copy={copy.approach} />
       <Insights copy={copy.ourThinking} />
 
-      {/*
-       * The CTA and footer share this wrapper so the CTA's `sticky` pin resolves
-       * against it — the footer then scrolls up over the pinned panel.
-       */}
-      <Bleed className="mt-16 flex flex-col gap-2.5 py-6 lg:mt-24">
+      <PageEnd className="mt-16 lg:mt-24">
         <ClosingCta />
-        <SiteFooter />
-      </Bleed>
+      </PageEnd>
     </div>
   )
 }
