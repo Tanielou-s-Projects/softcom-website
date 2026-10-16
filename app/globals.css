@@ -302,12 +302,6 @@
   }
   html {
     @apply font-sans;
-    /*
-     * The page's own background, resolved here on <html> and inherited as a
-     * colour: inside a locally `dark` region (the heroes) `--color-paper` is
-     * redefined, but this still names what the page around it is painted.
-     */
-    --page-bg: var(--color-paper);
   }
 }
 

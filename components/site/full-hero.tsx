@@ -45,49 +45,41 @@ function FullHero({
   className?: string
 }) {
   return (
-    // The fade sits below the hero, not inside it, so the copy keeps its
-    // place at the foot of the screen.
-    <div className="flex flex-col">
-      <section
+    /*
+     * The hero ends on a clean edge. It used to ease into the page through a
+     * black-to-background band, which the client found muddy (13 Oct 2026)
+     * and which turned grey on the light theme.
+     */
+    <section
+      className={cn(
+        "dark relative isolate flex h-svh min-h-[640px] flex-col overflow-hidden bg-black text-ink",
+        align === "top" ? "justify-between" : "justify-end",
+        className
+      )}
+    >
+      <div className="absolute inset-0 -z-10">{background}</div>
+      {/* `data-hero-copy`: the dither marks measure it to stay clear of it. */}
+      <Container
+        data-hero-copy=""
         className={cn(
-          "dark relative isolate flex h-svh min-h-[640px] flex-col overflow-hidden bg-black text-ink",
-          align === "top" ? "justify-between" : "justify-end",
-          className
+          "flex flex-col gap-10 lg:gap-14",
+          align === "top" ? "pt-32 lg:pt-36" : "pb-10 lg:pb-16"
         )}
       >
-        <div className="absolute inset-0 -z-10">{background}</div>
-        {/* `data-hero-copy`: the dither marks measure it to stay clear of it. */}
-        <Container
-          data-hero-copy=""
-          className={cn(
-            "flex flex-col gap-10 lg:gap-14",
-            align === "top" ? "pt-32 lg:pt-36" : "pb-10 lg:pb-16"
-          )}
-        >
-          <Reveal className="flex flex-col items-start gap-6">
-            <Badge variant="brand">{badge}</Badge>
-            <h1 className={cn("text-display", "max-w-[20ch] text-ink")}>
-              {title}
-            </h1>
-            {lead ? (
-              <p className={cn("text-lede", "max-w-[60ch] text-ink/80")}>
-                {lead}
-              </p>
-            ) : null}
-          </Reveal>
-          {rail ? <Reveal delay={0.1}>{rail}</Reveal> : null}
-        </Container>
-      </section>
-      {/*
-       * The blend into the page: black at the hero's foot easing to the
-       * page's own background, so the next section doesn't start on a hard
-       * edge. `--page-bg` resolves outside this `dark` scope (globals.css).
-       */}
-      <div
-        aria-hidden
-        className="h-24 shrink-0 bg-linear-to-b from-black to-(--page-bg) lg:h-40"
-      />
-    </div>
+        <Reveal className="flex flex-col items-start gap-6">
+          <Badge variant="brand">{badge}</Badge>
+          <h1 className={cn("text-display", "max-w-[20ch] text-ink")}>
+            {title}
+          </h1>
+          {lead ? (
+            <p className={cn("text-lede", "max-w-[60ch] text-ink/80")}>
+              {lead}
+            </p>
+          ) : null}
+        </Reveal>
+        {rail ? <Reveal delay={0.1}>{rail}</Reveal> : null}
+      </Container>
+    </section>
   )
 }
 
