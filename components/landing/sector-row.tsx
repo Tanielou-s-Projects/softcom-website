@@ -12,7 +12,8 @@ const EASE = [0.16, 1, 0.3, 1] as const
 /**
  * The sector cards as one row: the rebuild's card (title and dot-matrix mark
  * up top, description and tags settled at the bottom) on main's plates —
- * edge to edge, alternating a step lighter so they read as overlapping.
+ * edge to edge, alternating a step lighter so they read as overlapping. Tags
+ * are squared off: the client asked for rectangular tags over pills.
  *
  * Each plate wipes up into view in turn. On wide screens the row is an
  * accordion, after the WorldQuant Foundry ethos row: the hovered card grows to
@@ -85,7 +86,7 @@ function SectorRow({ sectors }: { sectors: Sector[] }) {
                 {sector.tags.map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-full border border-line px-3 py-1 text-sm text-ink"
+                    className="rounded-sm border border-line px-2.5 py-1 text-sm text-ink"
                   >
                     {tag}
                   </li>
