@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
+import { PageHero } from "@/components/site/page-hero"
 
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { productsPage } from "@/content/products/page-copy"
 import { ProductGrid } from "@/components/products/product-grid"
-import { ProductsHero } from "@/components/products/products-hero"
 import { PageEnd } from "@/components/site/page-end"
 import { Section } from "@/components/site/section"
 import { getProducts } from "@/sanity/lib/data"
@@ -29,8 +29,13 @@ export default async function Page() {
       <HeroHeader />
 
       <div className="flex flex-col gap-section-tight">
-        <ProductsHero products={all} copy={copy.hero} />
-        <Section>
+        <PageHero
+          mark="products"
+          label={copy.hero.badge}
+          heading={copy.hero.title}
+          intro={copy.hero.lead}
+        />
+        <Section marks={false}>
           <ProductGrid
             products={products}
             partnerPlatforms={partners}

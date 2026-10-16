@@ -35,7 +35,7 @@ export default async function Page({ params }: Props) {
   ])
   if (!result) notFound()
 
-  const { name, seed, page } = result
+  const { name, page } = result
 
   return (
     <div className="relative flex min-h-svh w-full flex-col gap-section">
@@ -44,12 +44,7 @@ export default async function Page({ params }: Props) {
       <HeroHeader />
 
       <div className="flex flex-col gap-section-tight">
-        <ProductHero
-          page={page}
-          name={name}
-          seed={seed}
-          explore={copy.labels.explore}
-        />
+        <ProductHero page={page} name={name} explore={copy.labels.explore} />
         <Section>
           <ProductBody page={page} audienceLabel={copy.labels.audience} />
         </Section>

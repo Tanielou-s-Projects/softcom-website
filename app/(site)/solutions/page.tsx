@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
+import { PageHero } from "@/components/site/page-hero"
 
 import { HeroHeader } from "@/components/landing/hero-header"
 import { LineDitherDefs } from "@/components/iso/line-dither"
 import { SolutionsStory } from "@/components/solutions/solutions-story"
 import { SolutionsCta } from "@/components/solutions/solutions-cta"
-import { SolutionsHero } from "@/components/solutions/solutions-hero"
 import { PageEnd } from "@/components/site/page-end"
 import { Section } from "@/components/site/section"
 import { solutionsPage } from "@/content/solutions/page-copy"
@@ -25,8 +25,12 @@ export default async function Page() {
       <HeroHeader />
 
       <div className="flex flex-col gap-section-tight">
-        <SolutionsHero copy={copy} />
-        <Section>
+        <PageHero
+          label={copy.hero.badge}
+          heading={copy.hero.title}
+          mark="conduit"
+        />
+        <Section marks={false}>
           <SolutionsStory copy={copy} />
         </Section>
       </div>

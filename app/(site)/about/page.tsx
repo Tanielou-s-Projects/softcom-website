@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
+import { Journey } from "@/components/about/journey"
+import { PageHero } from "@/components/site/page-hero"
 
 import { cn } from "@/lib/utils"
 import { aboutPage } from "@/content/about/page-copy"
-import { AboutHero } from "@/components/about/about-hero"
-import { JourneyTimeline } from "@/components/about/journey-timeline"
 import { News } from "@/components/about/news"
 import { ButtonLink, ArrowLink } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
@@ -39,9 +39,13 @@ export default async function Page() {
       <div className="flex flex-col gap-section">
         <div className="flex flex-col gap-section-tight">
           {/* Hero — the shared frame, over the circular team-photo band. */}
-          <AboutHero copy={copy.hero} />
+          <PageHero
+            label={copy.hero.badge}
+            heading={copy.hero.title}
+            intro={copy.hero.lead}
+          />
 
-          <Section>
+          <Section marks={false}>
             {/* Our Story */}
             <Container className="flex flex-col gap-6">
               <Reveal className="flex flex-col gap-6">
@@ -66,7 +70,7 @@ export default async function Page() {
         <Section>
           {/* Our Journey — the V7-style ruler timeline (renders its own header). */}
           <Container>
-            <JourneyTimeline reveal="side" copy={copy.journey} />
+            <Journey copy={copy.journey} />
           </Container>
         </Section>
 

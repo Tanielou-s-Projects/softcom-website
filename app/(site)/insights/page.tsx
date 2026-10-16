@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
+import { PageHero } from "@/components/site/page-hero"
 
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { insightsPage } from "@/content/insights/page-copy"
 import { InsightList } from "@/components/insights/insight-list"
-import { InsightsHero } from "@/components/insights/insights-hero"
 import { PageEnd } from "@/components/site/page-end"
 import { Section } from "@/components/site/section"
 import { getInsights } from "@/sanity/lib/data"
@@ -27,8 +27,13 @@ export default async function Page() {
       <HeroHeader />
 
       <div className="flex flex-col gap-section-tight">
-        <InsightsHero copy={copy.hero} />
-        <Section>
+        <PageHero
+          mark="insights"
+          label={copy.hero.badge}
+          heading={copy.hero.title}
+          intro={copy.intro.text}
+        />
+        <Section marks={false}>
           <InsightList insights={insights} copy={copy} />
         </Section>
       </div>

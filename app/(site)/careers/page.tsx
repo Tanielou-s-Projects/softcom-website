@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageHero } from "@/components/site/page-hero"
 
 import { cn } from "@/lib/utils"
 import { careersPage } from "@/content/about/page-copy"
@@ -7,7 +8,6 @@ import { ClosingCta } from "@/components/landing/closing-cta"
 import { Container } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { HeroHeader } from "@/components/landing/hero-header"
-import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
 import { PageEnd } from "@/components/site/page-end"
 import { Section } from "@/components/site/section"
 import { getRoles } from "@/sanity/lib/data"
@@ -31,21 +31,15 @@ export default async function Page() {
       <HeroHeader />
 
       <div className="flex flex-col gap-section-tight">
-        <FullHero
-          background={<HeroPhoto src={copy.hero.image} position="50% 35%" />}
-          badge={copy.hero.badge}
-          title={copy.hero.title}
-          lead={copy.hero.lead}
-          rail={
-            <HeroRail>
-              <div>
-                <ButtonLink href="#roles" tone="light">
-                  {copy.hero.ctaLabel}
-                </ButtonLink>
-              </div>
-            </HeroRail>
-          }
-        />
+        <PageHero
+          label={copy.hero.badge}
+          heading={copy.hero.title}
+          intro={copy.hero.lead}
+        >
+          <ButtonLink href="#roles" tone="ink" className="mt-8">
+            {copy.hero.ctaLabel}
+          </ButtonLink>
+        </PageHero>
 
         {/* The rest of the invitation, out of the hero so it stays one line. */}
         <Container className="flex flex-col gap-4">

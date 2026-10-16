@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { animate, inView, scroll, stagger as staggerBy } from "motion"
 import { motion } from "motion/react"
 import { Slot } from "radix-ui"
 
@@ -34,6 +35,15 @@ type RevealProps = {
   y?: number
   amount?: number
   once?: boolean
+  /**
+   * The rebuild's group modes (Daylight §2.15–2.16), for sections ported from
+   * it: `true` fades the children up in turn; `"rows"` slides ruled rows in as
+   * their top hairlines draw across; `"cards"` raises cards from below,
+   * scrubbed to the scroll. The children animate, not a wrapper.
+   */
+  stagger?: boolean | "rows" | "cards"
+  /** Play on mount rather than on scroll — for heroes already in view. */
+  immediate?: boolean
 }
 
 /**
@@ -55,7 +65,22 @@ function Reveal({
   y = 20,
   amount = 0.25,
   once = true,
+  stagger,
+  immediate,
 }: RevealProps) {
+  if (stagger || immediate)
+    return (
+      <RevealGroup
+        as={as}
+        className={className}
+        stagger={stagger}
+        immediate={immediate}
+        delay={delay}
+        y={y}
+      >
+        {children}
+      </RevealGroup>
+    )
   const Comp = asChild ? MotionSlot : (MOTION_TAGS[as] as typeof motion.div)
 
   return (
@@ -68,6 +93,116 @@ function Reveal({
     >
       {children}
     </Comp>
+  )
+}
+
+const REDUCE = "(prefers-reduced-motion: reduce)"
+const DESKTOP = "(min-width: 1024px)"
+/** Where a reveal starts: the element's top crossing 85% down the viewport. */
+const START = { margin: "0px 0px -15% 0px" } as const
+
+/**
+ * The rebuild's Reveal, on motion's imperative API: the same choreography
+ * GSAP ran there, animating the element's children directly. Content is only
+ * hidden once JS has run, so it reads without it.
+ */
+function RevealGroup({
+  as,
+  className,
+  children,
+  stagger,
+  immediate,
+  delay,
+  y,
+}: {
+  as: RevealTag
+  className?: string
+  children: React.ReactNode
+  stagger?: boolean | "rows" | "cards"
+  immediate?: boolean
+  delay: number
+  y: number
+}) {
+  const ref = React.useRef<HTMLElement>(null)
+
+  React.useEffect(() => {
+    const el = ref.current
+    if (!el || window.matchMedia(REDUCE).matches) return
+    const items = [...el.children] as HTMLElement[]
+    const targets = stagger ? items : [el]
+    const play = (run: () => void) =>
+      immediate ? (run(), undefined) : inView(el, run, START)
+
+    if (stagger === "cards") {
+      const from = { opacity: 0, y: 48, scale: 0.94 }
+      items.forEach((item) => (item.style.transformOrigin = "50% 100%"))
+      if (window.matchMedia(DESKTOP).matches) {
+        const rise = animate(
+          items,
+          { opacity: [0, 1], y: [from.y, 0], scale: [from.scale, 1] },
+          { ease: "easeOut", delay: staggerBy(0.14) }
+        )
+        return scroll(rise, { target: el, offset: ["start 88%", "start 30%"] })
+      }
+      const stops = items.map((item) =>
+        scroll(
+          animate(
+            item,
+            { opacity: [0, 1], y: [from.y, 0], scale: [from.scale, 1] },
+            { ease: "easeOut" }
+          ),
+          { target: item, offset: ["start 92%", "start 55%"] }
+        )
+      )
+      return () => stops.forEach((stop) => stop())
+    }
+
+    if (stagger === "rows") {
+      items.forEach((item) => {
+        item.style.setProperty("--rule", "0")
+        item.style.opacity = "0"
+      })
+      return play(() => {
+        animate(
+          items,
+          { "--rule": [0, 1] },
+          { duration: 0.9, ease: EASE, delay: staggerBy(0.08) }
+        )
+        animate(
+          items,
+          { opacity: [0, 1], x: [-10, 0] },
+          {
+            duration: 0.45,
+            ease: [0.33, 1, 0.68, 1],
+            delay: staggerBy(0.08, { startDelay: 0.1 }),
+          }
+        )
+      })
+    }
+
+    targets.forEach((t) => (t.style.opacity = "0"))
+    return play(() => {
+      animate(
+        targets,
+        { opacity: [0, 1], y: [y, 0] },
+        {
+          duration: 0.8,
+          ease: EASE,
+          delay: staggerBy(stagger ? 0.08 : 0, { startDelay: delay }),
+        }
+      )
+    })
+  }, [stagger, immediate, delay, y])
+
+  const Tag = as as React.ElementType
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      data-reveal={stagger === "rows" ? "rows" : undefined}
+    >
+      {children}
+    </Tag>
   )
 }
 

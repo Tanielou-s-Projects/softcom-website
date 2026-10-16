@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
+import { PageHero } from "@/components/site/page-hero"
 
-import { CaseStudiesHero } from "@/components/case-studies/case-studies-hero"
 import { CaseStudyList } from "@/components/case-studies/case-study-list"
 import { ClosingCta } from "@/components/landing/closing-cta"
 import { HeroHeader } from "@/components/landing/hero-header"
@@ -27,8 +27,12 @@ export default async function Page() {
       <HeroHeader />
 
       <div className="flex flex-col gap-section-tight">
-        <CaseStudiesHero copy={copy.hero} />
-        <Section>
+        <PageHero
+          label={copy.hero.badge}
+          heading={copy.hero.title}
+          intro={copy.hero.lead}
+        />
+        <Section marks={false}>
           <CaseStudyList caseStudies={caseStudies} copy={copy} />
         </Section>
       </div>

@@ -3,10 +3,9 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ArrowLink, ButtonLink } from "@/components/ui/button"
 import { Container } from "@/components/landing/section"
-import { DitherPanel } from "@/components/motion/dither-panel"
 import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
-import { FullHero } from "@/components/site/full-hero"
+import { PageHero } from "@/components/site/page-hero"
 import { Cards, Eyebrow } from "@/components/solutions/solution-areas"
 import { hasFigure, ProductFigureSlot } from "@/components/products/figures"
 import {
@@ -22,45 +21,31 @@ import {
  * full width.
  */
 
-/** The opening: the product's own dither front, title, lead and the ask. */
+/** The opening: the shared page hero with the product's lead and the ask. */
 function ProductHero({
   page,
   name,
-  seed,
   explore = "Explore",
 }: {
   page: ProductPage
   name: string
-  seed: number
   /** The word before the name on the second button (productsPage copy). */
   explore?: string
 }) {
   return (
-    <FullHero
-      background={
-        <DitherPanel
-          seed={seed}
-          level={0.55}
-          tone="mono"
-          className="absolute inset-0"
-        />
-      }
-      badge={page.eyebrow}
-      title={page.title}
-      lead={page.lead[0]}
-      rail={
-        <div className="flex flex-wrap gap-2">
-          <ButtonLink href={page.primary.href} tone="light">
-            {page.primary.label}
-          </ButtonLink>
-          {page.sections.length > 0 || page.lead.length > 1 ? (
-            <ArrowLink href="#overview">
-              {explore} {name}
-            </ArrowLink>
-          ) : null}
-        </div>
-      }
-    />
+    <PageHero label={page.eyebrow || name} heading={page.title}>
+      <p className="text-lg text-ink-soft">{page.lead[0]}</p>
+      <div className="mt-8 flex flex-wrap items-center gap-4">
+        <ButtonLink href={page.primary.href} tone="ink">
+          {page.primary.label}
+        </ButtonLink>
+        {page.sections.length > 0 || page.lead.length > 1 ? (
+          <ArrowLink href="#overview">
+            {explore} {name}
+          </ArrowLink>
+        ) : null}
+      </div>
+    </PageHero>
   )
 }
 
