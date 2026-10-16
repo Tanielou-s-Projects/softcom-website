@@ -62,7 +62,7 @@ function MobileMenu({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="dark fixed inset-0 z-30 flex flex-col overflow-y-auto bg-black px-4 pt-28 pb-8 text-ink md:hidden"
+          className="dark fixed inset-0 z-40 flex flex-col overflow-y-auto bg-black px-4 pt-28 pb-8 text-ink md:hidden"
         >
           <nav aria-label="Main" className="flex-1">
             <ul className="flex flex-col">

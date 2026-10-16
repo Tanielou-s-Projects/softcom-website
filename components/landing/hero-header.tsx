@@ -9,7 +9,7 @@ import { SiteHeader } from "@/components/site/site-header"
  */
 export function HeroHeader() {
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-30">
+    <div className="pointer-events-none fixed inset-x-0 top-0 z-50">
       <SiteHeader />
     </div>
   )
