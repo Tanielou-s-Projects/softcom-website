@@ -35,7 +35,7 @@ function ProductHero({
   return (
     <PageHero label={page.eyebrow || name} heading={page.title}>
       <p className="text-lg text-ink-soft">{page.lead[0]}</p>
-      <div className="mt-8 flex flex-wrap items-center gap-4">
+      <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
         <ButtonLink href={page.primary.href} tone="ink">
           {page.primary.label}
         </ButtonLink>

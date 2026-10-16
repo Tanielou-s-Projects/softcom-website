@@ -301,7 +301,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
             </div>
             <div
               data-hero-copy=""
-              className="relative shell flex items-end justify-between gap-8 pb-24 md:pb-28"
+              className="relative shell flex items-end gap-6 pb-24 md:gap-10 md:pb-28"
             >
               <h1 id="story-title" className="text-display">
                 {/* One sentence per line, as the brand line is written. */}
@@ -317,7 +317,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
                 type="button"
                 aria-label={copy.scrollLabel}
                 onClick={scrollOn}
-                className="mb-3 shrink-0 cursor-pointer rounded-full p-2 text-ink-soft transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink motion-reduce:hidden"
+                className="mb-3 shrink-0 cursor-pointer rounded-full p-2 text-ink-soft transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink"
               >
                 <span className="softcom-nudge">
                   <Arrow className="size-5 rotate-90" />
@@ -406,7 +406,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
               <ScrambleStatement ref={statementRef} runs={statement} />
               <div
                 ref={actionsRef}
-                className="pointer-events-auto flex flex-wrap items-center gap-2 opacity-0 motion-reduce:opacity-100"
+                className="pointer-events-auto flex flex-wrap items-center gap-x-8 gap-y-4 opacity-0 motion-reduce:opacity-100"
               >
                 <StatementActions copy={copy} />
               </div>

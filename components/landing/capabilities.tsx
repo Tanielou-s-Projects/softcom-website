@@ -107,8 +107,12 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
           {areas.map((capability) => (
             <article
               key={capability.number}
-              /* Figma's 1176×1024 is a ceiling, not a size: the slide never exceeds the viewport. */
-              className="dark relative flex h-[min(640px,85svh)] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 sm:h-[min(760px,85svh)] lg:h-[min(1024px,66svh)] lg:p-6"
+              /*
+               * Figma's 1176×1024 is a ceiling, not a size. The height is a
+               * minimum: the slide grows to its copy rather than clipping it,
+               * whatever the screen's size or resolution.
+               */
+              className="dark relative flex min-h-[min(560px,80svh)] w-[min(1176px,85vw)] shrink-0 snap-start flex-col items-end justify-end gap-2.5 overflow-clip rounded-4xl p-4 lg:min-h-[min(760px,70svh)] lg:p-6"
             >
               <ColorReveal>
                 <Image
@@ -126,23 +130,13 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
                   capability.chipClassName
                 )}
               >
-                <p
-                  className={cn(
-                    "text-headline leading-[1.1]",
-                    "whitespace-nowrap"
-                  )}
-                >
+                <p className="text-title whitespace-nowrap xl:text-headline">
                   {capability.number}
                 </p>
               </div>
 
-              <div className="relative flex flex-col items-start gap-5 overflow-clip rounded-4xl bg-paper p-6 text-ink lg:gap-6 lg:p-8">
-                <h3
-                  className={cn(
-                    "text-headline leading-[1.1]",
-                    "lg:max-w-[359px]"
-                  )}
-                >
+              <div className="relative flex max-w-full flex-col items-start gap-5 overflow-clip rounded-4xl bg-paper p-6 text-ink lg:max-w-[min(680px,100%)] lg:gap-6 lg:p-8">
+                <h3 className="text-title lg:max-w-[359px] xl:text-headline xl:leading-[1.1]">
                   {capability.title}
                 </h3>
                 {/* Body size, not the larger lg body: two paragraphs share the slide. */}

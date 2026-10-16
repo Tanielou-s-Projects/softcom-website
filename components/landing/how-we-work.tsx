@@ -51,11 +51,11 @@ function Pinned({ copy }: { copy: Copy }) {
   return (
     <div
       ref={track}
-      // One screen per beat, plus one to hold the last.
-      style={{ height: `${(count + 1) * 100}svh` }}
+      // One screen per beat; the last releases straight into the next section.
+      style={{ height: `${count * 80 + 20}svh` }}
       className="relative"
     >
-      <div className="sticky top-0 flex h-svh items-center">
+      <div className="sticky top-[10svh] flex h-[80svh] items-center">
         <Container className="grid grid-cols-12 gap-x-6">
           <div className="col-span-4 flex flex-col gap-10">
             <h2 className="label text-ink-soft">{copy.heading}</h2>

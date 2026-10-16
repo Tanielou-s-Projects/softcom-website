@@ -35,7 +35,7 @@ export default async function Page() {
        */}
       <Section>
         <Stats items={copy.numbers.items}>
-          <Reveal className="flex flex-wrap items-center gap-2">
+          <Reveal className="flex flex-wrap items-center gap-x-8 gap-y-4">
             <ButtonLink href={copy.numbers.primaryCta.href} tone="ink">
               {copy.numbers.primaryCta.label}
             </ButtonLink>

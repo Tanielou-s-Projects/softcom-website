@@ -121,7 +121,7 @@ export default async function Page() {
               <p className={cn("text-body", "text-ink-soft")}>
                 {copy.careers.body}
               </p>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                 <ButtonLink href={copy.careers.primaryHref} tone="ink">
                   {copy.careers.primaryLabel}
                 </ButtonLink>
