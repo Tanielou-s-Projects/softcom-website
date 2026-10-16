@@ -4,11 +4,13 @@
  * the two disagree on dates or figures, the deck is the client's latest word.
  */
 
-import { TENURE_TITLE, YEARS_ACTIVE } from "@/content/home/content"
+import { YEARS_ACTIVE } from "@/content/home/content"
 
 export const aboutHero = {
   eyebrow: "About Softcom",
-  title: `${TENURE_TITLE} of technology that matters.`,
+  /* "Nearly two decades" dropped at the client's request (13 Oct 2026):
+     the 19 years already sits in the lead and the stats. */
+  title: "Technology that matters.",
   lead: `Softcom is a technology and innovation company with ${YEARS_ACTIVE} years of experience building digital products, enterprise systems and large-scale initiatives for public institutions, private organisations and development enablers.`,
 }
 
