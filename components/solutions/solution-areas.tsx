@@ -223,7 +223,7 @@ function DeliveryPhases() {
 /** The body of the page: the framing sentence, then the three areas. */
 function SolutionAreas() {
   return (
-    <section className="flex flex-col gap-24 lg:gap-32">
+    <section className="flex flex-col gap-section-tight">
       <Container className="flex flex-col items-start justify-center gap-6 pt-6">
         <Reveal className="flex flex-col items-start gap-6">
           <Badge variant="brand">Our Solutions</Badge>

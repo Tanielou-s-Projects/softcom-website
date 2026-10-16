@@ -38,29 +38,31 @@ export default async function Page() {
       <HeroHeader />
 
       <div className="flex flex-col gap-section">
-        {/* Hero — the shared frame, over the circular team-photo band. */}
-        <AboutHero copy={copy.hero} />
+        <div className="flex flex-col gap-section-tight">
+          {/* Hero — the shared frame, over the circular team-photo band. */}
+          <AboutHero copy={copy.hero} />
 
-        <Section>
-          {/* Our Story */}
-          <Container className="flex flex-col gap-6">
-            <Reveal className="flex flex-col gap-6">
-              <h2 className={cn("text-headline", "max-w-[24ch] text-ink")}>
-                {copy.story.heading}
-              </h2>
-              <div className="flex max-w-[75ch] flex-col gap-4">
-                {copy.story.paragraphs.map((paragraph) => (
-                  <p
-                    key={paragraph}
-                    className={cn("text-body", "text-ink-soft")}
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            </Reveal>
-          </Container>
-        </Section>
+          <Section>
+            {/* Our Story */}
+            <Container className="flex flex-col gap-6">
+              <Reveal className="flex flex-col gap-6">
+                <h2 className={cn("text-headline", "max-w-[24ch] text-ink")}>
+                  {copy.story.heading}
+                </h2>
+                <div className="flex max-w-[75ch] flex-col gap-4">
+                  {copy.story.paragraphs.map((paragraph) => (
+                    <p
+                      key={paragraph}
+                      className={cn("text-body", "text-ink-soft")}
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </Reveal>
+            </Container>
+          </Section>
+        </div>
 
         <Section>
           {/* Our Journey — the V7-style ruler timeline (renders its own header). */}

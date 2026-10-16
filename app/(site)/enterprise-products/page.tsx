@@ -28,14 +28,16 @@ export default async function Page() {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <ProductsHero products={all} copy={copy.hero} />
-      <Section>
-        <ProductGrid
-          products={products}
-          partnerPlatforms={partners}
-          copy={copy}
-        />
-      </Section>
+      <div className="flex flex-col gap-section-tight">
+        <ProductsHero products={all} copy={copy.hero} />
+        <Section>
+          <ProductGrid
+            products={products}
+            partnerPlatforms={partners}
+            copy={copy}
+          />
+        </Section>
+      </div>
 
       <PageEnd>
         <ClosingCta variant="products" />

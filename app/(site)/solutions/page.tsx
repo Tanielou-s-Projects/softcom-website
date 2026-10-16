@@ -24,10 +24,12 @@ export default async function Page() {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <SolutionsHero copy={copy} />
-      <Section>
-        <SolutionsStory copy={copy} />
-      </Section>
+      <div className="flex flex-col gap-section-tight">
+        <SolutionsHero copy={copy} />
+        <Section>
+          <SolutionsStory copy={copy} />
+        </Section>
+      </div>
 
       <PageEnd>
         <SolutionsCta copy={copy.close} />

@@ -43,15 +43,17 @@ export default async function Page({ params }: Props) {
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
-      <ProductHero
-        page={page}
-        name={name}
-        seed={seed}
-        explore={copy.labels.explore}
-      />
-      <Section>
-        <ProductBody page={page} audienceLabel={copy.labels.audience} />
-      </Section>
+      <div className="flex flex-col gap-section-tight">
+        <ProductHero
+          page={page}
+          name={name}
+          seed={seed}
+          explore={copy.labels.explore}
+        />
+        <Section>
+          <ProductBody page={page} audienceLabel={copy.labels.audience} />
+        </Section>
+      </div>
 
       <PageEnd>
         <ProductCta page={page} />

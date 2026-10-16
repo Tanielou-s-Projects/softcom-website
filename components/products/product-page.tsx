@@ -163,7 +163,7 @@ function ProductBody({
   const rest = page.lead.slice(1)
 
   return (
-    <section className="flex flex-col gap-24 lg:gap-32">
+    <section className="flex flex-col gap-section-tight">
       <Container
         id="overview"
         className="flex scroll-mt-24 flex-col gap-2.5 pt-6"

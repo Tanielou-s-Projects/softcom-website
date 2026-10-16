@@ -66,7 +66,7 @@ const STEP_IDS = ["identity", "records", "services"]
 
 function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
   return (
-    <section className="flex flex-col gap-24 lg:gap-40">
+    <section className="flex flex-col gap-section-tight">
       <Opener
         id={infrastructureId}
         number="01"
@@ -215,7 +215,7 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
       </ScrollRail>
 
       {copy.shapedHeading ? (
-        <Container className="pt-24 lg:pt-40">
+        <Container className="pt-section-tight">
           <div className="grid gap-10 border-t border-line pt-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
             <Reveal>
               <h3 className={cn("text-headline", "text-ink")}>
@@ -263,7 +263,7 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
 
 function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
   return (
-    <section className="flex flex-col gap-24 lg:gap-40">
+    <section className="flex flex-col gap-section-tight">
       <Opener
         id={initiativesId}
         number="03"
@@ -332,7 +332,7 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
 /** The body of the Solutions page, after the hero. */
 function SolutionsStory({ copy }: { copy: SolutionsPage }) {
   return (
-    <div className="flex flex-col gap-48 lg:gap-80">
+    <div className="flex flex-col gap-section">
       <Container className="flex flex-col items-start gap-8 pt-16 lg:pt-24">
         <Badge variant="brand">{copy.intro.badge}</Badge>
         <ScrollWords
