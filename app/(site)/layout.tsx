@@ -1,3 +1,4 @@
+import { PageBackground } from "@/components/motion/page-background"
 import { PixelPageTransition } from "@/components/motion/pixel-page-transition"
 import { AnimatedFavicon } from "@/components/site/animated-favicon"
 import { ChromeProvider } from "@/components/site/chrome-context"
@@ -15,6 +16,7 @@ export default async function SiteLayout({
   return (
     <>
       <ChromeProvider header={header}>{children}</ChromeProvider>
+      <PageBackground />
       <PixelPageTransition />
       <AnimatedFavicon />
     </>
