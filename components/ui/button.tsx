@@ -5,62 +5,32 @@ import { Arrow } from "@/components/ui/arrow"
 import { cn } from "@/lib/utils"
 
 /*
- * Pill buttons with Daylight's rotated fill: on hover a tilted slab of the
- * fill colour swings up from below and floods the pill over a second, the
- * label lifting a pixel as its colour flips. Leaving is quick. At rest the
- * slab sits far enough below that its tilted corner clears even a wide pill.
+ * Pill buttons as main had them: a solid pill that dims a touch on hover and
+ * presses a pixel when clicked — no fill animation, no arrow. Tones keep the
+ * rule that buttons on photographs or Softcom blue use fixed colours.
  */
 const button = cva(
-  "group relative isolate inline-flex h-12 shrink-0 items-center gap-3 overflow-hidden rounded-full pr-5 pl-6 text-[0.9375rem] font-medium tracking-[-0.01em] whitespace-nowrap transition-colors duration-300 ease-expo-out outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50",
+  "inline-flex h-10 shrink-0 items-center justify-center rounded-full px-4 text-sm font-medium whitespace-nowrap transition-colors duration-200 outline-none select-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50 active:translate-y-px",
   {
     variants: {
       tone: {
-        accent: "bg-accent text-on-accent hover:text-paper",
-        ink: "bg-ink text-paper hover:text-on-accent",
-        outline:
-          "border border-line-strong text-ink hover:border-ink hover:text-paper",
+        accent: "bg-accent text-on-accent hover:bg-accent/90",
+        ink: "bg-ink text-paper hover:bg-ink/90",
+        outline: "border border-line-strong text-ink hover:bg-surface-raised",
         /* Over photography and the accent block: fixed colours, never themed. */
-        light: "bg-white text-[#0c0c0d] hover:text-white",
-        glass: "bg-white/15 text-white backdrop-blur-md hover:text-[#0c0c0d]",
+        light: "bg-white text-[#0c0c0d] hover:bg-white/90",
+        glass: "bg-white/15 text-white backdrop-blur-md hover:bg-white/25",
       },
     },
     defaultVariants: { tone: "accent" },
   }
 )
 
-const FILL = {
-  accent: "bg-ink",
-  ink: "bg-accent",
-  outline: "bg-ink",
-  light: "bg-accent",
-  glass: "bg-white",
-} as const
+type Tone = NonNullable<VariantProps<typeof button>["tone"]>
 
-type Tone = keyof typeof FILL
-
-/** The slab and the label for any pill, link or native button. */
-function ButtonInner({
-  tone,
-  children,
-}: {
-  tone: Tone
-  children: React.ReactNode
-}) {
-  return (
-    <>
-      <span
-        aria-hidden="true"
-        className={cn(
-          "absolute inset-0 -z-10 translate-y-[350%] scale-[1.8] rotate-[15deg] rounded-lg transition-transform duration-500 ease-expo-out group-hover:translate-y-0 group-hover:rotate-[8deg] group-hover:duration-1000",
-          FILL[tone]
-        )}
-      />
-      <span className="transition-transform duration-300 ease-expo-out group-hover:-translate-y-px">
-        {children}
-      </span>
-      <Arrow className="transition-transform duration-300 ease-expo-out group-hover:translate-x-0.5" />
-    </>
-  )
+/** The label for any pill, link or native button. */
+function ButtonInner({ children }: { tone: Tone; children: React.ReactNode }) {
+  return <>{children}</>
 }
 
 type ButtonLinkProps = VariantProps<typeof button> &

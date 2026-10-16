@@ -85,7 +85,7 @@ function StatementActions({ copy }: { copy: HeroCopy }) {
       <ButtonLink href={copy.primaryCta.href} tone="light">
         {copy.primaryCta.label}
       </ButtonLink>
-      <ArrowLink arrow={false} href={copy.secondaryCta.href}>
+      <ArrowLink href={copy.secondaryCta.href}>
         {copy.secondaryCta.label}
       </ArrowLink>
     </>

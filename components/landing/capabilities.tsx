@@ -104,7 +104,7 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
           role={scrub ? undefined : "region"}
           aria-label={scrub ? undefined : "What we do"}
           className={cn(
-            "flex snap-x snap-mandatory scroll-px-6 items-start gap-3 overflow-x-auto overflow-y-clip px-6 pt-6",
+            "flex snap-x snap-mandatory scroll-px-6 items-stretch gap-3 overflow-x-auto overflow-y-clip px-6 pt-6",
             // Scrubbed: the rail no longer scrolls itself; the transform moves it.
             "lg:motion-safe:snap-none lg:motion-safe:overflow-visible"
           )}
