@@ -4,13 +4,7 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  bodyText,
-  cardHeadingText,
-  Container,
-  leadText,
-  primaryPill,
-} from "@/components/landing/section"
+import { Container, primaryPill } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import type { Product } from "@/content/products/content"
 import type { ProductsPage } from "@/content/products/page-copy"
@@ -58,10 +52,12 @@ function ProductCard({
       className="flex h-full scroll-mt-24 flex-col gap-6 overflow-clip rounded-3xl bg-surface-raised"
     >
       <div className="flex flex-col items-start gap-2.5 p-6 sm:flex-row sm:items-center">
-        <h3 className={cn(cardHeadingText, "text-ink sm:w-[56%]")}>
+        <h3
+          className={cn("text-headline leading-[1.1]", "text-ink sm:w-[56%]")}
+        >
           {product.name}
         </h3>
-        <p className={cn(leadText, "min-w-0 flex-1 text-ink")}>
+        <p className={cn("text-lede", "min-w-0 flex-1 text-ink")}>
           {product.tagline}
         </p>
       </div>
@@ -98,7 +94,7 @@ function ProductCard({
         </div>
       ) : (
         <div className="flex flex-col items-start gap-6 px-6 pb-6">
-          <p className={cn(bodyText, "text-ink lg:max-w-[600px]")}>
+          <p className={cn("text-body", "text-ink lg:max-w-[600px]")}>
             {product.description}
           </p>
           <ExploreLink product={product} explore={explore} />
@@ -128,7 +124,7 @@ function ProductSection({
         {lead ? (
           <p
             className={cn(
-              leadText,
+              "text-lede",
               "max-w-[576px] px-6 text-center text-ink-soft"
             )}
           >

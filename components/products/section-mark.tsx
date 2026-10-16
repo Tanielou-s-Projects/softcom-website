@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils"
-import { cardHeadingText } from "@/components/landing/section"
 
 /**
  * The centred dot-and-heading that opens each half of the page.
@@ -25,7 +24,10 @@ function SectionMark({
         )}
       />
       <h2
-        className={cn(cardHeadingText, "text-center text-ink lg:max-w-[359px]")}
+        className={cn(
+          "text-headline leading-[1.1]",
+          "text-center text-ink lg:max-w-[359px]"
+        )}
       >
         {children}
       </h2>

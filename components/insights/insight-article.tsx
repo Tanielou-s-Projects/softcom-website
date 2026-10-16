@@ -7,7 +7,7 @@ import {
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
-import { Container, displayText, leadText } from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 import { formatInsightDate } from "@/content/insights/content"
 import { urlFor } from "@/sanity/lib/image"
 import type { InsightArticle as Article } from "@/sanity/lib/data"
@@ -45,7 +45,7 @@ function ParagraphRail({ count }: { count: number }) {
   )
 }
 
-const body = cn(leadText, "leading-[1.6]")
+const body = cn("text-lede", "leading-[1.6]")
 
 /**
  * The article body as the Studio writes it: paragraphs in the lead size the
@@ -133,7 +133,7 @@ function InsightArticle({ article }: { article: Article }) {
               aria-hidden
               className="size-[26px] shrink-0 rounded-full bg-accent"
             />
-            <h1 className={cn(displayText, "text-ink")}>{article.title}</h1>
+            <h1 className={cn("text-display", "text-ink")}>{article.title}</h1>
           </div>
 
           <div className="flex flex-col gap-16 lg:w-[49%] lg:shrink-0">
@@ -152,7 +152,7 @@ function InsightArticle({ article }: { article: Article }) {
              * blurb in this slot — a copy-paste from the index — which would put
              * identical text at the top of every article.
              */}
-            <p className={cn(leadText, "leading-[1.6]")}>{article.dek}</p>
+            <p className={cn("text-lede", "leading-[1.6]")}>{article.dek}</p>
           </div>
         </header>
       </Reveal>

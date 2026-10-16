@@ -6,12 +6,7 @@ import { useEffect, useRef } from "react"
 import { PixelArrowDown } from "@/components/ui/pixel-arrow-down"
 import { Button } from "@/components/ui/button"
 import { withYears, type HomePage } from "@/content/home/page-copy"
-import {
-  ghostPill,
-  headingText,
-  leadText,
-  primaryPill,
-} from "@/components/landing/section"
+import { ghostPill, primaryPill } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
 import { createDitherField } from "@/components/motion/dither-field"
 import { HeroHeader } from "./hero-header"
@@ -467,7 +462,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
                 />
                 <h2
                   className={cn(
-                    headingText,
+                    "text-headline",
                     "max-w-[760px] leading-[1.1] text-ink"
                   )}
                 >
@@ -475,7 +470,9 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
                         are the foundation of a more prosperous society." */}
                   {copy.missionHeading}
                 </h2>
-                <p className={cn(leadText, "max-w-[576px] text-neutral-200")}>
+                <p
+                  className={cn("text-lede", "max-w-[576px] text-neutral-200")}
+                >
                   {copy.missionText}
                 </p>
               </div>

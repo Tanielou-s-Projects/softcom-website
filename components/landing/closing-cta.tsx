@@ -1,11 +1,7 @@
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
-import {
-  headingText,
-  leadText,
-  primaryPill,
-} from "@/components/landing/section"
+import { primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
 import { cn } from "@/lib/utils"
@@ -40,13 +36,18 @@ async function ClosingCta({
       {/* Reveal stays on the inner content — the panel itself is sticky and must never gain a transform. */}
       <Reveal asChild>
         <div className="relative flex flex-col items-center gap-6 px-6">
-          <h2 className={cn(headingText, "max-w-[598px] text-center text-ink")}>
+          <h2
+            className={cn(
+              "text-headline",
+              "max-w-[598px] text-center text-ink"
+            )}
+          >
             {heading}
           </h2>
           {lead ? (
             <p
               className={cn(
-                leadText,
+                "text-lede",
                 "max-w-[576px] text-center text-ink-soft"
               )}
             >

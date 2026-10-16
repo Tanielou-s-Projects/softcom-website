@@ -3,13 +3,7 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  bodyText,
-  Container,
-  ghostPill,
-  headingText,
-  primaryPill,
-} from "@/components/landing/section"
+import { Container, ghostPill, primaryPill } from "@/components/landing/section"
 import { DitherPanel } from "@/components/motion/dither-panel"
 import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
@@ -97,7 +91,7 @@ function HeadingPlate({
         {body.length || note ? (
           <div className="flex flex-col gap-4 lg:pt-8">
             {body.map((paragraph) => (
-              <p key={paragraph} className={cn(bodyText, "text-ink-soft")}>
+              <p key={paragraph} className={cn("text-body", "text-ink-soft")}>
                 {paragraph}
               </p>
             ))}
@@ -180,7 +174,7 @@ function ProductBody({
               {rest.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className={cn(bodyText, "max-w-[62ch] text-ink")}
+                  className={cn("text-body", "max-w-[62ch] text-ink")}
                 >
                   {paragraph}
                 </p>
@@ -214,13 +208,13 @@ function ProductBody({
           <Reveal asChild>
             <div className="flex flex-col items-center gap-6 rounded-3xl bg-surface px-6 py-16 text-center lg:py-24">
               <Eyebrow>{audienceLabel}</Eyebrow>
-              <h2 className={cn(headingText, "max-w-[22ch] text-ink")}>
+              <h2 className={cn("text-headline", "max-w-[22ch] text-ink")}>
                 {page.audience.heading}
               </h2>
               {page.audience.body.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className={cn(bodyText, "max-w-[62ch] text-ink-soft")}
+                  className={cn("text-body", "max-w-[62ch] text-ink-soft")}
                 >
                   {paragraph}
                 </p>
@@ -248,7 +242,7 @@ function ProductCta({ page }: { page: ProductPage }) {
           <div className="flex flex-col items-center justify-center gap-8 lg:flex-row lg:gap-16">
             <h2
               className={cn(
-                headingText,
+                "text-headline",
                 "text-center text-ink lg:max-w-[440px] lg:text-left"
               )}
             >

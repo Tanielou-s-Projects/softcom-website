@@ -4,13 +4,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  bodyText,
-  Container,
-  headingText,
-  leadText,
-  primaryPill,
-} from "@/components/landing/section"
+import { Container, primaryPill } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { ScrollWords } from "@/components/motion/scroll-words"
 import { CityFigure } from "@/components/solutions/figures/city/figure"
@@ -56,8 +50,10 @@ function Opener({
           {number} / 03
         </span>
         <div className="flex flex-col gap-6">
-          <h2 className={cn(headingText, "text-ink")}>{title}</h2>
-          <p className={cn(leadText, "max-w-[52ch] text-accent-ink")}>{lead}</p>
+          <h2 className={cn("text-headline", "text-ink")}>{title}</h2>
+          <p className={cn("text-lede", "max-w-[52ch] text-accent-ink")}>
+            {lead}
+          </p>
         </div>
       </Reveal>
     </Container>
@@ -83,7 +79,7 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
           <h3 className="font-heading text-2xl leading-[1.15] text-ink lg:text-[2rem]">
             {copy.listHeading}
           </h3>
-          <p className={cn(bodyText, "text-ink-soft")}>{copy.listIntro}</p>
+          <p className={cn("text-body", "text-ink-soft")}>{copy.listIntro}</p>
         </Reveal>
         <PinnedStory
           steps={copy.steps.map((item, index) => ({
@@ -117,10 +113,10 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
                 {copy.buildLabel}
               </span>
               <div className="flex flex-col gap-4">
-                <h3 className={cn(headingText, "text-ink")}>
+                <h3 className={cn("text-headline", "text-ink")}>
                   {copy.buildTitle}
                 </h3>
-                <p className={cn(bodyText, "max-w-[48ch] text-ink/85")}>
+                <p className={cn("text-body", "max-w-[48ch] text-ink/85")}>
                   {copy.buildText}
                 </p>
               </div>
@@ -132,10 +128,10 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
                 {copy.implementLabel}
               </span>
               <div className="flex flex-col gap-4">
-                <h3 className={cn(headingText, "text-ink")}>
+                <h3 className={cn("text-headline", "text-ink")}>
                   {copy.implementTitle}
                 </h3>
-                <p className={cn(bodyText, "max-w-[48ch] text-ink-soft")}>
+                <p className={cn("text-body", "max-w-[48ch] text-ink-soft")}>
                   {copy.implementText}
                 </p>
               </div>
@@ -222,7 +218,7 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
         <Container className="pt-24 lg:pt-40">
           <div className="grid gap-10 border-t border-line pt-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
             <Reveal>
-              <h3 className={cn(headingText, "text-ink")}>
+              <h3 className={cn("text-headline", "text-ink")}>
                 {copy.shapedHeading}
               </h3>
             </Reveal>
@@ -246,7 +242,7 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
                 ))}
               </RevealStagger>
               <Reveal className="flex flex-col items-start gap-6">
-                <p className={cn(bodyText, "max-w-[56ch] text-ink-soft")}>
+                <p className={cn("text-body", "max-w-[56ch] text-ink-soft")}>
                   {copy.shapedText}
                 </p>
                 {copy.ctaLabel ? (
@@ -287,7 +283,9 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
             <h3 className="font-heading text-2xl leading-[1.15] text-ink lg:text-[2rem]">
               {copy.entrustHeading}
             </h3>
-            <p className={cn(bodyText, "text-ink-soft")}>{copy.entrustText}</p>
+            <p className={cn("text-body", "text-ink-soft")}>
+              {copy.entrustText}
+            </p>
           </Reveal>
         </div>
         <RevealStagger amount={0.15} className="flex flex-col">
@@ -311,7 +309,7 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
           <div className="dark flex flex-col gap-12 overflow-clip rounded-3xl bg-accent p-8 lg:gap-16 lg:p-14">
             <header className="flex flex-col items-start gap-3">
               <Badge variant="inverse">{copy.phasesBadge}</Badge>
-              <h2 className={cn(headingText, "text-ink")}>
+              <h2 className={cn("text-headline", "text-ink")}>
                 {copy.phasesHeading}
               </h2>
             </header>

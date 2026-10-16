@@ -6,7 +6,7 @@ import { alumniPage } from "@/content/about/page-copy"
 import { AlumniForm } from "@/components/about/alumni-form"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
-import { Container, leadText, primaryPill } from "@/components/landing/section"
+import { Container, primaryPill } from "@/components/landing/section"
 import { PageEnd } from "@/components/site/page-end"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
@@ -54,7 +54,7 @@ export default async function Page() {
         {copy.intro.paragraphs.map((paragraph) => (
           <p
             key={paragraph}
-            className={cn(leadText, "max-w-[75ch] text-ink-soft")}
+            className={cn("text-lede", "max-w-[75ch] text-ink-soft")}
           >
             {paragraph}
           </p>

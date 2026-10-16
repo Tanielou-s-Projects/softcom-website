@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { panelHeadingText, primaryPill } from "@/components/landing/section"
+import { primaryPill } from "@/components/landing/section"
 import type { ContactPage } from "@/content/contact/content"
 import { sendContact, type ContactState } from "@/app/(site)/contact/actions"
 
@@ -58,9 +58,7 @@ function ContactForm({ copy }: { copy: ContactPage["form"] }) {
         role="status"
         className="flex flex-col gap-4 overflow-clip rounded-3xl bg-paper p-8 lg:p-[47px]"
       >
-        <h2 className={cn(panelHeadingText, "text-ink")}>
-          {copy.successHeading}
-        </h2>
+        <h2 className={cn("text-title", "text-ink")}>{copy.successHeading}</h2>
         <p className="max-w-[48ch] text-base leading-[1.6] text-ink/80">
           {copy.successText}
         </p>
@@ -84,7 +82,7 @@ function ContactForm({ copy }: { copy: ContactPage["form"] }) {
       />
       <input ref={startedAt} type="hidden" name="startedAt" defaultValue="0" />
 
-      <h2 className={cn(panelHeadingText, "max-w-[179px] text-ink")}>
+      <h2 className={cn("text-title", "max-w-[179px] text-ink")}>
         {copy.heading}
       </h2>
 

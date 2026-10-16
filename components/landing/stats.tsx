@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { stats, type Stat } from "@/content/home/content"
 import { withYears } from "@/content/home/page-copy"
-import { bodyText, Container, headingText } from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
 
 /**
@@ -29,7 +29,7 @@ function Stats({
     <Container className={cn("flex flex-col gap-10 lg:gap-14", className)}>
       {heading ? (
         <Reveal asChild>
-          <h2 className={cn(headingText, "max-w-[18ch] text-ink")}>
+          <h2 className={cn("text-headline", "max-w-[18ch] text-ink")}>
             {heading}
           </h2>
         </Reveal>
@@ -45,7 +45,7 @@ function Stats({
             <dd className="font-heading text-5xl leading-[0.9] text-ink lg:text-7xl">
               {withYears(stat.value)}
             </dd>
-            <dt className={cn(bodyText, "text-ink-soft")}>{stat.label}</dt>
+            <dt className={cn("text-body", "text-ink-soft")}>{stat.label}</dt>
           </RevealItem>
         ))}
       </RevealStagger>

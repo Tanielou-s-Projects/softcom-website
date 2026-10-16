@@ -4,14 +4,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  bodyText,
-  cardHeadingText,
-  Container,
-  headingText,
-  leadText,
-  primaryPill,
-} from "@/components/landing/section"
+import { Container, primaryPill } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { FieldLineFigure } from "@/components/solutions/figures/field-line/figure"
 import { LightTableFigure } from "@/components/solutions/figures/light-table/figure"
@@ -121,7 +114,7 @@ function SolutionBlock({
       <Reveal asChild>
         <header className="flex flex-col items-center gap-6 rounded-3xl bg-surface px-6 py-16 text-center lg:py-24">
           <Eyebrow>Solution {String(number).padStart(2, "0")}</Eyebrow>
-          <h2 className={cn(headingText, "max-w-[18ch] text-ink")}>
+          <h2 className={cn("text-headline", "max-w-[18ch] text-ink")}>
             {solution.title}
           </h2>
           {/*
@@ -129,13 +122,13 @@ function SolutionBlock({
            * a light card where the blue anchor gets 6.09:1, and
            * `--brand-accent` is what already resolves per theme.
            */}
-          <p className={cn(leadText, "max-w-[52ch] text-accent-ink")}>
+          <p className={cn("text-lede", "max-w-[52ch] text-accent-ink")}>
             {solution.lead}
           </p>
           {solution.description.map((paragraph) => (
             <p
               key={paragraph}
-              className={cn(bodyText, "max-w-[62ch] text-ink-soft")}
+              className={cn("text-body", "max-w-[62ch] text-ink-soft")}
             >
               {paragraph}
             </p>
@@ -151,10 +144,10 @@ function SolutionBlock({
                 {solution.list.heading}
               </h3>
               <div className="flex flex-col gap-3">
-                <p className={cn(bodyText, "text-ink-soft")}>
+                <p className={cn("text-body", "text-ink-soft")}>
                   {solution.list.intro}
                 </p>
-                <p className={cn(bodyText, "text-ink-soft")}>
+                <p className={cn("text-body", "text-ink-soft")}>
                   {solution.list.outro}
                 </p>
               </div>
@@ -193,7 +186,12 @@ function DeliveryPhases() {
     <section className="dark flex flex-col gap-8 overflow-clip rounded-3xl bg-accent p-8 lg:gap-12 lg:p-12">
       <header className="flex flex-col items-start justify-center gap-3">
         <Badge variant="inverse">Phases</Badge>
-        <h2 className={cn(cardHeadingText, "text-ink lg:max-w-[208px]")}>
+        <h2
+          className={cn(
+            "text-headline leading-[1.1]",
+            "text-ink lg:max-w-[208px]"
+          )}
+        >
           How we deliver
         </h2>
       </header>
@@ -213,7 +211,7 @@ function DeliveryPhases() {
       </ol>
 
       <div className="flex flex-col items-start gap-6 border-t border-ink/20 pt-8">
-        <p className={cn(bodyText, "text-ink")}>{deliveryClose.text}</p>
+        <p className={cn("text-body", "text-ink")}>{deliveryClose.text}</p>
         <Button asChild size="lg" className={primaryPill}>
           <Link href={deliveryClose.cta.href}>{deliveryClose.cta.label}</Link>
         </Button>
@@ -232,7 +230,7 @@ function SolutionAreas() {
           {solutionsIntro.map((paragraph) => (
             <p
               key={paragraph}
-              className={cn(leadText, "max-w-[671px] text-ink")}
+              className={cn("text-lede", "max-w-[671px] text-ink")}
             >
               {paragraph}
             </p>

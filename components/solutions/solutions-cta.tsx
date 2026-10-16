@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
-import { headingText, primaryPill } from "@/components/landing/section"
+import { primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
 import { cn } from "@/lib/utils"
@@ -22,7 +22,7 @@ function SolutionsCta({ copy }: { copy: SolutionsPage["close"] }) {
           <div className="flex flex-col items-center justify-center gap-8 lg:flex-row lg:gap-16">
             <h2
               className={cn(
-                headingText,
+                "text-headline",
                 "text-center text-ink lg:max-w-[394px] lg:text-left"
               )}
             >

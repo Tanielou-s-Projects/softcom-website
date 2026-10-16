@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { ContactDetails } from "@/components/contact/contact-details"
 import { ContactForm } from "@/components/contact/contact-form"
 import { contactPage } from "@/content/contact/content"
-import { Container, displayText, leadText } from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { SiteHeader } from "@/components/site/site-header"
 import { getPageContent } from "@/sanity/lib/page-content"
@@ -45,8 +45,10 @@ export default async function Page() {
            */}
           <Reveal className="flex flex-col items-start gap-6">
             <Badge variant="brand">{copy.hero.badge}</Badge>
-            <h1 className={cn(displayText, "text-ink")}>{copy.hero.title}</h1>
-            <p className={cn(leadText, "max-w-[60ch] text-ink/80")}>
+            <h1 className={cn("text-display", "text-ink")}>
+              {copy.hero.title}
+            </h1>
+            <p className={cn("text-lede", "max-w-[60ch] text-ink/80")}>
               {copy.hero.intro}
             </p>
           </Reveal>

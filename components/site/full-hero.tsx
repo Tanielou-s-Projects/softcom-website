@@ -2,7 +2,7 @@ import * as React from "react"
 import Image from "next/image"
 
 import { Badge } from "@/components/ui/badge"
-import { Container, displayText, leadText } from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 
@@ -66,11 +66,13 @@ function FullHero({
         >
           <Reveal className="flex flex-col items-start gap-6">
             <Badge variant="brand">{badge}</Badge>
-            <h1 className={cn(displayText, "max-w-[20ch] text-ink")}>
+            <h1 className={cn("text-display", "max-w-[20ch] text-ink")}>
               {title}
             </h1>
             {lead ? (
-              <p className={cn(leadText, "max-w-[60ch] text-ink/80")}>{lead}</p>
+              <p className={cn("text-lede", "max-w-[60ch] text-ink/80")}>
+                {lead}
+              </p>
             ) : null}
           </Reveal>
           {rail ? <Reveal delay={0.1}>{rail}</Reveal> : null}

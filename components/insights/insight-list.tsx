@@ -4,11 +4,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { badgeVariants } from "@/components/ui/badge"
-import {
-  cardHeadingText,
-  Container,
-  leadText,
-} from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 import { InsightCard } from "@/components/insights/insight-card"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import type { Insight } from "@/content/insights/content"
@@ -108,7 +104,7 @@ function InsightList({
       />
 
       <Reveal className="flex flex-col gap-6">
-        <p className={cn(leadText, "max-w-[629px] leading-[1.6]")}>
+        <p className={cn("text-lede", "max-w-[629px] leading-[1.6]")}>
           {copy.intro.text}
         </p>
         <div aria-hidden className="h-px w-full bg-line" />
@@ -116,7 +112,12 @@ function InsightList({
 
       {featured && (
         <Reveal as="section" className="flex max-w-[921px] flex-col gap-12">
-          <h2 className={cn(cardHeadingText, "max-w-[359px] text-ink")}>
+          <h2
+            className={cn(
+              "text-headline leading-[1.1]",
+              "max-w-[359px] text-ink"
+            )}
+          >
             {copy.headings.featured}
           </h2>
           <InsightCard
@@ -130,7 +131,12 @@ function InsightList({
       {latest.length > 0 && (
         <section className="flex max-w-[917px] flex-col gap-12">
           <Reveal asChild>
-            <h2 className={cn(cardHeadingText, "max-w-[359px] text-ink")}>
+            <h2
+              className={cn(
+                "text-headline leading-[1.1]",
+                "max-w-[359px] text-ink"
+              )}
+            >
               {copy.headings.latest.split("\n").map((line, index) => (
                 <React.Fragment key={index}>
                   {index > 0 ? <br /> : null}

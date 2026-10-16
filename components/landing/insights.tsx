@@ -1,12 +1,7 @@
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
-import {
-  bodyText,
-  Container,
-  headingText,
-  primaryPill,
-} from "@/components/landing/section"
+import { Container, primaryPill } from "@/components/landing/section"
 import type { HomePage } from "@/content/home/page-copy"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
@@ -18,8 +13,8 @@ function Insights({ copy }: { copy: HomePage["ourThinking"] }) {
       <Reveal asChild>
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div className="flex flex-col gap-4">
-            <h2 className={cn(headingText, "text-ink")}>{copy.heading}</h2>
-            <p className={cn(bodyText, "max-w-[576px] text-ink-soft")}>
+            <h2 className={cn("text-headline", "text-ink")}>{copy.heading}</h2>
+            <p className={cn("text-body", "max-w-[576px] text-ink-soft")}>
               {copy.intro}
             </p>
           </div>
@@ -43,7 +38,7 @@ function Insights({ copy }: { copy: HomePage["ourThinking"] }) {
                 <h3 className="font-heading text-lg leading-[1.2] text-ink lg:text-2xl">
                   {perspective.title}
                 </h3>
-                <p className={cn(bodyText, "text-ink-soft")}>
+                <p className={cn("text-body", "text-ink-soft")}>
                   {perspective.summary}
                 </p>
                 <span className="text-sm font-medium text-ink underline-offset-4 group-hover:underline">

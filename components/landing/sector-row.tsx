@@ -5,7 +5,6 @@ import { motion, useInView } from "motion/react"
 
 import { Badge } from "@/components/ui/badge"
 import { DotMatrix } from "@/components/motion/dot-matrix"
-import { bodyText, cardHeadingText } from "@/components/landing/section"
 import type { Sector } from "@/content/home/content"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
@@ -129,14 +128,14 @@ function SectorCard({
              */}
             <h3
               className={cn(
-                cardHeadingText,
+                "text-headline leading-[1.1]",
                 "whitespace-pre-line lg:text-[clamp(1.75rem,14cqw,3.25rem)]"
               )}
             >
               {sector.title}
             </h3>
             {/* One fixed measure for every card, so line lengths match across the row. */}
-            <p className={cn(bodyText, "lg:max-w-[300px]")}>
+            <p className={cn("text-body", "lg:max-w-[300px]")}>
               {sector.description}
             </p>
           </div>

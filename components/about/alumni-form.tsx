@@ -9,11 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type { AlumniPage } from "@/content/about/page-copy"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  bodyText,
-  headingText,
-  primaryPill,
-} from "@/components/landing/section"
+import { primaryPill } from "@/components/landing/section"
 
 /** The same 48px pill fields as the contact form. */
 const field = "h-12 rounded-full px-4"
@@ -60,8 +56,8 @@ function AlumniForm({ copy }: { copy: AlumniPage["form"] }) {
       className="flex scroll-mt-24 flex-col gap-8 overflow-clip rounded-3xl bg-surface p-8 lg:p-[47px]"
     >
       <div className="flex flex-col gap-4">
-        <h2 className={cn(headingText, "text-ink")}>{copy.heading}</h2>
-        <p className={cn(bodyText, "max-w-[60ch] text-ink-soft")}>
+        <h2 className={cn("text-headline", "text-ink")}>{copy.heading}</h2>
+        <p className={cn("text-body", "max-w-[60ch] text-ink-soft")}>
           {copy.intro}
         </p>
       </div>

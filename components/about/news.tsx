@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 import type { AboutPage } from "@/content/about/page-copy"
-import { Container, headingText } from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 
@@ -20,7 +20,7 @@ function News({ copy }: { copy: AboutPage["news"] }) {
 
       <div className="flex min-w-0 flex-1 flex-col gap-10 lg:gap-12">
         <Reveal className="flex flex-col gap-3">
-          <h2 className={cn(headingText, "text-ink")}>{copy.heading}</h2>
+          <h2 className={cn("text-headline", "text-ink")}>{copy.heading}</h2>
           <p className="text-lg text-ink-soft">{copy.lead}</p>
         </Reveal>
 

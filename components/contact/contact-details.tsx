@@ -4,7 +4,6 @@ import {
 } from "@phosphor-icons/react/dist/ssr"
 
 import { cn } from "@/lib/utils"
-import { panelHeadingText } from "@/components/landing/section"
 import { getSettings } from "@/sanity/lib/data"
 
 /** Icon and text, on the design's 24px / 16px gutter. */
@@ -28,9 +27,7 @@ async function ContactDetails({ heading }: { heading: string }) {
   const contactDetails = await getSettings()
   return (
     <div className="flex flex-col gap-8 overflow-clip rounded-3xl bg-paper p-8 lg:flex-row lg:items-start lg:justify-between lg:p-[47px]">
-      <h2 className={cn(panelHeadingText, "max-w-[142px] text-ink")}>
-        {heading}
-      </h2>
+      <h2 className={cn("text-title", "max-w-[142px] text-ink")}>{heading}</h2>
 
       <div className="flex flex-col gap-8 sm:flex-row">
         <DetailRow icon={BuildingOfficeIcon}>

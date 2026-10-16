@@ -11,13 +11,7 @@ import {
   useTransform,
 } from "motion/react"
 
-import {
-  cardHeadingText,
-  Container,
-  headingText,
-  leadText,
-  primaryPill,
-} from "@/components/landing/section"
+import { Container, primaryPill } from "@/components/landing/section"
 import { Button } from "@/components/ui/button"
 import { capabilities } from "@/content/home/content"
 import type { HomePage } from "@/content/home/page-copy"
@@ -89,10 +83,10 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
       <div className="flex flex-col gap-10 lg:gap-16 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:justify-center lg:motion-safe:overflow-hidden">
         <Reveal asChild>
           <Container className="flex flex-col items-center gap-8 pt-6 text-center lg:gap-10">
-            <h2 className={cn(headingText, "max-w-[533px] text-ink")}>
+            <h2 className={cn("text-headline", "max-w-[533px] text-ink")}>
               {copy.heading}
             </h2>
-            <p className={cn(leadText, "max-w-[576px] text-ink-soft")}>
+            <p className={cn("text-lede", "max-w-[576px] text-ink-soft")}>
               {copy.intro}
             </p>
           </Container>
@@ -133,13 +127,23 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
                   capability.chipClassName
                 )}
               >
-                <p className={cn(cardHeadingText, "whitespace-nowrap")}>
+                <p
+                  className={cn(
+                    "text-headline leading-[1.1]",
+                    "whitespace-nowrap"
+                  )}
+                >
                   {capability.number}
                 </p>
               </div>
 
               <div className="relative flex flex-col items-start gap-5 overflow-clip rounded-4xl bg-paper p-6 text-ink lg:gap-6 lg:p-8">
-                <h3 className={cn(cardHeadingText, "lg:max-w-[359px]")}>
+                <h3
+                  className={cn(
+                    "text-headline leading-[1.1]",
+                    "lg:max-w-[359px]"
+                  )}
+                >
                   {capability.title}
                 </h3>
                 {/* Body size, not the larger lg body: two paragraphs share the slide. */}

@@ -7,7 +7,7 @@ import { AnimatePresence, motion, useInView } from "motion/react"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { milestones, type Milestone } from "@/content/about/content"
-import { bodyText, Container, headingText } from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 
 /**
  * "Our Journey" — a V7-style ruler timeline, adapted to the Softcom dark theme.
@@ -160,7 +160,7 @@ export function JourneyTimeline({
     >
       {/* Header — eyebrow + heading on the left, arrows on the right. */}
       <div className="flex items-end justify-between gap-6">
-        <h2 className={cn(headingText, "text-ink")}>{copy.heading}</h2>
+        <h2 className={cn("text-headline", "text-ink")}>{copy.heading}</h2>
         <div className="flex items-center gap-2">
           <Arrow direction="left" onClick={() => clampGo(-1)} />
           <Arrow direction="right" onClick={() => clampGo(1)} />
@@ -352,7 +352,7 @@ function SideText({ m }: { m: Milestone }) {
         className="flex max-w-[52ch] flex-col gap-3"
       >
         <h3 className="font-heading text-2xl text-ink">{m.headline}</h3>
-        <p className={cn(bodyText, "text-ink-soft")}>{m.description}</p>
+        <p className={cn("text-body", "text-ink-soft")}>{m.description}</p>
       </motion.div>
     </AnimatePresence>
   )
@@ -386,7 +386,7 @@ function BelowReveal({ m }: { m: Milestone }) {
             </span>
             <h3 className="font-heading text-2xl text-ink">{m.headline}</h3>
           </div>
-          <p className={cn(bodyText, "text-ink-soft")}>{m.description}</p>
+          <p className={cn("text-body", "text-ink-soft")}>{m.description}</p>
         </motion.div>
       </AnimatePresence>
     </div>
@@ -409,7 +409,7 @@ function CardReveal({ m }: { m: Milestone }) {
             {m.year}
           </span>
           <h3 className="font-heading text-3xl text-ink">{m.headline}</h3>
-          <p className={cn(bodyText, "text-ink-soft")}>{m.description}</p>
+          <p className={cn("text-body", "text-ink-soft")}>{m.description}</p>
         </motion.div>
       </AnimatePresence>
     </div>

@@ -5,13 +5,7 @@ import { cn } from "@/lib/utils"
 import { careersPage } from "@/content/about/page-copy"
 import { Button } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
-import {
-  bodyText,
-  Container,
-  headingText,
-  leadText,
-  primaryPill,
-} from "@/components/landing/section"
+import { Container, primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
@@ -56,7 +50,7 @@ export default async function Page() {
       <Container className="flex flex-col gap-4 py-12">
         {copy.intro.paragraphs.map((paragraph) => (
           <Reveal key={paragraph}>
-            <p className={cn(leadText, "max-w-[75ch] text-ink-soft")}>
+            <p className={cn("text-lede", "max-w-[75ch] text-ink-soft")}>
               {paragraph}
             </p>
           </Reveal>
@@ -65,12 +59,12 @@ export default async function Page() {
 
       <Container className="py-12">
         <Reveal className="flex flex-col gap-6 border-t border-line pt-12 lg:flex-row lg:gap-16">
-          <h2 className={cn(headingText, "text-ink lg:w-[40%]")}>
+          <h2 className={cn("text-headline", "text-ink lg:w-[40%]")}>
             {copy.work.heading}
           </h2>
           <div className="flex min-w-0 flex-1 flex-col gap-4">
             {copy.work.paragraphs.map((paragraph) => (
-              <p key={paragraph} className={cn(bodyText, "text-ink")}>
+              <p key={paragraph} className={cn("text-body", "text-ink")}>
                 {paragraph}
               </p>
             ))}
@@ -80,7 +74,9 @@ export default async function Page() {
 
       <Container id="roles" className="scroll-mt-24 py-12">
         <Reveal className="flex flex-col items-start gap-6 rounded-3xl bg-surface p-8 lg:p-[47px]">
-          <h2 className={cn(headingText, "text-ink")}>{copy.roles.heading}</h2>
+          <h2 className={cn("text-headline", "text-ink")}>
+            {copy.roles.heading}
+          </h2>
           {roles.length ? (
             <ul className="flex w-full flex-col">
               {roles.map((role) => (
@@ -115,7 +111,7 @@ export default async function Page() {
             </ul>
           ) : (
             <>
-              <p className={cn(bodyText, "max-w-[60ch] text-ink-soft")}>
+              <p className={cn("text-body", "max-w-[60ch] text-ink-soft")}>
                 {copy.roles.empty}
               </p>
               <Button asChild size="lg" className={primaryPill}>
