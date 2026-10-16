@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils"
 /*
  * Pill buttons with Daylight's rotated fill: on hover a tilted slab of the
  * fill colour swings up from below and floods the pill over a second, the
- * label lifting a pixel as its colour flips. Leaving is quick.
+ * label lifting a pixel as its colour flips. Leaving is quick. At rest the
+ * slab sits far enough below that its tilted corner clears even a wide pill.
  */
 const button = cva(
   "group relative isolate inline-flex h-12 shrink-0 items-center gap-3 overflow-hidden rounded-full pr-5 pl-6 text-[0.9375rem] font-medium tracking-[-0.01em] whitespace-nowrap transition-colors duration-300 ease-expo-out outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50",
@@ -50,7 +51,7 @@ function ButtonInner({
       <span
         aria-hidden="true"
         className={cn(
-          "absolute inset-0 -z-10 translate-y-[200%] scale-[1.8] rotate-[15deg] rounded-lg transition-transform duration-500 ease-expo-out group-hover:translate-y-0 group-hover:rotate-[8deg] group-hover:duration-1000",
+          "absolute inset-0 -z-10 translate-y-[350%] scale-[1.8] rotate-[15deg] rounded-lg transition-transform duration-500 ease-expo-out group-hover:translate-y-0 group-hover:rotate-[8deg] group-hover:duration-1000",
           FILL[tone]
         )}
       />

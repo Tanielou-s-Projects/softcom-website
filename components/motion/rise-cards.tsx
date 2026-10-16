@@ -3,7 +3,6 @@
 import * as React from "react"
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
@@ -89,7 +88,7 @@ function RiseCards({
   children: React.ReactNode
 }) {
   const ref = React.useRef<HTMLUListElement>(null)
-  const reduce = useReducedMotion()
+  const reduce = useMediaQuery("(prefers-reduced-motion: reduce)")
   const desktop = useMediaQuery("(min-width: 768px)")
   const { scrollYProgress } = useScroll({
     target: ref,
