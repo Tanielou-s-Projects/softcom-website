@@ -7,42 +7,53 @@ import { ButtonLink, ArrowLink } from "@/components/ui/button"
 import { withYears, type HomePage } from "@/content/home/page-copy"
 import { cn } from "@/lib/utils"
 import { createDitherField } from "@/components/motion/dither-field"
+import { DitherMark } from "@/components/motion/dither-mark"
 import { HeroHeader } from "./hero-header"
 
-/* Mirrors Tailwind's `md` breakpoint, which the markup below switches on. */
-const MOBILE_QUERY = "(max-width: 767.98px)"
-
 /*
- * The hero is one pinned scene, as fractions of its scroll
- * track: the circles play out, blue rises over them in the shared dither, the
+ * The hero is one pinned scene, as fractions of its scroll track: the conduit
+ * and the headline hold, blue rises over them in the shared dither, the
  * statement decodes out of the blue and holds; then the same blue drains away
  * — taking the statement with it — to reveal the mission photograph and its
  * copy. The blue that arrived is the blue that leaves — there is no section
  * edge.
+ *
+ * On the first visit of a session the same field also opens the page: it
+ * starts whole and drains to reveal the conduit (the preloader), so the load
+ * and the scroll are one dither, run backwards and then forwards.
  */
 const PHASE = {
-  circles: 0.26,
-  dither: [0.28, 0.42],
-  text: [0.4, 0.53],
-  actions: [0.52, 0.56],
+  dither: [0.1, 0.28],
+  text: [0.26, 0.4],
+  actions: [0.38, 0.43],
   /** Where the arrow rests on the statement, before the drain. */
-  hold: 0.62,
-  drain: [0.68, 0.82],
+  hold: 0.5,
+  drain: [0.56, 0.72],
   /**
    * The statement's exit, inside the drain: it fades while the draining
    * front (top first) crosses the middle of the screen where it sits, so the
    * dither reads as carrying it away. No exit of its own.
    */
-  statementOut: [0.7, 0.75],
-  mission: [0.79, 0.88],
-  missionCta: [0.87, 0.92],
+  statementOut: [0.58, 0.64],
+  mission: [0.7, 0.82],
+  missionCta: [0.81, 0.88],
 } as const
 
 /**
  * Where the scroll arrow stops, as fractions of the scene's scroll track: each
  * scene's resting points, in order. Past the last, it leaves the scene.
  */
-const SCROLL_STOPS = [PHASE.circles, PHASE.hold, PHASE.missionCta[1]]
+const SCROLL_STOPS = [PHASE.hold, PHASE.missionCta[1]]
+
+/* The load intro: once per session, never under reduced motion. */
+const INTRO_KEY = "softcom:intro"
+const INTRO_MS = 1600
+const REDUCE = "(prefers-reduced-motion: reduce)"
+/*
+ * Runs before first paint, so a first visit opens on the solid blue the
+ * dither starts from rather than flashing the hero first.
+ */
+const PENDING_SCRIPT = `try{if(!sessionStorage.getItem("${INTRO_KEY}")&&!matchMedia("${REDUCE}").matches&&scrollY<10)document.documentElement.dataset.intro="pending"}catch(e){}`
 
 /** Pixel glyphs for the decode — the same visual vocabulary as the dither. */
 const GLYPHS = "▖▗▘▝▚▞▙▟"
@@ -118,34 +129,6 @@ function ScrambleStatement({
   )
 }
 
-type Circle = { x: number; y: number; d: number }
-
-/**
- * Where the two circles start, in px for a viewport, as centres and
- * diameters: the wordmark's two dots at the scale of the screen. Equal
- * circles side by side, edge to edge, starting under the headline and running
- * off the bottom. `upper` is the blue circle that grows into Progress for
- * Society (toward the centre); `lower` is the photograph, which keeps clear
- * of it as it grows.
- */
-function circlesOf(
-  w: number,
-  h: number,
-  mobile: boolean,
-  /** The bottom of the headline, in scene px. */
-  headlineBottom: number | null
-): { upper: Circle; lower: Circle } {
-  const gap = mobile ? 8 : 16
-  const d = (w - gap) / 2
-  const under = (headlineBottom ?? h * 0.3) + gap * 2
-  const cy = Math.max(h * 0.62, under + d / 2)
-  return {
-    lower: { x: d / 2, y: cy, d },
-    upper: { x: w - d / 2, y: cy, d },
-  }
-}
-
-// Illustrative story using existing photography, not a customer case study.
 export function PortalHero({ copy }: { copy: HeroCopy }) {
   const statement = statementOf(copy)
   const track = useRef<HTMLDivElement>(null)
@@ -156,7 +139,6 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
   const missionRef = useRef<HTMLDivElement>(null)
   const missionCopyRef = useRef<HTMLDivElement>(null)
   const missionCtaRef = useRef<HTMLDivElement>(null)
-  const headlineRef = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
     const element = track.current
     if (!element) return
@@ -181,6 +163,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
           char.dataset.glyph = GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
       })
     }
+    let intro = 0
     let frame = 0
     const update = () => {
       frame = 0
@@ -192,15 +175,15 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
           -element.getBoundingClientRect().top / Math.max(1, distance)
         )
       )
-      const t = Math.min(1, raw / PHASE.circles)
-      const p = media.matches ? 0 : t * t * (3 - 2 * t)
       const reduce = media.matches
       const drain = ease(segment(raw, PHASE.drain))
-      const d = reduce
+      const scrolled = reduce
         ? 0
         : raw < PHASE.drain[0]
           ? ease(segment(raw, PHASE.dither))
           : 1 - drain
+      // The intro holds the field whole and lets it go; scroll takes over.
+      const d = Math.max(scrolled, intro)
       if (dither) {
         dither.resize()
         dither.draw(d)
@@ -237,52 +220,27 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
         missionCtaRef.current,
         reduce ? 1 : ease(segment(raw, PHASE.missionCta))
       )
-      const width = element.clientWidth
-      const height = window.innerHeight
-      const mobile = window.matchMedia(MOBILE_QUERY).matches
-      const headline = headlineRef.current
-      const band = headline?.offsetParent as HTMLElement | null
-      const headlineBottom =
-        headline && band
-          ? band.offsetTop + headline.offsetTop + headline.offsetHeight
-          : null
-      const { upper, lower } = circlesOf(width, height, mobile, headlineBottom)
-      element.style.setProperty("--upper-x", `${upper.x}px`)
-      element.style.setProperty("--upper-y", `${upper.y}px`)
-      element.style.setProperty("--diameter", `${upper.d}px`)
-      element.style.setProperty("--lower-diameter", `${lower.d}px`)
-      const upperRadius = upper.d / 2
-      const lowerRadius = lower.d / 2
-      const scale = 1 - p * 0.72
-      const growingRadius =
-        upperRadius + (Math.max(width, height) * 0.75 - upperRadius) * p
-      // The blue circle's centre travels to the middle of the screen.
-      const ux = upper.x + (width / 2 - upper.x) * p
-      const uy = upper.y + (height / 2 - upper.y) * p
-      // Push along the line joining the initial centres. Centre distance
-      // always equals both rendered radii plus a gap, even on reverse scroll.
-      const dx = lower.x - upper.x
-      const dy = lower.y - upper.y
-      const length = Math.max(1, Math.hypot(dx, dy))
-      const rest = length - upperRadius - lowerRadius
-      // Starts where it was placed and closes to a fixed gap as it plays.
-      const gap = mobile ? 12 : 24
-      const separation =
-        growingRadius + lowerRadius * scale + Math.max(gap, rest * (1 - p))
-      const x = ux + (dx / length) * separation
-      const y = uy + (dy / length) * separation
-      element.style.setProperty("--lower-x", `${x}px`)
-      element.style.setProperty("--lower-y", `${y}px`)
-      element.style.setProperty("--lower-visible", "visible")
-      element.style.setProperty("--p", String(p))
-      element.style.setProperty("--exit", String(Math.max(0, 1 - p * 3)))
-      element.style.setProperty(
-        "--arrival",
-        String(Math.max(0, (p - 0.55) / 0.45))
-      )
     }
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update)
+    }
+    const root = document.documentElement
+    let introFrame = 0
+    if (root.dataset.intro === "pending") {
+      sessionStorage.setItem(INTRO_KEY, "1")
+      intro = 1
+      root.style.overflow = "hidden"
+      const start = performance.now()
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / INTRO_MS)
+        intro = 1 - ease(t)
+        update()
+        // The solid cover hands over to the field on its first frame.
+        delete root.dataset.intro
+        if (t < 1) introFrame = requestAnimationFrame(tick)
+        else root.style.overflow = ""
+      }
+      introFrame = requestAnimationFrame(tick)
     }
     update()
     window.addEventListener("scroll", schedule, { passive: true })
@@ -290,6 +248,8 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
     media.addEventListener("change", schedule)
     return () => {
       cancelAnimationFrame(frame)
+      cancelAnimationFrame(introFrame)
+      root.style.overflow = ""
       window.removeEventListener("scroll", schedule)
       window.removeEventListener("resize", schedule)
       media.removeEventListener("change", schedule)
@@ -298,97 +258,32 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
   }, [])
   return (
     <div className="bg-paper text-ink">
+      <script dangerouslySetInnerHTML={{ __html: PENDING_SCRIPT }} />
       <HeroHeader />
-      <div
-        ref={track}
-        className={cn(
-          "h-[560vh]",
-          // Circle sizes are written by the component (circlesOf); these
-          // match them for the first paint.
-          "[--arrival:0] [--exit:1] [--p:0] [--row:48%] [--split:60%] motion-reduce:h-auto md:[--row:52%] md:[--split:70%]",
-          "[--diameter:calc((100vw-8px)/2)] [--lower-diameter:calc((100vw-8px)/2)] md:[--diameter:calc((100vw-16px)/2)] md:[--lower-diameter:calc((100vw-16px)/2)]"
-        )}
-      >
-        <section
-          aria-labelledby="story-title"
-          className={cn(
-            "sticky top-0 isolate h-screen overflow-hidden motion-reduce:relative motion-reduce:h-auto motion-reduce:min-h-screen",
-            "[--hero-type-size:clamp(20px,5.3vw,38px)] md:[--hero-type-size:clamp(28px,min(5.7vw,11vh),100px)]"
-          )}
-        >
-          <div
-            className={cn(
-              "softcom-portal-exit-up absolute top-0 left-0 flex",
-              "motion-reduce:relative motion-reduce:m-0 motion-reduce:h-auto motion-reduce:min-h-[40vh] motion-reduce:w-full motion-reduce:transform-none motion-reduce:px-[5vw] motion-reduce:pt-20 motion-reduce:pb-10 motion-reduce:opacity-100 motion-reduce:md:mt-0 motion-reduce:md:px-[5vw] motion-reduce:md:pt-20 motion-reduce:md:pb-10",
-              "h-[45%] w-[62%] items-start px-3.5 pt-24 pb-5 md:px-[3.2vw] md:pb-8"
-            )}
-          >
-            <h1
-              id="story-title"
-              ref={headlineRef}
-              className={cn(
-                "font-heading font-normal tracking-[-0.055em]",
-                // Size before leading: tailwind-merge drops a leading-* that a later text-* follows.
-                "text-(length:--hero-type-size)",
-                "leading-[1.04]"
-              )}
-            >
-              {copy.headlineFirstLine}
-              <br />
-              {copy.headlineSecondLine}
-            </h1>
-          </div>
-          {/* Always dark: white type over a shaded photograph in either theme. */}
+      <div ref={track} className="h-[460vh] motion-reduce:h-auto">
+        <div className="sticky top-0 isolate h-screen overflow-hidden motion-reduce:relative motion-reduce:h-auto motion-reduce:min-h-screen">
+          {/*
+           * The opening: the conduit — the brand's two discs joined, work
+           * moving between them — over the headline. Always dark, as the
+           * Solutions hero it comes from.
+           */}
           <section
-            aria-labelledby="progress-title"
-            className={cn(
-              "dark @container absolute top-0 z-4 flex items-center justify-center overflow-hidden text-ink",
-              "motion-reduce:relative motion-reduce:inset-auto motion-reduce:h-[60vh] motion-reduce:w-full motion-reduce:[clip-path:none]",
-              "softcom-portal-circle inset-0 size-full bg-accent"
-            )}
+            aria-labelledby="story-title"
+            className="dark absolute inset-0 flex flex-col justify-end bg-black text-ink motion-reduce:relative motion-reduce:min-h-screen"
           >
-            <Image
-              src={copy.progressImage}
-              alt={copy.progressImageAlt}
-              fill
-              priority
-              sizes="100vw"
-              className={cn(
-                "object-cover object-[center_48%]",
-                "softcom-portal-photo-in motion-reduce:opacity-100"
-              )}
-            />
-            <div className="softcom-portal-shade absolute inset-0 bg-[color-mix(in_oklab,var(--color-accent-night),black_60%)] motion-reduce:opacity-65" />
-            <h2
-              id="progress-title"
-              className={cn(
-                "softcom-portal-arrival relative z-1 p-3.5 text-center font-heading font-normal motion-reduce:transform-none motion-reduce:opacity-100 md:p-6",
-                "text-(length:--hero-type-size) leading-[1.04] tracking-[-0.055em]"
-              )}
-            >
-              {copy.progressFirstLine}
-              <br />
-              {copy.progressSecondLine}
-            </h2>
+            <div aria-hidden className="absolute inset-x-0 top-0 bottom-0">
+              <DitherMark layout="conduit" />
+            </div>
+            <div data-hero-copy="" className="relative shell pb-24 md:pb-28">
+              <h1 id="story-title" className="max-w-[16ch] text-display">
+                {copy.headlineFirstLine} {copy.headlineSecondLine}
+                <br />
+                <span className="text-ink-soft">
+                  {copy.progressFirstLine} {copy.progressSecondLine}
+                </span>
+              </h1>
+            </div>
           </section>
-          <figure
-            className={cn(
-              "absolute z-3 overflow-hidden motion-reduce:hidden",
-              "softcom-portal-orbit rounded-full"
-            )}
-          >
-            <Image
-              src={copy.portalImage}
-              alt={copy.portalImageAlt}
-              fill
-              priority
-              sizes="(max-width: 767px) 60vw, 70vw"
-              className="object-cover object-[center_48%]"
-            />
-            {/* A layer over the photo rather than a background behind it, so
-                no cyan fringe shows at the circle's antialiased edge. */}
-            <div className="softcom-portal-tint-in absolute inset-0 bg-signal" />
-          </figure>
           <button
             className="group absolute bottom-22 left-1/2 z-8 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-accent-ink transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
             aria-label="Scroll to the next section"
@@ -487,7 +382,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
             <div
               ref={fallbackRef}
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-6 bg-accent opacity-0 motion-reduce:hidden"
+              className="softcom-intro-cover pointer-events-none absolute inset-0 z-6 bg-accent opacity-0 motion-reduce:hidden"
             />
             <canvas
               ref={canvasRef}
@@ -513,7 +408,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
               </div>
             </div>
           </>
-        </section>
+        </div>
       </div>
     </div>
   )

@@ -23,12 +23,6 @@ export const homePage = {
     headlineSecondLine: "Organisations.",
     progressFirstLine: "Progress",
     progressSecondLine: "for Society.",
-    progressImage: "/images/market-payment.jpg",
-    progressImageAlt:
-      "A market trader at her stall confirming a payment on her phone",
-    portalImage: "/images/pos-agent.jpg",
-    portalImageAlt:
-      "A mobile-money agent handing cash to a customer under a blue umbrella",
     scrollLabel: "Scroll",
     statementBefore: "Softcom is a technology and innovation company with ",
     statementHighlight: "{years} years",

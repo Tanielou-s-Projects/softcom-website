@@ -475,22 +475,6 @@ export type HomePage = {
     headlineSecondLine?: string
     progressFirstLine?: string
     progressSecondLine?: string
-    progressImage?: {
-      asset?: SanityImageAssetReference
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: "image"
-    }
-    progressImageAlt?: string
-    portalImage?: {
-      asset?: SanityImageAssetReference
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: "image"
-    }
-    portalImageAlt?: string
     scrollLabel?: string
     statementBefore?: string
     statementHighlight?: string

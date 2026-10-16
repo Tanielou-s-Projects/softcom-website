@@ -215,60 +215,17 @@
 }
 
 @layer components {
-  /*
-   * Portal hero (portal-hero.tsx). Only the scroll-driven geometry lives here:
-   * the component writes --p (eased progress), --exit, --arrival and
-   * --lower-x/--lower-y on the track each frame. Layout and
-   * colour are utilities on the elements, and their `motion-reduce:` variants
-   * win over these because utilities sit in a later layer.
-   */
-  .softcom-portal-exit-up {
-    transform: translateY(calc(var(--p) * -110%));
-    opacity: var(--exit);
-  }
-  /*
-   * Circles: a true circle until its edge has passed beyond the viewport. It
-   * starts where the component puts it (--upper-x/y; the fallbacks approximate
-   * it for the first paint) and travels to the centre.
-   */
-  .softcom-portal-circle {
-    clip-path: circle(
-      calc(var(--diameter) / 2 + (75vmax - var(--diameter) / 2) * var(--p)) at
-        calc(
-          var(--upper-x, calc(100% - var(--diameter) / 2)) +
-            (50% - var(--upper-x, calc(100% - var(--diameter) / 2))) * var(--p)
-        )
-        calc(var(--upper-y, 70%) + (50% - var(--upper-y, 70%)) * var(--p))
-    );
-  }
-  /* Circles: centre is solved in JS against the growing circle's radius. */
-  .softcom-portal-orbit {
-    visibility: var(--lower-visible, hidden);
-    left: calc(var(--lower-x, 0px) - var(--lower-diameter) / 2);
-    top: calc(var(--lower-y, 0px) - var(--lower-diameter) / 2);
-    width: var(--lower-diameter);
-    height: var(--lower-diameter);
-    transform: scale(calc(1 - var(--p) * 0.72));
-  }
-  /* Blue first; the photograph arrives before the headline does. */
-  .softcom-portal-photo-in {
-    opacity: clamp(0, calc(var(--p) * 2), 1);
-  }
-  /* The lower photo resolves to cyan while still in view. */
-  .softcom-portal-tint-in {
-    opacity: clamp(0, calc(var(--p) * 3), 1);
-  }
-  .softcom-portal-shade {
-    opacity: calc(var(--arrival) * 0.65);
-  }
-  .softcom-portal-arrival {
-    opacity: var(--arrival);
-    transform: translateY(calc((1 - var(--arrival)) * 40px));
-  }
-
   /* Photographs: greyscale until scrolled into view (color-reveal.tsx). */
   .softcom-color-reveal img {
     filter: grayscale(calc(1 - var(--reveal, 1)));
+  }
+
+  /*
+   * The first-visit intro's cover (portal-hero.tsx): solid blue from first
+   * paint until the dither field takes over on its first frame.
+   */
+  [data-intro="pending"] .softcom-intro-cover {
+    opacity: 1;
   }
 
   .softcom-pixel-cascade rect {
