@@ -17,6 +17,7 @@ function SmoothScroll() {
 
     const lenis = new Lenis({ lerp: 0.12, anchors: true, autoRaf: true })
     smoothScroll.lenis = lenis
+    if (smoothScroll.locked) lenis.stop()
     return () => {
       lenis.destroy()
       smoothScroll.lenis = null
