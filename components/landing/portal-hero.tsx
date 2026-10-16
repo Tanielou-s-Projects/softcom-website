@@ -275,10 +275,12 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
               <DitherMark layout="conduit" />
             </div>
             <div data-hero-copy="" className="relative shell pb-24 md:pb-28">
-              <h1 id="story-title" className="max-w-[16ch] text-display">
-                {copy.headlineFirstLine} {copy.headlineSecondLine}
-                <br />
-                <span className="text-ink-soft">
+              <h1 id="story-title" className="text-display">
+                {/* One sentence per line, as the brand line is written. */}
+                <span className="block">
+                  {copy.headlineFirstLine} {copy.headlineSecondLine}
+                </span>
+                <span className="block text-ink-soft">
                   {copy.progressFirstLine} {copy.progressSecondLine}
                 </span>
               </h1>
