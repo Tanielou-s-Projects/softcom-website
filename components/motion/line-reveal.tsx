@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "motion/react"
+import { motion, useInView } from "motion/react"
 
 import { useMediaQuery } from "@/hooks/use-media-query"
 
@@ -39,6 +39,12 @@ function LineReveal({
   const [lines, setLines] = React.useState<string[] | null>(null)
   // Once it has played, a regroup shows the lines in place, no replay.
   const [played, setPlayed] = React.useState(false)
+  /*
+   * Watched on the heading itself, never the lines: each line starts pushed
+   * below its overflow-hidden mask, so it is clipped out of view and its own
+   * whileInView would never fire.
+   */
+  const inView = useInView(ref, { once: true, amount: 0.6 })
   const words = React.useMemo(() => children.split(/\s+/), [children])
 
   // Group the words by the line they sit on, measured before paint.
@@ -100,12 +106,7 @@ function LineReveal({
                 className="block"
                 initial={played ? false : { y: "110%" }}
                 onAnimationComplete={() => setPlayed(true)}
-                {...(immediate
-                  ? { animate: { y: "0%" } }
-                  : {
-                      whileInView: { y: "0%" },
-                      viewport: { once: true, amount: 0.6 },
-                    })}
+                animate={immediate || inView ? { y: "0%" } : undefined}
                 transition={{
                   duration: 0.9,
                   ease: EASE,
