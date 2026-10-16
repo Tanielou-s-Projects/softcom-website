@@ -1,10 +1,8 @@
 /* eslint-disable @next/next/no-img-element -- local SVG wordmark, intentionally not run through next/image */
 
-import Link from "next/link"
-
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Container, primaryPill } from "@/components/landing/section"
+import { ButtonLink } from "@/components/ui/button"
+import { Container } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import type { Product } from "@/content/products/content"
 import type { ProductsPage } from "@/content/products/page-copy"
@@ -23,11 +21,13 @@ function ExploreLink({
   className?: string
 }) {
   return (
-    <Button asChild size="lg" className={cn(primaryPill, className)}>
-      <Link href={`/enterprise-products/${product.id}`}>
-        {explore} {product.name}
-      </Link>
-    </Button>
+    <ButtonLink
+      href={`/enterprise-products/${product.id}`}
+      tone="ink"
+      className={className}
+    >
+      {explore} {product.name}
+    </ButtonLink>
   )
 }
 

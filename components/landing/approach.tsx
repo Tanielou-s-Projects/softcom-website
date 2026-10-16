@@ -1,7 +1,5 @@
-import Link from "next/link"
-
-import { Button } from "@/components/ui/button"
-import { Container, primaryPill } from "@/components/landing/section"
+import { ButtonLink } from "@/components/ui/button"
+import { Container } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 import type { HomePage } from "@/content/home/page-copy"
@@ -21,9 +19,9 @@ function Approach({ copy }: { copy: HomePage["approach"] }) {
       >
         <p className={cn("text-body", "text-ink")}>{copy.lead}</p>
         <p className={cn("text-body", "text-ink-soft")}>{copy.body}</p>
-        <Button asChild size="lg" className={cn(primaryPill, "mt-2")}>
-          <Link href={copy.cta.href}>{copy.cta.label}</Link>
-        </Button>
+        <ButtonLink href={copy.cta.href} tone="ink" className="mt-2">
+          {copy.cta.label}
+        </ButtonLink>
       </Reveal>
     </Container>
   )

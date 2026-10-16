@@ -1,7 +1,4 @@
-import Link from "next/link"
-
-import { Button } from "@/components/ui/button"
-import { primaryPill } from "@/components/landing/section"
+import { ButtonLink } from "@/components/ui/button"
 import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
 import { cn } from "@/lib/utils"
@@ -33,9 +30,9 @@ function SolutionsCta({ copy }: { copy: SolutionsPage["close"] }) {
             </p>
           </div>
 
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href={copy.ctaHref}>{copy.ctaLabel}</Link>
-          </Button>
+          <ButtonLink href={copy.ctaHref} tone="light">
+            {copy.ctaLabel}
+          </ButtonLink>
         </div>
       </Reveal>
     </CtaPanel>

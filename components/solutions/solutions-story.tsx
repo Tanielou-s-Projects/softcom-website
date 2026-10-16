@@ -1,10 +1,9 @@
 import * as React from "react"
-import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Container, primaryPill } from "@/components/landing/section"
+import { ButtonLink } from "@/components/ui/button"
+import { Container } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { ScrollWords } from "@/components/motion/scroll-words"
 import { CityFigure } from "@/components/solutions/figures/city/figure"
@@ -140,9 +139,9 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
         </RevealStagger>
         {copy.ctaLabel ? (
           <Reveal className="flex justify-center pt-6">
-            <Button asChild size="lg" className={primaryPill}>
-              <Link href={copy.ctaHref}>{copy.ctaLabel}</Link>
-            </Button>
+            <ButtonLink href={copy.ctaHref} tone="ink">
+              {copy.ctaLabel}
+            </ButtonLink>
           </Reveal>
         ) : null}
       </Container>
@@ -246,9 +245,9 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
                   {copy.shapedText}
                 </p>
                 {copy.ctaLabel ? (
-                  <Button asChild size="lg" className={primaryPill}>
-                    <Link href={copy.ctaHref}>{copy.ctaLabel}</Link>
-                  </Button>
+                  <ButtonLink href={copy.ctaHref} tone="ink">
+                    {copy.ctaLabel}
+                  </ButtonLink>
                 ) : null}
               </Reveal>
             </div>
@@ -318,9 +317,9 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
               <p className="max-w-[40ch] font-heading text-2xl leading-[1.25] font-light text-ink">
                 {copy.closeText}
               </p>
-              <Button asChild size="lg" className={primaryPill}>
-                <Link href={copy.closeCtaHref}>{copy.closeCtaLabel}</Link>
-              </Button>
+              <ButtonLink href={copy.closeCtaHref} tone="light">
+                {copy.closeCtaLabel}
+              </ButtonLink>
             </div>
           </div>
         </Reveal>

@@ -1,7 +1,4 @@
-import Link from "next/link"
-
-import { Button } from "@/components/ui/button"
-import { primaryPill } from "@/components/landing/section"
+import { ButtonLink } from "@/components/ui/button"
 import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
 import { cn } from "@/lib/utils"
@@ -54,9 +51,9 @@ async function ClosingCta({
               {lead}
             </p>
           ) : null}
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href={buttonHref}>{buttonLabel}</Link>
-          </Button>
+          <ButtonLink href={buttonHref} tone="light">
+            {buttonLabel}
+          </ButtonLink>
         </div>
       </Reveal>
     </CtaPanel>

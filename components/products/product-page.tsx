@@ -1,9 +1,8 @@
 import * as React from "react"
-import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Container, ghostPill, primaryPill } from "@/components/landing/section"
+import { ArrowLink, ButtonLink } from "@/components/ui/button"
+import { Container } from "@/components/landing/section"
 import { DitherPanel } from "@/components/motion/dither-panel"
 import { Reveal } from "@/components/motion/reveal"
 import { CtaPanel } from "@/components/site/cta-panel"
@@ -51,15 +50,13 @@ function ProductHero({
       lead={page.lead[0]}
       rail={
         <div className="flex flex-wrap gap-2">
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href={page.primary.href}>{page.primary.label}</Link>
-          </Button>
+          <ButtonLink href={page.primary.href} tone="light">
+            {page.primary.label}
+          </ButtonLink>
           {page.sections.length > 0 || page.lead.length > 1 ? (
-            <Button asChild size="lg" variant="ghost" className={ghostPill}>
-              <Link href="#overview">
-                {explore} {name}
-              </Link>
-            </Button>
+            <ArrowLink href="#overview">
+              {explore} {name}
+            </ArrowLink>
           ) : null}
         </div>
       }
@@ -252,9 +249,9 @@ function ProductCta({ page }: { page: ProductPage }) {
               {page.close.text}
             </p>
           </div>
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href={page.close.cta.href}>{page.close.cta.label}</Link>
-          </Button>
+          <ButtonLink href={page.close.cta.href} tone="light">
+            {page.close.cta.label}
+          </ButtonLink>
         </div>
       </Reveal>
     </CtaPanel>

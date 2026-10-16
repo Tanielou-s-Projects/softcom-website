@@ -1,14 +1,13 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { aboutPage } from "@/content/about/page-copy"
 import { AboutHero } from "@/components/about/about-hero"
 import { JourneyTimeline } from "@/components/about/journey-timeline"
 import { News } from "@/components/about/news"
-import { Button } from "@/components/ui/button"
+import { ButtonLink, ArrowLink } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
-import { Container, ghostPill, primaryPill } from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { Team } from "@/components/landing/team"
 import { PageEnd } from "@/components/site/page-end"
@@ -119,16 +118,12 @@ export default async function Page() {
                 {copy.careers.body}
               </p>
               <div className="flex flex-wrap items-center gap-2">
-                <Button asChild size="lg" className={primaryPill}>
-                  <Link href={copy.careers.primaryHref}>
-                    {copy.careers.primaryLabel}
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="ghost" className={ghostPill}>
-                  <Link href={copy.careers.secondaryHref}>
-                    {copy.careers.secondaryLabel}
-                  </Link>
-                </Button>
+                <ButtonLink href={copy.careers.primaryHref} tone="ink">
+                  {copy.careers.primaryLabel}
+                </ButtonLink>
+                <ArrowLink href={copy.careers.secondaryHref}>
+                  {copy.careers.secondaryLabel}
+                </ArrowLink>
               </div>
             </Reveal>
           </Container>

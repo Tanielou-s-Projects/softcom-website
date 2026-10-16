@@ -1,5 +1,3 @@
-import Link from "next/link"
-
 import { Approach } from "@/components/landing/approach"
 import { Capabilities } from "@/components/landing/capabilities"
 import { ClosingCta } from "@/components/landing/closing-cta"
@@ -7,9 +5,8 @@ import { Hero } from "@/components/landing/hero"
 import { Insights } from "@/components/landing/insights"
 import { Sectors } from "@/components/landing/sectors"
 import { Stats } from "@/components/landing/stats"
-import { ghostPill, primaryPill } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
-import { Button } from "@/components/ui/button"
+import { ButtonLink, ArrowLink } from "@/components/ui/button"
 import { PageEnd } from "@/components/site/page-end"
 import { Section } from "@/components/site/section"
 import { homePage } from "@/content/home/page-copy"
@@ -35,16 +32,12 @@ export default async function Page() {
       <Section>
         <Stats items={copy.numbers.items}>
           <Reveal className="flex flex-wrap items-center gap-2">
-            <Button asChild size="lg" className={primaryPill}>
-              <Link href={copy.numbers.primaryCta.href}>
-                {copy.numbers.primaryCta.label}
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="ghost" className={ghostPill}>
-              <Link href={copy.numbers.secondaryCta.href}>
-                {copy.numbers.secondaryCta.label}
-              </Link>
-            </Button>
+            <ButtonLink href={copy.numbers.primaryCta.href} tone="ink">
+              {copy.numbers.primaryCta.label}
+            </ButtonLink>
+            <ArrowLink href={copy.numbers.secondaryCta.href}>
+              {copy.numbers.secondaryCta.label}
+            </ArrowLink>
           </Reveal>
         </Stats>
       </Section>

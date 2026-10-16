@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type { AlumniPage } from "@/content/about/page-copy"
 import { Textarea } from "@/components/ui/textarea"
-import { primaryPill } from "@/components/landing/section"
 
 /** The same 48px pill fields as the contact form. */
 const field = "h-12 rounded-full px-4"
@@ -125,7 +124,7 @@ function AlumniForm({ copy }: { copy: AlumniPage["form"] }) {
         </Label>
       </div>
 
-      <Button type="submit" size="lg" className={cn(primaryPill, "self-start")}>
+      <Button type="submit" tone="ink" className="self-start">
         {copy.submit}
       </Button>
     </form>

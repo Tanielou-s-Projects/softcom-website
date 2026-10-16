@@ -1,7 +1,7 @@
 import Link from "next/link"
 
-import { Button } from "@/components/ui/button"
-import { Container, primaryPill } from "@/components/landing/section"
+import { ButtonLink } from "@/components/ui/button"
+import { Container } from "@/components/landing/section"
 import type { HomePage } from "@/content/home/page-copy"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
@@ -18,9 +18,9 @@ function Insights({ copy }: { copy: HomePage["ourThinking"] }) {
               {copy.intro}
             </p>
           </div>
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href={copy.cta.href}>{copy.cta.label}</Link>
-          </Button>
+          <ButtonLink href={copy.cta.href} tone="ink">
+            {copy.cta.label}
+          </ButtonLink>
         </header>
       </Reveal>
 

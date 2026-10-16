@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { careersPage } from "@/content/about/page-copy"
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
-import { Container, primaryPill } from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 import { Reveal } from "@/components/motion/reveal"
 import { HeroHeader } from "@/components/landing/hero-header"
 import { FullHero, HeroPhoto, HeroRail } from "@/components/site/full-hero"
@@ -40,9 +39,9 @@ export default async function Page() {
           rail={
             <HeroRail>
               <div>
-                <Button asChild size="lg" className={primaryPill}>
-                  <Link href="#roles">{copy.hero.ctaLabel}</Link>
-                </Button>
+                <ButtonLink href="#roles" tone="light">
+                  {copy.hero.ctaLabel}
+                </ButtonLink>
               </div>
             </HeroRail>
           }
@@ -101,16 +100,15 @@ export default async function Page() {
                       </span>
                     </div>
                     {role.apply ? (
-                      <Button asChild size="lg" className={primaryPill}>
-                        <a
-                          href={role.apply}
-                          {...(role.apply.startsWith("http")
-                            ? { target: "_blank", rel: "noreferrer" }
-                            : {})}
-                        >
-                          {copy.roles.applyLabel}
-                        </a>
-                      </Button>
+                      <ButtonLink
+                        href={role.apply}
+                        tone="ink"
+                        {...(role.apply.startsWith("http")
+                          ? { target: "_blank", rel: "noreferrer" }
+                          : {})}
+                      >
+                        {copy.roles.applyLabel}
+                      </ButtonLink>
                     ) : null}
                   </li>
                 ))}
@@ -120,9 +118,9 @@ export default async function Page() {
                 <p className={cn("text-body", "max-w-[60ch] text-ink-soft")}>
                   {copy.roles.empty}
                 </p>
-                <Button asChild size="lg" className={primaryPill}>
-                  <Link href={copy.roles.ctaHref}>{copy.roles.ctaLabel}</Link>
-                </Button>
+                <ButtonLink href={copy.roles.ctaHref} tone="ink">
+                  {copy.roles.ctaLabel}
+                </ButtonLink>
               </>
             )}
           </Reveal>

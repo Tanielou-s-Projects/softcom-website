@@ -1,12 +1,11 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { alumniPage } from "@/content/about/page-copy"
 import { AlumniForm } from "@/components/about/alumni-form"
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 import { ClosingCta } from "@/components/landing/closing-cta"
-import { Container, primaryPill } from "@/components/landing/section"
+import { Container } from "@/components/landing/section"
 import { PageEnd } from "@/components/site/page-end"
 import { Section } from "@/components/site/section"
 import { HeroHeader } from "@/components/landing/hero-header"
@@ -44,9 +43,9 @@ export default async function Page() {
           rail={
             <HeroRail>
               <div>
-                <Button asChild size="lg" className={primaryPill}>
-                  <Link href="#join">{copy.hero.ctaLabel}</Link>
-                </Button>
+                <ButtonLink href="#join" tone="light">
+                  {copy.hero.ctaLabel}
+                </ButtonLink>
               </div>
             </HeroRail>
           }

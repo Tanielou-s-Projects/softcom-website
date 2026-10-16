@@ -1,12 +1,10 @@
 "use client"
 
 import Image from "next/image"
-import Link from "next/link"
 import { useEffect, useRef } from "react"
 import { PixelArrowDown } from "@/components/ui/pixel-arrow-down"
-import { Button } from "@/components/ui/button"
+import { ButtonLink, ArrowLink } from "@/components/ui/button"
 import { withYears, type HomePage } from "@/content/home/page-copy"
-import { ghostPill, primaryPill } from "@/components/landing/section"
 import { cn } from "@/lib/utils"
 import { createDitherField } from "@/components/motion/dither-field"
 import { HeroHeader } from "./hero-header"
@@ -72,12 +70,12 @@ const statementOf = (copy: HeroCopy): Run[] =>
 function StatementActions({ copy }: { copy: HeroCopy }) {
   return (
     <>
-      <Button asChild size="lg" className={primaryPill}>
-        <Link href={copy.primaryCta.href}>{copy.primaryCta.label}</Link>
-      </Button>
-      <Button asChild size="lg" variant="ghost" className={ghostPill}>
-        <Link href={copy.secondaryCta.href}>{copy.secondaryCta.label}</Link>
-      </Button>
+      <ButtonLink href={copy.primaryCta.href} tone="light">
+        {copy.primaryCta.label}
+      </ButtonLink>
+      <ArrowLink href={copy.secondaryCta.href}>
+        {copy.secondaryCta.label}
+      </ArrowLink>
     </>
   )
 }
@@ -480,11 +478,9 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
                 ref={missionCtaRef}
                 className="opacity-0 motion-reduce:opacity-100"
               >
-                <Button asChild size="lg" className={primaryPill}>
-                  <Link href={copy.missionCta.href}>
-                    {copy.missionCta.label}
-                  </Link>
-                </Button>
+                <ButtonLink href={copy.missionCta.href} tone="light">
+                  {copy.missionCta.label}
+                </ButtonLink>
               </div>
             </div>
             {/* Where WebGL is unavailable, the dither falls back to a fade. */}

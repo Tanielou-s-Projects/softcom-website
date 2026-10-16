@@ -16,15 +16,4 @@ function Bleed({ className, ...props }: React.ComponentProps<"div">) {
   return <div className={cn("w-full px-4 md:px-10", className)} {...props} />
 }
 
-/**
- * The design's pills sit on `--foreground`/`--background` rather than
- * `--primary`, which in this theme is a slightly dimmer grey. Pair with
- * `<Button size="lg">`, whose `h-10 px-4` already equals Figma's 16/8 padding
- * at 14px/24px type.
- */
-export const primaryPill = "bg-ink text-paper hover:bg-ink/90"
-
-/** The quieter sibling: transparent until hovered. */
-export const ghostPill = "text-ink"
-
 export { Bleed, Container }

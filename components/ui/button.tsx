@@ -1,65 +1,135 @@
-import * as React from "react"
+import Link from "next/link"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
 
+import { Arrow } from "@/components/ui/arrow"
 import { cn } from "@/lib/utils"
 
-const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-(--button-radius) border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-accent-ink focus-visible:ring-[3px] focus-visible:ring-accent-ink/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-danger aria-invalid:ring-[3px] aria-invalid:ring-danger/20 dark:aria-invalid:border-danger/50 dark:aria-invalid:ring-danger/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+/*
+ * Pill buttons with Daylight's rotated fill: on hover a tilted slab of the
+ * fill colour swings up from below and floods the pill over a second, the
+ * label lifting a pixel as its colour flips. Leaving is quick.
+ */
+const button = cva(
+  "group relative isolate inline-flex h-12 shrink-0 items-center gap-3 overflow-hidden rounded-full pr-5 pl-6 text-[0.9375rem] font-medium tracking-[-0.01em] whitespace-nowrap transition-colors duration-300 ease-expo-out outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50",
   {
     variants: {
-      variant: {
-        default: "bg-ink text-paper hover:bg-ink/80",
+      tone: {
+        accent: "bg-accent text-on-accent hover:text-paper",
+        ink: "bg-ink text-paper hover:text-on-accent",
         outline:
-          "border-line bg-line-strong/30 hover:bg-line-strong/50 hover:text-ink aria-expanded:bg-surface-raised aria-expanded:text-ink",
-        secondary:
-          "bg-surface-raised text-ink hover:bg-[color-mix(in_oklch,var(--color-surface-raised),var(--color-ink)_5%)] aria-expanded:bg-surface-raised aria-expanded:text-ink",
-        ghost:
-          "hover:bg-surface-raised hover:text-ink aria-expanded:bg-surface-raised aria-expanded:text-ink dark:hover:bg-surface-raised/50",
-        destructive:
-          "bg-danger/10 text-danger hover:bg-danger/20 focus-visible:border-danger/40 focus-visible:ring-danger/20 dark:bg-danger/20 dark:hover:bg-danger/30 dark:focus-visible:ring-danger/40",
-        link: "text-ink underline-offset-4 hover:underline",
-      },
-      size: {
-        default:
-          "h-9 gap-1.5 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
-        xs: "h-6 gap-1 px-2.5 text-xs has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-8 gap-1 px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        lg: "h-10 gap-1.5 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
-        icon: "size-9",
-        "icon-xs": "size-6 [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm": "size-8",
-        "icon-lg": "size-10",
+          "border border-line-strong text-ink hover:border-ink hover:text-paper",
+        /* Over photography and the accent block: fixed colours, never themed. */
+        light: "bg-white text-[#0c0c0d] hover:text-white",
+        glass: "bg-white/15 text-white backdrop-blur-md hover:text-[#0c0c0d]",
       },
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
+    defaultVariants: { tone: "accent" },
   }
 )
 
-function Button({
-  className,
-  variant = "default",
-  size = "default",
-  asChild = false,
-  ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
-  const Comp = asChild ? Slot.Root : "button"
+const FILL = {
+  accent: "bg-ink",
+  ink: "bg-accent",
+  outline: "bg-ink",
+  light: "bg-accent",
+  glass: "bg-white",
+} as const
 
+type Tone = keyof typeof FILL
+
+/** The slab and the label for any pill, link or native button. */
+function ButtonInner({
+  tone,
+  children,
+}: {
+  tone: Tone
+  children: React.ReactNode
+}) {
   return (
-    <Comp
-      data-slot="button"
-      data-variant={variant}
-      data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
+    <>
+      <span
+        aria-hidden="true"
+        className={cn(
+          "absolute inset-0 -z-10 translate-y-[200%] scale-[1.8] rotate-[15deg] rounded-lg transition-transform duration-500 ease-expo-out group-hover:translate-y-0 group-hover:rotate-[8deg] group-hover:duration-1000",
+          FILL[tone]
+        )}
+      />
+      <span className="transition-transform duration-300 ease-expo-out group-hover:-translate-y-px">
+        {children}
+      </span>
+      <Arrow className="transition-transform duration-300 ease-expo-out group-hover:translate-x-0.5" />
+    </>
   )
 }
 
-export { Button, buttonVariants }
+type ButtonLinkProps = VariantProps<typeof button> &
+  Omit<React.ComponentProps<typeof Link>, "children" | "className"> & {
+    children: React.ReactNode
+    className?: string
+  }
+
+export function ButtonLink({
+  tone,
+  className,
+  children,
+  ...props
+}: ButtonLinkProps) {
+  return (
+    <Link className={cn(button({ tone }), className)} {...props}>
+      <ButtonInner tone={tone ?? "accent"}>{children}</ButtonInner>
+    </Link>
+  )
+}
+
+/** The same pill as a native button, for forms. */
+export function Button({
+  tone,
+  className,
+  children,
+  ...props
+}: VariantProps<typeof button> &
+  Omit<React.ComponentProps<"button">, "children"> & {
+    children: React.ReactNode
+  }) {
+  return (
+    <button
+      className={cn(
+        button({ tone }),
+        "cursor-pointer disabled:cursor-wait disabled:opacity-70",
+        className
+      )}
+      {...props}
+    >
+      <ButtonInner tone={tone ?? "accent"}>{children}</ButtonInner>
+    </button>
+  )
+}
+
+/**
+ * An inline text link with the arrow, for "Read more"-weight actions. Its
+ * underline grows from the left on hover.
+ */
+export function ArrowLink({
+  href,
+  className,
+  children,
+}: {
+  href: string
+  className?: string
+  children: React.ReactNode
+}) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "group inline-flex items-center gap-2 font-medium",
+        className
+      )}
+    >
+      <span className="relative after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-500 after:ease-expo-out group-hover:after:scale-x-100">
+        {children}
+      </span>
+      <Arrow className="transition-transform duration-300 ease-expo-out group-hover:translate-x-1" />
+    </Link>
+  )
+}

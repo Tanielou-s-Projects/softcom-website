@@ -1,10 +1,9 @@
 import * as React from "react"
-import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Container, primaryPill } from "@/components/landing/section"
+import { ButtonLink } from "@/components/ui/button"
+import { Container } from "@/components/landing/section"
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
 import { FieldLineFigure } from "@/components/solutions/figures/field-line/figure"
 import { LightTableFigure } from "@/components/solutions/figures/light-table/figure"
@@ -163,9 +162,9 @@ function SolutionBlock({
 
       {solution.cta ? (
         <Reveal className="flex justify-center rounded-3xl bg-surface p-6">
-          <Button asChild size="lg" className={primaryPill}>
-            <Link href={solution.cta.href}>{solution.cta.label}</Link>
-          </Button>
+          <ButtonLink href={solution.cta.href} tone="ink">
+            {solution.cta.label}
+          </ButtonLink>
         </Reveal>
       ) : null}
 
@@ -212,9 +211,9 @@ function DeliveryPhases() {
 
       <div className="flex flex-col items-start gap-6 border-t border-ink/20 pt-8">
         <p className={cn("text-body", "text-ink")}>{deliveryClose.text}</p>
-        <Button asChild size="lg" className={primaryPill}>
-          <Link href={deliveryClose.cta.href}>{deliveryClose.cta.label}</Link>
-        </Button>
+        <ButtonLink href={deliveryClose.cta.href} tone="light">
+          {deliveryClose.cta.label}
+        </ButtonLink>
       </div>
     </section>
   )

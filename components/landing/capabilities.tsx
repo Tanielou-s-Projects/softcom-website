@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import Image from "next/image"
-import Link from "next/link"
 import {
   motion,
   useReducedMotion,
@@ -11,8 +10,8 @@ import {
   useTransform,
 } from "motion/react"
 
-import { Container, primaryPill } from "@/components/landing/section"
-import { Button } from "@/components/ui/button"
+import { Container } from "@/components/landing/section"
+import { ButtonLink } from "@/components/ui/button"
 import { capabilities } from "@/content/home/content"
 import type { HomePage } from "@/content/home/page-copy"
 import { Reveal } from "@/components/motion/reveal"
@@ -152,17 +151,14 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
                     <p key={paragraph}>{paragraph}</p>
                   ))}
                 </div>
-                <Button asChild size="lg" className={primaryPill}>
-                  <Link
-                    href={
-                      capability.id
-                        ? `/solutions#${capability.id}`
-                        : "/solutions"
-                    }
-                  >
-                    {copy.linkPrefix} {capability.title}
-                  </Link>
-                </Button>
+                <ButtonLink
+                  href={
+                    capability.id ? `/solutions#${capability.id}` : "/solutions"
+                  }
+                  tone="light"
+                >
+                  {copy.linkPrefix} {capability.title}
+                </ButtonLink>
               </div>
             </article>
           ))}

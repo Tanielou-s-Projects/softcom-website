@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { primaryPill } from "@/components/landing/section"
 import type { ContactPage } from "@/content/contact/content"
 import { sendContact, type ContactState } from "@/app/(site)/contact/actions"
 
@@ -160,9 +159,9 @@ function ContactForm({ copy }: { copy: ContactPage["form"] }) {
 
       <Button
         type="submit"
-        size="lg"
+        tone="ink"
         disabled={pending}
-        className={cn(primaryPill, "self-start")}
+        className="self-start"
       >
         {pending ? copy.sending : copy.submit}
       </Button>
