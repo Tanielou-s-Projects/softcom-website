@@ -113,10 +113,13 @@ export function Button({
 export function ArrowLink({
   href,
   className,
+  arrow = true,
   children,
 }: {
   href: string
   className?: string
+  /** Off beside a pill, which already carries the arrow. */
+  arrow?: boolean
   children: React.ReactNode
 }) {
   return (
@@ -130,7 +133,9 @@ export function ArrowLink({
       <span className="relative after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-500 after:ease-expo-out group-hover:after:scale-x-100">
         {children}
       </span>
-      <Arrow className="transition-transform duration-300 ease-expo-out group-hover:translate-x-1" />
+      {arrow && (
+        <Arrow className="transition-transform duration-300 ease-expo-out group-hover:translate-x-1" />
+      )}
     </Link>
   )
 }

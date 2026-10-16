@@ -55,7 +55,7 @@ function ContactForm({ copy }: { copy: ContactPage["form"] }) {
     return (
       <div
         role="status"
-        className="flex flex-col gap-4 overflow-clip rounded-3xl bg-paper p-8 lg:p-[47px]"
+        className="flex flex-col gap-4 overflow-clip rounded-3xl bg-surface p-8 lg:p-[47px]"
       >
         <h2 className={cn("text-title", "text-ink")}>{copy.successHeading}</h2>
         <p className="max-w-[48ch] text-base leading-[1.6] text-ink/80">
@@ -68,7 +68,7 @@ function ContactForm({ copy }: { copy: ContactPage["form"] }) {
   return (
     <form
       action={action}
-      className="flex flex-col gap-8 overflow-clip rounded-3xl bg-paper p-8 lg:p-[47px]"
+      className="flex flex-col gap-8 overflow-clip rounded-3xl bg-surface p-8 lg:p-[47px]"
     >
       {/* Bot traps: a field people never see, and when the form appeared. */}
       <input

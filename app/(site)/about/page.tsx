@@ -125,7 +125,7 @@ export default async function Page() {
                 <ButtonLink href={copy.careers.primaryHref} tone="ink">
                   {copy.careers.primaryLabel}
                 </ButtonLink>
-                <ArrowLink href={copy.careers.secondaryHref}>
+                <ArrowLink arrow={false} href={copy.careers.secondaryHref}>
                   {copy.careers.secondaryLabel}
                 </ArrowLink>
               </div>

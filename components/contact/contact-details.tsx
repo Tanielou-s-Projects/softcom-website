@@ -26,7 +26,7 @@ function DetailRow({
 async function ContactDetails({ heading }: { heading: string }) {
   const contactDetails = await getSettings()
   return (
-    <div className="flex flex-col gap-8 overflow-clip rounded-3xl bg-paper p-8 lg:flex-row lg:items-start lg:justify-between lg:p-[47px]">
+    <div className="flex flex-col gap-8 overflow-clip rounded-3xl bg-surface p-8 lg:flex-row lg:items-start lg:justify-between lg:p-[47px]">
       <h2 className={cn("text-title", "max-w-[142px] text-ink")}>{heading}</h2>
 
       <div className="flex flex-col gap-8 sm:flex-row">

@@ -40,7 +40,7 @@ function ProductHero({
           {page.primary.label}
         </ButtonLink>
         {page.sections.length > 0 || page.lead.length > 1 ? (
-          <ArrowLink href="#overview">
+          <ArrowLink arrow={false} href="#overview">
             {explore} {name}
           </ArrowLink>
         ) : null}

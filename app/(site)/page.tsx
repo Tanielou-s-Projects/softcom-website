@@ -39,7 +39,7 @@ export default async function Page() {
             <ButtonLink href={copy.numbers.primaryCta.href} tone="ink">
               {copy.numbers.primaryCta.label}
             </ButtonLink>
-            <ArrowLink href={copy.numbers.secondaryCta.href}>
+            <ArrowLink arrow={false} href={copy.numbers.secondaryCta.href}>
               {copy.numbers.secondaryCta.label}
             </ArrowLink>
           </Reveal>

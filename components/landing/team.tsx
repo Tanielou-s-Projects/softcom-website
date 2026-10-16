@@ -67,7 +67,7 @@ function Team({
       <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">
         <h2 className={cn("text-headline", "text-ink")}>{heading}</h2>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:max-w-[1029px] lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {portraits.map((portrait) => (
             <PortraitCell key={portrait.image} {...portrait} />
           ))}
