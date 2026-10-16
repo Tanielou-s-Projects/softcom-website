@@ -56,12 +56,12 @@ function ContactForm({ copy }: { copy: ContactPage["form"] }) {
     return (
       <div
         role="status"
-        className="flex flex-col gap-4 overflow-clip rounded-3xl bg-background p-8 lg:p-[47px]"
+        className="flex flex-col gap-4 overflow-clip rounded-3xl bg-paper p-8 lg:p-[47px]"
       >
-        <h2 className={cn(panelHeadingText, "text-foreground")}>
+        <h2 className={cn(panelHeadingText, "text-ink")}>
           {copy.successHeading}
         </h2>
-        <p className="max-w-[48ch] text-base leading-[1.6] text-foreground/80">
+        <p className="max-w-[48ch] text-base leading-[1.6] text-ink/80">
           {copy.successText}
         </p>
       </div>
@@ -71,7 +71,7 @@ function ContactForm({ copy }: { copy: ContactPage["form"] }) {
   return (
     <form
       action={action}
-      className="flex flex-col gap-8 overflow-clip rounded-3xl bg-background p-8 lg:p-[47px]"
+      className="flex flex-col gap-8 overflow-clip rounded-3xl bg-paper p-8 lg:p-[47px]"
     >
       {/* Bot traps: a field people never see, and when the form appeared. */}
       <input
@@ -84,7 +84,7 @@ function ContactForm({ copy }: { copy: ContactPage["form"] }) {
       />
       <input ref={startedAt} type="hidden" name="startedAt" defaultValue="0" />
 
-      <h2 className={cn(panelHeadingText, "max-w-[179px] text-foreground")}>
+      <h2 className={cn(panelHeadingText, "max-w-[179px] text-ink")}>
         {copy.heading}
       </h2>
 
@@ -155,7 +155,7 @@ function ContactForm({ copy }: { copy: ContactPage["form"] }) {
        * would leave the form unusable.
        */}
       {state.status === "error" ? (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-sm text-danger">
           {fieldError ?? copy.errorText}
         </p>
       ) : null}

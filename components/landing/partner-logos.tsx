@@ -92,7 +92,7 @@ function Row({
                 key={`${partner.name}-${index}`}
                 aria-hidden={index >= items.length || undefined}
                 className={cn(
-                  "hover:text-foreground",
+                  "hover:text-ink",
                   index >= items.length && "motion-reduce:hidden"
                 )}
               >
@@ -123,10 +123,7 @@ function PartnerLogos({
   return (
     <section
       aria-label={copy.label}
-      className={cn(
-        "flex flex-col gap-4 text-foreground/55 lg:gap-6",
-        className
-      )}
+      className={cn("flex flex-col gap-4 text-ink/55 lg:gap-6", className)}
     >
       <Row items={partners.slice(0, half)} seconds={55} />
       <Row items={partners.slice(half)} seconds={65} reverse />

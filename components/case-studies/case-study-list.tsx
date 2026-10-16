@@ -38,7 +38,7 @@ function CaseStudyPanel({
   return (
     <article
       className={cn(
-        "flex flex-col items-start justify-end gap-2.5 overflow-clip rounded-3xl bg-popover p-6",
+        "flex flex-col items-start justify-end gap-2.5 overflow-clip rounded-3xl bg-surface p-6",
         "lg:min-h-[min(1024px,88svh)]"
       )}
     >
@@ -47,18 +47,16 @@ function CaseStudyPanel({
        * portfolio, so filtering to two studies reads "01 / 02" instead of
        * leaving gaps in the sequence.
        */}
-      <div className="shrink-0 overflow-clip rounded-3xl bg-brand-blue p-6">
-        <p className={cn(cardHeadingText, "whitespace-nowrap text-brand-cyan")}>
+      <div className="shrink-0 overflow-clip rounded-3xl bg-accent p-6">
+        <p className={cn(cardHeadingText, "whitespace-nowrap text-signal")}>
           {pad(position)} / {pad(total)}
         </p>
       </div>
 
       <div className="flex w-full flex-col gap-2.5 lg:flex-row lg:items-end">
-        <div className="flex min-w-0 flex-1 flex-col gap-8 overflow-clip rounded-3xl bg-background p-8 lg:p-[47px]">
-          <h2 className={cn(cardHeadingText, "text-foreground")}>
-            {study.title}
-          </h2>
-          <p className={cn(bodyText, "text-foreground")}>{study.challenge}</p>
+        <div className="flex min-w-0 flex-1 flex-col gap-8 overflow-clip rounded-3xl bg-paper p-8 lg:p-[47px]">
+          <h2 className={cn(cardHeadingText, "text-ink")}>{study.title}</h2>
+          <p className={cn(bodyText, "text-ink")}>{study.challenge}</p>
         </div>
 
         <div className="flex flex-col items-start justify-center gap-2.5 lg:w-[34%] lg:shrink-0">
@@ -67,20 +65,16 @@ function CaseStudyPanel({
             {study.sector}
           </Badge>
 
-          <div className="flex w-full flex-col gap-3 overflow-clip rounded-3xl bg-background p-6">
-            <p className={cn(cardHeadingText, "text-foreground")}>
+          <div className="flex w-full flex-col gap-3 overflow-clip rounded-3xl bg-paper p-6">
+            <p className={cn(cardHeadingText, "text-ink")}>
               {study.stat.value}
             </p>
-            <p className={cn(bodyText, "text-muted-foreground")}>
-              {study.stat.label}
-            </p>
+            <p className={cn(bodyText, "text-ink-soft")}>{study.stat.label}</p>
           </div>
 
-          <div className="flex w-full flex-col gap-3 overflow-clip rounded-3xl bg-background p-6">
-            <p className={cn(bodyText, "text-muted-foreground")}>
-              {clientLabel}
-            </p>
-            <p className="font-heading text-lg leading-[1.1] text-foreground">
+          <div className="flex w-full flex-col gap-3 overflow-clip rounded-3xl bg-paper p-6">
+            <p className={cn(bodyText, "text-ink-soft")}>{clientLabel}</p>
+            <p className="font-heading text-lg leading-[1.1] text-ink">
               {study.client}
             </p>
           </div>

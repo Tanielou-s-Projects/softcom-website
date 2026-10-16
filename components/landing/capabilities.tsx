@@ -89,10 +89,10 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
       <div className="flex flex-col gap-10 lg:gap-16 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:justify-center lg:motion-safe:overflow-hidden">
         <Reveal asChild>
           <Container className="flex flex-col items-center gap-8 pt-6 text-center lg:gap-10">
-            <h2 className={cn(headingText, "max-w-[533px] text-foreground")}>
+            <h2 className={cn(headingText, "max-w-[533px] text-ink")}>
               {copy.heading}
             </h2>
-            <p className={cn(leadText, "max-w-[576px] text-muted-foreground")}>
+            <p className={cn(leadText, "max-w-[576px] text-ink-soft")}>
               {copy.intro}
             </p>
           </Container>
@@ -138,7 +138,7 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
                 </p>
               </div>
 
-              <div className="relative flex flex-col items-start gap-5 overflow-clip rounded-4xl bg-background p-6 text-foreground lg:gap-6 lg:p-8">
+              <div className="relative flex flex-col items-start gap-5 overflow-clip rounded-4xl bg-paper p-6 text-ink lg:gap-6 lg:p-8">
                 <h3 className={cn(cardHeadingText, "lg:max-w-[359px]")}>
                   {capability.title}
                 </h3>

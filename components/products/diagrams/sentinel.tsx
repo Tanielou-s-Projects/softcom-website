@@ -41,9 +41,7 @@ function Arrowheads() {
             d="M1 1 L8 5 L1 9"
             fill="none"
             strokeWidth="1.6"
-            className={
-              kind === "on" ? "stroke-brand-accent" : "stroke-muted-foreground"
-            }
+            className={kind === "on" ? "stroke-accent-ink" : "stroke-ink-soft"}
           />
         </marker>
       ))}
@@ -107,9 +105,7 @@ export function SentinelConnections({ fig }: { fig: string }) {
                   strokeWidth={edge.on ? 4 : 2}
                   vectorEffect="non-scaling-stroke"
                   markerEnd={`url(#sentinel-arrow-${edge.on ? "on" : "off"})`}
-                  className={
-                    edge.on ? "stroke-brand-accent" : "stroke-muted-foreground"
-                  }
+                  className={edge.on ? "stroke-accent-ink" : "stroke-ink-soft"}
                   style={{ strokeWidth: edge.on ? 2.2 : 1.2 }}
                 />
               ))}
@@ -117,18 +113,18 @@ export function SentinelConnections({ fig }: { fig: string }) {
             {AMOUNTS.map((label) => (
               <span
                 key={label.amount}
-                className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center bg-muted px-1.5 text-center"
+                className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center bg-surface-raised px-1.5 text-center"
                 style={pos(label.x, label.y)}
               >
                 {label.date ? (
-                  <span className="font-mono text-[9px] tracking-wider text-muted-foreground uppercase sm:text-[10px]">
+                  <span className="font-mono text-[9px] tracking-wider text-ink-soft uppercase sm:text-[10px]">
                     {label.date}
                   </span>
                 ) : null}
                 <span
                   className={cn(
                     "text-xs font-medium tabular-nums sm:text-base lg:text-lg",
-                    label.on ? "text-brand-accent" : "text-muted-foreground"
+                    label.on ? "text-accent-ink" : "text-ink-soft"
                   )}
                 >
                   {label.amount}
@@ -142,10 +138,10 @@ export function SentinelConnections({ fig }: { fig: string }) {
                 style={pos(node.x, node.y)}
               >
                 <Node label={node.id} on={node.on} />
-                <span className="text-xs whitespace-nowrap text-foreground sm:text-sm lg:text-base">
+                <span className="text-xs whitespace-nowrap text-ink sm:text-sm lg:text-base">
                   Entity {node.id}
                 </span>
-                <span className="hidden text-xs whitespace-nowrap text-muted-foreground sm:block">
+                <span className="hidden text-xs whitespace-nowrap text-ink-soft sm:block">
                   {node.account}
                 </span>
               </span>
@@ -153,31 +149,23 @@ export function SentinelConnections({ fig }: { fig: string }) {
           </div>
         </div>
 
-        <aside className="flex flex-col gap-6 border-border lg:border-l lg:pl-10">
+        <aside className="flex flex-col gap-6 border-line lg:border-l lg:pl-10">
           <div className="flex flex-col gap-4">
             <Caps>Selected path</Caps>
-            <p className="font-heading text-2xl text-foreground">
-              A → B → C → A
-            </p>
-            <p className="text-base text-foreground">
+            <p className="font-heading text-2xl text-ink">A → B → C → A</p>
+            <p className="text-base text-ink">
               Three linked transfers over two days.
             </p>
           </div>
-          <div className="flex flex-col gap-1 border-t border-border pt-6">
-            <p className="font-heading text-4xl text-brand-accent tabular-nums lg:text-5xl">
+          <div className="flex flex-col gap-1 border-t border-line pt-6">
+            <p className="font-heading text-4xl text-accent-ink tabular-nums lg:text-5xl">
               ₦11.6M
             </p>
-            <p className="text-sm text-muted-foreground">
-              returned to account A01
-            </p>
+            <p className="text-sm text-ink-soft">returned to account A01</p>
           </div>
           <div className="flex flex-col gap-1">
-            <p className="font-heading text-xl text-foreground">
-              Circular flow
-            </p>
-            <p className="text-sm text-muted-foreground">
-              For further examination.
-            </p>
+            <p className="font-heading text-xl text-ink">Circular flow</p>
+            <p className="text-sm text-ink-soft">For further examination.</p>
           </div>
         </aside>
       </div>
@@ -204,7 +192,7 @@ function Triangle({ analysed }: { analysed?: boolean }) {
         <path
           d={`M${a[0]} ${a[1]} L${b[0]} ${b[1]} L${c[0]} ${c[1]} Z`}
           fill="none"
-          className={analysed ? "stroke-brand-accent" : "stroke-foreground/25"}
+          className={analysed ? "stroke-accent-ink" : "stroke-ink/25"}
           strokeWidth={analysed ? 1.6 : 1}
           vectorEffect="non-scaling-stroke"
         />
@@ -212,7 +200,7 @@ function Triangle({ analysed }: { analysed?: boolean }) {
           <path
             d="M44 52 A 7 7 0 1 0 51 45"
             fill="none"
-            className="stroke-brand-accent"
+            className="stroke-accent-ink"
             strokeWidth="2"
             vectorEffect="non-scaling-stroke"
             markerEnd="url(#sentinel-arrow-on)"
@@ -241,17 +229,15 @@ const STAGES = [
         {["PDF", "XLS", "SCAN"].map((format, index) => (
           <div
             key={format}
-            className="absolute flex h-[96px] w-[140px] flex-col gap-2 rounded-md bg-card p-3 ring-1 ring-foreground/15"
+            className="absolute flex h-[96px] w-[140px] flex-col gap-2 rounded-md bg-surface p-3 ring-1 ring-ink/15"
             style={{ left: index * 22, top: index * 26 }}
           >
-            <span className="font-mono text-xs text-muted-foreground">
-              {format}
-            </span>
+            <span className="font-mono text-xs text-ink-soft">{format}</span>
             {index === 2 ? (
               <span className="mt-2 flex flex-col gap-1.5">
-                <span className="h-px w-3/4 bg-foreground/20" />
-                <span className="h-px w-1/2 bg-foreground/20" />
-                <span className="h-px w-2/3 bg-foreground/20" />
+                <span className="h-px w-3/4 bg-ink/20" />
+                <span className="h-px w-1/2 bg-ink/20" />
+                <span className="h-px w-2/3 bg-ink/20" />
               </span>
             ) : null}
           </div>
@@ -269,21 +255,21 @@ const STAGES = [
     title: "Reporting",
     sub: "Maps, charts and reports",
     art: (
-      <div className="mx-auto flex h-[150px] w-[190px] flex-col gap-3 rounded-md bg-muted/50 p-3 ring-1 ring-foreground/15">
-        <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+      <div className="mx-auto flex h-[150px] w-[190px] flex-col gap-3 rounded-md bg-surface-raised/50 p-3 ring-1 ring-ink/15">
+        <span className="font-mono text-[10px] tracking-wider text-ink-soft uppercase">
           Investigation
         </span>
-        <div className="flex flex-1 items-end gap-3 border-b border-foreground/20 px-1">
+        <div className="flex flex-1 items-end gap-3 border-b border-ink/20 px-1">
           {[48, 100, 30, 68].map((h, i) => (
             <span
               key={i}
-              className="flex-1 bg-brand-accent/15"
+              className="flex-1 bg-accent-ink/15"
               style={{ height: `${h}%` }}
             />
           ))}
         </div>
-        <span className="h-px w-full bg-foreground/15" />
-        <span className="h-px w-1/2 bg-foreground/15" />
+        <span className="h-px w-full bg-ink/15" />
+        <span className="h-px w-1/2 bg-ink/15" />
       </div>
     ),
   },
@@ -304,25 +290,23 @@ export function SentinelRecordsToIntelligence({ fig }: { fig: string }) {
           {STAGES.map((stage, index) => (
             <li key={stage.title} className="relative">
               <DiagramCard className="flex h-full flex-col gap-6 p-6">
-                <span className="font-mono text-sm text-brand-accent tabular-nums">
+                <span className="font-mono text-sm text-accent-ink tabular-nums">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div className="flex min-h-[170px] items-center">
                   {stage.art}
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="font-heading text-xl text-foreground lg:text-2xl">
+                  <span className="font-heading text-xl text-ink lg:text-2xl">
                     {stage.title}
                   </span>
-                  <span className="text-sm text-muted-foreground">
-                    {stage.sub}
-                  </span>
+                  <span className="text-sm text-ink-soft">{stage.sub}</span>
                 </div>
               </DiagramCard>
               {index < STAGES.length - 1 ? (
                 <span
                   aria-hidden
-                  className="absolute top-1/2 -right-6 hidden -translate-y-1/2 text-muted-foreground lg:block"
+                  className="absolute top-1/2 -right-6 hidden -translate-y-1/2 text-ink-soft lg:block"
                 >
                   →
                 </span>
@@ -330,7 +314,7 @@ export function SentinelRecordsToIntelligence({ fig }: { fig: string }) {
             </li>
           ))}
         </ol>
-        <p className="text-center font-heading text-lg text-foreground lg:text-xl">
+        <p className="text-center font-heading text-lg text-ink lg:text-xl">
           Different formats. Connected records. A clearer picture.
         </p>
       </div>
@@ -369,12 +353,10 @@ export function SentinelRecords({ fig }: { fig: string }) {
                 key={source.format}
                 className="flex flex-col gap-1 p-5"
               >
-                <span className="font-heading text-xl text-brand-accent">
+                <span className="font-heading text-xl text-accent-ink">
                   {source.format}
                 </span>
-                <span className="text-sm text-muted-foreground">
-                  {source.what}
-                </span>
+                <span className="text-sm text-ink-soft">{source.what}</span>
               </DiagramCard>
             ))}
           </div>
@@ -389,21 +371,21 @@ export function SentinelRecords({ fig }: { fig: string }) {
             <path
               d="M0 50 C 60 50, 50 150, 80 150 M0 150 L 80 150 M0 250 C 60 250, 50 150, 80 150"
               fill="none"
-              className="stroke-muted-foreground"
+              className="stroke-ink-soft"
               strokeWidth="1.2"
               vectorEffect="non-scaling-stroke"
             />
             <path
               d="M80 150 L 116 150"
               fill="none"
-              className="stroke-brand-accent"
+              className="stroke-accent-ink"
               strokeWidth="1.6"
               vectorEffect="non-scaling-stroke"
             />
           </svg>
 
           <DiagramCard className="overflow-x-auto">
-            <div className="border-b border-border px-6 py-4">
+            <div className="border-b border-line px-6 py-4">
               <Caps>Connected transaction records</Caps>
             </div>
             <table className="w-full min-w-[420px] border-separate border-spacing-y-1 px-3 pb-4 text-left text-sm lg:text-base">
@@ -421,8 +403,8 @@ export function SentinelRecords({ fig }: { fig: string }) {
                   <tr
                     key={`${row.from}-${row.to}`}
                     className={cn(
-                      "text-foreground tabular-nums",
-                      row.on && "bg-brand-accent/10"
+                      "text-ink tabular-nums",
+                      row.on && "bg-accent-ink/10"
                     )}
                   >
                     <td className="rounded-l-md px-3 py-2">{row.date}</td>
@@ -435,7 +417,7 @@ export function SentinelRecords({ fig }: { fig: string }) {
             </table>
           </DiagramCard>
         </div>
-        <p className="text-base text-muted-foreground">
+        <p className="text-base text-ink-soft">
           Accounting records can be examined alongside statements.
         </p>
       </div>
@@ -459,12 +441,10 @@ function Bar({ value, on }: { value: number; on?: boolean }) {
       className="relative flex w-7 flex-col justify-end lg:w-10"
       style={{ height: `${(value / MAX) * 100}%` }}
     >
-      <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-foreground tabular-nums lg:text-sm">
+      <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-ink tabular-nums lg:text-sm">
         {value}
       </span>
-      <span
-        className={cn("size-full", on ? "bg-brand-accent" : "bg-foreground/25")}
-      />
+      <span className={cn("size-full", on ? "bg-accent-ink" : "bg-ink/25")} />
     </span>
   )
 }
@@ -481,21 +461,21 @@ export function SentinelVisible({ fig }: { fig: string }) {
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="flex flex-col gap-2">
               <Caps>Account A01</Caps>
-              <span className="font-heading text-2xl text-foreground">
+              <span className="font-heading text-2xl text-ink">
                 Money in and out
               </span>
             </div>
-            <div className="flex gap-5 text-sm text-foreground">
+            <div className="flex gap-5 text-sm text-ink">
               <span className="flex items-center gap-2">
-                <span className="size-3 bg-brand-accent" /> In
+                <span className="size-3 bg-accent-ink" /> In
               </span>
               <span className="flex items-center gap-2">
-                <span className="size-3 bg-foreground/25" /> Out
+                <span className="size-3 bg-ink/25" /> Out
               </span>
             </div>
           </div>
           <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3">
-            <div className="flex h-[220px] flex-col justify-between text-right text-xs text-muted-foreground tabular-nums lg:h-[260px]">
+            <div className="flex h-[220px] flex-col justify-between text-right text-xs text-ink-soft tabular-nums lg:h-[260px]">
               <span>₦M 20</span>
               <span>10</span>
               <span>0</span>
@@ -504,7 +484,7 @@ export function SentinelVisible({ fig }: { fig: string }) {
               {[0, 50, 100].map((top) => (
                 <span
                   key={top}
-                  className="absolute inset-x-0 h-px bg-foreground/15"
+                  className="absolute inset-x-0 h-px bg-ink/15"
                   style={{ top: `${top}%` }}
                 />
               ))}
@@ -520,38 +500,36 @@ export function SentinelVisible({ fig }: { fig: string }) {
                         <Bar value={d.out} />
                       </>
                     ) : (
-                      <span className="pb-6 text-sm text-muted-foreground">
-                        0
-                      </span>
+                      <span className="pb-6 text-sm text-ink-soft">0</span>
                     )}
                   </div>
                 ))}
               </div>
             </div>
             <span />
-            <div className="grid grid-cols-3 pt-3 text-center text-sm text-muted-foreground">
+            <div className="grid grid-cols-3 pt-3 text-center text-sm text-ink-soft">
               {DAYS.map((d) => (
                 <span key={d.day}>{d.day}</span>
               ))}
             </div>
             <span />
-            <span className="pt-2 text-center text-xs text-muted-foreground">
+            <span className="pt-2 text-center text-xs text-ink-soft">
               Transaction date
             </span>
           </div>
         </DiagramCard>
 
-        <div className="flex flex-col gap-6 rounded-2xl bg-brand-accent/10 p-6 lg:p-10">
+        <div className="flex flex-col gap-6 rounded-2xl bg-accent-ink/10 p-6 lg:p-10">
           <div className="flex flex-col gap-3">
-            <Caps className="text-brand-accent">Pattern for review</Caps>
-            <span className="font-heading text-3xl text-foreground">
+            <Caps className="text-accent-ink">Pattern for review</Caps>
+            <span className="font-heading text-3xl text-ink">
               Circular flow
             </span>
-            <span className="font-heading text-lg text-foreground">
+            <span className="font-heading text-lg text-ink">
               A01 → B01 → C01 → A01
             </span>
           </div>
-          <dl className="flex flex-col gap-4 border-t border-foreground/15 pt-6 text-sm lg:text-base">
+          <dl className="flex flex-col gap-4 border-t border-ink/15 pt-6 text-sm lg:text-base">
             {[
               ["01 May", "A01 → B01", "₦12.0M"],
               ["02 May", "B01 → C01", "₦11.8M"],
@@ -561,17 +539,17 @@ export function SentinelVisible({ fig }: { fig: string }) {
                 key={day}
                 className="grid grid-cols-[auto_1fr_auto] gap-6 tabular-nums"
               >
-                <dt className="text-muted-foreground">{day}</dt>
-                <dd className="text-foreground">{path}</dd>
-                <dd className="text-foreground">{amount}</dd>
+                <dt className="text-ink-soft">{day}</dt>
+                <dd className="text-ink">{path}</dd>
+                <dd className="text-ink">{amount}</dd>
               </div>
             ))}
           </dl>
           <div className="mt-auto flex flex-col gap-1">
-            <p className="text-base text-foreground">
+            <p className="text-base text-ink">
               ₦11.6M returns within two days.
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-ink-soft">
               Context and purpose require review.
             </p>
           </div>

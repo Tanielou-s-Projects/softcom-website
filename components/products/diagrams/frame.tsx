@@ -13,11 +13,11 @@ import { cn } from "@/lib/utils"
 
 /** The deck's accent, as Tailwind classes, so every diagram uses one set. */
 export const accent = {
-  text: "text-brand-accent",
-  fill: "bg-brand-accent",
-  soft: "bg-brand-accent/10",
-  ring: "ring-brand-accent",
-  stroke: "stroke-brand-accent",
+  text: "text-accent-ink",
+  fill: "bg-accent-ink",
+  soft: "bg-accent-ink/10",
+  ring: "ring-accent-ink",
+  stroke: "stroke-accent-ink",
 }
 
 export function DiagramFrame({
@@ -38,26 +38,26 @@ export function DiagramFrame({
   return (
     <figure
       className={cn(
-        "m-0 flex flex-col gap-8 rounded-3xl bg-muted p-6 ring-1 ring-foreground/10 sm:p-8 lg:gap-12 lg:p-12",
+        "m-0 flex flex-col gap-8 rounded-3xl bg-surface-raised p-6 ring-1 ring-ink/10 sm:p-8 lg:gap-12 lg:p-12",
         className
       )}
     >
       <header className="flex flex-col gap-3">
-        <span className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+        <span className="font-mono text-xs tracking-[0.14em] text-ink-soft uppercase">
           {eyebrow}
         </span>
-        <h3 className="font-heading text-2xl leading-[1.15] tracking-tight text-foreground lg:text-[2rem]">
+        <h3 className="font-heading text-2xl leading-[1.15] tracking-tight text-ink lg:text-[2rem]">
           {title}
         </h3>
         {subtitle ? (
-          <p className="text-base leading-normal text-muted-foreground lg:text-lg">
+          <p className="text-base leading-normal text-ink-soft lg:text-lg">
             {subtitle}
           </p>
         ) : null}
       </header>
       <div className="min-w-0">{children}</div>
-      <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4 font-mono text-[11px] tracking-[0.14em] text-muted-foreground uppercase">
-        <span className="text-foreground">Softcom</span>
+      <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-line pt-4 font-mono text-[11px] tracking-[0.14em] text-ink-soft uppercase">
+        <span className="text-ink">Softcom</span>
         <span>{footnote}</span>
       </footer>
     </figure>
@@ -71,7 +71,7 @@ export function DiagramCard({
 }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("rounded-2xl bg-card ring-1 ring-foreground/10", className)}
+      className={cn("rounded-2xl bg-surface ring-1 ring-ink/10", className)}
       {...props}
     />
   )
@@ -82,7 +82,7 @@ export function Caps({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       className={cn(
-        "font-mono text-[11px] tracking-[0.12em] text-muted-foreground uppercase",
+        "font-mono text-[11px] tracking-[0.12em] text-ink-soft uppercase",
         className
       )}
       {...props}
@@ -107,15 +107,13 @@ export function Node({
     // Solid underneath, so a line passing behind never shows through.
     <span
       className={cn(
-        "relative grid size-10 place-items-center overflow-hidden rounded-full bg-card font-heading text-base ring-1 lg:size-12 lg:text-lg",
-        on
-          ? "text-brand-accent ring-brand-accent"
-          : "text-foreground ring-foreground/20",
+        "relative grid size-10 place-items-center overflow-hidden rounded-full bg-surface font-heading text-base ring-1 lg:size-12 lg:text-lg",
+        on ? "text-accent-ink ring-accent-ink" : "text-ink ring-ink/20",
         className
       )}
     >
       {on || tint ? (
-        <span aria-hidden className="absolute inset-0 bg-brand-accent/12" />
+        <span aria-hidden className="absolute inset-0 bg-accent-ink/12" />
       ) : null}
       <span className="relative">{label}</span>
     </span>

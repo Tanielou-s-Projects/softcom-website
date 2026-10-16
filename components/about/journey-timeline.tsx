@@ -160,7 +160,7 @@ export function JourneyTimeline({
     >
       {/* Header — eyebrow + heading on the left, arrows on the right. */}
       <div className="flex items-end justify-between gap-6">
-        <h2 className={cn(headingText, "text-foreground")}>{copy.heading}</h2>
+        <h2 className={cn(headingText, "text-ink")}>{copy.heading}</h2>
         <div className="flex items-center gap-2">
           <Arrow direction="left" onClick={() => clampGo(-1)} />
           <Arrow direction="right" onClick={() => clampGo(1)} />
@@ -185,7 +185,7 @@ export function JourneyTimeline({
         onWheel={onWheel}
         className={cn(
           "relative h-24 cursor-ew-resize touch-pan-y outline-none select-none",
-          "focus-visible:ring-2 focus-visible:ring-brand-accent/50 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+          "focus-visible:ring-2 focus-visible:ring-accent-ink/50 focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
         )}
       >
         {/* Minor rhythm ticks — drawn in left to right on arrival. */}
@@ -198,13 +198,13 @@ export function JourneyTimeline({
           transition={{ duration: DRAW_S, ease: [0.22, 1, 0.36, 1] }}
         >
           {Array.from({ length: MINOR_TICKS }).map((_, i) => (
-            <span key={i} className="h-4 w-px bg-border/70" />
+            <span key={i} className="h-4 w-px bg-line/70" />
           ))}
         </motion.div>
 
         {/* Baseline. */}
         <motion.div
-          className="pointer-events-none absolute inset-x-0 top-8 h-px origin-left bg-border"
+          className="pointer-events-none absolute inset-x-0 top-8 h-px origin-left bg-line"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: arrived ? 1 : 0 }}
           transition={{ duration: DRAW_S, ease: [0.22, 1, 0.36, 1] }}
@@ -217,7 +217,7 @@ export function JourneyTimeline({
           animate={{ left: `${at(active) * 100}%`, opacity: arrived ? 1 : 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 30 }}
         >
-          <span className="block size-2 -translate-x-1/2 translate-y-1 rounded-full bg-brand-accent shadow-[0_0_12px] shadow-brand-accent/60" />
+          <span className="block size-2 -translate-x-1/2 translate-y-1 rounded-full bg-accent-ink shadow-[0_0_12px] shadow-accent-ink/60" />
         </motion.div>
 
         {/* Milestone marks. */}
@@ -250,10 +250,10 @@ export function JourneyTimeline({
                   animate={{
                     height: isActive ? 40 : isHover ? 28 : 16,
                     backgroundColor: isActive
-                      ? "var(--color-brand-accent)"
+                      ? "var(--color-accent-ink)"
                       : isHover
-                        ? "color-mix(in oklch, var(--color-brand-accent) 60%, transparent)"
-                        : "var(--color-border)",
+                        ? "color-mix(in oklch, var(--color-accent-ink) 60%, transparent)"
+                        : "var(--color-line)",
                   }}
                   transition={{ type: "spring", stiffness: 320, damping: 26 }}
                 />
@@ -264,8 +264,8 @@ export function JourneyTimeline({
               <motion.span
                 animate={{
                   color: isActive
-                    ? "var(--color-brand-accent)"
-                    : "var(--color-muted-foreground)",
+                    ? "var(--color-accent-ink)"
+                    : "var(--color-ink-soft)",
                   opacity: isActive || isHover ? 1 : narrow ? 0 : 0.7,
                 }}
                 className="mt-1 font-mono text-xs tracking-wide whitespace-nowrap"
@@ -315,7 +315,7 @@ function Arrow({
       aria-label={
         direction === "left" ? "Previous milestone" : "Next milestone"
       }
-      className="flex size-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-brand-accent/50 hover:text-brand-accent"
+      className="flex size-11 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-accent-ink/50 hover:text-accent-ink"
     >
       <Icon size={18} weight="bold" />
     </motion.button>
@@ -332,7 +332,7 @@ function SideYear({ m }: { m: Milestone }) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.3 }}
-        className="font-heading text-5xl leading-none text-foreground sm:text-6xl lg:text-8xl"
+        className="font-heading text-5xl leading-none text-ink sm:text-6xl lg:text-8xl"
       >
         {m.year}
       </motion.p>
@@ -351,8 +351,8 @@ function SideText({ m }: { m: Milestone }) {
         transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
         className="flex max-w-[52ch] flex-col gap-3"
       >
-        <h3 className="font-heading text-2xl text-foreground">{m.headline}</h3>
-        <p className={cn(bodyText, "text-muted-foreground")}>{m.description}</p>
+        <h3 className="font-heading text-2xl text-ink">{m.headline}</h3>
+        <p className={cn(bodyText, "text-ink-soft")}>{m.description}</p>
       </motion.div>
     </AnimatePresence>
   )
@@ -361,7 +361,7 @@ function SideText({ m }: { m: Milestone }) {
 /** Side — giant year on the left, detail sliding in on the right. */
 function SidePlain({ m }: { m: Milestone }) {
   return (
-    <div className="grid gap-6 border-t border-border pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-16">
+    <div className="grid gap-6 border-t border-line pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-16">
       <SideYear m={m} />
       <SideText m={m} />
     </div>
@@ -370,7 +370,7 @@ function SidePlain({ m }: { m: Milestone }) {
 
 function BelowReveal({ m }: { m: Milestone }) {
   return (
-    <div className="min-h-[9rem] border-t border-border pt-8">
+    <div className="min-h-[9rem] border-t border-line pt-8">
       <AnimatePresence mode="wait">
         <motion.div
           key={m.year}
@@ -381,16 +381,12 @@ function BelowReveal({ m }: { m: Milestone }) {
           className="flex max-w-[70ch] flex-col gap-3"
         >
           <div className="flex items-baseline gap-3">
-            <span className="font-heading text-3xl text-brand-accent">
+            <span className="font-heading text-3xl text-accent-ink">
               {m.year}
             </span>
-            <h3 className="font-heading text-2xl text-foreground">
-              {m.headline}
-            </h3>
+            <h3 className="font-heading text-2xl text-ink">{m.headline}</h3>
           </div>
-          <p className={cn(bodyText, "text-muted-foreground")}>
-            {m.description}
-          </p>
+          <p className={cn(bodyText, "text-ink-soft")}>{m.description}</p>
         </motion.div>
       </AnimatePresence>
     </div>
@@ -407,17 +403,13 @@ function CardReveal({ m }: { m: Milestone }) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.97, y: -12 }}
           transition={{ type: "spring", stiffness: 260, damping: 28 }}
-          className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-8 lg:max-w-[62ch] lg:p-10"
+          className="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-8 lg:max-w-[62ch] lg:p-10"
         >
-          <span className="font-mono text-xs tracking-widest text-brand-accent uppercase">
+          <span className="font-mono text-xs tracking-widest text-accent-ink uppercase">
             {m.year}
           </span>
-          <h3 className="font-heading text-3xl text-foreground">
-            {m.headline}
-          </h3>
-          <p className={cn(bodyText, "text-muted-foreground")}>
-            {m.description}
-          </p>
+          <h3 className="font-heading text-3xl text-ink">{m.headline}</h3>
+          <p className={cn(bodyText, "text-ink-soft")}>{m.description}</p>
         </motion.div>
       </AnimatePresence>
     </div>

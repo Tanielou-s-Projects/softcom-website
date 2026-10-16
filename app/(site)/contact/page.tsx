@@ -25,14 +25,14 @@ export default async function Page() {
    * Scoped `dark` for the same reason as the CTA panel — the plate is brand blue
    * in either theme, so the copy on it has to stay light.
    *
-   * `text-foreground` has to be set here alongside it: `dark` only redefines the
+   * `text-ink` has to be set here alongside it: `dark` only redefines the
    * tokens, it sets no colour of its own. Anything under it that inherits its
    * colour rather than declaring one — `Label` and the fields, in this case —
    * would otherwise keep the light theme's near-black body colour and disappear
    * against these cards.
    */
   return (
-    <div className="dark relative flex min-h-svh w-full flex-col bg-brand-blue text-foreground">
+    <div className="dark relative flex min-h-svh w-full flex-col bg-accent text-ink">
       <SiteHeader />
 
       <Container className="flex flex-1 flex-col gap-16 pt-8 pb-6 lg:flex-row lg:items-start lg:gap-16">
@@ -45,10 +45,8 @@ export default async function Page() {
            */}
           <Reveal className="flex flex-col items-start gap-6">
             <Badge variant="brand">{copy.hero.badge}</Badge>
-            <h1 className={cn(displayText, "text-foreground")}>
-              {copy.hero.title}
-            </h1>
-            <p className={cn(leadText, "max-w-[60ch] text-foreground/80")}>
+            <h1 className={cn(displayText, "text-ink")}>{copy.hero.title}</h1>
+            <p className={cn(leadText, "max-w-[60ch] text-ink/80")}>
               {copy.hero.intro}
             </p>
           </Reveal>

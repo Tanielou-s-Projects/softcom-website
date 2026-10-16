@@ -51,15 +51,13 @@ function Opener({
 }) {
   return (
     <Container id={id} className="scroll-mt-24">
-      <Reveal className="grid gap-6 border-t border-border pt-8 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16 lg:pt-10">
-        <span className="font-mono text-sm tracking-[0.12em] text-muted-foreground tabular-nums">
+      <Reveal className="grid gap-6 border-t border-line pt-8 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16 lg:pt-10">
+        <span className="font-mono text-sm tracking-[0.12em] text-ink-soft tabular-nums">
           {number} / 03
         </span>
         <div className="flex flex-col gap-6">
-          <h2 className={cn(headingText, "text-foreground")}>{title}</h2>
-          <p className={cn(leadText, "max-w-[52ch] text-brand-accent")}>
-            {lead}
-          </p>
+          <h2 className={cn(headingText, "text-ink")}>{title}</h2>
+          <p className={cn(leadText, "max-w-[52ch] text-accent-ink")}>{lead}</p>
         </div>
       </Reveal>
     </Container>
@@ -82,12 +80,10 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
 
       <Container className="flex flex-col gap-6">
         <Reveal className="flex max-w-[60ch] flex-col gap-4">
-          <h3 className="font-heading text-2xl leading-[1.15] text-foreground lg:text-[2rem]">
+          <h3 className="font-heading text-2xl leading-[1.15] text-ink lg:text-[2rem]">
             {copy.listHeading}
           </h3>
-          <p className={cn(bodyText, "text-muted-foreground")}>
-            {copy.listIntro}
-          </p>
+          <p className={cn(bodyText, "text-ink-soft")}>{copy.listIntro}</p>
         </Reveal>
         <PinnedStory
           steps={copy.steps.map((item, index) => ({
@@ -106,7 +102,7 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
 
       <Container>
         <Reveal>
-          <p className="mx-auto max-w-[30ch] text-center font-heading text-2xl leading-[1.2] text-foreground lg:text-[2.25rem]">
+          <p className="mx-auto max-w-[30ch] text-center font-heading text-2xl leading-[1.2] text-ink lg:text-[2.25rem]">
             {copy.outro}
           </p>
         </Reveal>
@@ -116,32 +112,30 @@ function Infrastructure({ copy }: { copy: SolutionsPage["infrastructure"] }) {
       <Container className="flex flex-col gap-2.5">
         <RevealStagger amount={0.2} className="grid gap-2.5 lg:grid-cols-2">
           <RevealItem className="h-full">
-            <div className="dark flex h-full min-h-[360px] flex-col justify-between gap-10 rounded-3xl bg-brand-blue p-8 lg:p-12">
-              <span className="font-mono text-xs tracking-[0.12em] text-foreground/70 uppercase">
+            <div className="dark flex h-full min-h-[360px] flex-col justify-between gap-10 rounded-3xl bg-accent p-8 lg:p-12">
+              <span className="font-mono text-xs tracking-[0.12em] text-ink/70 uppercase">
                 {copy.buildLabel}
               </span>
               <div className="flex flex-col gap-4">
-                <h3 className={cn(headingText, "text-foreground")}>
+                <h3 className={cn(headingText, "text-ink")}>
                   {copy.buildTitle}
                 </h3>
-                <p className={cn(bodyText, "max-w-[48ch] text-foreground/85")}>
+                <p className={cn(bodyText, "max-w-[48ch] text-ink/85")}>
                   {copy.buildText}
                 </p>
               </div>
             </div>
           </RevealItem>
           <RevealItem className="h-full">
-            <div className="flex h-full min-h-[360px] flex-col justify-between gap-10 rounded-3xl bg-card p-8 lg:p-12">
-              <span className="font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
+            <div className="flex h-full min-h-[360px] flex-col justify-between gap-10 rounded-3xl bg-surface p-8 lg:p-12">
+              <span className="font-mono text-xs tracking-[0.12em] text-ink-soft uppercase">
                 {copy.implementLabel}
               </span>
               <div className="flex flex-col gap-4">
-                <h3 className={cn(headingText, "text-foreground")}>
+                <h3 className={cn(headingText, "text-ink")}>
                   {copy.implementTitle}
                 </h3>
-                <p
-                  className={cn(bodyText, "max-w-[48ch] text-muted-foreground")}
-                >
+                <p className={cn(bodyText, "max-w-[48ch] text-ink-soft")}>
                   {copy.implementText}
                 </p>
               </div>
@@ -184,13 +178,13 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
       <ScrollRail
         intro={
           <div className="flex w-[82vw] shrink-0 snap-start flex-col justify-end gap-6 rounded-3xl p-2 sm:w-[420px] lg:w-[460px] lg:p-8">
-            <span className="font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
+            <span className="font-mono text-xs tracking-[0.12em] text-ink-soft uppercase">
               {copy.railLabel}
             </span>
             {copy.railIntro.map((paragraph) => (
               <p
                 key={paragraph}
-                className="text-xl leading-[1.4] text-foreground lg:text-2xl"
+                className="text-xl leading-[1.4] text-ink lg:text-2xl"
               >
                 {paragraph}
               </p>
@@ -201,7 +195,7 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
         {copy.kinds.map((kind, index) => (
           <article
             key={kind.label}
-            className="flex w-[82vw] shrink-0 snap-start flex-col overflow-clip rounded-3xl bg-card sm:w-[420px] lg:w-[440px]"
+            className="flex w-[82vw] shrink-0 snap-start flex-col overflow-clip rounded-3xl bg-surface sm:w-[420px] lg:w-[440px]"
           >
             <div className="line-panel px-6 pt-6">
               <VignetteFigure
@@ -210,13 +204,13 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
               />
             </div>
             <div className="flex flex-1 flex-col gap-3 p-6 lg:p-8">
-              <span className="font-mono text-xs text-muted-foreground tabular-nums">
+              <span className="font-mono text-xs text-ink-soft tabular-nums">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-heading text-2xl leading-[1.15] text-foreground">
+              <h3 className="font-heading text-2xl leading-[1.15] text-ink">
                 {kind.label}
               </h3>
-              <p className="text-base leading-[1.6] text-muted-foreground">
+              <p className="text-base leading-[1.6] text-ink-soft">
                 {kind.description}
               </p>
             </div>
@@ -226,9 +220,9 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
 
       {copy.shapedHeading ? (
         <Container className="pt-24 lg:pt-40">
-          <div className="grid gap-10 border-t border-border pt-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
+          <div className="grid gap-10 border-t border-line pt-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
             <Reveal>
-              <h3 className={cn(headingText, "text-foreground")}>
+              <h3 className={cn(headingText, "text-ink")}>
                 {copy.shapedHeading}
               </h3>
             </Reveal>
@@ -236,15 +230,15 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
               {/* The three things each system reflects, from the copy. */}
               <RevealStagger
                 amount={0.2}
-                className="grid border-y border-border sm:grid-cols-3"
+                className="grid border-y border-line sm:grid-cols-3"
               >
                 {copy.shapedPoints.map((item, index) => (
                   <RevealItem key={item}>
-                    <div className="flex h-full flex-col gap-6 border-border py-6 sm:border-l sm:px-6 sm:first:border-l-0 sm:first:pl-0">
-                      <span className="font-mono text-xs text-muted-foreground tabular-nums">
+                    <div className="flex h-full flex-col gap-6 border-line py-6 sm:border-l sm:px-6 sm:first:border-l-0 sm:first:pl-0">
+                      <span className="font-mono text-xs text-ink-soft tabular-nums">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="font-heading text-2xl leading-[1.15] text-foreground">
+                      <span className="font-heading text-2xl leading-[1.15] text-ink">
                         {item}
                       </span>
                     </div>
@@ -252,9 +246,7 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
                 ))}
               </RevealStagger>
               <Reveal className="flex flex-col items-start gap-6">
-                <p
-                  className={cn(bodyText, "max-w-[56ch] text-muted-foreground")}
-                >
+                <p className={cn(bodyText, "max-w-[56ch] text-ink-soft")}>
                   {copy.shapedText}
                 </p>
                 {copy.ctaLabel ? (
@@ -292,22 +284,20 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
       <Container className="grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
         <div>
           <Reveal className="flex flex-col gap-6 lg:sticky lg:top-32">
-            <h3 className="font-heading text-2xl leading-[1.15] text-foreground lg:text-[2rem]">
+            <h3 className="font-heading text-2xl leading-[1.15] text-ink lg:text-[2rem]">
               {copy.entrustHeading}
             </h3>
-            <p className={cn(bodyText, "text-muted-foreground")}>
-              {copy.entrustText}
-            </p>
+            <p className={cn(bodyText, "text-ink-soft")}>{copy.entrustText}</p>
           </Reveal>
         </div>
         <RevealStagger amount={0.15} className="flex flex-col">
           {copy.entrustItems.map((item, index) => (
             <RevealItem key={item}>
-              <div className="group flex items-baseline gap-6 border-b border-border py-5 lg:py-6">
-                <span className="w-8 font-mono text-sm text-muted-foreground tabular-nums">
+              <div className="group flex items-baseline gap-6 border-b border-line py-5 lg:py-6">
+                <span className="w-8 font-mono text-sm text-ink-soft tabular-nums">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className="font-heading text-3xl leading-[1.1] tracking-tight text-foreground transition-colors group-hover:text-brand-accent lg:text-5xl">
+                <span className="font-heading text-3xl leading-[1.1] tracking-tight text-ink transition-colors group-hover:text-accent-ink lg:text-5xl">
                   {item}
                 </span>
               </div>
@@ -318,16 +308,16 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
 
       <Container>
         <Reveal amount={0.1}>
-          <div className="dark flex flex-col gap-12 overflow-clip rounded-3xl bg-brand-blue p-8 lg:gap-16 lg:p-14">
+          <div className="dark flex flex-col gap-12 overflow-clip rounded-3xl bg-accent p-8 lg:gap-16 lg:p-14">
             <header className="flex flex-col items-start gap-3">
               <Badge variant="inverse">{copy.phasesBadge}</Badge>
-              <h2 className={cn(headingText, "text-foreground")}>
+              <h2 className={cn(headingText, "text-ink")}>
                 {copy.phasesHeading}
               </h2>
             </header>
             <Timeline phases={copy.phases} />
-            <div className="flex flex-col items-start gap-6 border-t border-foreground/20 pt-8 lg:flex-row lg:items-center lg:justify-between">
-              <p className="max-w-[40ch] font-heading text-2xl leading-[1.25] text-foreground">
+            <div className="flex flex-col items-start gap-6 border-t border-ink/20 pt-8 lg:flex-row lg:items-center lg:justify-between">
+              <p className="max-w-[40ch] font-heading text-2xl leading-[1.25] text-ink">
                 {copy.closeText}
               </p>
               <Button asChild size="lg" className={primaryPill}>
@@ -350,7 +340,7 @@ function SolutionsStory({ copy }: { copy: SolutionsPage }) {
         <ScrollWords
           paragraphs={copy.intro.paragraphs}
           className="max-w-[1040px]"
-          paragraphClassName="font-heading text-3xl leading-[1.15] tracking-tight text-foreground lg:text-5xl"
+          paragraphClassName="font-heading text-3xl leading-[1.15] tracking-tight text-ink lg:text-5xl"
         />
       </Container>
       <Infrastructure copy={copy.infrastructure} />

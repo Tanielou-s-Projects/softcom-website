@@ -17,10 +17,8 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-start gap-4">
-      <Icon aria-hidden className="size-6 shrink-0 text-foreground" />
-      <div className="w-[167px] text-sm leading-[1.6] text-foreground">
-        {children}
-      </div>
+      <Icon aria-hidden className="size-6 shrink-0 text-ink" />
+      <div className="w-[167px] text-sm leading-[1.6] text-ink">{children}</div>
     </div>
   )
 }
@@ -29,8 +27,8 @@ function DetailRow({
 async function ContactDetails({ heading }: { heading: string }) {
   const contactDetails = await getSettings()
   return (
-    <div className="flex flex-col gap-8 overflow-clip rounded-3xl bg-background p-8 lg:flex-row lg:items-start lg:justify-between lg:p-[47px]">
-      <h2 className={cn(panelHeadingText, "max-w-[142px] text-foreground")}>
+    <div className="flex flex-col gap-8 overflow-clip rounded-3xl bg-paper p-8 lg:flex-row lg:items-start lg:justify-between lg:p-[47px]">
+      <h2 className={cn(panelHeadingText, "max-w-[142px] text-ink")}>
         {heading}
       </h2>
 
@@ -50,7 +48,7 @@ async function ContactDetails({ heading }: { heading: string }) {
           <DetailRow icon={EnvelopeSimpleIcon}>
             <a
               href={`mailto:${contactDetails.email}`}
-              className="hover:text-brand-cyan"
+              className="hover:text-signal"
             >
               {contactDetails.email}
             </a>

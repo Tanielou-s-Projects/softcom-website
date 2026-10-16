@@ -65,10 +65,10 @@ function ScrollRail({
             {intro}
             {children}
           </motion.div>
-          <div className="mx-6 mt-10 h-px bg-border">
+          <div className="mx-6 mt-10 h-px bg-line">
             <motion.div
               style={{ scaleX: progress }}
-              className="h-px origin-left bg-foreground"
+              className="h-px origin-left bg-ink"
             />
           </div>
         </div>

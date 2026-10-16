@@ -172,10 +172,7 @@ function PixelPageTransition() {
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 z-[100]">
-      <div
-        ref={fallbackRef}
-        className="absolute inset-0 bg-brand-blue opacity-0"
-      />
+      <div ref={fallbackRef} className="absolute inset-0 bg-accent opacity-0" />
       {/* Keyed per run: a disposed context cannot be revived on the same canvas. */}
       <canvas
         key={mount}

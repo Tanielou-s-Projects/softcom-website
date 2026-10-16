@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils"
 
 /** Sector → existing token. No new colours: cyan / blue / foreground. */
 const TONE: Record<Sector["tone"], string> = {
-  cyan: "text-brand-cyan",
-  blue: "text-brand-blue",
-  neutral: "text-foreground",
+  cyan: "text-signal",
+  blue: "text-accent",
+  neutral: "text-ink",
 }
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -113,7 +113,7 @@ function SectorCard({
         className={cn(
           "@container relative flex flex-1 flex-col justify-between gap-12 overflow-hidden rounded-4xl p-8",
           "lg:min-h-[min(772px,80svh)] lg:gap-0",
-          contrast ? "bg-secondary" : "bg-popover"
+          contrast ? "bg-surface-raised" : "bg-surface"
         )}
       >
         <div className="w-[44%] max-w-[168px]">
@@ -121,7 +121,7 @@ function SectorCard({
         </div>
 
         <div className="relative flex flex-col">
-          <div className="flex flex-col gap-6 text-foreground">
+          <div className="flex flex-col gap-6 text-ink">
             {/*
              * The heading runs free of the copy measure and scales with the
              * card: in a resting column, "Organisations" is wider than a resting

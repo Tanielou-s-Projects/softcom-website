@@ -134,21 +134,21 @@ export function CityFigure({ focus }: { focus?: Zone }) {
             key={zone}
             aria-hidden
             data-callout={zone}
-            className="line-callout pointer-events-none absolute top-[3%] left-[2%] hidden w-[200px] overflow-clip rounded-2xl bg-card text-card-foreground shadow-sm ring-1 ring-foreground/10 sm:block"
+            className="line-callout pointer-events-none absolute top-[3%] left-[2%] hidden w-[200px] overflow-clip rounded-2xl bg-surface text-ink shadow-sm ring-1 ring-ink/10 sm:block"
           >
             <div className="flex items-center gap-2 px-4 pt-4 pb-3">
-              <span className="size-1.5 rounded-full bg-brand-accent" />
+              <span className="size-1.5 rounded-full bg-accent-ink" />
               <span className="font-heading text-sm font-medium">
                 {CALLOUTS[zone].title}
               </span>
             </div>
-            <dl className="flex flex-col gap-2 border-t border-border px-4 py-3 text-xs">
+            <dl className="flex flex-col gap-2 border-t border-line px-4 py-3 text-xs">
               {CALLOUTS[zone].rows.map(([field, value]) => (
                 <div
                   key={field}
                   className="flex items-center justify-between gap-3"
                 >
-                  <dt className="text-muted-foreground">{field}</dt>
+                  <dt className="text-ink-soft">{field}</dt>
                   <dd className="font-medium tabular-nums">{value}</dd>
                 </div>
               ))}

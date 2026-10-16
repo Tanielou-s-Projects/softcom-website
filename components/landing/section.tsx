@@ -61,10 +61,9 @@ export const bodyText = "text-base leading-[1.6] lg:text-lg"
  * `<Button size="lg">`, whose `h-10 px-4` already equals Figma's 16/8 padding
  * at 14px/24px type.
  */
-export const primaryPill =
-  "bg-foreground text-background hover:bg-foreground/90"
+export const primaryPill = "bg-ink text-paper hover:bg-ink/90"
 
 /** The quieter sibling: transparent until hovered. */
-export const ghostPill = "text-foreground"
+export const ghostPill = "text-ink"
 
 export { Bleed, Container }

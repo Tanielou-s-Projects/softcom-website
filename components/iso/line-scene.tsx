@@ -21,7 +21,7 @@ function CalloutCard({ callout }: { callout: Callout }) {
       aria-hidden
       data-callout={callout.zone}
       className={cn(
-        "pointer-events-none absolute hidden w-[232px] overflow-clip rounded-2xl bg-card text-card-foreground shadow-sm ring-1 ring-foreground/10 sm:block",
+        "pointer-events-none absolute hidden w-[232px] overflow-clip rounded-2xl bg-surface text-ink shadow-sm ring-1 ring-ink/10 sm:block",
         callout.zone && "line-callout",
         callout.at
           ? "-translate-x-1/2 -translate-y-full"
@@ -30,16 +30,18 @@ function CalloutCard({ callout }: { callout: Callout }) {
       style={callout.at}
     >
       <div className="flex items-center gap-2 px-4 pt-4 pb-3">
-        <span className="size-1.5 rounded-full bg-brand-accent" />
+        <span className="size-1.5 rounded-full bg-accent-ink" />
         <span className="font-heading text-sm font-medium">
           {callout.title}
         </span>
       </div>
-      <dl className="flex flex-col gap-2 border-t border-border px-4 py-3 text-xs">
+      <dl className="flex flex-col gap-2 border-t border-line px-4 py-3 text-xs">
         {callout.rows.map(([field, value]) => (
           <div key={field} className="flex items-center justify-between gap-3">
-            <dt className="text-muted-foreground">{field}</dt>
-            <dd className="font-medium whitespace-nowrap tabular-nums">{value}</dd>
+            <dt className="text-ink-soft">{field}</dt>
+            <dd className="font-medium whitespace-nowrap tabular-nums">
+              {value}
+            </dd>
           </div>
         ))}
       </dl>
@@ -194,7 +196,7 @@ export function LineFigurePanel({
       )}
     >
       {fig || title ? (
-        <figcaption className="pointer-events-none absolute inset-x-5 top-5 flex justify-between gap-4 font-mono text-[11px] tracking-[0.1em] text-muted-foreground uppercase lg:inset-x-6 lg:top-6">
+        <figcaption className="pointer-events-none absolute inset-x-5 top-5 flex justify-between gap-4 font-mono text-[11px] tracking-[0.1em] text-ink-soft uppercase lg:inset-x-6 lg:top-6">
           <span>{fig}</span>
           <span className="truncate text-right">{title}</span>
         </figcaption>

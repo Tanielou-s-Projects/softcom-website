@@ -29,7 +29,7 @@ function Stats({
     <Container className={cn("flex flex-col gap-10 lg:gap-14", className)}>
       {heading ? (
         <Reveal asChild>
-          <h2 className={cn(headingText, "max-w-[18ch] text-foreground")}>
+          <h2 className={cn(headingText, "max-w-[18ch] text-ink")}>
             {heading}
           </h2>
         </Reveal>
@@ -38,16 +38,14 @@ function Stats({
       <RevealStagger
         as="dl"
         amount={0.5}
-        className="grid grid-cols-2 gap-x-6 gap-y-10 border-t border-border pt-10 sm:grid-cols-4 sm:gap-8"
+        className="grid grid-cols-2 gap-x-6 gap-y-10 border-t border-line pt-10 sm:grid-cols-4 sm:gap-8"
       >
         {items.map((stat) => (
           <RevealItem key={stat.label} className="flex flex-col gap-2">
-            <dd className="font-heading text-5xl leading-[0.9] text-foreground lg:text-7xl">
+            <dd className="font-heading text-5xl leading-[0.9] text-ink lg:text-7xl">
               {withYears(stat.value)}
             </dd>
-            <dt className={cn(bodyText, "text-muted-foreground")}>
-              {stat.label}
-            </dt>
+            <dt className={cn(bodyText, "text-ink-soft")}>{stat.label}</dt>
           </RevealItem>
         ))}
       </RevealStagger>

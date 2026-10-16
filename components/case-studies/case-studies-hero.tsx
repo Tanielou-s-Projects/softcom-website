@@ -19,10 +19,8 @@ function CaseStudiesHero({ copy }: { copy: CaseStudiesPage["hero"] }) {
           {stats.map((stat) => (
             // Label first in the markup, figure first on screen.
             <div key={stat.label} className="flex flex-col-reverse gap-1">
-              <dt className="text-sm text-foreground/70 lg:text-base">
-                {stat.label}
-              </dt>
-              <dd className="font-heading text-4xl leading-[0.9] text-foreground lg:text-6xl">
+              <dt className="text-sm text-ink/70 lg:text-base">{stat.label}</dt>
+              <dd className="font-heading text-4xl leading-[0.9] text-ink lg:text-6xl">
                 {stat.value}
               </dd>
             </div>

@@ -32,7 +32,7 @@ export default async function Page() {
   ])
 
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-background">
+    <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-paper">
       {/* Floats over the full-height hero rather than taking a band above it. */}
       <HeroHeader />
 
@@ -56,7 +56,7 @@ export default async function Page() {
       <Container className="flex flex-col gap-4 py-12">
         {copy.intro.paragraphs.map((paragraph) => (
           <Reveal key={paragraph}>
-            <p className={cn(leadText, "max-w-[75ch] text-muted-foreground")}>
+            <p className={cn(leadText, "max-w-[75ch] text-ink-soft")}>
               {paragraph}
             </p>
           </Reveal>
@@ -64,13 +64,13 @@ export default async function Page() {
       </Container>
 
       <Container className="py-12">
-        <Reveal className="flex flex-col gap-6 border-t border-border pt-12 lg:flex-row lg:gap-16">
-          <h2 className={cn(headingText, "text-foreground lg:w-[40%]")}>
+        <Reveal className="flex flex-col gap-6 border-t border-line pt-12 lg:flex-row lg:gap-16">
+          <h2 className={cn(headingText, "text-ink lg:w-[40%]")}>
             {copy.work.heading}
           </h2>
           <div className="flex min-w-0 flex-1 flex-col gap-4">
             {copy.work.paragraphs.map((paragraph) => (
-              <p key={paragraph} className={cn(bodyText, "text-foreground")}>
+              <p key={paragraph} className={cn(bodyText, "text-ink")}>
                 {paragraph}
               </p>
             ))}
@@ -79,22 +79,20 @@ export default async function Page() {
       </Container>
 
       <Container id="roles" className="scroll-mt-24 py-12">
-        <Reveal className="flex flex-col items-start gap-6 rounded-3xl bg-card p-8 lg:p-[47px]">
-          <h2 className={cn(headingText, "text-foreground")}>
-            {copy.roles.heading}
-          </h2>
+        <Reveal className="flex flex-col items-start gap-6 rounded-3xl bg-surface p-8 lg:p-[47px]">
+          <h2 className={cn(headingText, "text-ink")}>{copy.roles.heading}</h2>
           {roles.length ? (
             <ul className="flex w-full flex-col">
               {roles.map((role) => (
                 <li
                   key={role.id}
-                  className="flex flex-col gap-4 border-t border-border py-6 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-4 border-t border-line py-6 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="flex flex-col gap-1">
-                    <span className="font-heading text-2xl text-foreground">
+                    <span className="font-heading text-2xl text-ink">
                       {role.title}
                     </span>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-ink-soft">
                       {[role.department, role.location, role.type]
                         .filter(Boolean)
                         .join(" · ")}
@@ -117,7 +115,7 @@ export default async function Page() {
             </ul>
           ) : (
             <>
-              <p className={cn(bodyText, "max-w-[60ch] text-muted-foreground")}>
+              <p className={cn(bodyText, "max-w-[60ch] text-ink-soft")}>
                 {copy.roles.empty}
               </p>
               <Button asChild size="lg" className={primaryPill}>

@@ -40,19 +40,14 @@ async function ClosingCta({
       {/* Reveal stays on the inner content — the panel itself is sticky and must never gain a transform. */}
       <Reveal asChild>
         <div className="relative flex flex-col items-center gap-6 px-6">
-          <h2
-            className={cn(
-              headingText,
-              "max-w-[598px] text-center text-foreground"
-            )}
-          >
+          <h2 className={cn(headingText, "max-w-[598px] text-center text-ink")}>
             {heading}
           </h2>
           {lead ? (
             <p
               className={cn(
                 leadText,
-                "max-w-[576px] text-center text-muted-foreground"
+                "max-w-[576px] text-center text-ink-soft"
               )}
             >
               {lead}

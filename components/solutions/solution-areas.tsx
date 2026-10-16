@@ -36,8 +36,8 @@ import {
 /** The small label over a plate's title: a dot and a mono caption. */
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="flex items-center gap-2 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
-      <span aria-hidden className="size-1.5 rounded-full bg-brand-accent" />
+    <p className="flex items-center gap-2 font-mono text-xs tracking-[0.12em] text-ink-soft uppercase">
+      <span aria-hidden className="size-1.5 rounded-full bg-accent-ink" />
       {children}
     </p>
   )
@@ -53,16 +53,16 @@ function Card({
   index?: number
 }) {
   return (
-    <div className="flex h-full flex-col gap-3 rounded-3xl bg-card p-6 lg:p-8">
+    <div className="flex h-full flex-col gap-3 rounded-3xl bg-surface p-6 lg:p-8">
       {index === undefined ? null : (
-        <span className="font-mono text-xs text-muted-foreground tabular-nums">
+        <span className="font-mono text-xs text-ink-soft tabular-nums">
           {String(index + 1).padStart(2, "0")}
         </span>
       )}
-      <h3 className="font-heading text-xl leading-[1.2] text-brand-accent">
+      <h3 className="font-heading text-xl leading-[1.2] text-accent-ink">
         {feature.label}
       </h3>
-      <p className="text-base leading-[1.6] text-muted-foreground">
+      <p className="text-base leading-[1.6] text-ink-soft">
         {feature.description}
       </p>
     </div>
@@ -119,9 +119,9 @@ function SolutionBlock({
   return (
     <Container id={solution.id} className="flex scroll-mt-24 flex-col gap-2.5">
       <Reveal asChild>
-        <header className="flex flex-col items-center gap-6 rounded-3xl bg-card px-6 py-16 text-center lg:py-24">
+        <header className="flex flex-col items-center gap-6 rounded-3xl bg-surface px-6 py-16 text-center lg:py-24">
           <Eyebrow>Solution {String(number).padStart(2, "0")}</Eyebrow>
-          <h2 className={cn(headingText, "max-w-[18ch] text-foreground")}>
+          <h2 className={cn(headingText, "max-w-[18ch] text-ink")}>
             {solution.title}
           </h2>
           {/*
@@ -129,13 +129,13 @@ function SolutionBlock({
            * a light card where the blue anchor gets 6.09:1, and
            * `--brand-accent` is what already resolves per theme.
            */}
-          <p className={cn(leadText, "max-w-[52ch] text-brand-accent")}>
+          <p className={cn(leadText, "max-w-[52ch] text-accent-ink")}>
             {solution.lead}
           </p>
           {solution.description.map((paragraph) => (
             <p
               key={paragraph}
-              className={cn(bodyText, "max-w-[62ch] text-muted-foreground")}
+              className={cn(bodyText, "max-w-[62ch] text-ink-soft")}
             >
               {paragraph}
             </p>
@@ -146,15 +146,15 @@ function SolutionBlock({
       {solution.list ? (
         <>
           <Reveal asChild>
-            <div className="grid gap-4 rounded-3xl bg-card p-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:p-8">
-              <h3 className="font-heading text-2xl leading-[1.15] text-foreground">
+            <div className="grid gap-4 rounded-3xl bg-surface p-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:p-8">
+              <h3 className="font-heading text-2xl leading-[1.15] text-ink">
                 {solution.list.heading}
               </h3>
               <div className="flex flex-col gap-3">
-                <p className={cn(bodyText, "text-muted-foreground")}>
+                <p className={cn(bodyText, "text-ink-soft")}>
                   {solution.list.intro}
                 </p>
-                <p className={cn(bodyText, "text-muted-foreground")}>
+                <p className={cn(bodyText, "text-ink-soft")}>
                   {solution.list.outro}
                 </p>
               </div>
@@ -169,7 +169,7 @@ function SolutionBlock({
       <Cards items={solution.features} />
 
       {solution.cta ? (
-        <Reveal className="flex justify-center rounded-3xl bg-card p-6">
+        <Reveal className="flex justify-center rounded-3xl bg-surface p-6">
           <Button asChild size="lg" className={primaryPill}>
             <Link href={solution.cta.href}>{solution.cta.label}</Link>
           </Button>
@@ -190,10 +190,10 @@ function SolutionBlock({
  */
 function DeliveryPhases() {
   return (
-    <section className="dark flex flex-col gap-8 overflow-clip rounded-3xl bg-brand-blue p-8 lg:gap-12 lg:p-12">
+    <section className="dark flex flex-col gap-8 overflow-clip rounded-3xl bg-accent p-8 lg:gap-12 lg:p-12">
       <header className="flex flex-col items-start justify-center gap-3">
         <Badge variant="inverse">Phases</Badge>
-        <h2 className={cn(cardHeadingText, "text-foreground lg:max-w-[208px]")}>
+        <h2 className={cn(cardHeadingText, "text-ink lg:max-w-[208px]")}>
           How we deliver
         </h2>
       </header>
@@ -201,10 +201,10 @@ function DeliveryPhases() {
       <ol className="grid gap-8 sm:grid-cols-2 sm:gap-x-11 lg:grid-cols-4">
         {deliveryPhases.map((phase) => (
           <li key={phase.step} className="flex flex-col items-start gap-4">
-            <span className="font-heading text-5xl leading-none font-medium text-foreground">
+            <span className="font-heading text-5xl leading-none font-medium text-ink">
               {phase.step}
             </span>
-            <div className="flex min-w-0 flex-col gap-2.5 text-lg leading-[1.4] text-foreground">
+            <div className="flex min-w-0 flex-col gap-2.5 text-lg leading-[1.4] text-ink">
               <h3 className="font-bold">{phase.title}</h3>
               <p>{phase.description}</p>
             </div>
@@ -212,8 +212,8 @@ function DeliveryPhases() {
         ))}
       </ol>
 
-      <div className="flex flex-col items-start gap-6 border-t border-foreground/20 pt-8">
-        <p className={cn(bodyText, "text-foreground")}>{deliveryClose.text}</p>
+      <div className="flex flex-col items-start gap-6 border-t border-ink/20 pt-8">
+        <p className={cn(bodyText, "text-ink")}>{deliveryClose.text}</p>
         <Button asChild size="lg" className={primaryPill}>
           <Link href={deliveryClose.cta.href}>{deliveryClose.cta.label}</Link>
         </Button>
@@ -232,7 +232,7 @@ function SolutionAreas() {
           {solutionsIntro.map((paragraph) => (
             <p
               key={paragraph}
-              className={cn(leadText, "max-w-[671px] text-foreground")}
+              className={cn(leadText, "max-w-[671px] text-ink")}
             >
               {paragraph}
             </p>

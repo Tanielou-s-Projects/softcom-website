@@ -19,7 +19,7 @@
   --anatomy-mid: #707070;
   --anatomy-lo: #434343;
   --anatomy-faint: #2c2c2c;
-  --anatomy-lit: var(--color-brand-cyan);
+  --anatomy-lit: var(--color-signal);
   --anatomy-text: var(--color-neutral-400);
   --anatomy-muted: var(--color-neutral-500);
   --anatomy-mono: var(--font-mono);
@@ -75,8 +75,8 @@
 .iso.softcom-dither {
   --dither-ink: #6b6b6b;
   --dither-top: #8a8a8a;
-  --dither-base: var(--color-brand-blue);
-  --dither-lit: var(--color-brand-cyan);
+  --dither-base: var(--color-accent);
+  --dither-lit: var(--color-signal);
 }
 .softcom-dither .iso-shade[data-shade="0"] {
   fill: url(#sd-shade-0);

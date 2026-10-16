@@ -76,7 +76,7 @@ export const capabilities: Capability[] = [
       "We do this with our own technology, partner platforms and custom-built systems. Where the infrastructure already exists globally, we are the partner that makes it work locally.",
     ],
     image: "/images/filling-station.jpg",
-    chipClassName: "bg-brand-blue text-brand-cyan",
+    chipClassName: "bg-accent text-signal",
   },
   {
     number: "02",
@@ -87,7 +87,7 @@ export const capabilities: Capability[] = [
       "We shape the intelligence around the questions people need to answer and the decisions they need to make.",
     ],
     image: "/images/intelligence-ops-room.jpg",
-    chipClassName: "bg-brand-cyan text-brand-blue",
+    chipClassName: "bg-signal text-accent",
   },
   {
     number: "03",
@@ -98,7 +98,7 @@ export const capabilities: Capability[] = [
       "We stay accountable for what the initiative achieves, not only for what we build.",
     ],
     image: "/images/field-enrolment.jpg",
-    chipClassName: "bg-background text-foreground",
+    chipClassName: "bg-paper text-ink",
   },
 ]
 

@@ -87,25 +87,22 @@ function HeadingPlate({
 }) {
   return (
     <Reveal asChild>
-      <header className="grid gap-6 rounded-3xl bg-card p-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:p-10">
+      <header className="grid gap-6 rounded-3xl bg-surface p-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:p-10">
         <div className="flex flex-col items-start gap-4">
           <Eyebrow>{label}</Eyebrow>
-          <h2 className="font-heading text-2xl leading-[1.15] text-foreground lg:text-[32px]">
+          <h2 className="font-heading text-2xl leading-[1.15] text-ink lg:text-[32px]">
             {heading}
           </h2>
         </div>
         {body.length || note ? (
           <div className="flex flex-col gap-4 lg:pt-8">
             {body.map((paragraph) => (
-              <p
-                key={paragraph}
-                className={cn(bodyText, "text-muted-foreground")}
-              >
+              <p key={paragraph} className={cn(bodyText, "text-ink-soft")}>
                 {paragraph}
               </p>
             ))}
             {note ? (
-              <p className="font-mono text-xs tracking-[0.08em] text-muted-foreground uppercase">
+              <p className="font-mono text-xs tracking-[0.08em] text-ink-soft uppercase">
                 {note}
               </p>
             ) : null}
@@ -179,11 +176,11 @@ function ProductBody({
       >
         {rest.length ? (
           <Reveal asChild>
-            <div className="flex flex-col items-center gap-6 rounded-3xl bg-card px-6 py-16 text-center lg:py-20">
+            <div className="flex flex-col items-center gap-6 rounded-3xl bg-surface px-6 py-16 text-center lg:py-20">
               {rest.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className={cn(bodyText, "max-w-[62ch] text-foreground")}
+                  className={cn(bodyText, "max-w-[62ch] text-ink")}
                 >
                   {paragraph}
                 </p>
@@ -215,21 +212,21 @@ function ProductBody({
       {page.audience ? (
         <Container>
           <Reveal asChild>
-            <div className="flex flex-col items-center gap-6 rounded-3xl bg-card px-6 py-16 text-center lg:py-24">
+            <div className="flex flex-col items-center gap-6 rounded-3xl bg-surface px-6 py-16 text-center lg:py-24">
               <Eyebrow>{audienceLabel}</Eyebrow>
-              <h2 className={cn(headingText, "max-w-[22ch] text-foreground")}>
+              <h2 className={cn(headingText, "max-w-[22ch] text-ink")}>
                 {page.audience.heading}
               </h2>
               {page.audience.body.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className={cn(bodyText, "max-w-[62ch] text-muted-foreground")}
+                  className={cn(bodyText, "max-w-[62ch] text-ink-soft")}
                 >
                   {paragraph}
                 </p>
               ))}
               {page.audience.note ? (
-                <p className="max-w-[62ch] text-sm text-muted-foreground">
+                <p className="max-w-[62ch] text-sm text-ink-soft">
                   {page.audience.note}
                 </p>
               ) : null}
@@ -252,12 +249,12 @@ function ProductCta({ page }: { page: ProductPage }) {
             <h2
               className={cn(
                 headingText,
-                "text-center text-foreground lg:max-w-[440px] lg:text-left"
+                "text-center text-ink lg:max-w-[440px] lg:text-left"
               )}
             >
               {page.close.heading}
             </h2>
-            <p className="max-w-[339px] text-center text-lg leading-[1.4] text-foreground lg:text-left">
+            <p className="max-w-[339px] text-center text-lg leading-[1.4] text-ink lg:text-left">
               {page.close.text}
             </p>
           </div>

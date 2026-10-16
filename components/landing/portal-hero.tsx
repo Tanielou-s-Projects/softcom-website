@@ -112,8 +112,8 @@ function ScrambleStatement({
               data-state="hidden"
               className={cn(
                 "relative data-[state=hidden]:text-transparent data-[state=scramble]:text-transparent",
-                "after:pointer-events-none after:absolute after:inset-0 after:text-brand-cyan data-[state=scramble]:after:content-[attr(data-glyph)]",
-                run.accent && "text-brand-accent"
+                "after:pointer-events-none after:absolute after:inset-0 after:text-signal data-[state=scramble]:after:content-[attr(data-glyph)]",
+                run.accent && "text-accent-ink"
               )}
             >
               {char}
@@ -304,7 +304,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
     }
   }, [])
   return (
-    <div className="bg-background text-foreground">
+    <div className="bg-paper text-ink">
       <HeroHeader />
       <div
         ref={track}
@@ -349,9 +349,9 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
           <section
             aria-labelledby="progress-title"
             className={cn(
-              "dark @container absolute top-0 z-4 flex items-center justify-center overflow-hidden text-foreground",
+              "dark @container absolute top-0 z-4 flex items-center justify-center overflow-hidden text-ink",
               "motion-reduce:relative motion-reduce:inset-auto motion-reduce:h-[60vh] motion-reduce:w-full motion-reduce:[clip-path:none]",
-              "softcom-portal-circle inset-0 size-full bg-brand-blue"
+              "softcom-portal-circle inset-0 size-full bg-accent"
             )}
           >
             <Image
@@ -365,7 +365,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
                 "softcom-portal-photo-in motion-reduce:opacity-100"
               )}
             />
-            <div className="softcom-portal-shade absolute inset-0 bg-[color-mix(in_oklab,var(--color-brand-blue-950),black_60%)] motion-reduce:opacity-65" />
+            <div className="softcom-portal-shade absolute inset-0 bg-[color-mix(in_oklab,var(--color-accent-night),black_60%)] motion-reduce:opacity-65" />
             <h2
               id="progress-title"
               className={cn(
@@ -394,10 +394,10 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
             />
             {/* A layer over the photo rather than a background behind it, so
                 no cyan fringe shows at the circle's antialiased edge. */}
-            <div className="softcom-portal-tint-in absolute inset-0 bg-brand-cyan" />
+            <div className="softcom-portal-tint-in absolute inset-0 bg-signal" />
           </figure>
           <button
-            className="group absolute bottom-22 left-1/2 z-8 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-brand-accent transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-accent active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
+            className="group absolute bottom-22 left-1/2 z-8 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-1 rounded-full px-2 py-1 text-accent-ink transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink active:scale-[0.97] motion-reduce:hidden md:bottom-[max(24px,4vh)]"
             aria-label="Scroll to the next section"
             onClick={() => {
               const element = track.current
@@ -443,7 +443,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
               ref={missionRef}
               aria-label="Our mission"
               role="group"
-              className="dark invisible absolute inset-0 z-5 flex flex-col items-center justify-center gap-10 px-6 text-center text-foreground motion-reduce:visible motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:py-24"
+              className="dark invisible absolute inset-0 z-5 flex flex-col items-center justify-center gap-10 px-6 text-center text-ink motion-reduce:visible motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:py-24"
             >
               <Image
                 src={copy.missionImage}
@@ -468,7 +468,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
                 <h2
                   className={cn(
                     headingText,
-                    "max-w-[760px] leading-[1.1] text-foreground"
+                    "max-w-[760px] leading-[1.1] text-ink"
                   )}
                 >
                   {/* Trimmed from the deck's "We believe stronger organisations
@@ -494,7 +494,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
             <div
               ref={fallbackRef}
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-6 bg-brand-blue opacity-0 motion-reduce:hidden"
+              className="pointer-events-none absolute inset-0 z-6 bg-accent opacity-0 motion-reduce:hidden"
             />
             <canvas
               ref={canvasRef}
@@ -506,7 +506,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
             <div
               aria-label="About Softcom"
               role="group"
-              className="dark pointer-events-none absolute inset-0 z-7 flex flex-col items-start justify-center gap-10 px-6 pt-24 pb-12 text-foreground motion-reduce:pointer-events-auto motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:bg-brand-blue motion-reduce:py-16 md:px-[7vw]"
+              className="dark pointer-events-none absolute inset-0 z-7 flex flex-col items-start justify-center gap-10 px-6 pt-24 pb-12 text-ink motion-reduce:pointer-events-auto motion-reduce:relative motion-reduce:min-h-[90vh] motion-reduce:bg-accent motion-reduce:py-16 md:px-[7vw]"
             >
               <p className="sr-only">
                 {statement.map((run) => run.text).join("")}

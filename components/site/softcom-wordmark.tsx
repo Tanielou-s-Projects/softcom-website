@@ -16,7 +16,7 @@ function SoftcomWordmark({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Softcom"
-      className={cn("text-foreground", className)}
+      className={cn("text-ink", className)}
     >
       {/* m */}
       <path
@@ -32,13 +32,13 @@ function SoftcomWordmark({ className }: { className?: string }) {
       <path
         d="M204.21 63.6925C199.55 63.6774 194.997 62.2896 191.121 59.7024C187.245 57.1152 184.217 53.4433 182.416 49.1454C180.614 44.8474 180.119 40.1139 180.992 35.5362C181.865 30.9585 184.067 26.7394 187.324 23.406C190.581 20.0727 194.747 17.7727 199.304 16.7935C203.86 15.8143 208.604 16.1993 212.942 17.9003C217.281 19.6013 221.022 22.543 223.699 26.3578C226.376 30.1727 227.869 34.6916 227.992 39.3502C228.094 42.5271 227.552 45.6916 226.4 48.6538C225.248 51.6161 223.509 54.315 221.287 56.5885C219.066 58.8619 216.409 60.6631 213.474 61.8839C210.539 63.1047 207.388 63.7198 204.21 63.6925Z"
         fill="currentColor"
-        className="transition-colors duration-200 group-hover:fill-brand-blue motion-reduce:transition-none"
+        className="transition-colors duration-200 group-hover:fill-accent motion-reduce:transition-none"
       />
       {/* o (first — cyan on hover) */}
       <path
         d="M62.3097 63.5828C57.6325 63.5689 53.0647 62.1659 49.1862 59.5517C45.3077 56.9374 42.2933 53.2299 40.5255 48.8996C38.7577 44.5692 38.3162 39.8113 39.257 35.2296C40.1979 30.648 42.4787 26.4491 45.8099 23.1658C49.1412 19.8826 53.3728 17.663 57.9676 16.7888C62.5625 15.9146 67.3135 16.4251 71.6177 18.2557C75.9219 20.0862 79.5852 23.1541 82.1429 27.0702C84.7005 30.9862 86.0371 35.5738 85.983 40.2508C85.9075 46.4745 83.3783 52.4168 78.9453 56.7859C74.5123 61.155 68.5339 63.5976 62.3097 63.5828Z"
         fill="currentColor"
-        className="transition-colors duration-200 group-hover:fill-brand-cyan motion-reduce:transition-none"
+        className="transition-colors duration-200 group-hover:fill-signal motion-reduce:transition-none"
       />
       {/* s */}
       <path

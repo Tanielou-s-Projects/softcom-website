@@ -25,13 +25,13 @@ function AccentCard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl bg-card ring-1 ring-brand-accent",
+        "relative overflow-hidden rounded-2xl bg-surface ring-1 ring-accent-ink",
         className
       )}
       {...props}
     >
       {tint ? (
-        <span aria-hidden className="absolute inset-0 bg-brand-accent/10" />
+        <span aria-hidden className="absolute inset-0 bg-accent-ink/10" />
       ) : null}
       <div className="relative h-full">{children}</div>
     </div>
@@ -41,7 +41,7 @@ function AccentCard({
 /** A short line set in mono, as the deck sets its notes. */
 function Note({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-mono text-xs leading-relaxed text-muted-foreground lg:text-[13px]">
+    <p className="font-mono text-xs leading-relaxed text-ink-soft lg:text-[13px]">
       {children}
     </p>
   )
@@ -128,20 +128,20 @@ export function LiftTiers({ fig }: { fig: string }) {
               const body = (
                 <div className="flex h-full flex-col">
                   <div className="flex flex-col gap-2 p-5">
-                    <Caps className={tier.trusted ? "text-brand-accent" : ""}>
+                    <Caps className={tier.trusted ? "text-accent-ink" : ""}>
                       {tier.tier}
                     </Caps>
-                    <span className="font-heading text-xl leading-tight text-foreground">
+                    <span className="font-heading text-xl leading-tight text-ink">
                       {tier.name}
                     </span>
-                    <span className="font-mono text-xs text-muted-foreground">
+                    <span className="font-mono text-xs text-ink-soft">
                       {tier.needs}
                     </span>
                   </div>
                   <ul
                     className={cn(
-                      "flex flex-col gap-2.5 border-t p-5 text-sm text-foreground",
-                      tier.trusted ? "border-brand-accent/30" : "border-border"
+                      "flex flex-col gap-2.5 border-t p-5 text-sm text-ink",
+                      tier.trusted ? "border-accent-ink/30" : "border-line"
                     )}
                   >
                     {tier.can.map((item) => (
@@ -167,7 +167,7 @@ export function LiftTiers({ fig }: { fig: string }) {
                   {index < STEPS.length ? (
                     <span
                       aria-hidden
-                      className="absolute top-[100px] -right-14 flex w-14 flex-col items-center gap-0.5 whitespace-nowrap text-brand-accent"
+                      className="absolute top-[100px] -right-14 flex w-14 flex-col items-center gap-0.5 whitespace-nowrap text-accent-ink"
                     >
                       <span className="font-mono text-[9px] leading-none">
                         verify
@@ -202,8 +202,8 @@ const MODULES = [
 function ModuleCard({ module }: { module: (typeof MODULES)[number] }) {
   return (
     <DiagramCard className="flex flex-col gap-2 p-5">
-      <Caps className="text-brand-accent">{module.name}</Caps>
-      <span className="text-sm text-foreground">{module.what}</span>
+      <Caps className="text-accent-ink">{module.name}</Caps>
+      <span className="text-sm text-ink">{module.what}</span>
     </DiagramCard>
   )
 }
@@ -239,7 +239,7 @@ export function LiftModules({ fig }: { fig: string }) {
                   key={d}
                   d={d}
                   fill="none"
-                  className="stroke-foreground/40"
+                  className="stroke-ink/40"
                   strokeWidth="1"
                   vectorEffect="non-scaling-stroke"
                 />
@@ -255,13 +255,13 @@ export function LiftModules({ fig }: { fig: string }) {
               </div>
 
               <div className="col-span-3 flex justify-center py-12">
-                <div className="relative grid size-[200px] place-items-center rounded-full bg-card text-center ring-2 ring-brand-accent">
+                <div className="relative grid size-[200px] place-items-center rounded-full bg-surface text-center ring-2 ring-accent-ink">
                   <div className="flex flex-col items-center gap-2 px-4">
                     <Caps>One member</Caps>
-                    <span className="font-heading text-xl text-foreground">
+                    <span className="font-heading text-xl text-ink">
                       profile · tier
                     </span>
-                    <span className="font-mono text-[11px] leading-snug text-muted-foreground">
+                    <span className="font-mono text-[11px] leading-snug text-ink-soft">
                       verified once, used everywhere
                     </span>
                   </div>
@@ -336,14 +336,14 @@ export function LiftTrusted({ fig }: { fig: string }) {
             {JOURNEY.map((step, index) => {
               const body = (
                 <div className="flex h-full flex-col gap-3 p-5">
-                  <span className="font-mono text-xs text-muted-foreground tabular-nums">
+                  <span className="font-mono text-xs text-ink-soft tabular-nums">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="font-heading text-lg leading-tight text-foreground">
+                  <span className="font-heading text-lg leading-tight text-ink">
                     {step.step}
                   </span>
-                  <span className="text-sm text-foreground">{step.asks}</span>
-                  <span className="font-mono text-xs text-muted-foreground">
+                  <span className="text-sm text-ink">{step.asks}</span>
+                  <span className="font-mono text-xs text-ink-soft">
                     {step.takes}
                   </span>
                 </div>
@@ -357,13 +357,13 @@ export function LiftTrusted({ fig }: { fig: string }) {
                   ) : (
                     <DiagramCard className="h-full">{body}</DiagramCard>
                   )}
-                  <span className="h-4 font-mono text-xs tracking-[0.12em] text-brand-accent uppercase">
+                  <span className="h-4 font-mono text-xs tracking-[0.12em] text-accent-ink uppercase">
                     {step.unlocks ? `→ ${step.unlocks}` : null}
                   </span>
                   {index < JOURNEY.length - 1 ? (
                     <span
                       aria-hidden
-                      className="absolute top-[60px] -right-5 text-muted-foreground"
+                      className="absolute top-[60px] -right-5 text-ink-soft"
                     >
                       →
                     </span>
@@ -412,12 +412,12 @@ export function LiftGate({ fig }: { fig: string }) {
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-10">
         <DiagramCard className="flex flex-col">
-          <div className="flex flex-col gap-2 border-b border-border p-6">
+          <div className="flex flex-col gap-2 border-b border-line p-6">
             <Caps>Grant · Open</Caps>
-            <span className="font-heading text-2xl text-foreground">
+            <span className="font-heading text-2xl text-ink">
               SME Growth Fund
             </span>
-            <span className="font-mono text-xs text-muted-foreground">
+            <span className="font-mono text-xs text-ink-soft">
               SMEDAN · ₦500,000 to ₦5,000,000 · closes 30 Sep
             </span>
           </div>
@@ -430,15 +430,15 @@ export function LiftGate({ fig }: { fig: string }) {
                 <dt>
                   <Caps>{field}</Caps>
                 </dt>
-                <dd className="text-sm text-foreground">{value}</dd>
+                <dd className="text-sm text-ink">{value}</dd>
               </div>
             ))}
           </dl>
           <div className="px-6 pb-6">
             <AccentCard tint className="p-5">
               <div className="flex flex-col gap-2">
-                <Caps className="text-brand-accent">Soft gate · Tier 1</Caps>
-                <p className="text-sm text-foreground">
+                <Caps className="text-accent-ink">Soft gate · Tier 1</Caps>
+                <p className="text-sm text-ink">
                   You can read and save this program. To apply, verify your
                   business. Takes 2 to 3 working days.
                 </p>
@@ -453,10 +453,10 @@ export function LiftGate({ fig }: { fig: string }) {
             {ACCESS.map((row) => {
               const body = (
                 <div className="flex flex-col gap-1 px-5 py-4">
-                  <Caps className={row.on ? "text-brand-accent" : ""}>
+                  <Caps className={row.on ? "text-accent-ink" : ""}>
                     {row.tier}
                   </Caps>
-                  <span className="text-sm text-foreground">{row.can}</span>
+                  <span className="text-sm text-ink">{row.can}</span>
                 </div>
               )
               return (
@@ -545,13 +545,13 @@ export function LiftPayout({ fig }: { fig: string }) {
             {LANES.map((lane, index) => (
               <div
                 key={lane.id}
-                className="absolute inset-x-0 border-b border-border"
+                className="absolute inset-x-0 border-b border-line"
                 style={{ top: `${index * 33.33}%`, height: "33.33%" }}
               >
                 <span
                   className={cn(
                     "absolute top-1 left-0 font-mono text-[11px] tracking-[0.12em] uppercase",
-                    lane.accent ? "text-brand-accent" : "text-muted-foreground"
+                    lane.accent ? "text-accent-ink" : "text-ink-soft"
                   )}
                 >
                   {lane.label}
@@ -571,9 +571,7 @@ export function LiftPayout({ fig }: { fig: string }) {
                   d={route.d}
                   fill="none"
                   vectorEffect="non-scaling-stroke"
-                  className={
-                    route.on ? "stroke-brand-accent" : "stroke-foreground/70"
-                  }
+                  className={route.on ? "stroke-accent-ink" : "stroke-ink/70"}
                   style={{ strokeWidth: route.on ? 2 : 1.2 }}
                 />
               ))}
@@ -586,7 +584,7 @@ export function LiftPayout({ fig }: { fig: string }) {
                 className={cn(
                   "absolute -translate-x-1/2 text-[10px] leading-none",
                   head.down ? "-translate-y-full" : "",
-                  on ? "text-brand-accent" : "text-foreground/70"
+                  on ? "text-accent-ink" : "text-ink/70"
                 )}
                 style={{ left: `${head.x}%`, top: `${head.y}%` }}
               >
@@ -597,10 +595,10 @@ export function LiftPayout({ fig }: { fig: string }) {
             {ORDER.map((step) => {
               const body = (
                 <div className="flex flex-col gap-1 px-4 py-3">
-                  <span className="font-mono text-xs text-muted-foreground">
+                  <span className="font-mono text-xs text-ink-soft">
                     {step.n}
                   </span>
-                  <span className="text-sm text-foreground">{step.label}</span>
+                  <span className="text-sm text-ink">{step.label}</span>
                 </div>
               )
               return (
@@ -619,7 +617,7 @@ export function LiftPayout({ fig }: { fig: string }) {
                     <DiagramCard>{body}</DiagramCard>
                   )}
                   {step.after ? (
-                    <span className="absolute top-full left-0 pt-2 font-mono text-[11px] whitespace-nowrap text-muted-foreground">
+                    <span className="absolute top-full left-0 pt-2 font-mono text-[11px] whitespace-nowrap text-ink-soft">
                       {step.after}
                     </span>
                   ) : null}
@@ -652,44 +650,44 @@ export function LiftInitiatives({ fig }: { fig: string }) {
           <AccentCard className="p-5">
             <div className="flex flex-col gap-2">
               <Caps>Deployment</Caps>
-              <span className="font-heading text-xl text-foreground">
+              <span className="font-heading text-xl text-ink">
                 A state initiative
               </span>
-              <span className="font-mono text-xs text-muted-foreground">
+              <span className="font-mono text-xs text-ink-soft">
                 ministry of commerce
               </span>
             </div>
           </AccentCard>
           <span
             aria-hidden
-            className="hidden text-center text-xl text-brand-accent lg:block"
+            className="hidden text-center text-xl text-accent-ink lg:block"
           >
             ←
           </span>
           <DiagramCard className="flex flex-col items-center gap-3 px-6 py-8 text-center">
-            <Caps className="text-brand-accent">LIFT</Caps>
-            <span className="font-heading text-lg text-foreground lg:text-xl">
+            <Caps className="text-accent-ink">LIFT</Caps>
+            <span className="font-heading text-lg text-ink lg:text-xl">
               tiers · modules · verification · payments
             </span>
-            <span className="font-mono text-xs text-muted-foreground">
+            <span className="font-mono text-xs text-ink-soft">
               one codebase, one data model, one set of rules
             </span>
-            <span className="font-mono text-xs text-muted-foreground">
+            <span className="font-mono text-xs text-ink-soft">
               tokens · components · motion
             </span>
           </DiagramCard>
           <span
             aria-hidden
-            className="hidden text-center text-xl text-muted-foreground lg:block"
+            className="hidden text-center text-xl text-ink-soft lg:block"
           >
             →
           </span>
           <DiagramCard className="flex flex-col gap-2 p-5">
             <Caps>Deployment</Caps>
-            <span className="font-heading text-xl text-foreground">
+            <span className="font-heading text-xl text-ink">
               A national MDA
             </span>
-            <span className="font-mono text-xs text-muted-foreground">
+            <span className="font-mono text-xs text-ink-soft">
               enterprise development agency
             </span>
           </DiagramCard>

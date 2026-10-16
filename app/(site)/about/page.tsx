@@ -50,15 +50,12 @@ export default async function Page() {
         {/* Our Story */}
         <Container className="flex flex-col gap-6">
           <Reveal className="flex flex-col gap-6">
-            <h2 className={cn(headingText, "max-w-[24ch] text-foreground")}>
+            <h2 className={cn(headingText, "max-w-[24ch] text-ink")}>
               {copy.story.heading}
             </h2>
             <div className="flex max-w-[75ch] flex-col gap-4">
               {copy.story.paragraphs.map((paragraph) => (
-                <p
-                  key={paragraph}
-                  className={cn(bodyText, "text-muted-foreground")}
-                >
+                <p key={paragraph} className={cn(bodyText, "text-ink-soft")}>
                   {paragraph}
                 </p>
               ))}
@@ -74,7 +71,7 @@ export default async function Page() {
         {/* What guides our work — the same four values as the homepage. */}
         <Container className="flex flex-col gap-8">
           <Reveal asChild>
-            <h2 className={cn(headingText, "text-foreground")}>
+            <h2 className={cn(headingText, "text-ink")}>
               {copy.values.heading}
             </h2>
           </Reveal>
@@ -83,16 +80,16 @@ export default async function Page() {
               <RevealItem
                 as="li"
                 key={value.title}
-                className="grid gap-2 border-t border-border pt-6 sm:grid-cols-[4rem_1fr] sm:gap-8"
+                className="grid gap-2 border-t border-line pt-6 sm:grid-cols-[4rem_1fr] sm:gap-8"
               >
-                <p className="font-mono text-sm text-muted-foreground">
+                <p className="font-mono text-sm text-ink-soft">
                   {String(index + 1).padStart(2, "0")}
                 </p>
                 <div className="flex max-w-[70ch] flex-col gap-2">
-                  <h3 className="font-heading text-xl text-foreground">
+                  <h3 className="font-heading text-xl text-ink">
                     {value.title}
                   </h3>
-                  <p className={cn(bodyText, "text-muted-foreground")}>
+                  <p className={cn(bodyText, "text-ink-soft")}>
                     {value.description}
                   </p>
                 </div>
@@ -107,12 +104,10 @@ export default async function Page() {
         {/* Build with us — careers. */}
         <Container>
           <Reveal className="flex flex-col items-start gap-6 lg:max-w-[684px]">
-            <h2 className={cn(headingText, "text-foreground")}>
+            <h2 className={cn(headingText, "text-ink")}>
               {copy.careers.heading}
             </h2>
-            <p className={cn(bodyText, "text-muted-foreground")}>
-              {copy.careers.body}
-            </p>
+            <p className={cn(bodyText, "text-ink-soft")}>{copy.careers.body}</p>
             <div className="flex flex-wrap items-center gap-2">
               <Button asChild size="lg" className={primaryPill}>
                 <Link href={copy.careers.primaryHref}>

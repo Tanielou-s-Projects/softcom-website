@@ -33,7 +33,7 @@ function Field({
     <div className="flex flex-1 flex-col gap-1.5">
       <Label htmlFor={id}>{label}</Label>
       {hint ? (
-        <p id={`${id}-hint`} className="text-sm text-muted-foreground">
+        <p id={`${id}-hint`} className="text-sm text-ink-soft">
           {hint}
         </p>
       ) : null}
@@ -57,11 +57,11 @@ function AlumniForm({ copy }: { copy: AlumniPage["form"] }) {
     <form
       id="join"
       onSubmit={onSubmit}
-      className="flex scroll-mt-24 flex-col gap-8 overflow-clip rounded-3xl bg-card p-8 lg:p-[47px]"
+      className="flex scroll-mt-24 flex-col gap-8 overflow-clip rounded-3xl bg-surface p-8 lg:p-[47px]"
     >
       <div className="flex flex-col gap-4">
-        <h2 className={cn(headingText, "text-foreground")}>{copy.heading}</h2>
-        <p className={cn(bodyText, "max-w-[60ch] text-muted-foreground")}>
+        <h2 className={cn(headingText, "text-ink")}>{copy.heading}</h2>
+        <p className={cn(bodyText, "max-w-[60ch] text-ink-soft")}>
           {copy.intro}
         </p>
       </div>

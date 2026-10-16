@@ -111,12 +111,12 @@ function InsightList({
         <p className={cn(leadText, "max-w-[629px] leading-[1.6]")}>
           {copy.intro.text}
         </p>
-        <div aria-hidden className="h-px w-full bg-border" />
+        <div aria-hidden className="h-px w-full bg-line" />
       </Reveal>
 
       {featured && (
         <Reveal as="section" className="flex max-w-[921px] flex-col gap-12">
-          <h2 className={cn(cardHeadingText, "max-w-[359px] text-foreground")}>
+          <h2 className={cn(cardHeadingText, "max-w-[359px] text-ink")}>
             {copy.headings.featured}
           </h2>
           <InsightCard
@@ -130,9 +130,7 @@ function InsightList({
       {latest.length > 0 && (
         <section className="flex max-w-[917px] flex-col gap-12">
           <Reveal asChild>
-            <h2
-              className={cn(cardHeadingText, "max-w-[359px] text-foreground")}
-            >
+            <h2 className={cn(cardHeadingText, "max-w-[359px] text-ink")}>
               {copy.headings.latest.split("\n").map((line, index) => (
                 <React.Fragment key={index}>
                   {index > 0 ? <br /> : null}
@@ -152,7 +150,7 @@ function InsightList({
                 {index % 2 === 1 && (
                   <span
                     aria-hidden
-                    className="absolute inset-y-0 -left-12 hidden w-px bg-border lg:block"
+                    className="absolute inset-y-0 -left-12 hidden w-px bg-line lg:block"
                   />
                 )}
                 <InsightCard

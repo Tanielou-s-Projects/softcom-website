@@ -14,41 +14,37 @@ function News({ copy }: { copy: AboutPage["news"] }) {
   return (
     <Container className="flex flex-col gap-10 lg:flex-row lg:gap-16">
       <div className="flex shrink-0 items-center gap-2 lg:w-40">
-        <span aria-hidden className="size-2.5 rounded-full bg-brand-accent" />
-        <span className="text-sm font-medium text-muted-foreground">
-          {copy.label}
-        </span>
+        <span aria-hidden className="size-2.5 rounded-full bg-accent-ink" />
+        <span className="text-sm font-medium text-ink-soft">{copy.label}</span>
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-10 lg:gap-12">
         <Reveal className="flex flex-col gap-3">
-          <h2 className={cn(headingText, "text-foreground")}>{copy.heading}</h2>
-          <p className="text-lg text-muted-foreground">{copy.lead}</p>
+          <h2 className={cn(headingText, "text-ink")}>{copy.heading}</h2>
+          <p className="text-lg text-ink-soft">{copy.lead}</p>
         </Reveal>
 
-        <RevealStagger as="ul" className="flex flex-col border-t border-border">
+        <RevealStagger as="ul" className="flex flex-col border-t border-line">
           {copy.items.map((insight) => (
             <RevealItem
               as="li"
               key={insight.slug}
-              className="border-b border-border"
+              className="border-b border-line"
             >
               <Link
                 href={`/insights/${insight.slug}`}
                 className="group grid items-center gap-4 py-6 sm:grid-cols-[1fr_8rem_auto] sm:gap-10"
               >
-                <p className="font-heading text-lg text-foreground transition-colors group-hover:text-brand-accent lg:text-xl">
+                <p className="font-heading text-lg text-ink transition-colors group-hover:text-accent-ink lg:text-xl">
                   {insight.title}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  {insight.category}
-                </p>
+                <p className="text-sm text-ink-soft">{insight.category}</p>
                 <div className="flex items-center gap-2.5">
                   <span
                     aria-hidden
-                    className="size-7 shrink-0 rounded-full bg-muted"
+                    className="size-7 shrink-0 rounded-full bg-surface-raised"
                   />
-                  <span className="text-sm whitespace-nowrap text-muted-foreground">
+                  <span className="text-sm whitespace-nowrap text-ink-soft">
                     {insight.date}
                   </span>
                 </div>
@@ -59,7 +55,7 @@ function News({ copy }: { copy: AboutPage["news"] }) {
 
         <Link
           href={copy.viewAllHref}
-          className="self-start text-sm font-medium text-foreground underline underline-offset-4"
+          className="self-start text-sm font-medium text-ink underline underline-offset-4"
         >
           {copy.viewAllLabel}
         </Link>

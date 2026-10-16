@@ -21,14 +21,11 @@ function SectionMark({
         aria-hidden
         className={cn(
           "size-[26px] shrink-0 rounded-full",
-          accent === "cyan" ? "bg-brand-cyan" : "bg-brand-blue"
+          accent === "cyan" ? "bg-signal" : "bg-accent"
         )}
       />
       <h2
-        className={cn(
-          cardHeadingText,
-          "text-center text-foreground lg:max-w-[359px]"
-        )}
+        className={cn(cardHeadingText, "text-center text-ink lg:max-w-[359px]")}
       >
         {children}
       </h2>

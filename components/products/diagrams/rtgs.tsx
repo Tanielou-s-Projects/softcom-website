@@ -13,10 +13,8 @@ import { StageRow } from "@/components/products/diagrams/liquio"
 function Institution({ name }: { name: string }) {
   return (
     <DiagramCard className="flex min-h-[160px] flex-col gap-3 p-6 lg:min-h-[200px]">
-      <span className="font-heading text-xl text-foreground lg:text-2xl">
-        {name}
-      </span>
-      <span className="text-sm leading-relaxed text-muted-foreground lg:text-base">
+      <span className="font-heading text-xl text-ink lg:text-2xl">{name}</span>
+      <span className="text-sm leading-relaxed text-ink-soft lg:text-base">
         Payments and treasury
         <br />
         Connected internal systems
@@ -31,7 +29,7 @@ function Arrow({ className }: { className?: string }) {
       <path
         d="M0 6 H56 M50 1 L56 6 L50 11"
         fill="none"
-        className="stroke-brand-accent"
+        className="stroke-accent-ink"
         strokeWidth="1.6"
         vectorEffect="non-scaling-stroke"
       />
@@ -42,10 +40,10 @@ function Arrow({ className }: { className?: string }) {
 function FundsControllers() {
   return (
     <DiagramCard className="flex w-full flex-col gap-2 p-6">
-      <span className="font-heading text-xl text-foreground lg:text-2xl">
+      <span className="font-heading text-xl text-ink lg:text-2xl">
         Funds Controllers
       </span>
-      <span className="text-sm text-muted-foreground lg:text-base">
+      <span className="text-sm text-ink-soft lg:text-base">
         Account and payment-processing services
       </span>
     </DiagramCard>
@@ -64,11 +62,11 @@ export function RtgsNetwork() {
         <div className="grid items-center gap-4 lg:grid-cols-[minmax(0,1fr)_72px_minmax(0,1fr)_72px_minmax(0,1fr)] lg:gap-4">
           <Institution name="Institution A" />
           <Arrow className="mx-auto h-3 w-12 rotate-90 lg:w-full lg:rotate-0" />
-          <div className="flex min-h-[160px] flex-col gap-3 rounded-2xl bg-brand-accent/10 p-6 ring-1 ring-brand-accent/20 lg:min-h-[200px]">
-            <span className="font-heading text-xl text-brand-accent lg:text-2xl">
+          <div className="flex min-h-[160px] flex-col gap-3 rounded-2xl bg-accent-ink/10 p-6 ring-1 ring-accent-ink/20 lg:min-h-[200px]">
+            <span className="font-heading text-xl text-accent-ink lg:text-2xl">
               RTGS.global
             </span>
-            <span className="text-sm leading-relaxed text-muted-foreground lg:text-base">
+            <span className="text-sm leading-relaxed text-ink-soft lg:text-base">
               Payment instructions
               <br />
               Settlement and notifications
@@ -76,7 +74,7 @@ export function RtgsNetwork() {
           </div>
           {/* On a phone, Funds Controllers sit straight under the network. */}
           <div className="flex flex-col items-center lg:hidden">
-            <span aria-hidden className="h-6 w-px bg-brand-accent" />
+            <span aria-hidden className="h-6 w-px bg-accent-ink" />
             <FundsControllers />
           </div>
           <Arrow className="mx-auto h-3 w-12 rotate-90 lg:w-full lg:rotate-0" />
@@ -85,7 +83,7 @@ export function RtgsNetwork() {
 
         {/* On desktop they hang off the network, below the row. */}
         <div className="hidden lg:flex lg:flex-col lg:items-center">
-          <span aria-hidden className="h-10 w-px bg-brand-accent" />
+          <span aria-hidden className="h-10 w-px bg-accent-ink" />
           <div className="w-[44%]">
             <FundsControllers />
           </div>
@@ -123,7 +121,7 @@ export function RtgsFx() {
             },
           ]}
         />
-        <p className="text-base text-muted-foreground lg:text-xl">
+        <p className="text-base text-ink-soft lg:text-xl">
           Settlement requires matching instructions and sufficient funds.
         </p>
       </div>

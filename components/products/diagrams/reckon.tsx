@@ -43,11 +43,11 @@ function ArrowRight({ className }: { className?: string }) {
     >
       <path
         d="M0 5 H36"
-        className="stroke-foreground/70"
+        className="stroke-ink/70"
         strokeWidth="1.2"
         vectorEffect="non-scaling-stroke"
       />
-      <path d="M33 1.5 L40 5 L33 8.5 Z" className="fill-foreground/70" />
+      <path d="M33 1.5 L40 5 L33 8.5 Z" className="fill-ink/70" />
     </svg>
   )
 }
@@ -70,18 +70,18 @@ function Panel({
     <DiagramCard
       className={cn(
         "overflow-clip font-mono text-sm",
-        on && "ring-brand-accent",
+        on && "ring-accent-ink",
         className
       )}
     >
       <div
         className={cn(
-          "border-b border-border px-4 py-3",
+          "border-b border-line px-4 py-3",
           center && "text-center",
-          on && "border-brand-accent/40"
+          on && "border-accent-ink/40"
         )}
       >
-        <Caps className={cn("text-xs", on && "text-brand-accent")}>{head}</Caps>
+        <Caps className={cn("text-xs", on && "text-accent-ink")}>{head}</Caps>
       </div>
       {children}
     </DiagramCard>
@@ -146,13 +146,13 @@ export function ReckonDeclaredOwed({ fig }: { fig: string }) {
     >
       <Scroll min={860}>
         <DiagramCard className="overflow-clip font-mono text-sm">
-          <div className="flex justify-between gap-4 border-b border-border px-6 py-4">
+          <div className="flex justify-between gap-4 border-b border-line px-6 py-4">
             <Caps>Entity 0421-77 · FY2025 · VAT</Caps>
             <Caps>1,214 lines tested</Caps>
           </div>
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-line">
                 {["Line", "Source", "Rule", "Declared", "Owed", "Diff"].map(
                   (head, index) => (
                     <th
@@ -177,8 +177,8 @@ export function ReckonDeclaredOwed({ fig }: { fig: string }) {
                     className={cn(
                       "tabular-nums",
                       exception
-                        ? "bg-brand-accent/10 text-foreground shadow-[inset_4px_0_0_var(--color-brand-accent)]"
-                        : "text-muted-foreground"
+                        ? "bg-accent-ink/10 text-ink shadow-[inset_4px_0_0_var(--color-accent-ink)]"
+                        : "text-ink-soft"
                     )}
                   >
                     {row.map((cell, index) => (
@@ -187,7 +187,7 @@ export function ReckonDeclaredOwed({ fig }: { fig: string }) {
                         className={cn(
                           "px-6 py-3",
                           index > 2 && "text-right",
-                          index === 5 && exception && "text-brand-accent"
+                          index === 5 && exception && "text-accent-ink"
                         )}
                       >
                         {cell}
@@ -198,20 +198,20 @@ export function ReckonDeclaredOwed({ fig }: { fig: string }) {
               })}
             </tbody>
           </table>
-          <div className="flex flex-col gap-3 border-t border-border px-6 py-5">
+          <div className="flex flex-col gap-3 border-t border-line px-6 py-5">
             <div className="flex flex-wrap items-baseline justify-between gap-4">
               <div className="flex items-baseline gap-6">
                 <Caps>Exceptions above threshold</Caps>
-                <span className="text-foreground">3 of 1,214 lines</span>
+                <span className="text-ink">3 of 1,214 lines</span>
               </div>
               <div className="flex items-baseline gap-6">
                 <Caps>Difference</Caps>
-                <span className="text-xl text-brand-accent tabular-nums lg:text-2xl">
+                <span className="text-xl text-accent-ink tabular-nums lg:text-2xl">
                   ₦14,537,500
                 </span>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-ink-soft">
               Each exception opens to its figure, source lines and rule. The
               officer raises a finding or dismisses it. Illustrative figures.
             </p>
@@ -260,11 +260,9 @@ function MarkedRow({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex items-center gap-3 border-t border-border px-4 py-2.5 first:border-t-0">
-      <span className="w-4 text-center text-xs text-muted-foreground">
-        {mark}
-      </span>
-      <span className="text-foreground">{children}</span>
+    <div className="flex items-center gap-3 border-t border-line px-4 py-2.5 first:border-t-0">
+      <span className="w-4 text-center text-xs text-ink-soft">{mark}</span>
+      <span className="text-ink">{children}</span>
     </div>
   )
 }
@@ -293,9 +291,7 @@ export function ReckonThreeRecords({ fig }: { fig: string }) {
                     key={label}
                     className={cn(
                       "flex justify-between gap-4 px-4 py-1.5 tabular-nums",
-                      on
-                        ? "bg-brand-accent/10 text-foreground"
-                        : "text-muted-foreground"
+                      on ? "bg-accent-ink/10 text-ink" : "text-ink-soft"
                     )}
                   >
                     <span>{label}</span>
@@ -316,7 +312,7 @@ export function ReckonThreeRecords({ fig }: { fig: string }) {
             <path
               d="M0 32 H24 V268 H0 M0 150 H48"
               fill="none"
-              className="stroke-foreground/70"
+              className="stroke-ink/70"
               strokeWidth="1.2"
               vectorEffect="non-scaling-stroke"
             />
@@ -334,7 +330,7 @@ export function ReckonThreeRecords({ fig }: { fig: string }) {
               <MarkedRow mark="⚑">Sources: 3 lines, 1 rule</MarkedRow>
               <MarkedRow mark="→">For officer review</MarkedRow>
             </Panel>
-            <span className="font-mono text-xs text-muted-foreground">
+            <span className="font-mono text-xs text-ink-soft">
               Illustrative figures.
             </span>
           </div>
@@ -366,7 +362,7 @@ const ACCOUNTS: [string, string, string, string?][] = [
 
 function TaxTag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="rounded-md bg-brand-accent/10 px-2 py-1 text-xs text-brand-accent ring-1 ring-brand-accent/20">
+    <span className="rounded-md bg-accent-ink/10 px-2 py-1 text-xs text-accent-ink ring-1 ring-accent-ink/20">
       {children}
     </span>
   )
@@ -388,8 +384,8 @@ export function ReckonChartOfAccounts({ fig }: { fig: string }) {
                 key={head}
                 className="flex flex-col gap-1 px-4 py-3 font-mono text-sm"
               >
-                <Caps className="text-xs text-foreground">{head}</Caps>
-                <span className="text-muted-foreground">{sub}</span>
+                <Caps className="text-xs text-ink">{head}</Caps>
+                <span className="text-ink-soft">{sub}</span>
               </DiagramCard>
             ))}
           </div>
@@ -406,7 +402,7 @@ export function ReckonChartOfAccounts({ fig }: { fig: string }) {
                   key={y}
                   d={`M0 ${y} C 45 ${y}, 40 250, 72 250`}
                   fill="none"
-                  className="stroke-foreground/60"
+                  className="stroke-ink/60"
                   strokeWidth="1.2"
                   vectorEffect="non-scaling-stroke"
                 />
@@ -414,18 +410,18 @@ export function ReckonChartOfAccounts({ fig }: { fig: string }) {
               <path
                 d="M72 250 H96"
                 fill="none"
-                className="stroke-foreground/70"
+                className="stroke-ink/70"
                 strokeWidth="1.2"
                 vectorEffect="non-scaling-stroke"
               />
             </svg>
-            <span className="absolute top-1/2 left-[72%] size-3 -translate-1/2 rounded-full bg-card ring-1 ring-foreground/70" />
-            <span className="absolute top-[calc(50%-28px)] left-[72%] -translate-x-1/2 font-mono text-xs text-muted-foreground">
+            <span className="absolute top-1/2 left-[72%] size-3 -translate-1/2 rounded-full bg-surface ring-1 ring-ink/70" />
+            <span className="absolute top-[calc(50%-28px)] left-[72%] -translate-x-1/2 font-mono text-xs text-ink-soft">
               harmonise
             </span>
           </div>
           <DiagramCard className="overflow-clip font-mono text-sm">
-            <div className="border-b border-border px-6 py-4">
+            <div className="border-b border-line px-6 py-4">
               <Caps>
                 One chart of accounts · every line mapped to a tax area
               </Caps>
@@ -436,10 +432,8 @@ export function ReckonChartOfAccounts({ fig }: { fig: string }) {
                   key={code}
                   className="grid grid-cols-[56px_minmax(0,1fr)_120px_64px] items-center gap-3"
                 >
-                  <span className="text-muted-foreground tabular-nums">
-                    {code}
-                  </span>
-                  <span className="text-foreground">{name}</span>
+                  <span className="text-ink-soft tabular-nums">{code}</span>
+                  <span className="text-ink">{name}</span>
                   <span>
                     <TaxTag>{first}</TaxTag>
                   </span>
@@ -486,9 +480,9 @@ export function ReckonException({ fig }: { fig: string }) {
                 key={head}
                 className="flex flex-col gap-1.5 px-5 py-4 font-mono text-sm"
               >
-                <Caps className="text-xs text-brand-accent">{head}</Caps>
-                <span className="text-foreground">{what}</span>
-                <span className="text-muted-foreground">{example}</span>
+                <Caps className="text-xs text-accent-ink">{head}</Caps>
+                <span className="text-ink">{what}</span>
+                <span className="text-ink-soft">{example}</span>
               </DiagramCard>
             ))}
           </div>
@@ -503,7 +497,7 @@ export function ReckonException({ fig }: { fig: string }) {
                 key={y}
                 d={`M0 ${y} C 45 ${y}, 40 150, 72 150`}
                 fill="none"
-                className="stroke-foreground/60"
+                className="stroke-ink/60"
                 strokeWidth="1.2"
                 vectorEffect="non-scaling-stroke"
               />
@@ -511,18 +505,18 @@ export function ReckonException({ fig }: { fig: string }) {
             <path
               d="M72 150 H100"
               fill="none"
-              className="stroke-brand-accent"
+              className="stroke-accent-ink"
               strokeWidth="1.4"
               vectorEffect="non-scaling-stroke"
             />
           </svg>
-          <DiagramCard className="flex flex-col gap-5 p-6 font-mono text-sm ring-brand-accent">
+          <DiagramCard className="flex flex-col gap-5 p-6 font-mono text-sm ring-accent-ink">
             <Caps>Exception 0142 · VAT · above threshold</Caps>
-            <div className="flex flex-col gap-1 border-b border-border pb-5">
-              <span className="text-3xl text-brand-accent tabular-nums lg:text-4xl">
+            <div className="flex flex-col gap-1 border-b border-line pb-5">
+              <span className="text-3xl text-accent-ink tabular-nums lg:text-4xl">
                 ₦4,650,000
               </span>
-              <span className="text-muted-foreground">
+              <span className="text-ink-soft">
                 Output VAT expected on a ₦62,000,000 fee posted to the interest
                 ledger.
               </span>
@@ -539,8 +533,8 @@ export function ReckonException({ fig }: { fig: string }) {
                   <dd
                     className={cn(
                       ai
-                        ? "-mx-2 rounded-md bg-brand-accent/10 px-2 py-1 text-brand-accent"
-                        : "text-foreground"
+                        ? "-mx-2 rounded-md bg-accent-ink/10 px-2 py-1 text-accent-ink"
+                        : "text-ink"
                     )}
                   >
                     {value}
@@ -549,10 +543,10 @@ export function ReckonException({ fig }: { fig: string }) {
               ))}
             </dl>
             <div className="flex flex-wrap gap-3 pt-1">
-              <span className="bg-brand-accent px-5 py-2.5 text-xs tracking-wider text-white uppercase dark:text-neutral-950">
+              <span className="bg-accent-ink px-5 py-2.5 text-xs tracking-wider text-white uppercase dark:text-neutral-950">
                 Raise finding
               </span>
-              <span className="px-5 py-2.5 text-xs tracking-wider text-foreground uppercase ring-1 ring-foreground/60">
+              <span className="px-5 py-2.5 text-xs tracking-wider text-ink uppercase ring-1 ring-ink/60">
                 Dismiss, with reason
               </span>
             </div>
@@ -581,23 +575,23 @@ export function ReckonYears({ fig }: { fig: string }) {
               {["2023", "2024", "2025"].map((year) => (
                 <span
                   key={year}
-                  className="border-l border-foreground/20 pb-3 pl-1 text-muted-foreground"
+                  className="border-l border-ink/20 pb-3 pl-1 text-ink-soft"
                 >
                   {year}
                 </span>
               ))}
-              <span className="absolute top-0 right-0 pr-1 text-muted-foreground">
+              <span className="absolute top-0 right-0 pr-1 text-ink-soft">
                 2026
               </span>
-              <span className="absolute top-0 right-0 bottom-[-136px] w-px bg-foreground/20" />
+              <span className="absolute top-0 right-0 bottom-[-136px] w-px bg-ink/20" />
             </div>
 
             <Caps className="self-center">As filed</Caps>
-            <div className="grid grid-cols-3 gap-2 border-l border-foreground/20 pl-1">
+            <div className="grid grid-cols-3 gap-2 border-l border-ink/20 pl-1">
               {["", " · renewed", " · renewed"].map((tail, index) => (
                 <DiagramCard
                   key={index}
-                  className="rounded-none px-3 py-2 text-foreground ring-foreground/70"
+                  className="rounded-none px-3 py-2 text-ink ring-ink/70"
                 >
                   364 days · ₦5,000,000,000{tail}
                 </DiagramCard>
@@ -605,21 +599,21 @@ export function ReckonYears({ fig }: { fig: string }) {
             </div>
 
             <span className="h-8" />
-            <span className="h-8 border-l border-foreground/20" />
+            <span className="h-8 border-l border-ink/20" />
 
             <Caps className="self-center">As read</Caps>
-            <div className="border-l border-foreground/20 pl-1">
-              <div className="bg-brand-accent px-4 py-2 text-white dark:text-neutral-950">
+            <div className="border-l border-ink/20 pl-1">
+              <div className="bg-accent-ink px-4 py-2 text-white dark:text-neutral-950">
                 one three-year borrowing, same borrower, same amount · dutiable
               </div>
             </div>
           </div>
           <div className="flex flex-col gap-2 pl-[104px]">
-            <p className="text-foreground">
+            <p className="text-ink">
               Stamp duty on borrowings over one year. Remitted on this facility:
               nil. Expected: ₦6,250,000. Exception raised.
             </p>
-            <p className="text-muted-foreground">Illustrative case.</p>
+            <p className="text-ink-soft">Illustrative case.</p>
           </div>
         </div>
       </Scroll>
@@ -676,13 +670,13 @@ export function ReckonJudgement({ fig }: { fig: string }) {
             <DiagramCard
               className={cn(
                 "flex min-h-[200px] flex-col gap-4 px-6 py-5",
-                stage.on && "ring-brand-accent"
+                stage.on && "ring-accent-ink"
               )}
             >
-              <Caps className={cn("text-xs", stage.on && "text-brand-accent")}>
+              <Caps className={cn("text-xs", stage.on && "text-accent-ink")}>
                 {stage.head}
               </Caps>
-              <ul className="flex flex-col gap-3 text-foreground">
+              <ul className="flex flex-col gap-3 text-ink">
                 {stage.items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
@@ -725,14 +719,14 @@ export function ReckonTraced({ fig }: { fig: string }) {
                     <MarkedRow mark="⚑">{note}</MarkedRow>
                   </Panel>
                   {last ? null : (
-                    <span className="absolute top-[64%] right-0 h-px w-6 bg-foreground/70" />
+                    <span className="absolute top-[64%] right-0 h-px w-6 bg-ink/70" />
                   )}
                 </div>
               )
             })}
           </div>
         </Scroll>
-        <p className="font-mono text-sm text-muted-foreground">
+        <p className="font-mono text-sm text-ink-soft">
           Every object is versioned. The record that raised the finding is the
           record produced at objection.
         </p>
@@ -814,7 +808,7 @@ export function ReckonEngine({ fig }: { fig: string }) {
             {TIERS.map((tier, index) => (
               <React.Fragment key={tier.tier}>
                 {index > 0 ? (
-                  <div className="flex flex-col items-center gap-1 pt-12 text-center text-[11px] text-brand-accent">
+                  <div className="flex flex-col items-center gap-1 pt-12 text-center text-[11px] text-accent-ink">
                     <span>{ESCALATIONS[index - 1][0]}</span>
                     <svg
                       viewBox="0 0 40 10"
@@ -823,13 +817,13 @@ export function ReckonEngine({ fig }: { fig: string }) {
                     >
                       <path
                         d="M0 5 H34"
-                        className="stroke-brand-accent"
+                        className="stroke-accent-ink"
                         strokeWidth="1.4"
                         vectorEffect="non-scaling-stroke"
                       />
                       <path
                         d="M32 1 L40 5 L32 9 Z"
-                        className="fill-brand-accent"
+                        className="fill-accent-ink"
                       />
                     </svg>
                     <span>{ESCALATIONS[index - 1][1]}</span>
@@ -838,21 +832,21 @@ export function ReckonEngine({ fig }: { fig: string }) {
                 <DiagramCard
                   className={cn(
                     "flex flex-col overflow-clip",
-                    tier.on && "ring-brand-accent"
+                    tier.on && "ring-accent-ink"
                   )}
                 >
-                  <div className="flex flex-col gap-1.5 border-b border-border px-5 py-4">
+                  <div className="flex flex-col gap-1.5 border-b border-line px-5 py-4">
                     <Caps>{tier.tier}</Caps>
-                    <span className="text-xl text-foreground">{tier.name}</span>
-                    <span className="text-muted-foreground">{tier.sub}</span>
+                    <span className="text-xl text-ink">{tier.name}</span>
+                    <span className="text-ink-soft">{tier.sub}</span>
                   </div>
                   {tier.rows.map(([field, value]) => (
                     <div
                       key={field}
-                      className="flex flex-col gap-1 border-b border-border px-5 py-3"
+                      className="flex flex-col gap-1 border-b border-line px-5 py-3"
                     >
                       <Caps>{field}</Caps>
-                      <span className="text-foreground">{value}</span>
+                      <span className="text-ink">{value}</span>
                     </div>
                   ))}
                   <div className="px-5 py-3">
@@ -884,9 +878,7 @@ export function ReckonEngine({ fig }: { fig: string }) {
                     key={`${t}-${m}`}
                     d={`M${x0} 0 C ${x0} 70, ${x1} 80, ${x1} 160`}
                     fill="none"
-                    className={
-                      tier.on ? "stroke-brand-accent" : "stroke-foreground/45"
-                    }
+                    className={tier.on ? "stroke-accent-ink" : "stroke-ink/45"}
                     strokeWidth="1"
                     vectorEffect="non-scaling-stroke"
                   />
@@ -900,9 +892,9 @@ export function ReckonEngine({ fig }: { fig: string }) {
               {MODULES.map((module) => (
                 <div
                   key={module}
-                  className="grid min-h-20 place-items-center bg-muted px-2 text-center ring-1 ring-foreground/40"
+                  className="grid min-h-20 place-items-center bg-surface-raised px-2 text-center ring-1 ring-ink/40"
                 >
-                  <Caps className="text-[10px] text-foreground">{module}</Caps>
+                  <Caps className="text-[10px] text-ink">{module}</Caps>
                 </div>
               ))}
             </div>

@@ -50,7 +50,7 @@ function FullHero({
     <div className="flex flex-col">
       <section
         className={cn(
-          "dark relative isolate flex h-svh min-h-[640px] flex-col overflow-hidden bg-black text-foreground",
+          "dark relative isolate flex h-svh min-h-[640px] flex-col overflow-hidden bg-black text-ink",
           align === "top" ? "justify-between" : "justify-end",
           className
         )}
@@ -66,13 +66,11 @@ function FullHero({
         >
           <Reveal className="flex flex-col items-start gap-6">
             <Badge variant="brand">{badge}</Badge>
-            <h1 className={cn(displayText, "max-w-[20ch] text-foreground")}>
+            <h1 className={cn(displayText, "max-w-[20ch] text-ink")}>
               {title}
             </h1>
             {lead ? (
-              <p className={cn(leadText, "max-w-[60ch] text-foreground/80")}>
-                {lead}
-              </p>
+              <p className={cn(leadText, "max-w-[60ch] text-ink/80")}>{lead}</p>
             ) : null}
           </Reveal>
           {rail ? <Reveal delay={0.1}>{rail}</Reveal> : null}

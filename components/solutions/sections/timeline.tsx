@@ -24,19 +24,19 @@ function Phase({
     <li className="relative flex flex-col gap-4 pl-10 lg:pt-12 lg:pl-0">
       <span
         aria-hidden
-        className="absolute top-1 left-0 grid size-5 place-items-center rounded-full border border-foreground/40 bg-brand-blue lg:top-0 lg:-translate-y-1/2"
+        className="absolute top-1 left-0 grid size-5 place-items-center rounded-full border border-ink/40 bg-accent lg:top-0 lg:-translate-y-1/2"
       >
         <motion.span
           style={{ scale: fill }}
-          className="size-2.5 rounded-full bg-foreground"
+          className="size-2.5 rounded-full bg-ink"
         />
       </span>
       <motion.div style={{ opacity }} className="flex flex-col gap-3">
-        <span className="font-heading text-5xl leading-none font-medium text-foreground tabular-nums">
+        <span className="font-heading text-5xl leading-none font-medium text-ink tabular-nums">
           {phase.step}
         </span>
-        <h3 className="text-lg font-bold text-foreground">{phase.title}</h3>
-        <p className="text-base leading-[1.55] text-foreground/80">
+        <h3 className="text-lg font-bold text-ink">{phase.title}</h3>
+        <p className="text-base leading-[1.55] text-ink/80">
           {phase.description}
         </p>
       </motion.div>
@@ -63,17 +63,17 @@ function Timeline({ phases }: { phases: DeliveryPhase[] }) {
       {/* The rule, and its drawn part. */}
       <span
         aria-hidden
-        className="absolute top-0 bottom-0 left-2.5 w-px bg-foreground/20 lg:top-0 lg:right-0 lg:bottom-auto lg:left-0 lg:h-px lg:w-auto"
+        className="absolute top-0 bottom-0 left-2.5 w-px bg-ink/20 lg:top-0 lg:right-0 lg:bottom-auto lg:left-0 lg:h-px lg:w-auto"
       />
       <motion.span
         aria-hidden
         style={{ scaleY: scrollYProgress }}
-        className="absolute top-0 bottom-0 left-2.5 w-px origin-top bg-foreground lg:hidden"
+        className="absolute top-0 bottom-0 left-2.5 w-px origin-top bg-ink lg:hidden"
       />
       <motion.span
         aria-hidden
         style={{ scaleX: scrollYProgress }}
-        className="absolute top-0 right-0 left-0 hidden h-px origin-left bg-foreground lg:block"
+        className="absolute top-0 right-0 left-0 hidden h-px origin-left bg-ink lg:block"
       />
       {phases.map((phase, index) => (
         <Phase

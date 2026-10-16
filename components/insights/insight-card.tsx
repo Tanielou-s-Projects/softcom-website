@@ -26,7 +26,7 @@ function InsightCard({
   return (
     <Link
       href={`/insights/${insight.slug}`}
-      className="group flex flex-col gap-4 rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+      className="group flex flex-col gap-4 rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50"
     >
       {/*
        * `bg-neutral-900` is the design's own #1b1b1b backing plate, which shows
@@ -46,8 +46,8 @@ function InsightCard({
 
       <div className="flex flex-col gap-6">
         <div className="flex items-start justify-between gap-4 font-heading text-xs leading-[1.2]">
-          <span className="text-foreground">{insight.topic}</span>
-          <time dateTime={insight.date} className="text-muted-foreground">
+          <span className="text-ink">{insight.topic}</span>
+          <time dateTime={insight.date} className="text-ink-soft">
             {formatInsightDate(insight.date)}
           </time>
         </div>
@@ -60,7 +60,7 @@ function InsightCard({
         >
           <h3
             className={cn(
-              "font-heading text-2xl leading-[1.2] text-foreground transition-colors group-hover:text-brand-accent",
+              "font-heading text-2xl leading-[1.2] text-ink transition-colors group-hover:text-accent-ink",
               featured && "lg:min-w-0 lg:flex-1"
             )}
           >
@@ -73,9 +73,7 @@ function InsightCard({
           <p
             className={cn(
               "text-sm leading-[1.2]",
-              featured
-                ? "text-foreground lg:min-w-0 lg:flex-1"
-                : "text-muted-foreground"
+              featured ? "text-ink lg:min-w-0 lg:flex-1" : "text-ink-soft"
             )}
           >
             {insight.dek}

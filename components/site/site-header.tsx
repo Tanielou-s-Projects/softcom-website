@@ -22,10 +22,10 @@ import { cn } from "@/lib/utils"
 /**
  * Shared by the triggers and the plain links so both sit flush in the pill.
  * The registry's defaults style these as standalone chips (`h-9`, `px-4.5`,
- * `hover:bg-muted`), which is wrong inside a 48px pill — `cn` merges them away.
+ * `hover:bg-surface-raised`), which is wrong inside a 48px pill — `cn` merges them away.
  */
 const pillItem =
-  "h-auto w-auto rounded-none p-0 text-xs leading-none font-medium text-foreground transition-colors hover:bg-transparent focus:bg-transparent hover:text-brand-accent data-[state=open]:bg-transparent data-[state=open]:hover:bg-transparent data-[state=open]:text-brand-accent"
+  "h-auto w-auto rounded-none p-0 text-xs leading-none font-medium text-ink transition-colors hover:bg-transparent focus:bg-transparent hover:text-accent-ink data-[state=open]:bg-transparent data-[state=open]:hover:bg-transparent data-[state=open]:text-accent-ink"
 
 const CUE_KEY = "softcom-menu-cue"
 
@@ -231,7 +231,7 @@ function SiteHeader() {
         // never blocks clicks on the page beside it.
         className={cn("max-w-max", !hidden && "pointer-events-auto")}
       >
-        <div className="dark flex items-center gap-4 rounded-full bg-black py-1.5 pr-2 pl-5 text-foreground ring-1 ring-white/10">
+        <div className="dark flex items-center gap-4 rounded-full bg-black py-1.5 pr-2 pl-5 text-ink ring-1 ring-white/10">
           <Link
             href="/"
             aria-label="Softcom home"
@@ -261,7 +261,7 @@ function SiteHeader() {
               aria-controls="site-menu"
               tabIndex={open ? -1 : 0}
               onClick={() => setOpen(true)}
-              className="size-6 shrink-0 rounded-full bg-brand-cyan outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              className="size-6 shrink-0 rounded-full bg-signal outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50"
             />
 
             {open ? (
@@ -312,7 +312,7 @@ function SiteHeader() {
                               <li key={sub.href}>
                                 <NavigationMenuLink
                                   asChild
-                                  className="block rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 transition-colors hover:bg-transparent hover:text-brand-accent focus:bg-transparent"
+                                  className="block rounded-lg px-3 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-transparent hover:text-accent-ink focus:bg-transparent"
                                 >
                                   <Link href={sub.href} onClick={close}>
                                     {sub.label}
@@ -343,7 +343,7 @@ function SiteHeader() {
               <span
                 aria-hidden
                 className={cn(
-                  "absolute left-1/2 -translate-x-1/2 text-xs leading-none font-medium whitespace-nowrap text-foreground/80 transition-opacity duration-300",
+                  "absolute left-1/2 -translate-x-1/2 text-xs leading-none font-medium whitespace-nowrap text-ink/80 transition-opacity duration-300",
                   peek ? "opacity-100 delay-150" : "opacity-0"
                 )}
               >
@@ -357,7 +357,7 @@ function SiteHeader() {
               aria-expanded={open}
               aria-controls="site-menu"
               onClick={() => (open ? close() : setOpen(true))}
-              className="grid size-6 shrink-0 place-items-center rounded-full bg-brand-blue outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              className="grid size-6 shrink-0 place-items-center rounded-full bg-accent outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50"
             >
               <svg
                 viewBox="0 0 9.5 9.5"
@@ -366,7 +366,7 @@ function SiteHeader() {
                 strokeLinecap="round"
                 aria-hidden
                 className={cn(
-                  "size-[9.5px] text-brand-cyan transition-opacity duration-200",
+                  "size-[9.5px] text-signal transition-opacity duration-200",
                   open ? "opacity-100" : "opacity-0"
                 )}
               >

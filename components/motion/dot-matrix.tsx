@@ -175,7 +175,7 @@ function DotMatrix({ src, resolved, className }: DotMatrixProps) {
                 // Foreground, not a fixed grey, so the grid shows on both themes.
                 // Pure cyan manages ~1.3:1 on the light cards; the ramp's 600 holds
                 // the edge legible there, and dark mode keeps the brand anchor.
-                "fill-foreground group-data-[state=front]/cell:fill-brand-cyan-600 dark:group-data-[state=front]/cell:fill-brand-cyan",
+                "fill-ink group-data-[state=front]/cell:fill-signal-deep dark:group-data-[state=front]/cell:fill-signal",
                 shape
                   ? "opacity-55 group-data-[state=front]/cell:opacity-100 group-data-[state=on]/cell:fill-current group-data-[state=on]/cell:opacity-100"
                   : "opacity-14 group-data-[state=front]/cell:opacity-35 group-data-[state=on]/cell:opacity-7",
@@ -187,7 +187,7 @@ function DotMatrix({ src, resolved, className }: DotMatrixProps) {
                 x={cell.col + 0.5}
                 y={cell.fromTop + 0.82}
                 textAnchor="middle"
-                className="hidden fill-brand-cyan-600 font-mono text-[0.95px] font-semibold group-data-[state=front]/cell:inline dark:fill-brand-cyan"
+                className="hidden fill-signal-deep font-mono text-[0.95px] font-semibold group-data-[state=front]/cell:inline dark:fill-signal"
               >
                 {cell.glyph}
               </text>

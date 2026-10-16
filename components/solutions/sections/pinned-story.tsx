@@ -57,7 +57,7 @@ function PinnedStory({
        * The figure pins in both layouts: beside the steps on desktop, and
        * across the top on a phone, where the steps scroll up under it.
        */}
-      <div className="sticky top-16 z-10 order-first bg-background pb-2 lg:static lg:order-last lg:bg-transparent lg:pb-0">
+      <div className="sticky top-16 z-10 order-first bg-paper pb-2 lg:static lg:order-last lg:bg-transparent lg:pb-0">
         <div className="lg:sticky lg:top-[calc(50svh-min(36vw,340px))]">
           <div data-focus={steps[active]?.id}>{figure}</div>
         </div>
@@ -77,17 +77,17 @@ function PinnedStory({
               transition={{ duration: 0.4 }}
               className="flex flex-col gap-4"
             >
-              <span className="flex items-center gap-3 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
+              <span className="flex items-center gap-3 font-mono text-xs tracking-[0.12em] text-ink-soft uppercase">
                 <span className="tabular-nums">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className="h-px w-8 bg-border" />
+                <span className="h-px w-8 bg-line" />
                 {step.label}
               </span>
-              <h3 className="font-heading text-3xl leading-[1.1] tracking-tight text-foreground lg:text-[2.5rem]">
+              <h3 className="font-heading text-3xl leading-[1.1] tracking-tight text-ink lg:text-[2.5rem]">
                 {step.title}
               </h3>
-              <p className="max-w-[44ch] text-base leading-[1.6] text-muted-foreground lg:text-lg">
+              <p className="max-w-[44ch] text-base leading-[1.6] text-ink-soft lg:text-lg">
                 {step.body}
               </p>
             </motion.div>

@@ -8,21 +8,20 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-muted text-muted-foreground",
+        default: "bg-surface-raised text-ink-soft",
         /**
-         * For badges sitting on a `bg-secondary` surface, where the default
+         * For badges sitting on a `bg-surface-raised` surface, where the default
          * would have no contrast against its container.
          */
-        contrast: "bg-background text-muted-foreground",
+        contrast: "bg-paper text-ink-soft",
         /**
          * The section label. Brand blue with white text in light mode, brand
          * cyan with dark text in dark mode (and inside any `dark` region) —
          * cyan is too light to carry on a light page.
          */
-        brand:
-          "bg-brand-blue text-white dark:bg-brand-cyan dark:text-neutral-950",
+        brand: "bg-accent text-white dark:bg-signal dark:text-neutral-950",
         /** The flipped plate the design uses on brand-blue panels. */
-        inverse: "bg-foreground text-background",
+        inverse: "bg-ink text-paper",
       },
     },
     defaultVariants: {

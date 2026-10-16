@@ -58,7 +58,7 @@ async function CtaPanel({
         aria-hidden
         className={cn(
           "relative size-[26px] shrink-0 rounded-full",
-          accent === "cyan" ? "bg-brand-cyan" : "bg-brand-blue"
+          accent === "cyan" ? "bg-signal" : "bg-accent"
         )}
       />
 

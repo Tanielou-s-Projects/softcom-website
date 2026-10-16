@@ -7,9 +7,9 @@
 .iso.softcom-line {
   /* Light: brand-blue line on white, cyan only where it is lit. */
   --line-panel: #f2fbff;
-  --line-ink: var(--color-brand-blue);
+  --line-ink: var(--color-accent);
   --line-ink-soft: #7aa0ff;
-  --line-accent: var(--color-brand-blue);
+  --line-accent: var(--color-accent);
   --line-accent-wash: #b3ffff;
   --line-chip: #ffffffcc;
   --line-dither: #00d5e6;
@@ -40,12 +40,12 @@
 :is(.dark) .iso.softcom-line {
   /* Dark: cyan line on the deepest blue of the ramp. */
   --line-panel: #030b33;
-  --line-ink: var(--color-brand-cyan);
+  --line-ink: var(--color-signal);
   --line-ink-soft: #3d7bff;
-  --line-accent: var(--color-brand-cyan);
+  --line-accent: var(--color-signal);
   --line-accent-wash: #00ffff26;
   --line-chip: #00ffff0f;
-  --line-dither: var(--color-brand-cyan);
+  --line-dither: var(--color-signal);
   --line-shadow: #0a2bb8;
 
   --anatomy-paper: #06124a;

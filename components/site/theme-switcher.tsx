@@ -23,7 +23,7 @@ function ThemeSwitcher({ className }: { className?: string }) {
   const { setTheme } = useTheme()
 
   const base =
-    "grid size-7 place-items-center rounded-full transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-4"
+    "grid size-7 place-items-center rounded-full transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50 [&_svg]:size-4"
 
   return (
     <div
@@ -75,7 +75,7 @@ function ThemeToggleDot({ className }: { className?: string }) {
       aria-label="Switch theme"
       onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
       className={cn(
-        "grid size-6 shrink-0 place-items-center rounded-full bg-white/10 text-white/70 transition-colors outline-none hover:bg-white/20 hover:text-white focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3.5",
+        "grid size-6 shrink-0 place-items-center rounded-full bg-white/10 text-white/70 transition-colors outline-none hover:bg-white/20 hover:text-white focus-visible:ring-[3px] focus-visible:ring-accent-ink/50 [&_svg]:size-3.5",
         className
       )}
     >

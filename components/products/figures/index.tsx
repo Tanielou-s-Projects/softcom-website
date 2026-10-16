@@ -54,7 +54,7 @@ function ProductFigureSlot({
         subtitle={figure.caption}
         footnote="Product screen · Illustrative data"
       >
-        <div className="mx-auto max-w-[800px] overflow-clip rounded-2xl ring-1 ring-foreground/10">
+        <div className="mx-auto max-w-[800px] overflow-clip rounded-2xl ring-1 ring-ink/10">
           <Image
             src={figure.image.src}
             width={figure.image.width}
@@ -70,15 +70,13 @@ function ProductFigureSlot({
   if (!SHOW_PLACEHOLDERS) return null
 
   return (
-    <div className="flex aspect-[16/9] flex-col items-center justify-center gap-2 rounded-3xl border border-dashed border-border p-6 text-center">
-      <span className="font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
+    <div className="flex aspect-[16/9] flex-col items-center justify-center gap-2 rounded-3xl border border-dashed border-line p-6 text-center">
+      <span className="font-mono text-xs tracking-[0.12em] text-ink-soft uppercase">
         {fig} · to draw · {figure.key}
       </span>
-      <span className="font-heading text-xl text-foreground">
-        {figure.title}
-      </span>
+      <span className="font-heading text-xl text-ink">{figure.title}</span>
       {figure.caption ? (
-        <span className="max-w-[52ch] text-sm text-muted-foreground">
+        <span className="max-w-[52ch] text-sm text-ink-soft">
           {figure.caption}
         </span>
       ) : null}

@@ -22,7 +22,7 @@ export default async function Page() {
   const copy = await getPageContent("alumniPage", alumniPage)
 
   return (
-    <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-background">
+    <div className="relative flex min-h-svh w-full flex-col gap-2.5 bg-paper">
       {/* Floats over the full-bleed hero rather than taking a band above it. */}
       <HeroHeader />
 
@@ -54,7 +54,7 @@ export default async function Page() {
         {copy.intro.paragraphs.map((paragraph) => (
           <p
             key={paragraph}
-            className={cn(leadText, "max-w-[75ch] text-muted-foreground")}
+            className={cn(leadText, "max-w-[75ch] text-ink-soft")}
           >
             {paragraph}
           </p>

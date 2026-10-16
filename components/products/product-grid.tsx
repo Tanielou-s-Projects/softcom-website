@@ -55,13 +55,13 @@ function ProductCard({
   return (
     <article
       id={product.id}
-      className="flex h-full scroll-mt-24 flex-col gap-6 overflow-clip rounded-3xl bg-muted"
+      className="flex h-full scroll-mt-24 flex-col gap-6 overflow-clip rounded-3xl bg-surface-raised"
     >
       <div className="flex flex-col items-start gap-2.5 p-6 sm:flex-row sm:items-center">
-        <h3 className={cn(cardHeadingText, "text-foreground sm:w-[56%]")}>
+        <h3 className={cn(cardHeadingText, "text-ink sm:w-[56%]")}>
           {product.name}
         </h3>
-        <p className={cn(leadText, "min-w-0 flex-1 text-foreground")}>
+        <p className={cn(leadText, "min-w-0 flex-1 text-ink")}>
           {product.tagline}
         </p>
       </div>
@@ -71,7 +71,7 @@ function ProductCard({
          * Only the top corners are rounded: the panel runs to the bottom of the
          * card, where the card's own clip takes over.
          */
-        <div className="relative min-h-[min(420px,55svh)] flex-1 overflow-clip rounded-t-[32px] bg-popover lg:min-h-[min(612px,65svh)]">
+        <div className="relative min-h-[min(420px,55svh)] flex-1 overflow-clip rounded-t-[32px] bg-surface lg:min-h-[min(612px,65svh)]">
           {/* Risen less where nothing sits on it, so more of the weave shows;
               a wordmark needs solid blue behind it to stay legible. */}
           <DitherPanel
@@ -98,7 +98,7 @@ function ProductCard({
         </div>
       ) : (
         <div className="flex flex-col items-start gap-6 px-6 pb-6">
-          <p className={cn(bodyText, "text-foreground lg:max-w-[600px]")}>
+          <p className={cn(bodyText, "text-ink lg:max-w-[600px]")}>
             {product.description}
           </p>
           <ExploreLink product={product} explore={explore} />
@@ -129,7 +129,7 @@ function ProductSection({
           <p
             className={cn(
               leadText,
-              "max-w-[576px] px-6 text-center text-muted-foreground"
+              "max-w-[576px] px-6 text-center text-ink-soft"
             )}
           >
             {lead}

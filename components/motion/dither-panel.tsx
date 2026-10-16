@@ -156,7 +156,7 @@ function DitherPanel({
       className={cn(
         tone === "mono"
           ? "block size-full text-neutral-500"
-          : "block size-full text-brand-cyan-600 dark:text-brand-cyan",
+          : "block size-full text-signal-deep dark:text-signal",
         className
       )}
     />

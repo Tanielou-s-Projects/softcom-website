@@ -28,12 +28,12 @@ function SolutionsHero({ copy }: { copy: SolutionsPage }) {
             <Link
               key={solution.id}
               href={`#${solution.id}`}
-              className="group flex items-baseline gap-4 text-foreground"
+              className="group flex items-baseline gap-4 text-ink"
             >
-              <span className="font-mono text-sm text-muted-foreground tabular-nums">
+              <span className="font-mono text-sm text-ink-soft tabular-nums">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="font-heading text-xl leading-tight transition-colors group-hover:text-brand-cyan lg:text-2xl">
+              <span className="font-heading text-xl leading-tight transition-colors group-hover:text-signal lg:text-2xl">
                 {AREA_TITLES(copy)[index] ?? solution.title}
               </span>
             </Link>

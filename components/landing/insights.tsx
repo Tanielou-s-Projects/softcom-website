@@ -18,10 +18,8 @@ function Insights({ copy }: { copy: HomePage["ourThinking"] }) {
       <Reveal asChild>
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div className="flex flex-col gap-4">
-            <h2 className={cn(headingText, "text-foreground")}>
-              {copy.heading}
-            </h2>
-            <p className={cn(bodyText, "max-w-[576px] text-muted-foreground")}>
+            <h2 className={cn(headingText, "text-ink")}>{copy.heading}</h2>
+            <p className={cn(bodyText, "max-w-[576px] text-ink-soft")}>
               {copy.intro}
             </p>
           </div>
@@ -36,19 +34,19 @@ function Insights({ copy }: { copy: HomePage["ourThinking"] }) {
           <RevealItem key={perspective.title} asChild>
             <Link
               href={perspective.href}
-              className="group flex flex-col items-start gap-4 rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              className="group flex flex-col items-start gap-4 rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-accent-ink/50"
             >
               {/* Cover art is a plate until each perspective has its own. */}
-              <div className="aspect-[690/324] w-full rounded-2xl bg-muted transition-opacity group-hover:opacity-80" />
+              <div className="aspect-[690/324] w-full rounded-2xl bg-surface-raised transition-opacity group-hover:opacity-80" />
 
               <div className="flex flex-col gap-3">
-                <h3 className="font-heading text-lg leading-[1.2] text-foreground lg:text-2xl">
+                <h3 className="font-heading text-lg leading-[1.2] text-ink lg:text-2xl">
                   {perspective.title}
                 </h3>
-                <p className={cn(bodyText, "text-muted-foreground")}>
+                <p className={cn(bodyText, "text-ink-soft")}>
                   {perspective.summary}
                 </p>
-                <span className="text-sm font-medium text-foreground underline-offset-4 group-hover:underline">
+                <span className="text-sm font-medium text-ink underline-offset-4 group-hover:underline">
                   {copy.readLabel}
                 </span>
               </div>

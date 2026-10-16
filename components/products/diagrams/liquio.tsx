@@ -25,7 +25,7 @@ export function LiquioFoundation() {
           <div className="grid gap-3 sm:grid-cols-3 sm:gap-6 lg:gap-10">
             {AUDIENCES.map((audience) => (
               <DiagramCard key={audience} className="px-6 py-6 lg:py-8">
-                <span className="font-heading text-xl text-foreground lg:text-2xl">
+                <span className="font-heading text-xl text-ink lg:text-2xl">
                   {audience}
                 </span>
               </DiagramCard>
@@ -42,27 +42,27 @@ export function LiquioFoundation() {
             <path
               d="M100 0 V20 H500 V0 M300 0 V40"
               fill="none"
-              className="stroke-brand-accent"
+              className="stroke-accent-ink"
               strokeWidth="1.6"
               vectorEffect="non-scaling-stroke"
             />
           </svg>
           <span
             aria-hidden
-            className="mx-auto h-6 w-px bg-brand-accent sm:hidden"
+            className="mx-auto h-6 w-px bg-accent-ink sm:hidden"
           />
 
-          <div className="flex flex-col gap-3 rounded-2xl bg-brand-accent/10 px-6 py-6 ring-1 ring-brand-accent/20 lg:py-8">
-            <span className="font-heading text-xl text-brand-accent lg:text-2xl">
+          <div className="flex flex-col gap-3 rounded-2xl bg-accent-ink/10 px-6 py-6 ring-1 ring-accent-ink/20 lg:py-8">
+            <span className="font-heading text-xl text-accent-ink lg:text-2xl">
               Liquio
             </span>
-            <span className="text-base text-brand-accent lg:text-xl">
+            <span className="text-base text-accent-ink lg:text-xl">
               Service design / Forms and workflows / Registers and datasets /
               APIs
             </span>
           </div>
         </div>
-        <p className="text-base text-muted-foreground lg:text-xl">
+        <p className="text-base text-ink-soft lg:text-xl">
           Connect existing government systems and develop services on a common
           platform.
         </p>
@@ -88,7 +88,7 @@ export function StageRow({
     >
       {stages.map((stage, index) => (
         <li key={stage.title} className="flex flex-col gap-4 lg:pr-10">
-          <span className="font-mono text-sm text-brand-accent tabular-nums">
+          <span className="font-mono text-sm text-accent-ink tabular-nums">
             {String(index + 1).padStart(2, "0")}
           </span>
           <div className="relative flex h-full">
@@ -96,26 +96,26 @@ export function StageRow({
               className={cn(
                 "flex min-h-[180px] w-full flex-col gap-3 rounded-2xl p-6 lg:min-h-[220px]",
                 stage.on
-                  ? "bg-brand-accent/10 ring-1 ring-brand-accent/20"
-                  : "bg-card ring-1 ring-foreground/10"
+                  ? "bg-accent-ink/10 ring-1 ring-accent-ink/20"
+                  : "bg-surface ring-1 ring-ink/10"
               )}
             >
               <span
                 className={cn(
                   "font-heading text-xl lg:text-2xl",
-                  stage.on ? "text-brand-accent" : "text-foreground"
+                  stage.on ? "text-accent-ink" : "text-ink"
                 )}
               >
                 {stage.title}
               </span>
-              <span className="text-sm leading-relaxed text-muted-foreground lg:text-base">
+              <span className="text-sm leading-relaxed text-ink-soft lg:text-base">
                 {stage.body}
               </span>
             </div>
             {index < stages.length - 1 ? (
               <span
                 aria-hidden
-                className="absolute top-1/2 -right-7 hidden -translate-y-1/2 text-lg text-brand-accent lg:block"
+                className="absolute top-1/2 -right-7 hidden -translate-y-1/2 text-lg text-accent-ink lg:block"
               >
                 →
               </span>
@@ -157,7 +157,7 @@ export function LiquioService() {
             },
           ]}
         />
-        <p className="text-base text-muted-foreground lg:text-xl">
+        <p className="text-base text-ink-soft lg:text-xl">
           Forms, records and workflows follow the service from application to
           outcome.
         </p>

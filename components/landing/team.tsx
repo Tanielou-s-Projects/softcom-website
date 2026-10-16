@@ -36,12 +36,12 @@ function PortraitCell({ image, name, role }: Portrait) {
             damping: 40,
             mass: 0.8,
           }}
-          className="dark relative flex w-full flex-col gap-1 rounded-md bg-brand-blue p-3"
+          className="dark relative flex w-full flex-col gap-1 rounded-md bg-accent p-3"
         >
-          <p className="font-heading text-xl leading-none font-bold text-foreground">
+          <p className="font-heading text-xl leading-none font-bold text-ink">
             {name}
           </p>
-          <p className="font-heading text-lg leading-[1.6] text-brand-cyan">
+          <p className="font-heading text-lg leading-[1.6] text-signal">
             {role}
           </p>
         </motion.div>
@@ -65,7 +65,7 @@ function Team({
   return (
     <section id="team" className="flex scroll-mt-24 flex-col gap-16">
       <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">
-        <h2 className={cn(headingText, "text-foreground")}>{heading}</h2>
+        <h2 className={cn(headingText, "text-ink")}>{heading}</h2>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:max-w-[1029px] lg:grid-cols-3">
           {portraits.map((portrait) => (

@@ -23,12 +23,12 @@ function SolutionsCta({ copy }: { copy: SolutionsPage["close"] }) {
             <h2
               className={cn(
                 headingText,
-                "text-center text-foreground lg:max-w-[394px] lg:text-left"
+                "text-center text-ink lg:max-w-[394px] lg:text-left"
               )}
             >
               {copy.heading}
             </h2>
-            <p className="max-w-[339px] text-center text-lg leading-[1.4] text-foreground lg:text-left">
+            <p className="max-w-[339px] text-center text-lg leading-[1.4] text-ink lg:text-left">
               {copy.text}
             </p>
           </div>

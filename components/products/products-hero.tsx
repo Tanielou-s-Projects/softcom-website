@@ -32,7 +32,7 @@ function ProductsHero({
             <Link
               key={product.id}
               href={`#${product.id}`}
-              className="font-heading text-lg leading-tight text-foreground transition-colors hover:text-brand-cyan lg:text-xl"
+              className="font-heading text-lg leading-tight text-ink transition-colors hover:text-signal lg:text-xl"
             >
               {product.name}
             </Link>

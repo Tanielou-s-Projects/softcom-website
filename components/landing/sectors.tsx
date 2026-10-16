@@ -24,10 +24,10 @@ function Sectors({
     <Container className="flex flex-col gap-10 overflow-clip lg:gap-16">
       <Reveal asChild>
         <header className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-16">
-          <h2 className={cn(headingText, "text-foreground lg:w-[61%]")}>
+          <h2 className={cn(headingText, "text-ink lg:w-[61%]")}>
             {copy.heading}
           </h2>
-          <p className={cn(bodyText, "min-w-0 flex-1 text-foreground")}>
+          <p className={cn(bodyText, "min-w-0 flex-1 text-ink")}>
             {copy.intro}
           </p>
         </header>

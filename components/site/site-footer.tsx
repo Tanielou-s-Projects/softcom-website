@@ -53,13 +53,13 @@ async function SiteFooter() {
     <footer className="dark relative overflow-clip rounded-4xl bg-neutral-900 px-6 pt-14 pb-6 lg:h-[min(700px,85svh)] lg:px-[3.2%] lg:pt-[60px] lg:pb-0">
       <div className="flex flex-col items-start justify-between gap-12 lg:flex-row">
         <address className="flex flex-col gap-6 not-italic lg:w-[30%]">
-          <p className="text-sm leading-6 font-medium text-muted-foreground">
+          <p className="text-sm leading-6 font-medium text-ink-soft">
             {footer.contactLabel}
           </p>
-          <div className="flex flex-col gap-1 font-heading text-2xl leading-[1.15] text-foreground lg:text-[1.75rem]">
+          <div className="flex flex-col gap-1 font-heading text-2xl leading-[1.15] text-ink lg:text-[1.75rem]">
             <a
               href={`mailto:${contactDetails.email}`}
-              className="w-fit hover:text-brand-accent"
+              className="w-fit hover:text-accent-ink"
             >
               {contactDetails.email}
             </a>
@@ -83,11 +83,11 @@ async function SiteFooter() {
               key={group.heading}
               className="flex flex-col items-start gap-4"
             >
-              <p className="text-muted-foreground">{group.heading}</p>
-              <ul className="flex flex-col items-start gap-2 text-foreground">
+              <p className="text-ink-soft">{group.heading}</p>
+              <ul className="flex flex-col items-start gap-2 text-ink">
                 {group.links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="hover:text-brand-accent">
+                    <Link href={link.href} className="hover:text-accent-ink">
                       {link.label}
                     </Link>
                   </li>
@@ -110,18 +110,14 @@ async function SiteFooter() {
       />
 
       {/* One bottom bar: copyright, legal and social, theme. */}
-      <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-border pt-6 text-sm leading-6 font-medium text-neutral-400 lg:absolute lg:inset-x-[3.2%] lg:bottom-[24px] lg:mt-0 lg:border-t-0 lg:pt-0">
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-line pt-6 text-sm leading-6 font-medium text-neutral-400 lg:absolute lg:inset-x-[3.2%] lg:bottom-[24px] lg:mt-0 lg:border-t-0 lg:pt-0">
         {/* neutral-400 on neutral-900 clears AA; the design's neutral-700 was ~2:1. */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <p>
             © {year} {footer.copyright}
           </p>
           {bottomLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="hover:text-foreground"
-            >
+            <a key={link.label} href={link.href} className="hover:text-ink">
               {link.label}
             </a>
           ))}

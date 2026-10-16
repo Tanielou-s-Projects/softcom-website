@@ -37,7 +37,7 @@ function ParagraphRail({ count }: { count: number }) {
           key={index}
           className={cn(
             "h-0.5 rounded-full",
-            index === 0 ? "w-[68px] bg-muted-foreground" : "w-[51px] bg-border"
+            index === 0 ? "w-[68px] bg-ink-soft" : "w-[51px] bg-line"
           )}
         />
       ))}
@@ -56,21 +56,21 @@ const components: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p className={body}>{children}</p>,
     h2: ({ children }) => (
-      <h2 className="pt-6 font-heading text-3xl leading-[1.15] tracking-tight text-foreground lg:text-4xl">
+      <h2 className="pt-6 font-heading text-3xl leading-[1.15] tracking-tight text-ink lg:text-4xl">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="pt-4 font-heading text-2xl leading-[1.2] text-foreground">
+      <h3 className="pt-4 font-heading text-2xl leading-[1.2] text-ink">
         {children}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="font-heading text-xl text-foreground">{children}</h4>
+      <h4 className="font-heading text-xl text-ink">{children}</h4>
     ),
     blockquote: ({ children }) => (
       <blockquote
-        className={cn(body, "border-l-2 border-brand-accent pl-6 italic")}
+        className={cn(body, "border-l-2 border-accent-ink pl-6 italic")}
       >
         {children}
       </blockquote>
@@ -90,7 +90,7 @@ const components: PortableTextComponents = {
         href={value?.href}
         target={value?.blank ? "_blank" : undefined}
         rel={value?.blank ? "noreferrer" : undefined}
-        className="text-brand-accent underline underline-offset-4"
+        className="text-accent-ink underline underline-offset-4"
       >
         {children}
       </a>
@@ -108,7 +108,7 @@ const components: PortableTextComponents = {
             className="h-auto w-full rounded-2xl"
           />
           {value.caption ? (
-            <figcaption className="text-sm text-muted-foreground">
+            <figcaption className="text-sm text-ink-soft">
               {value.caption}
             </figcaption>
           ) : null}
@@ -131,11 +131,9 @@ function InsightArticle({ article }: { article: Article }) {
           <div className="flex min-w-0 flex-1 flex-col gap-16">
             <span
               aria-hidden
-              className="size-[26px] shrink-0 rounded-full bg-brand-blue"
+              className="size-[26px] shrink-0 rounded-full bg-accent"
             />
-            <h1 className={cn(displayText, "text-foreground")}>
-              {article.title}
-            </h1>
+            <h1 className={cn(displayText, "text-ink")}>{article.title}</h1>
           </div>
 
           <div className="flex flex-col gap-16 lg:w-[49%] lg:shrink-0">
@@ -143,7 +141,7 @@ function InsightArticle({ article }: { article: Article }) {
               <Badge>{article.topic}</Badge>
               <time
                 dateTime={article.date}
-                className="font-heading text-xs leading-[1.2] text-muted-foreground"
+                className="font-heading text-xs leading-[1.2] text-ink-soft"
               >
                 {formatInsightDate(article.date)}
               </time>
@@ -180,7 +178,7 @@ function InsightArticle({ article }: { article: Article }) {
         </div>
       </div>
 
-      <div aria-hidden className="h-px w-full bg-border" />
+      <div aria-hidden className="h-px w-full bg-line" />
     </Container>
   )
 }
