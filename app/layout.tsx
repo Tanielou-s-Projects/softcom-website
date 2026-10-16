@@ -1,28 +1,14 @@
 import type { Metadata } from "next"
-import { Geist_Mono, Montserrat, Space_Grotesk } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 import { MotionConfig } from "motion/react"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 
-const spaceGroteskHeading = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-heading",
-})
-
-/*
- * Montserrat carries body copy *and* UI — there is no separate UI face.
- * The Figma file specifies Inter on button labels, but that is the shadcn
- * library's own default showing through rather than a deliberate third family,
- * so it is not reproduced here.
- */
-const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" })
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
+/* Geist carries headings, body and UI; Geist Mono the labels. As in the rebuild. */
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist" })
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
 export const metadata: Metadata = {
   title: "Softcom — Technology for Organisations. Progress for Society.",
@@ -40,11 +26,9 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={cn(
-        "antialiased",
-        fontMono.variable,
-        "font-sans",
-        spaceGroteskHeading.variable,
-        montserrat.variable
+        "font-sans antialiased",
+        geist.variable,
+        geistMono.variable
       )}
     >
       <body>
