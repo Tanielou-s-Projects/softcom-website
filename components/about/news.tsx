@@ -2,8 +2,8 @@ import Link from "next/link"
 
 import type { AboutPage } from "@/content/about/page-copy"
 import { Container } from "@/components/landing/section"
-import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
-import { cn } from "@/lib/utils"
+import { RevealItem, RevealStagger } from "@/components/motion/reveal"
+import { SectionHeading } from "@/components/site/section-heading"
 
 /**
  * "Latest news" — a V7-style news list: a label column on the left, the
@@ -12,18 +12,14 @@ import { cn } from "@/lib/utils"
  */
 function News({ copy }: { copy: AboutPage["news"] }) {
   return (
-    <Container className="flex flex-col gap-10 lg:flex-row lg:gap-16">
-      <div className="flex shrink-0 items-center gap-2 lg:w-40">
-        <span aria-hidden className="size-2.5 rounded-full bg-accent-ink" />
-        <span className="text-sm font-medium text-ink-soft">{copy.label}</span>
-      </div>
+    <Container className="flex flex-col gap-section-head">
+      <SectionHeading
+        label={copy.label}
+        heading={copy.heading}
+        intro={copy.lead}
+      />
 
-      <div className="flex min-w-0 flex-1 flex-col gap-10 lg:gap-12">
-        <Reveal className="flex flex-col gap-3">
-          <h2 className={cn("text-headline", "text-ink")}>{copy.heading}</h2>
-          <p className="text-lg text-ink-soft">{copy.lead}</p>
-        </Reveal>
-
+      <div className="flex flex-col gap-10">
         <RevealStagger as="ul" className="flex flex-col border-t border-line">
           {copy.items.map((insight) => (
             <RevealItem
@@ -33,13 +29,15 @@ function News({ copy }: { copy: AboutPage["news"] }) {
             >
               <Link
                 href={`/insights/${insight.slug}`}
-                className="group grid items-center gap-4 py-6 sm:grid-cols-[1fr_8rem_auto] sm:gap-10"
+                className="group grid-12 items-center gap-y-4 py-6"
               >
-                <p className="font-heading text-lg text-ink transition-colors group-hover:text-accent-ink lg:text-xl">
+                <p className="font-heading text-lg text-ink transition-colors group-hover:text-accent-ink md:col-span-7 lg:text-xl">
                   {insight.title}
                 </p>
-                <p className="text-sm text-ink-soft">{insight.category}</p>
-                <div className="flex items-center gap-2.5">
+                <p className="text-sm text-ink-soft md:col-span-2 md:col-start-9">
+                  {insight.category}
+                </p>
+                <div className="flex items-center gap-2.5 md:col-span-2 md:col-start-11 md:justify-end">
                   <span
                     aria-hidden
                     className="size-7 shrink-0 rounded-full bg-surface-raised"

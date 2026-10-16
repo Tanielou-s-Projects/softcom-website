@@ -30,8 +30,8 @@ export default async function Page() {
     <div className="relative flex min-h-svh w-full flex-col bg-paper text-ink">
       <SiteHeader />
 
-      <Container className="flex flex-1 flex-col gap-16 pt-8 pb-6 lg:flex-row lg:items-start lg:gap-16">
-        <div className="flex min-w-0 flex-1 flex-col gap-16 lg:sticky lg:top-6">
+      <Container className="grid flex-1 gap-16 pt-8 pb-6 lg:grid-cols-12 lg:items-start lg:gap-x-gutter">
+        <div className="flex flex-col gap-16 lg:sticky lg:top-6 lg:col-span-4">
           {/*
            * The shared hero anatomy — badge, headline, lead — in its short
            * form: the form has to stay above the fold, so no full-height frame.
@@ -49,7 +49,7 @@ export default async function Page() {
           </Reveal>
         </div>
 
-        <div className="flex flex-col gap-6 lg:w-[68%] lg:shrink-0">
+        <div className="flex flex-col gap-6 lg:col-span-8">
           <div className="lg:sticky lg:top-24">
             <Reveal delay={0.1}>
               <ContactForm copy={copy.form} />

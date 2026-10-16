@@ -3,11 +3,11 @@
 import { cn } from "@/lib/utils"
 import { ButtonLink } from "@/components/ui/button"
 import { Container } from "@/components/landing/section"
-import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal"
+import { RevealItem, RevealStagger } from "@/components/motion/reveal"
 import type { Product } from "@/content/products/content"
 import type { ProductsPage } from "@/content/products/page-copy"
 import { DitherPanel } from "@/components/motion/dither-panel"
-import { SectionMark } from "@/components/products/section-mark"
+import { SectionHeading } from "@/components/site/section-heading"
 
 /** The way into a product's own page. */
 function ExploreLink({
@@ -107,34 +107,22 @@ function ProductCard({
 function ProductSection({
   title,
   lead,
-  accent,
   items,
   explore,
 }: {
   title: string
   lead?: string
-  accent: "cyan" | "blue"
   items: Product[]
   explore: string
 }) {
   return (
-    <section className="flex flex-col gap-16 lg:gap-[68px]">
-      <Reveal className="flex flex-col items-center gap-6">
-        <SectionMark accent={accent}>{title}</SectionMark>
-        {lead ? (
-          <p
-            className={cn(
-              "text-lede",
-              "max-w-[576px] px-6 text-center text-ink-soft"
-            )}
-          >
-            {lead}
-          </p>
-        ) : null}
-      </Reveal>
+    <section className="flex flex-col gap-section-head">
+      <Container>
+        <SectionHeading heading={title} intro={lead} />
+      </Container>
 
       <RevealStagger amount={0.1}>
-        <Container className="grid gap-6 lg:grid-cols-2">
+        <Container className="grid gap-gutter lg:grid-cols-2">
           {items.map((product) => (
             <RevealItem key={product.id}>
               <ProductCard product={product} explore={explore} />
@@ -157,21 +145,19 @@ function ProductGrid({
   copy: ProductsPage
 }) {
   return (
-    <>
+    <div className="flex flex-col gap-section">
       <ProductSection
         title={copy.softcom.title}
-        accent="cyan"
         items={products}
         explore={copy.labels.explore}
       />
       <ProductSection
         title={copy.partners.title}
         lead={copy.partners.lead}
-        accent="blue"
         items={partnerPlatforms}
         explore={copy.labels.explore}
       />
-    </>
+    </div>
   )
 }
 

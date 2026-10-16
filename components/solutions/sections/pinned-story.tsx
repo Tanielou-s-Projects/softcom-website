@@ -48,22 +48,19 @@ function PinnedStory({
 
   return (
     <div
-      className={cn(
-        "grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16",
-        className
-      )}
+      className={cn("grid gap-10 lg:grid-cols-12 lg:gap-x-gutter", className)}
     >
       {/*
        * The figure pins in both layouts: beside the steps on desktop, and
        * across the top on a phone, where the steps scroll up under it.
        */}
-      <div className="sticky top-16 z-10 order-first bg-paper pb-2 lg:static lg:order-last lg:bg-transparent lg:pb-0">
+      <div className="sticky top-16 z-10 order-first bg-paper pb-2 lg:static lg:order-last lg:col-span-7 lg:bg-transparent lg:pb-0">
         <div className="lg:sticky lg:top-[calc(50svh-min(36vw,340px))]">
           <div data-focus={steps[active]?.id}>{figure}</div>
         </div>
       </div>
 
-      <ol className="flex flex-col">
+      <ol className="flex flex-col lg:col-span-5">
         {steps.map((step, index) => (
           <li
             key={step.id}

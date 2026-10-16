@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import { Journey } from "@/components/about/journey"
+import { LineReveal } from "@/components/motion/line-reveal"
+import { SectionHeading } from "@/components/site/section-heading"
 import { PageHero } from "@/components/site/page-hero"
 
 import { cn } from "@/lib/utils"
@@ -46,53 +48,48 @@ export default async function Page() {
           />
 
           <Section marks={false}>
-            {/* Our Story */}
-            <Container className="flex flex-col gap-6">
-              <Reveal className="flex flex-col gap-6">
-                <h2 className={cn("text-headline", "max-w-[24ch] text-ink")}>
-                  {copy.story.heading}
-                </h2>
-                <div className="flex max-w-[75ch] flex-col gap-4">
-                  {copy.story.paragraphs.map((paragraph) => (
-                    <p
-                      key={paragraph}
-                      className={cn("text-body", "text-ink-soft")}
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
+            {/* Our Story — the headline on the left, the telling on the right. */}
+            <Container className="grid-12 gap-y-10">
+              <LineReveal
+                as="h2"
+                className="text-headline text-balance text-ink md:col-span-5"
+              >
+                {copy.story.heading}
+              </LineReveal>
+              <Reveal className="flex flex-col gap-4 md:col-span-6 md:col-start-7 md:pt-10">
+                {copy.story.paragraphs.map((paragraph) => (
+                  <p
+                    key={paragraph}
+                    className={cn("text-body", "text-ink-soft")}
+                  >
+                    {paragraph}
+                  </p>
+                ))}
               </Reveal>
             </Container>
           </Section>
         </div>
 
-        <Section>
-          {/* Our Journey — the V7-style ruler timeline (renders its own header). */}
-          <Container>
-            <Journey copy={copy.journey} />
-          </Container>
+        <Section id="journey">
+          {/* Our Journey — the ruled timeline (renders its own header). */}
+          <Journey copy={copy.journey} />
         </Section>
 
         <Section>
           {/* What guides our work — the same four values as the homepage. */}
-          <Container className="flex flex-col gap-8">
-            <Reveal asChild>
-              <h2 className={cn("text-headline", "text-ink")}>
-                {copy.values.heading}
-              </h2>
-            </Reveal>
+          <Container className="flex flex-col gap-section-head">
+            <SectionHeading heading={copy.values.heading} />
             <RevealStagger as="ol" className="flex flex-col gap-6">
               {copy.values.items.map((value, index) => (
                 <RevealItem
                   as="li"
                   key={value.title}
-                  className="grid gap-2 border-t border-line pt-6 sm:grid-cols-[4rem_1fr] sm:gap-8"
+                  className="grid-12 gap-y-2 border-t border-line pt-6"
                 >
-                  <p className="font-mono text-sm text-ink-soft">
+                  <p className="font-mono text-sm text-ink-soft md:col-span-3">
                     {String(index + 1).padStart(2, "0")}
                   </p>
-                  <div className="flex max-w-[70ch] flex-col gap-2">
+                  <div className="flex flex-col gap-2 md:col-span-6">
                     <h3 className="font-heading text-xl text-ink">
                       {value.title}
                     </h3>
@@ -114,13 +111,10 @@ export default async function Page() {
         <Section>
           {/* Build with us — careers. */}
           <Container>
-            <Reveal className="flex flex-col items-start gap-6 lg:max-w-[684px]">
-              <h2 className={cn("text-headline", "text-ink")}>
-                {copy.careers.heading}
-              </h2>
-              <p className={cn("text-body", "text-ink-soft")}>
-                {copy.careers.body}
-              </p>
+            <SectionHeading
+              heading={copy.careers.heading}
+              intro={copy.careers.body}
+            >
               <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                 <ButtonLink href={copy.careers.primaryHref} tone="ink">
                   {copy.careers.primaryLabel}
@@ -129,7 +123,7 @@ export default async function Page() {
                   {copy.careers.secondaryLabel}
                 </ArrowLink>
               </div>
-            </Reveal>
+            </SectionHeading>
           </Container>
         </Section>
 

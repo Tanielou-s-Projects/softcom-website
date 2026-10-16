@@ -138,11 +138,11 @@ function SolutionBlock({
       {solution.list ? (
         <>
           <Reveal asChild>
-            <div className="grid gap-4 rounded-3xl bg-surface p-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:p-8">
-              <h3 className="font-heading text-2xl leading-[1.15] font-light text-ink">
+            <div className="grid gap-4 rounded-3xl bg-surface p-6 lg:grid-cols-12 lg:gap-x-gutter lg:p-8">
+              <h3 className="font-heading text-2xl leading-[1.15] font-light text-ink lg:col-span-5">
                 {solution.list.heading}
               </h3>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 lg:col-span-6 lg:col-start-7">
                 <p className={cn("text-body", "text-ink-soft")}>
                   {solution.list.intro}
                 </p>

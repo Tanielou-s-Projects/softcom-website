@@ -97,9 +97,9 @@ function InsightList({
   const [featured, ...latest] = filtered
 
   return (
-    <Container className="relative flex flex-col gap-16 pt-16">
+    <Container className="relative grid-12 gap-y-16 pt-16">
       {/* The intro is the page hero's; here, just the filter over a rule. */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 md:col-span-12">
         <TopicFilter
           filter={filter}
           onFilterChange={setFilter}
@@ -109,7 +109,10 @@ function InsightList({
       </div>
 
       {featured && (
-        <Reveal as="section" className="flex max-w-[921px] flex-col gap-12">
+        <Reveal
+          as="section"
+          className="flex flex-col gap-12 md:col-span-12 lg:col-span-8"
+        >
           <h2
             className={cn(
               "text-headline leading-[1.1]",
@@ -127,7 +130,7 @@ function InsightList({
       )}
 
       {latest.length > 0 && (
-        <section className="flex max-w-[917px] flex-col gap-12">
+        <section className="flex flex-col gap-12 md:col-span-12 lg:col-span-8">
           <Reveal asChild>
             <h2
               className={cn(

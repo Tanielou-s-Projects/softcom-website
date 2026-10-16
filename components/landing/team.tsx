@@ -4,9 +4,9 @@ import Image from "next/image"
 import { motion } from "motion/react"
 
 import { Container } from "@/components/landing/section"
+import { SectionHeading } from "@/components/site/section-heading"
 import type { Portrait } from "@/content/home/content"
 import { Stats } from "@/components/landing/stats"
-import { cn } from "@/lib/utils"
 import { ColorReveal } from "@/components/motion/color-reveal"
 
 /** A portrait; the brand-blue name plate springs up from the bottom on hover. */
@@ -64,10 +64,10 @@ function Team({
 }) {
   return (
     <div id="team" className="flex scroll-mt-24 flex-col gap-16">
-      <Container className="flex flex-col gap-10 overflow-clip py-6 lg:gap-16">
-        <h2 className={cn("text-headline", "text-ink")}>{heading}</h2>
+      <Container className="flex flex-col gap-section-head overflow-clip py-6">
+        <SectionHeading heading={heading} />
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-gutter lg:grid-cols-3">
           {portraits.map((portrait) => (
             <PortraitCell key={portrait.image} {...portrait} />
           ))}

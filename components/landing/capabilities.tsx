@@ -14,8 +14,8 @@ import { Container } from "@/components/landing/section"
 import { ButtonLink } from "@/components/ui/button"
 import { capabilities } from "@/content/home/content"
 import type { HomePage } from "@/content/home/page-copy"
-import { Reveal } from "@/components/motion/reveal"
 import { useMediaQuery } from "@/hooks/use-media-query"
+import { SectionHeading } from "@/components/site/section-heading"
 import { cn } from "@/lib/utils"
 import { ColorReveal } from "@/components/motion/color-reveal"
 
@@ -80,21 +80,13 @@ function Capabilities({ copy }: { copy: HomePage["focusAreas"] }) {
       className="relative flex flex-col gap-10 lg:gap-16 lg:motion-safe:h-[260vh]"
     >
       <div className="flex flex-col gap-10 lg:gap-16 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:justify-center lg:motion-safe:overflow-hidden short:lg:gap-8">
-        <Reveal asChild>
-          <Container className="flex flex-col items-center gap-8 pt-6 text-center lg:gap-10">
-            <h2 className={cn("text-headline", "max-w-[533px] text-ink")}>
-              {copy.heading}
-            </h2>
-            <p
-              className={cn(
-                "text-lede",
-                "max-w-[576px] text-ink-soft short:lg:hidden"
-              )}
-            >
-              {copy.intro}
-            </p>
-          </Container>
-        </Reveal>
+        <Container className="pt-6">
+          <SectionHeading
+            heading={copy.heading}
+            intro={copy.intro}
+            introClassName="short:lg:hidden"
+          />
+        </Container>
 
         <motion.div
           ref={railRef}

@@ -63,6 +63,8 @@
 @theme inline {
   --spacing-section: var(--section);
   --spacing-section-tight: var(--section-tight);
+  --spacing-section-head: var(--section-head);
+  --spacing-gutter: var(--gutter);
 
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
@@ -98,6 +100,10 @@
      `gap-section-tight` between a section and a close follow-on. */
   --section: 8rem;
   --section-tight: 4rem;
+  /* A section's heading to its content: `gap-section-head`. */
+  --section-head: 3rem;
+  /* The 12-column grid's gutter (`grid-12`, `gap-x-gutter`). */
+  --gutter: 1.5rem;
 
   --radius: 0.625rem;
 
@@ -111,6 +117,7 @@
   :root {
     --section: 12rem;
     --section-tight: 6rem;
+    --section-head: 5rem;
   }
 }
 
@@ -129,6 +136,20 @@
   padding-inline: 1rem;
   @media (width >= 48rem) {
     padding-inline: 2.5rem;
+  }
+}
+
+/*
+ * The shell's 12 columns, as in the rebuild: one stacked column on phones,
+ * twelve with a 24px gutter from md. Place children with `md:col-span-*` and
+ * `md:col-start-*`; set the stacked spacing with `gap-y-*`.
+ */
+@utility grid-12 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
   }
 }
 

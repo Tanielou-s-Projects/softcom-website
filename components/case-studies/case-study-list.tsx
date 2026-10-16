@@ -135,12 +135,12 @@ function CaseStudyList({
   ]
 
   return (
-    <Container className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-0">
+    <Container className="grid-12 gap-y-8 lg:items-start">
       {/*
        * Margin rather than padding for the drop, so the sticky box itself
        * starts low and then pins 96px down — clear of the floating nav pill.
        */}
-      <aside className="lg:sticky lg:top-24 lg:mt-32 lg:w-[28%] lg:shrink-0 lg:pr-8">
+      <aside className="md:col-span-12 lg:sticky lg:top-24 lg:col-span-3 lg:mt-32">
         <div
           role="group"
           aria-label="Filter case studies by sector"
@@ -171,7 +171,10 @@ function CaseStudyList({
         </div>
       </aside>
 
-      <div ref={listRef} className="flex min-w-0 flex-1 flex-col gap-6">
+      <div
+        ref={listRef}
+        className="flex flex-col gap-6 md:col-span-12 lg:col-span-9"
+      >
         {filtered.map((study, index) => (
           <Reveal key={study.id} amount={0.1}>
             <CaseStudyPanel

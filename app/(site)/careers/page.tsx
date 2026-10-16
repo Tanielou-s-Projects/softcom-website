@@ -42,12 +42,10 @@ export default async function Page() {
         </PageHero>
 
         {/* The rest of the invitation, out of the hero so it stays one line. */}
-        <Container className="flex flex-col gap-4">
+        <Container className="grid-12 gap-y-4">
           {copy.intro.paragraphs.map((paragraph) => (
-            <Reveal key={paragraph}>
-              <p className={cn("text-lede", "max-w-[75ch] text-ink-soft")}>
-                {paragraph}
-              </p>
+            <Reveal key={paragraph} className="md:col-span-8">
+              <p className={cn("text-lede", "text-ink-soft")}>{paragraph}</p>
             </Reveal>
           ))}
         </Container>
@@ -55,11 +53,16 @@ export default async function Page() {
 
       <Section>
         <Container>
-          <Reveal className="flex flex-col gap-6 border-t border-line pt-12 lg:flex-row lg:gap-16">
-            <h2 className={cn("text-headline", "text-ink lg:w-[40%]")}>
+          <Reveal className="grid-12 gap-y-6 border-t border-line pt-12">
+            <h2
+              className={cn(
+                "text-headline",
+                "text-balance text-ink md:col-span-6"
+              )}
+            >
               {copy.work.heading}
             </h2>
-            <div className="flex min-w-0 flex-1 flex-col gap-4">
+            <div className="flex flex-col gap-4 md:col-span-5 md:col-start-8">
               {copy.work.paragraphs.map((paragraph) => (
                 <p key={paragraph} className={cn("text-body", "text-ink")}>
                   {paragraph}

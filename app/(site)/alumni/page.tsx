@@ -37,11 +37,11 @@ export default async function Page() {
           </ButtonLink>
         </PageHero>
 
-        <Container className="flex flex-col items-start gap-6">
+        <Container className="grid-12 gap-y-6">
           {copy.intro.paragraphs.map((paragraph) => (
             <p
               key={paragraph}
-              className={cn("text-lede", "max-w-[75ch] text-ink-soft")}
+              className={cn("text-lede", "text-ink-soft md:col-span-8")}
             >
               {paragraph}
             </p>

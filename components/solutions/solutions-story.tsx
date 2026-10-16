@@ -44,11 +44,11 @@ function Opener({
 }) {
   return (
     <Container id={id} className="scroll-mt-24">
-      <Reveal className="grid gap-6 border-t border-line pt-8 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16 lg:pt-10">
-        <span className="font-mono text-sm tracking-[0.12em] text-ink-soft tabular-nums">
+      <Reveal className="grid-12 gap-y-6 border-t border-line pt-8 lg:pt-10">
+        <span className="font-mono text-sm tracking-[0.12em] text-ink-soft tabular-nums md:col-span-4">
           {number} / 03
         </span>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 md:col-span-8">
           <h2 className={cn("text-headline", "text-ink")}>{title}</h2>
           <p className={cn("text-lede", "max-w-[52ch] text-accent-ink")}>
             {lead}
@@ -215,13 +215,13 @@ function Intelligence({ copy }: { copy: SolutionsPage["intelligence"] }) {
 
       {copy.shapedHeading ? (
         <Container className="pt-section-tight">
-          <div className="grid gap-10 border-t border-line pt-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
-            <Reveal>
+          <div className="grid-12 gap-y-10 border-t border-line pt-10">
+            <Reveal className="md:col-span-4">
               <h3 className={cn("text-headline", "text-ink")}>
                 {copy.shapedHeading}
               </h3>
             </Reveal>
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-10 md:col-span-8">
               {/* The three things each system reflects, from the copy. */}
               <RevealStagger
                 amount={0.2}
@@ -276,8 +276,8 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
         </Reveal>
       </Container>
 
-      <Container className="grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
-        <div>
+      <Container className="grid gap-10 lg:grid-cols-12 lg:gap-x-gutter">
+        <div className="lg:col-span-4">
           <Reveal className="flex flex-col gap-6 lg:sticky lg:top-32">
             <h3 className="font-heading text-2xl leading-[1.15] font-light text-ink lg:text-[2rem]">
               {copy.entrustHeading}
@@ -287,7 +287,7 @@ function Initiatives({ copy }: { copy: SolutionsPage["initiatives"] }) {
             </p>
           </Reveal>
         </div>
-        <RevealStagger amount={0.15} className="flex flex-col">
+        <RevealStagger amount={0.15} className="flex flex-col lg:col-span-8">
           {copy.entrustItems.map((item, index) => (
             <RevealItem key={item}>
               <div className="group flex items-baseline gap-6 border-b border-line py-5 lg:py-6">

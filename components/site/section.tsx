@@ -15,7 +15,7 @@ function Section({
 }: React.ComponentProps<"section"> & { marks?: boolean }) {
   return (
     <section
-      className={cn("flex scroll-mt-24 flex-col gap-10 lg:gap-14", className)}
+      className={cn("flex scroll-mt-24 flex-col gap-10 md:gap-16", className)}
       {...props}
     >
       {marks && <Crosshairs />}
