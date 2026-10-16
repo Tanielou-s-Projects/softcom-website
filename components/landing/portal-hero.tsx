@@ -301,7 +301,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
             </div>
             <div
               data-hero-copy=""
-              className="relative shell flex items-end gap-6 pb-24 md:gap-10 md:pb-28"
+              className="relative shell flex items-end justify-between gap-6 pb-24 md:gap-10 md:pb-28"
             >
               <h1 id="story-title" className="text-display">
                 {/* One sentence per line, as the brand line is written. */}
@@ -312,7 +312,7 @@ export function PortalHero({ copy }: { copy: HeroCopy }) {
                   {copy.progressFirstLine} {copy.progressSecondLine}
                 </span>
               </h1>
-              {/* The scroll cue: one small arrow beside the headline. */}
+              {/* The scroll cue: one small arrow at the far right, level with the headline. */}
               <button
                 type="button"
                 aria-label={copy.scrollLabel}
