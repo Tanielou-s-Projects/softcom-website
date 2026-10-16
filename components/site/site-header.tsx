@@ -348,7 +348,7 @@ function SiteHeader() {
               <span
                 aria-hidden
                 className={cn(
-                  "absolute left-1/2 -translate-x-1/2 text-xs leading-none font-medium whitespace-nowrap text-ink/80 transition-opacity duration-300",
+                  "pointer-events-none absolute left-1/2 -translate-x-1/2 text-xs leading-none font-medium whitespace-nowrap text-ink/80 transition-opacity duration-300",
                   peek ? "opacity-100 delay-150" : "opacity-0"
                 )}
               >
